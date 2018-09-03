@@ -6,7 +6,7 @@ Set-ItemProperty -Path 'HKCU:\Software\Microsoft\ServerManager' -Name 'DoNotOpen
 Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Internet Explorer\Main\' -Name 'start page' -Value 'about:blank'
 # Get Public IP @
 Set-Item -Path 'ENV:\IpAddressPublic' -Value '0.0.0.0'
-Set-Item -Path 'ENV:\IpAddressPublic' -Value (invoke-WebRequest -Uri 'https://api.ipify.org').content
+Set-Item -Path 'ENV:\IpAddressPublic' -Value (invoke-WebRequest -Uri 'https://api.ipify.org' -UseBasicParsing).content
 # Get NLA state
 Set-Item -Path 'ENV:\NetworkCategory' -value (Get-NetConnectionProfile).NetworkCategory
 Set-Item -Path 'ENV:\IPv4Connectivity' -Value (Get-NetConnectionProfile).IPv4Connectivity
