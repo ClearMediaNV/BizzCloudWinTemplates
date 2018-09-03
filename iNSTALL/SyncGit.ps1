@@ -15,4 +15,4 @@ Copy-Item -Path "$ENV:TEMP\Template\BizzCloudWinTemplates-master\iNSTALL\*" -Des
 # Cleanup Temp Folder
 remove-Item -Path "$Output" -Force -Verbose
 remove-item -path "$ENV:TEMP\Template" -Recurse -Force -Verbose
-
+# The End
