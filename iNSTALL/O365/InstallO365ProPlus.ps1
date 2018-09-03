@@ -109,7 +109,6 @@ do
     If ( $Counter -eq 100) {$Counter = 0} else { $Counter++ }
     }
 while ( $Job.State -ne 'Completed' )
-Start-Sleep -Seconds 8
 $Form2.Close()
 
 # Install Selected BIT Version of O365 Pro Plus
