@@ -4,6 +4,7 @@
 # Change SecurityProtocol for downloading from GitHub
 $SavedSecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol
 [System.Net.ServicePointManager]::SecurityProtocol = 'Tls,Tls11,Tls12'
+# Download Archive
 (New-Object System.Net.WebClient).downloadFile($UrlDownload,$Output)
 [System.Net.ServicePointManager]::SecurityProtocol = $SavedSecurityProtocol
 # Unzip Archive to Temp
