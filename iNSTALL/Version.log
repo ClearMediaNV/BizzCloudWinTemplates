@@ -9,7 +9,7 @@ PowerShell Folder removed
 O365 refactored with GUI InstallO365ProPlus script, Updated Branch, 32-64 bit versions, Multi Language Config, no sources embedded, additional Get_O365_TenantID script
 Changed NLA registry
 		Changed EnableActiveProbing from 0 to 1
-SyncGithub added - Sync iNSTALL folder with https://github.com/ClearMediaNV/BizzCloudWinTemplates
+SyncGit added - Sync iNSTALL folder with https://github.com/ClearMediaNV/BizzCloudWinTemplates
 
 PLEASE NOTE: AFTER DEPLOYING VM FROM TEMPLATE LET IT BURN IN FOR PROX 30 MINUTES AFTER ADMINISTRATOR LOGIN (TiWorker.exe in action)
 
