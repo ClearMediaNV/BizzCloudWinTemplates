@@ -13,4 +13,6 @@ Expand-Archive -Path $Output -DestinationPath "$ENV:TEMP\Template" -Force
 get-childitem -path "c:\install" -Recurse  | Remove-Item -Recurse -Force -Verbose
 Copy-Item -Path "$ENV:TEMP\Template\BizzCloudWinTemplates-master\iNSTALL\*" -Destination 'c:\iNSTALL' -Recurse -Force -Verbose
 # Cleanup Temp Folder
-get-childitem -path "$ENV:TEMP\Template" -Recurse  | Remove-Item -Force -Recurse -Verbose
+remove-Item -Path "$Output" -Force -Verbose
+remove-item -path "$ENV:TEMP\Template" -Recurse -Force -Verbose
+
