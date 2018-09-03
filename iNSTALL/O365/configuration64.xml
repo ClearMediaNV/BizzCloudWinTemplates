@@ -1,0 +1,48 @@
+<Configuration>
+	<Add 
+	SourcePath="c:\install\O365"
+	OfficeClientEdition="64"
+	Channel="Broad">
+        	<Product ID="O365ProPlusRetail">
+			<Language
+			ID="en-us">
+			</Language>
+			<Language
+			ID="nl-nl">
+			</Language>
+			<Language
+			ID="fr-fr">
+			</Language>
+        	</Product>
+    	</Add>
+
+	<Updates
+	Channel="Broad"
+	Enabled="TRUE">
+	</Updates>
+	
+	<Display
+	Level="Full"
+	AcceptEULA="TRUE">
+	</Display>
+	
+	<Logging
+	Level="Standard"
+	Path="c:\install\o365\Log">
+	</Logging>
+	
+	<Property
+	Name="FORCEAPPSHUTDOWN"
+	Value="TRUE">
+	</Property>
+	
+	<Property
+	Name="SharedComputerLicensing"
+	Value="1">
+	</Property>
+
+	<Property
+	Name="PinIconsToTaskbar"
+	Value="FALSE">
+	</Property>
+</Configuration>

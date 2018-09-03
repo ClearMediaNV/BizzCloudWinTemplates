@@ -1,0 +1,46 @@
+Version 1.4
+-----------
+Refactored Install Folder structure
+Removed tools packages, added URL list in tools.txt
+BgInfo refactored with NLA status and simplified script file PresetAndBgInfo
+Package Folder added - StickyNotes, WindowsPhotoViewer
+Deployment Folder added - AioSetup, TripleSetup
+PowerShell Folder removed
+O365 refactored with GUI InstallO365ProPlus script, Updated Branch, 32-64 bit versions, Multi Language Config, no sources embedded, additional Get_O365_TenantID script
+Changed NLA registry
+		Changed EnableActiveProbing from 0 to 1
+
+Version 1.3
+-----------
+Reordered Subfolders in C:\iNSTALL for more readability
+Removed Folders Policy,VCruntimes
+Added CreateCMscript in PowerShell (AD, RDS)
+Adjusted BgInfo with extra Info: Domain Name, Logon Server, Network Adapter
+Added Logoff Shortcut on Desktop
+Changed Date-Time-NumberFormat To Dutch (Belgium)
+Removed Querty Input Method
+Changed Display Language to English (United States) for New User Profiles
+Changed NLA (Network Location Awareness) service:
+	Changed Start from Automatic to Automatic (Delayed Start)
+	Tweaked registry
+		Changed EnableActiveProbing from 1 to 0
+		Changed WebTimeout from 23 to FFFFFFFF
+Set C: VolumeName to SYSTEM
+Changed CD Drive Letter to Z: after Sysprep in PreSet.ps1
+Virtual Hardware Resources Defaults : 1 CPU, 4 GB RAM, C: 50 GB
+
+Version 1.2
+-----------
+Installed Patch 2018-01 Cumulative Update for Windows Server 2016 for x64-based Systems (KB4056890)
+Enabled mitigations to help protect against speculative execution side-channel vulnerabilities
+
+Version 1.1
+-----------
+Administrator Password never expires
+WINDOWS DEFENDER FEATURE REMOVED !!!
+IP v6 registry adjusted folowing KB929852
+PowerShell scripts corrected for RDS deployement
+Language Pack validated for Dutch & French communities
+Rechecked disable AutoPlay for removable devices
+
+
