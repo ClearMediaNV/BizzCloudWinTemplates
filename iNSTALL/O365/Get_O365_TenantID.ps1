@@ -2,13 +2,13 @@
 
 ## -- Create Select Form
 $Form1 = New-Object System.Windows.Forms.Form 
-$Form1.Text = "Get O365 TenantID"
+$Form1.Text = 'Get O365 TenantID'
 $Form1.showIcon = $false
 $Form1.MinimizeBox = $false
 $Form1.MaximizeBox = $false
 $Form1.Height = 245
 $Form1.Width = 540
-$Form1.StartPosition = "CenterScreen"
+$Form1.StartPosition = 'CenterScreen'
 $Form1.FormBorderStyle = 'fixedsingle'
 $Form1.Topmost = $True
 
@@ -17,7 +17,7 @@ $OKButton.Left = 100
 $OKButton.Top = 160
 $OKButton.Width = 75
 $OKButton.Height = 23
-$OKButton.Text = "OK"
+$OKButton.Text = 'OK'
 $OKButton.DialogResult = [System.Windows.Forms.DialogResult]::OK
 $Form1.AcceptButton = $OKButton
 $Form1.Controls.Add($OKButton)
@@ -27,7 +27,7 @@ $CancelButton.Left = 350
 $CancelButton.Top = 160
 $CancelButton.Width = 75
 $CancelButton.Height = 23
-$CancelButton.Text = "CANCEL"
+$CancelButton.Text = 'CANCEL'
 $CancelButton.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
 $Form1.CancelButton = $CancelButton
 $Form1.Controls.Add($CancelButton)
@@ -39,7 +39,7 @@ $labelDomain.Left = 160
 $labelDomain.Width = 400
 $labelDomain.Height = 30
 $labelDomain.Font = 'Candara , 11pt, style=Regular'
-$labelDomain.Text = "Please enter the Domain Name"
+$labelDomain.Text = 'Please enter the Domain Name'
 $Form1.Controls.Add($labelDomain)
 
 $textDomain = New-Object System.Windows.Forms.TextBox
@@ -51,7 +51,7 @@ $textDomain.Height = 30
 $textDomain.BackColor = 'green'
 $textDomain.Font = 'Candara , 14pt, style=Bold'
 $textDomain.TextAlign = 'Center'
-$textDomain.Text = "clearmedia.be"
+$textDomain.Text = 'ClearMedia.be'
 $Form1.Controls.Add($textDomain)
 
 $labelTenantID = New-Object System.Windows.Forms.TextBox
@@ -64,7 +64,7 @@ $labelTenantID.Width = 449
 $labelTenantID.Height = 30
 $labelTenantID.Font = 'Candara , 14pt, style=Bold'
 $labelTenantID.TextAlign = 'Center'
-$labelTenantID.Text = ""
+$labelTenantID.Text = ''
 $Form1.Controls.Add($labelTenantID)
 
 do
@@ -79,8 +79,8 @@ do
     }
     catch
     {
-    $labelTenantID.BackColor = 'Red'
     $labelTenantID.Text = "$DomainName not found !"
+    $labelTenantID.BackColor = 'Red'
     $labelTenantID.Refresh()
     }
 
