@@ -10,6 +10,8 @@ Refactored O365 with GUI InstallO365ProPlus script, Updated Branch, 32-64 bit ve
 Changed NLA registry
 		Changed EnableActiveProbing from 0 to 1
 		Changed WebTimeout from FFFFFFFF to 23
+Changed Tcpip6 registry
+		Changed DisabledComponents from 000000FF to FFFFFFFF
 Added SyncGit - Sync iNSTALL folder with https://github.com/ClearMediaNV/BizzCloudWinTemplates
 
 PLEASE NOTE: AFTER DEPLOYING VM FROM TEMPLATE LET IT BURN IN FOR PROX 20 MINUTES AFTER ADMINISTRATOR LOGIN (TiWorker.exe in action)
