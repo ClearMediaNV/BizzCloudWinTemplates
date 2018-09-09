@@ -1,37 +1,57 @@
 ﻿Add-Type -AssemblyName System.Windows.Forms
 
-## -- Create Select Form
-$Form1 = New-Object System.Windows.Forms.Form 
-$Form1.Text = 'Get O365 TenantID'
-$Form1.showIcon = $false
-$Form1.MinimizeBox = $false
-$Form1.MaximizeBox = $false
-$Form1.Height = 245
-$Form1.Width = 540
-$Form1.StartPosition = 'CenterScreen'
-$Form1.FormBorderStyle = 'fixedsingle'
-$Form1.Topmost = $True
+# Create Form
+$Form = New-Object System.Windows.Forms.Form 
+$Form.Text = 'Get O365 TenantID'
+$Form.showIcon = $false
+$Form.MinimizeBox = $false
+$Form.MaximizeBox = $false
+$Form.Height = 245
+$Form.Width = 540
+$Form.StartPosition = 'CenterScreen'
+$Form.Topmost = $True
 
+# Create ScriptBlock
+$scripblock = 
+    {
+    try
+        {
+        [STRING]$Domainname = $textDomain.Text
+        $labelTenantID.Text = (Invoke-RestMethod -Uri "https://login.windows.net/$Domainname/.well-known/openid-configuration").token_endpoint.Split(‘/’)[3]
+        $labelTenantID.BackColor = 'LightGreen'
+        $labelTenantID.Refresh()
+        }
+    catch
+        {
+        $labelTenantID.Text = "$DomainName not found !"
+        $labelTenantID.BackColor = 'Red'
+        $labelTenantID.Refresh()
+        }
+    }
+	
+# Add OK Button
+# On Click or Enter launch ScriptBlock
 $OKButton = New-Object System.Windows.Forms.Button
 $OKButton.Left = 100
 $OKButton.Top = 160
 $OKButton.Width = 75
 $OKButton.Height = 23
 $OKButton.Text = 'OK'
-$OKButton.DialogResult = [System.Windows.Forms.DialogResult]::OK
-$Form1.AcceptButton = $OKButton
-$Form1.Controls.Add($OKButton)
+$OKButton.Add_Click($scripblock)
+$Form.AcceptButton = $OKButton
+$Form.Controls.Add($OKButton)
 
+#Add Cancel Button
 $CancelButton = New-Object System.Windows.Forms.Button
 $CancelButton.Left = 350
 $CancelButton.Top = 160
 $CancelButton.Width = 75
 $CancelButton.Height = 23
 $CancelButton.Text = 'CANCEL'
-$CancelButton.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
-$Form1.CancelButton = $CancelButton
-$Form1.Controls.Add($CancelButton)
+$Form.CancelButton = $CancelButton
+$Form.Controls.Add($CancelButton)
 
+#Add Label
 $labelDomain = New-Object System.Windows.Forms.Label
 $labelDomain.AutoSize = $false
 $labelDomain.Top = 25
@@ -40,8 +60,9 @@ $labelDomain.Width = 400
 $labelDomain.Height = 30
 $labelDomain.Font = 'Candara , 11pt, style=Regular'
 $labelDomain.Text = 'Please enter the Domain Name'
-$Form1.Controls.Add($labelDomain)
+$Form.Controls.Add($labelDomain)
 
+#Add DomainName TextBox
 $textDomain = New-Object System.Windows.Forms.TextBox
 $textDomain.AutoSize = $false
 $textDomain.Top = 65
@@ -52,8 +73,9 @@ $textDomain.BackColor = 'green'
 $textDomain.Font = 'Candara , 14pt, style=Bold'
 $textDomain.TextAlign = 'Center'
 $textDomain.Text = 'ClearMedia.be'
-$Form1.Controls.Add($textDomain)
+$Form.Controls.Add($textDomain)
 
+#Add TenantID TextBox
 $labelTenantID = New-Object System.Windows.Forms.TextBox
 $labelTenantID.AutoSize = $false
 $labelTenantID.BorderStyle = 'None'
@@ -65,24 +87,7 @@ $labelTenantID.Height = 30
 $labelTenantID.Font = 'Candara , 14pt, style=Bold'
 $labelTenantID.TextAlign = 'Center'
 $labelTenantID.Text = ''
-$Form1.Controls.Add($labelTenantID)
+$Form.Controls.Add($labelTenantID)
 
-do
-    {
-    $result = $Form1.ShowDialog()
-    if ($result -eq [System.Windows.Forms.DialogResult]::OK) { [STRING]$Domainname = $textDomain.Text }
-    try
-    {
-    $labelTenantID.Text = (Invoke-RestMethod -Uri "https://login.windows.net/$Domainname/.well-known/openid-configuration").token_endpoint.Split(‘/’)[3]
-    $labelTenantID.BackColor = 'LightGreen'
-    $labelTenantID.Refresh()
-    }
-    catch
-    {
-    $labelTenantID.Text = "$DomainName not found !"
-    $labelTenantID.BackColor = 'Red'
-    $labelTenantID.Refresh()
-    }
+$Form.ShowDialog()
 
-    }
-while ( $result -ne [System.Windows.Forms.DialogResult]::CANCEL )
