@@ -88,7 +88,6 @@ $Url = 'https://www.microsoft.com/en-us/download/confirmation.aspx?id=49117'
 $UrlDownload =  (Invoke-WebRequest -Uri $url  -UseBasicParsing | ForEach-Object { $_.links } | Where-Object { $_.href -like '*officedeploymenttool*' }).href[0]
 $Output = $UrlDownload.Split('/')[$_.count-1]
 (New-Object System.Net.WebClient).DownloadFile($UrlDownload, $Output)
-Push-Location 'c:\install\o365'
 Invoke-Expression -Command "& .\$Output /quiet /extract:."
  
 # Download selected BIT Version of O365 Pro Plus

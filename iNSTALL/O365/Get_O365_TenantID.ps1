@@ -13,7 +13,7 @@ $Form.FormBorderStyle = 'fixedsingle'
 $Form.Topmost = $True
 
 # Create ScriptBlock
-$scripblock = 
+$ScriptBlock = 
     {
     try
         {
@@ -38,7 +38,7 @@ $OKButton.Top = 160
 $OKButton.Width = 75
 $OKButton.Height = 23
 $OKButton.Text = 'OK'
-$OKButton.Add_Click($scripblock)
+$OKButton.Add_Click($ScriptBlock)
 $Form.AcceptButton = $OKButton
 $Form.Controls.Add($OKButton)
 
