@@ -2,7 +2,7 @@ Version 1.4
 -----------
 Refactored Install Folder structure
 Removed tools packages, added URL list in tools.txt
-Refactored BgInfo with NLA status and simplified script file PresetAndBgInfo
+Refactored BgInfo with NLA status and simplified script PresetAndBgInfo
 Added Package Folder - StickyNotes, WindowsPhotoViewer
 Added Deployment Folder - AioSetup, TripleSetup
 Removed PowerShell Folder
