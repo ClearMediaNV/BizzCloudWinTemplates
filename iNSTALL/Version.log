@@ -6,7 +6,7 @@ Refactored BgInfo with NLA status and simplified script PresetAndBgInfo
 Added Package Folder - StickyNotes, WindowsPhotoViewer
 Added Deployment Folder - AioSetup, TripleSetup
 Removed PowerShell Folder
-Refactored O365 with GUI InstallO365ProPlus, Updated Branch, 32-64 bit versions selection, Multi Language Config, no sources embedded, Get_O365_TenantID, Office 365 CSP Migration Doc
+Refactored O365 with GUI InstallO365ProPlus, Updated Branch, 32-64 bit versions selection, Multi Language Config, no sources embedded, GetO365TenantID, Office 365 CSP Migration Doc
 Changed NLA registry
 		Changed EnableActiveProbing from 0 to 1
 		Changed WebTimeout from FFFFFFFF to 23
