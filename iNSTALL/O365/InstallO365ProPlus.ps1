@@ -104,7 +104,7 @@ do
     $PB.Value = $Counter
     $Label.Text = "Please wait while downloading Setup Files"
     $Form2.Refresh()
-    Start-Sleep -Seconds 8
+    Start-Sleep -Seconds 5
     If ( $Counter -eq 100) {$Counter = 0} else { $Counter++ }
     }
 while ( $Job.State -ne 'Completed' )
