@@ -10,7 +10,7 @@ $SavedSecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol
 # Unzip Archive to Temp
 Expand-Archive -Path $Output -DestinationPath "$ENV:TEMP\Template" -Force
 # Cleanup and Copy iNSTALL Folder
-Remove-Item -Path "c:\install\*"  -Recurse -Force
+Remove-Item -Path 'c:\install\*'  -Recurse -Force
 Copy-Item -Path "$ENV:TEMP\Template\BizzCloudWinTemplates-master\iNSTALL\*" -Destination 'c:\iNSTALL' -Recurse -Force
 # Cleanup Temp Folder
 Remove-Item -Path "$Output" -Force
