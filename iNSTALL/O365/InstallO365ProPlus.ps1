@@ -49,7 +49,7 @@ $Form1.Controls.Add($listBox)
 
 $result = $Form1.ShowDialog()
 
-# On Select BIT Version Proceed else Quit
+# On 'O365 Pro Plus BIT Selection' Proceed else Quit
 [STRING]$O365version = ''
 if ($result -eq [System.Windows.Forms.DialogResult]::OK) { $O365version = $listBox.SelectedItem } else { exit }
 
