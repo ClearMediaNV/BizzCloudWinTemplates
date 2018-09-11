@@ -24,7 +24,7 @@ $OKButton.DialogResult = [System.Windows.Forms.DialogResult]::OK
 $Form1.AcceptButton = $OKButton
 $Form1.Controls.Add($OKButton)
 
-#Add Button 'Cancel'
+# Add Button 'Cancel'
 $CancelButton = New-Object System.Windows.Forms.Button
 $CancelButton.Left = 220
 $CancelButton.Top = 120
@@ -53,7 +53,7 @@ $result = $Form1.ShowDialog()
 [STRING]$O365version = ''
 if ($result -eq [System.Windows.Forms.DialogResult]::OK) { $O365version = $listBox.SelectedItem } else { exit }
 
-# Create ProgressBar
+# Add ProgressBar
 $Form2 = New-Object System.Windows.Forms.Form
 $Form2.Text = "Downloading $O365version Setup Files"
 $Form2.Height = 110
@@ -95,7 +95,7 @@ $Output = $UrlDownload.Split('/')[$_.count-1]
 (New-Object System.Net.WebClient).DownloadFile($UrlDownload, $Output)
 Invoke-Expression -Command "& .\$Output /quiet /extract:."
  
-# Download O365 Pro Plus BIT Selection
+# Download 'O365 Pro Plus BIT Selection'
 switch ( $O365version )
     {
     'O365 Pro Plus 32 bit' {$Job = Start-Job -Name "Download $O365version" -ScriptBlock { Invoke-Expression -Command '& c:\install\o365\setup.exe /download  c:\install\o365\configuration32.xml' } }
@@ -116,7 +116,7 @@ do
 while ( $Job.State -ne 'Completed' )
 $Form2.Close()
 
-# Install O365 Pro Plus BIT Selection
+# Install 'O365 Pro Plus BIT Selection'
 switch ( $O365version )
     {
     'O365 Pro Plus 32 bit' {Invoke-Expression -Command '& c:\install\o365\setup.exe /configure  c:\install\o365\configuration32.xml'}
