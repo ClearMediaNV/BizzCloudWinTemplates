@@ -1,4 +1,4 @@
-Sysinternals Utilities
+SysInternals Utilities
 https://download.sysinternals.com/files/SysinternalsSuite.zip
 
 SpaceSniffer
