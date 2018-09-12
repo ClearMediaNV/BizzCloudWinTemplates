@@ -2,16 +2,13 @@ Version 1.4
 -----------
 Refactored Install Folder structure
 Removed tools packages, added URL list in tools.txt
-Refactored BgInfo with NLA status and simplified script PresetAndBgInfo
+Refactored BgInfo - updated Version 4.25, added NLA status, simplified script PresetAndBgInfo, copied 'PresetAndBgInfo - Shortcut' to "%ALLUSERSPROFILE%\Microsoft\Windows\Start Menu\Programs\StartUp"
 Added Package Folder - StickyNotes, WindowsPhotoViewer
 Added Deployment Folder - AioSetup, TripleSetup
 Removed PowerShell Folder
-Refactored O365 - GUI InstallO365ProPlus, Updated Branch, 32-64 bit versions selection, Multi Language Config, no sources embedded, GetO365TenantID, Office 365 CSP Migration Doc
-Changed NLA registry
-		Changed EnableActiveProbing from 0 to 1
-		Changed WebTimeout from FFFFFFFF to 23
-Changed Tcpip6 registry
-		Changed DisabledComponents from 000000FF to 0
+Refactored O365 - GUI InstallO365ProPlus, Updated Branch, 32-64 bit versions selection, Multi Language Config, no sources embedded, GetO365TenantID, 'Office 365 CSP Migration' Doc
+Changed NLA registry - Changed EnableActiveProbing from 0 to 1, Changed WebTimeout from FFFFFFFF to 23
+Changed Tcpip6 registry - Changed DisabledComponents from 000000FF to 0
 Added SyncGit - Sync iNSTALL folder with https://github.com/ClearMediaNV/BizzCloudWinTemplates
 
 PLEASE NOTE: AFTER DEPLOYING VM FROM TEMPLATE LET IT BURN IN FOR PROX 20 MINUTES AFTER ADMINISTRATOR LOGIN (TiWorker.exe in action)
