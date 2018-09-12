@@ -1,6 +1,6 @@
 Version 1.4
 -----------
-Refactored Install Folder structure
+Refactored iNSTALL folder structure
 Refactored Tools - removed folders, added URL list in tools.txt
 Refactored BgInfo - updated Version 4.25, added NLA status, simplified script PresetAndBgInfo, copied 'PresetAndBgInfo - Shortcut' to "%ALLUSERSPROFILE%\Microsoft\Windows\Start Menu\Programs\StartUp"
 Added Package Folder - StickyNotes, WindowsPhotoViewer
