@@ -3,8 +3,7 @@ Version 1.4
 Refactored iNSTALL folder structure
 Refactored Tools - removed folders, added URL list in tools.txt
 Refactored BgInfo - updated Version 4.25, added NLA status, simplified script PresetAndBgInfo, copied 'PresetAndBgInfo - Shortcut' to "%ALLUSERSPROFILE%\Microsoft\Windows\Start Menu\Programs\StartUp"
-Added Package Folder - StickyNotes, WindowsPhotoViewer
-StickyNotes is an msi packaged version of the Stickynotes Classic
+Added Package Folder - StickyNotes (msi version), WindowsPhotoViewer
 Added Deployment Folder - AioSetup, TripleSetup
 Removed PowerShell Folder
 Refactored O365 - GUI InstallO365ProPlus, Updated Branch, 32-64 bit versions selection, Multi Language Config, no sources embedded, GetO365TenantID, 'Office 365 CSP Migration' Doc
