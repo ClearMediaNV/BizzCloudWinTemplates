@@ -28,7 +28,7 @@
 	
 	<Logging
 	Level="Standard"
-	Path="c:\install\o365\Log">
+	Path="c:\windows\logs\O365">
 	</Logging>
 	
 	<Property
