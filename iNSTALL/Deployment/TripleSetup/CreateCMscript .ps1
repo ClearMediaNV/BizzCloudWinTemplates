@@ -44,7 +44,7 @@ $SafeModeAdministratorPassword | ConvertFrom-SecureString | Export-Clixml -Path 
 #Create New ADDSForest
 Add-Content -Path "$ScriptPath\1_Install_AD_components.ps1" -Value "Install-ADDSForest -DomainName '$DomainName' -SafeModeAdministratorPassword (Import-Clixml -Path $ScriptPath\p1.xml |  ConvertTo-SecureString) -DomainNetbiosName '$DomainNetbiosName' -Force"
 
-##### Create AD Objects #####
+##### Assemble AD Objects #####
 New-Item "$ScriptPath\2_Build_AD.ps1" -type File -Force
 $ADRootDSE = $(($DomainName.Replace('.',',DC=')).insert(0,'DC='))
 #Create HashTable for OU Provisioning
