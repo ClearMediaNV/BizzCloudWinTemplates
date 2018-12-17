@@ -95,6 +95,7 @@ $User= @{
 		}
 Add-Content -Path "$ScriptPath\2_Build_AD.ps1" -Value "New-ADUser -Name '$($User.Name)' -SamAccountName '$($User.SamAccountName)' -DisplayName '$($User.DisplayName)' -Description '$($User.Description)' -EmailAddress '$($User.EmailAddress)' -Path '$($User.Path)' -PasswordNeverExpires $($User.PasswordNeverExpires) -AccountPassword $($User.AccountPassword)"
 Add-Content -Path "$ScriptPath\2_Build_AD.ps1" -Value "Add-ADGroupMember -Identity 'CN=Domain Admins,CN=Users,$ADRootDSE' -Members 'CN=$($User.Name),$($User.Path)'"
+Add-Content -Path "$ScriptPath\2_Build_AD.ps1" -Value "Add-ADGroupMember -Identity 'CN=Enterprise Admins,CN=Users,$ADRootDSE' -Members 'CN=$($User.Name),$($User.Path)'"
 
 ##### Assemble RDS #####
 New-Item -Path "$ScriptPath\3_Install_RDS_components.ps1" -type File -Force
@@ -108,6 +109,7 @@ ForEach ($Service in $Services.keys) {Add-Content -Path "$ScriptPath\3_Install_R
 $Roles = [ordered]@{
 	'Windows TIFF IFilter' =  'Windows-TIFF-IFilter'
 	'Remote Desktop Services' = 'RDS-RD-Server'
+    'Group Policy Management' = 'GPMC'
 	'Remote Server Administration Tools' = ('RSAT-AD-Tools','RSAT-DNS-Server','RSAT-RDS-Licensing-Diagnosis-UI','RDS-Licensing-UI')
 	}
 #Get all Roles & Features to install; use replace to separate roles & features in same Family
