@@ -1,0 +1,2 @@
+﻿Copy-Item -Path 'iNSTALL\GPO\Templates\admx\*' -Destination 'C:\Windows\PolicyDefinitions\' -Force
+Copy-Item -Path 'iNSTALL\GPO\Templates\admx\en-us\*' -Destination 'C:\Windows\PolicyDefinitions\en-us' -Force
