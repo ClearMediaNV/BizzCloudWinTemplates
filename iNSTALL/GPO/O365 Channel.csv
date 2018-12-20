@@ -1,2 +1,2 @@
 Key,ValueName,Type,Value
-HKCU\Software\policies\microsoft\office\16.0\common\officeupdate,updatebranch,String,Monthly
+HKLM\Software\policies\microsoft\office\16.0\common\officeupdate,updatebranch,String,Monthly
