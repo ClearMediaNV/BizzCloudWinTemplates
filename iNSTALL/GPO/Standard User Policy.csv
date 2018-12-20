@@ -1,0 +1,12 @@
+Key,ValueName,Type,Value
+HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer,NoHardwareTab,Dword,1
+HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer,NoInplaceSharing,Dword,1
+HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\WindowsUpdate,DisableWindowsUpdateAccess,Dword,1
+HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\WindowsUpdate,DisableWindowsUpdateAccessMode,Dword,0
+HKCU\Software\Policies\Microsoft\Internet Explorer\SQM,DisableCustomerImprovementProgram,Dword,0
+HKCU\Software\Policies\Microsoft\Messenger\Client,PreventAutoRun,Dword,1
+HKCU\Software\Policies\Microsoft\Messenger\Client,PreventRun,Dword,1
+HKCU\Software\Policies\Microsoft\NetworkProjector,DisableNetworkProjector,Dword,1
+HKCU\Software\Policies\Microsoft\Windows\Control Panel\Desktop,ScreenSaveActive,String,0
+HKCU\Software\Policies\Microsoft\Windows Mail,ManualLaunchAllowed,Dword,0
+HKCU\Software\Policies\Microsoft\Windows Mail,DisableCommunities,Dword,1

@@ -1,0 +1,19 @@
+Key,ValueName,Type,Value
+HKCU\Software\policies\microsoft\office\16.0\common,qmenable,Dword,0
+HKCU\Software\policies\microsoft\office\16.0\common,sendcustomerdata,Dword,0
+HKCU\Software\policies\microsoft\office\16.0\common,updatereliabilitydata,Dword,0
+HKCU\Software\policies\microsoft\office\16.0\common\feedback,enabled,Dword,0
+HKCU\Software\policies\microsoft\office\16.0\common\general,disablebackgrounds,Dword,1
+HKCU\Software\policies\microsoft\office\16.0\common\general,shownfirstrunoptin,Dword,1
+HKCU\Software\policies\microsoft\office\16.0\common\graphics,disableanimations,Dword,1
+HKCU\Software\policies\microsoft\office\16.0\common\graphics,disablehardwareacceleration,Dword,1
+HKCU\Software\policies\microsoft\office\16.0\excel\options,autorecovertime,Dword,15
+HKCU\Software\policies\microsoft\office\16.0\excel\options,autorecoverenabled,Dword,1
+HKCU\Software\policies\microsoft\office\16.0\firstrun,disablemovie,Dword,1
+HKCU\Software\policies\microsoft\office\16.0\firstrun,bootedrtm,Dword,1
+HKCU\Software\policies\microsoft\office\16.0\powerpoint\options,saveautorecoveryinfo,Dword,1
+HKCU\Software\policies\microsoft\office\16.0\powerpoint\options,frequencytosaveautorecoveryinfo,Dword,15
+HKCU\Software\policies\microsoft\office\16.0\powerpoint\options,pathtoautorecoveryinfo,ExpandString,"%USERPROFILE%\Application Data\Microsoft\PowerPoint"
+HKCU\Software\policies\microsoft\office\16.0\publisher\preferences,autorecoversaveinterval,String,15
+HKCU\Software\policies\microsoft\office\16.0\publisher\preferences,backgroundsave,String,1
+HKCU\Software\policies\microsoft\office\16.0\word\options,autosaveinterval,Dword,15
