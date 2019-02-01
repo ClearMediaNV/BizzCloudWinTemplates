@@ -1,0 +1,3 @@
+Key;ValueName;Type;Value
+HKEY_CURRENT_USER\SOFTWARE\Policies\Google\Chrome;BackgroundModeEnabled;REG_DWORD;0
+HKEY_CURRENT_USER\SOFTWARE\Policies\Google\Chrome;HardwareAccelerationModeEnabled;REG_DWORD;0
