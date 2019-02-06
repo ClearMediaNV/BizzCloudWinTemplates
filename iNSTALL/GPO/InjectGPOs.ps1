@@ -1,5 +1,5 @@
 ﻿Push-Location -Path 'c:\install\gpo'
-$GpoNameList = ('RDS Server Policy','Standard User Policy','Standard O365 User Policy')
+$GpoNameList = ('RDS Server Policy','Standard User Policy','Standard O365 User Policy','O365 Channel','Standard Chrome Policy')
 $GpoNameList | Where-Object {
     $GpoName = $_
     new-gpo -Name "$GpoName" -ErrorAction Ignore
