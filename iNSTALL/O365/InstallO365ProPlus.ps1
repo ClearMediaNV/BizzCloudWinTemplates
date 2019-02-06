@@ -66,7 +66,7 @@ $Form2.MaximizeBox = $false
 $Form2.AutoSize = $true
 $Form2.StartPosition = 'CenterScreen'
 $Form2.FormBorderStyle = 'fixedsingle'
-#$Form2.Topmost = $True
+$Form2.Topmost = $True
 
 $Label = New-Object System.Windows.Forms.Label
 $Label.Text = 'Starting. Please wait ... '
