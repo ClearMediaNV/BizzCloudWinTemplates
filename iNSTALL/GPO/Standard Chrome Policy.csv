@@ -1,3 +1,0 @@
-Key,ValueName,Type,Value
-HKEY_CURRENT_USER\Software\Policies\Google\Chrome,BackgroundModeEnabled,Dword,0
-HKEY_CURRENT_USER\Software\Policies\Google\Chrome,HardwareAccelerationModeEnabled,Dword,0
