@@ -1,6 +1,7 @@
 Key,ValueName,Type,Value
-HKEY_CURRENT_USER\Software\Policies\Google\Chrome,BackgroundModeEnabled,Dword,0
-HKEY_CURRENT_USER\Software\Policies\Google\Chrome,HardwareAccelerationModeEnabled,Dword,0
-HKEY_CURRENT_USER\SOFTWARE\Microsoft\Internet Explorer\Main,UseSWRender,Dword,1
-HKEY_CURRENT_USER\Software\Adobe\Acrobat Reader\DC\3D,b3DAllowSelect,Dword,0
-HKEY_CURRENT_USER\Software\Microsoft\Office\16.0\Common\Graphics,DisableHardwareAcceleration,Dword,1
+HKCU\Software\Policies\Google\Chrome,BackgroundModeEnabled,Dword,0
+HKCU\Software\Policies\Google\Chrome,HardwareAccelerationModeEnabled,Dword,0
+HKLM\Software\Policies\Google\Chrome,HardwareAccelerationModeEnabled,Dword,0
+HKCU\SOFTWARE\Microsoft\Internet Explorer\Main,UseSWRender,Dword,1
+HKCU\Software\Adobe\Acrobat Reader\DC\3D,b3DAllowSelect,Dword,0
+HKCU\Software\Microsoft\Office\16.0\Common\Graphics,DisableHardwareAcceleration,Dword,1
