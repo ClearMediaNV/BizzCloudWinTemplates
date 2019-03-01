@@ -4,7 +4,7 @@ Enable-DedupVolume -Volume 'D:'
 
 Set-DedupVolume -Volume 'D:' 
 
-New-DedupSchedule -Name 'DedupOutlook' -Type Optimization -Days @(1..6) -Start '22:00'
+New-DedupSchedule -Name 'D-Drive' -Type Optimization -Days @(1..6) -Start '22:00'
 
 Set-DedupSchedule -Name 'BackgroundOptimization' -Enabled $false
 
