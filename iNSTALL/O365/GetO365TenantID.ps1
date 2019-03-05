@@ -24,7 +24,7 @@ $ScriptBlock =
         }
     catch
         {
-        $TextBoxTenantID.Text = "$DomainName not found !"
+        $TextBoxTenantID.Text = "$DomainName not found"
         $TextBoxTenantID.BackColor = 'Red'
         $TextBoxTenantID.Refresh()
         }
