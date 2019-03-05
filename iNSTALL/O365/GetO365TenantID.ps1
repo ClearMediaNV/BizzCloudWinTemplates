@@ -79,7 +79,6 @@ $Form.Controls.Add($TextBoxDomain)
 # Add TenantID TextBox
 $TextBoxTenantID = New-Object System.Windows.Forms.TextBox
 $TextBoxTenantID.AutoSize = $false
-$TextBoxTenantID.BorderStyle = 'None'
 $TextBoxTenantID.BackColor = 'LightGray'
 $TextBoxTenantID.Top = 95
 $TextBoxTenantID.Left = 40
