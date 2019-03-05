@@ -42,7 +42,7 @@ $OKButton.Add_Click($ScriptBlock)
 $Form.AcceptButton = $OKButton
 $Form.Controls.Add($OKButton)
 
-#Add Cancel Button
+# Add Cancel Button
 $CancelButton = New-Object System.Windows.Forms.Button
 $CancelButton.Left = 350
 $CancelButton.Top = 160
@@ -52,7 +52,7 @@ $CancelButton.Text = 'CANCEL'
 $Form.CancelButton = $CancelButton
 $Form.Controls.Add($CancelButton)
 
-#Add Label
+# Add Label
 $labelDomain = New-Object System.Windows.Forms.Label
 $labelDomain.AutoSize = $false
 $labelDomain.Top = 25
@@ -63,7 +63,7 @@ $labelDomain.Font = 'Candara , 11pt, style=Regular'
 $labelDomain.Text = 'Please enter the Domain Name'
 $Form.Controls.Add($labelDomain)
 
-#Add DomainName TextBox
+# Add DomainName TextBox
 $textDomain = New-Object System.Windows.Forms.TextBox
 $textDomain.AutoSize = $false
 $textDomain.Top = 65
@@ -76,7 +76,7 @@ $textDomain.TextAlign = 'Center'
 $textDomain.Text = 'ClearMedia.be'
 $Form.Controls.Add($textDomain)
 
-#Add TenantID TextBox
+# Add TenantID TextBox
 $labelTenantID = New-Object System.Windows.Forms.TextBox
 $labelTenantID.AutoSize = $false
 $labelTenantID.BorderStyle = 'None'
