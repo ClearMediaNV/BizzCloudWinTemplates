@@ -17,16 +17,16 @@ $ScriptBlock =
     {
     try
         {
-        [STRING]$Domainname = $textDomain.Text
-        $labelTenantID.Text = (Invoke-RestMethod -Uri "https://login.windows.net/$Domainname/.well-known/openid-configuration").token_endpoint.Split(‘/’)[3]
-        $labelTenantID.BackColor = 'LightGreen'
-        $labelTenantID.Refresh()
+        [STRING]$Domainname = $TextBoxDomain.Text
+        $TextBoxTenantID.Text = (Invoke-RestMethod -Uri "https://login.windows.net/$Domainname/.well-known/openid-configuration").token_endpoint.Split(‘/’)[3]
+        $TextBoxTenantID.BackColor = 'LightGreen'
+        $TextBoxTenantID.Refresh()
         }
     catch
         {
-        $labelTenantID.Text = "$DomainName not found !"
-        $labelTenantID.BackColor = 'Red'
-        $labelTenantID.Refresh()
+        $TextBoxTenantID.Text = "$DomainName not found !"
+        $TextBoxTenantID.BackColor = 'Red'
+        $TextBoxTenantID.Refresh()
         }
     }
 	
