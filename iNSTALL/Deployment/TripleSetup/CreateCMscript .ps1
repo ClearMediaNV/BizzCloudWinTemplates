@@ -95,6 +95,7 @@ $User= @{
 		}
 Add-Content -Path "$ScriptPath\2_Build_AD.ps1" -Value "New-ADUser -Name '$($User.Name)' -SamAccountName '$($User.SamAccountName)' -DisplayName '$($User.DisplayName)' -Description '$($User.Description)' -EmailAddress '$($User.EmailAddress)' -Path '$($User.Path)' -PasswordNeverExpires $($User.PasswordNeverExpires) -AccountPassword $($User.AccountPassword)"
 Add-Content -Path "$ScriptPath\2_Build_AD.ps1" -Value "Add-ADGroupMember -Identity 'CN=Domain Admins,CN=Users,$ADRootDSE' -Members 'CN=$($User.Name),$($User.Path)'"
+Add-Content -Path "$ScriptPath\2_Build_AD.ps1" -Value "Add-ADGroupMember -Identity 'CN=Enterprise Admins,CN=Users,$ADRootDSE' -Members 'CN=$($User.Name),$($User.Path)'"
 
 ##### Assemble RDS #####
 New-Item -Path "$ScriptPath\3_Install_RDS_components.ps1" -type File -Force
