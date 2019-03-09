@@ -1,14 +1,69 @@
-﻿Push-Location -Path 'c:\install\gpo'
-$GpoNameList = ('RDS Server Policy','Standard User Policy','Standard O365 User Policy','O365 Channel','Standard Hardware Acceleration Policy')
-$GpoNameList | Where-Object {
-    $GpoName = $_
-    new-gpo -Name "$GpoName" -ErrorAction Ignore
-    $c = Import-Csv -Path "$GpoName.csv"
-    $c | ForEach-Object { 
-                    if ( $_.Type -eq 'Dword' ) { [INT]$Value = $_.Value } else { [STRING]$Value = $_.Value }
-                    Set-GPRegistryValue -Name "$GpoName" -Key $_.Key -Type $_.Type -ValueName $_.ValueName -Value $Value }
+Push-Location -Path 'c:\install\gpo'
 
+# Copy ADM(X) Files to Local ADM(X) Store
+Copy-Item -Path 'C:\iNSTALL\GPO\Templates\admx\*' -Destination 'C:\Windows\PolicyDefinitions' -Force
+Copy-Item -Path 'C:\iNSTALL\GPO\Templates\admx\en-US\*' -Destination 'C:\Windows\PolicyDefinitions\en-US' -Force
+Copy-Item -Path 'C:\iNSTALL\GPO\Templates\admx\fr-FR\*' -Destination 'C:\Windows\PolicyDefinitions\fr-FR' -Force
+
+
+If ( $env:USERDOMAIN -ne $env:COMPUTERNAME ) {
+    # Create Central ADM(X) Store
+    # Copy ADM(X) files to Central ADM(X) Store
+    $DcName = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().PdcRoleOwner.Name
+    $DomainName = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().Name
+    New-Item -Path "\\$($DcName)\SYSVOL\$($DomainName)\Policies\PolicyDefinitions" -ItemType Directory -Force
+    Copy-Item -Path 'C:\Windows\PolicyDefinitions\*' -Destination "\\$($DcName)\SYSVOL\$($DomainName)\Policies\PolicyDefinitions" -Force
+    Copy-Item -Path 'C:\Windows\PolicyDefinitions\en-US\*' -Destination "\\$($DcName)\SYSVOL\$($DomainName)\Policies\PolicyDefinitions\en-US"  -Force
+    Copy-Item -Path 'C:\Windows\PolicyDefinitions\fr-FR\*' -Destination "\\$($DcName)\SYSVOL\$($DomainName)\Policies\PolicyDefinitions\fr-FR" -Force
+    # Inject User GPOs for Users
+    # Browse User CSV Files
+    # Create and Assembe User GPOs
+    # Link User GPOs to Users OU
+    Get-ChildItem -Name '*User*.csv' | Where-Object {
+        $GpoName = $_.Replace('.csv', '')
+        new-gpo -Name $GpoName -ErrorAction Ignore
+        Import-Csv -Path $_ | ForEach-Object {
+            If ( $_.Type -eq 'Dword' ) { [INT]$Value = $_.Value } Else { [STRING]$Value = $_.Value }
+            Set-GPRegistryValue -Name "$GpoName" -Key $_.Key -Type $_.Type -ValueName $_.ValueName -Value $Value  -ErrorAction Ignore
+            New-GPLink -Name $GpoName -Target (Get-ADOrganizationalUnit -Filter 'Name -eq "USERS"').DistinguishedName -ErrorAction Ignore
+            }
+        }
+    # Inject Computer GPOs for RDS
+    # Browse Computer CSV Files
+    # Create and Assembe Computer GPOs
+    # Link Computer GPOs to RDS OU
+    Get-ChildItem -Name '*Server*.csv' | Where-Object {
+        $GpoName = $_.Replace('.csv', '')
+        new-gpo -Name $GpoName -ErrorAction Ignore
+        Import-Csv -Path $_ | ForEach-Object { 
+            If ( $_.Type -eq 'Dword' ) { [INT]$Value = $_.Value } Else { [STRING]$Value = $_.Value }
+            Set-GPRegistryValue -Name "$GpoName" -Key $_.Key -Type $_.Type -ValueName $_.ValueName -Value $Value  -ErrorAction Ignore
+            New-GPLink -Name $GpoName -Target (Get-ADOrganizationalUnit -Filter 'Name -eq "RDS"').DistinguishedName -ErrorAction Ignore
+            }
+        }
     }
-
+    Else {
+    # Install Extra Nice Stuff for using Set-PolicyFileEntry
+    # Honor to Dave Wyatt
+    Install-PackageProvider -Name 'NuGet' -Force
+    Install-Module -Name 'PolicyFileEditor' -Force
+    Import-Module -Name 'PolicyFileEditor' -Force
+    # Inject User GPOs for Local Users
+    # Browse User CSV Files
+    # Create and Assemble User Registry.Pol
+    Get-ChildItem -Name '*User*.csv' | Where-Object {
+        Import-Csv -Path $_ | ForEach-Object {
+            Set-PolicyFileEntry -Path "$($env:SystemRoot)\System32\GroupPolicy\User\Registry.pol" -Key $_.Key.Replace('HKCU\','') -ValueName $_.ValueName -Data $_.Value -Type $_.Type -ErrorAction Ignore
+            }
+        }
+    # Inject Server GPOs for Local Machine
+    # Browse Server CSV Files
+    # Create and Assemble Machine Registry.Pol
+    Get-ChildItem -Name '*Server*.csv' | Where-Object {
+        Import-Csv -Path $_ | ForEach-Object {
+            Set-PolicyFileEntry -Path "$($env:SystemRoot)\System32\GroupPolicy\Machine\Registry.pol" -Key $_.Key.Replace('HKLM\','') -ValueName $_.ValueName -Data $_.Value -Type $_.Type -ErrorAction Ignore
+            }
+        }
+    }
 
 
