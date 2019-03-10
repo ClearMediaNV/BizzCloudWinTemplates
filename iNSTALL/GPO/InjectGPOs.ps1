@@ -21,7 +21,7 @@ If ( $env:USERDOMAIN -ne $env:COMPUTERNAME ) {
     # Link User GPOs to Users OU
     Get-ChildItem -Name '*User*.csv' | ForEach-Object {
         $GpoName = $_.Replace('.csv', '')
-        new-gpo -Name $GpoName -ErrorAction Ignore
+        New-GPO -Name $GpoName -ErrorAction Ignore
         New-GPLink -Name $GpoName -Target (Get-ADOrganizationalUnit -Filter 'Name -eq "USERS"').DistinguishedName -ErrorAction Ignore
         Import-Csv -Path $_ | ForEach-Object {
             If ( $_.Type -eq 'Dword' ) { [INT]$Value = $_.Value } Else { [STRING]$Value = $_.Value }
@@ -34,7 +34,7 @@ If ( $env:USERDOMAIN -ne $env:COMPUTERNAME ) {
     # Link Computer GPOs to RDS OU
     Get-ChildItem -Name '*Server*.csv' | ForEach-Object {
         $GpoName = $_.Replace('.csv', '')
-        new-gpo -Name $GpoName -ErrorAction Ignore
+        New-GPO -Name $GpoName -ErrorAction Ignore
         New-GPLink -Name $GpoName -Target (Get-ADOrganizationalUnit -Filter 'Name -eq "RDS"').DistinguishedName -ErrorAction Ignore
         Import-Csv -Path $_ | ForEach-Object { 
             If ( $_.Type -eq 'Dword' ) { [INT]$Value = $_.Value } Else { [STRING]$Value = $_.Value }
