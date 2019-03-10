@@ -17,7 +17,7 @@ If ( $env:USERDOMAIN -ne $env:COMPUTERNAME ) {
     Copy-Item -Path 'C:\Windows\PolicyDefinitions\fr-FR\*' -Destination "\\$($DcName)\SYSVOL\$($DomainName)\Policies\PolicyDefinitions\fr-FR" -Force
     # Inject User GPOs for Users
     # Browse User CSV Files
-    # Create and Assembe User GPOs
+    # Create and Assemble User GPOs
     # Link User GPOs to Users OU
     Get-ChildItem -Name '*User*.csv' | Where-Object {
         $GpoName = $_.Replace('.csv', '')
@@ -30,7 +30,7 @@ If ( $env:USERDOMAIN -ne $env:COMPUTERNAME ) {
         }
     # Inject Computer GPOs for RDS
     # Browse Computer CSV Files
-    # Create and Assembe Computer GPOs
+    # Create and Assemble Computer GPOs
     # Link Computer GPOs to RDS OU
     Get-ChildItem -Name '*Server*.csv' | Where-Object {
         $GpoName = $_.Replace('.csv', '')
