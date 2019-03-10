@@ -22,10 +22,10 @@ If ( $env:USERDOMAIN -ne $env:COMPUTERNAME ) {
     Get-ChildItem -Name '*User*.csv' | ForEach-Object {
         $GpoName = $_.Replace('.csv', '')
         new-gpo -Name $GpoName -ErrorAction Ignore
+        New-GPLink -Name $GpoName -Target (Get-ADOrganizationalUnit -Filter 'Name -eq "USERS"').DistinguishedName -ErrorAction Ignore
         Import-Csv -Path $_ | ForEach-Object {
             If ( $_.Type -eq 'Dword' ) { [INT]$Value = $_.Value } Else { [STRING]$Value = $_.Value }
             Set-GPRegistryValue -Name "$GpoName" -Key $_.Key -Type $_.Type -ValueName $_.ValueName -Value $Value  -ErrorAction Ignore
-            New-GPLink -Name $GpoName -Target (Get-ADOrganizationalUnit -Filter 'Name -eq "USERS"').DistinguishedName -ErrorAction Ignore
             }
         }
     # Inject Computer GPOs for RDS
@@ -35,10 +35,10 @@ If ( $env:USERDOMAIN -ne $env:COMPUTERNAME ) {
     Get-ChildItem -Name '*Server*.csv' | ForEach-Object {
         $GpoName = $_.Replace('.csv', '')
         new-gpo -Name $GpoName -ErrorAction Ignore
+        New-GPLink -Name $GpoName -Target (Get-ADOrganizationalUnit -Filter 'Name -eq "RDS"').DistinguishedName -ErrorAction Ignore
         Import-Csv -Path $_ | ForEach-Object { 
             If ( $_.Type -eq 'Dword' ) { [INT]$Value = $_.Value } Else { [STRING]$Value = $_.Value }
             Set-GPRegistryValue -Name "$GpoName" -Key $_.Key -Type $_.Type -ValueName $_.ValueName -Value $Value  -ErrorAction Ignore
-            New-GPLink -Name $GpoName -Target (Get-ADOrganizationalUnit -Filter 'Name -eq "RDS"').DistinguishedName -ErrorAction Ignore
             }
         }
     }
