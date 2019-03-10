@@ -19,7 +19,7 @@ If ( $env:USERDOMAIN -ne $env:COMPUTERNAME ) {
     # Browse User CSV Files
     # Create and Assemble User GPOs
     # Link User GPOs to Users OU
-    Get-ChildItem -Name '*User*.csv' | Where-Object {
+    Get-ChildItem -Name '*User*.csv' | ForEach-Object {
         $GpoName = $_.Replace('.csv', '')
         new-gpo -Name $GpoName -ErrorAction Ignore
         Import-Csv -Path $_ | ForEach-Object {
@@ -32,7 +32,7 @@ If ( $env:USERDOMAIN -ne $env:COMPUTERNAME ) {
     # Browse Computer CSV Files
     # Create and Assemble Computer GPOs
     # Link Computer GPOs to RDS OU
-    Get-ChildItem -Name '*Server*.csv' | Where-Object {
+    Get-ChildItem -Name '*Server*.csv' | ForEach-Object {
         $GpoName = $_.Replace('.csv', '')
         new-gpo -Name $GpoName -ErrorAction Ignore
         Import-Csv -Path $_ | ForEach-Object { 
@@ -51,7 +51,7 @@ If ( $env:USERDOMAIN -ne $env:COMPUTERNAME ) {
     # Inject User GPOs for Local Users
     # Browse User CSV Files
     # Create and Assemble User Registry.Pol
-    Get-ChildItem -Name '*User*.csv' | Where-Object {
+    Get-ChildItem -Name '*User*.csv' | ForEach-Object {
         Import-Csv -Path $_ | ForEach-Object {
             Set-PolicyFileEntry -Path "$($env:SystemRoot)\System32\GroupPolicy\User\Registry.pol" -Key $_.Key.Replace('HKCU\','') -ValueName $_.ValueName -Data $_.Value -Type $_.Type -ErrorAction Ignore
             }
@@ -59,7 +59,7 @@ If ( $env:USERDOMAIN -ne $env:COMPUTERNAME ) {
     # Inject Server GPOs for Local Machine
     # Browse Server CSV Files
     # Create and Assemble Machine Registry.Pol
-    Get-ChildItem -Name '*Server*.csv' | Where-Object {
+    Get-ChildItem -Name '*Server*.csv' | ForEach-Object {
         Import-Csv -Path $_ | ForEach-Object {
             Set-PolicyFileEntry -Path "$($env:SystemRoot)\System32\GroupPolicy\Machine\Registry.pol" -Key $_.Key.Replace('HKLM\','') -ValueName $_.ValueName -Data $_.Value -Type $_.Type -ErrorAction Ignore
             }
