@@ -19,7 +19,7 @@ If ( $env:USERDOMAIN -ne $env:COMPUTERNAME ) {
     # Inject User GPOs for Users
     # Browse User CSV Files
     # Create and Assemble User GPOs
-    # Link User GPOs to Users OU
+    # Link User GPOs to OU Users
     Get-ChildItem -Name '*User*.csv' | ForEach-Object {
         $GpoName = $_.Replace('.csv', '')
         New-GPO -Name $GpoName -ErrorAction Ignore
@@ -32,7 +32,7 @@ If ( $env:USERDOMAIN -ne $env:COMPUTERNAME ) {
     # Inject Computer GPOs for RDS
     # Browse Computer CSV Files
     # Create and Assemble Computer GPOs
-    # Link Computer GPOs to RDS OU
+    # Link Computer GPOs to OU RDS
     Get-ChildItem -Name '*Server*.csv' | ForEach-Object {
         $GpoName = $_.Replace('.csv', '')
         New-GPO -Name $GpoName -ErrorAction Ignore
