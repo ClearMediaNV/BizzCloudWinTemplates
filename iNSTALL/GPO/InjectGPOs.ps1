@@ -10,12 +10,12 @@ If ( $env:USERDOMAIN -ne $env:COMPUTERNAME ) {
     # Lets Prep some AD Group Policies
     # Create Central ADM(X) Store
     # Copy ADM(X) files to Central ADM(X) Store
-    [STRING]$DcName = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().PdcRoleOwner.Name
+    [STRING]$PdcName = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().PdcRoleOwner.Name
     [STRING]$DomainName = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().Name
-    New-Item -Path "\\$DcName\SYSVOL\$DomainName\Policies\PolicyDefinitions" -ItemType Directory -Force
-    Copy-Item -Path 'C:\Windows\PolicyDefinitions\*' -Destination "\\$DcName\SYSVOL\$DomainName\Policies\PolicyDefinitions" -Force
-    Copy-Item -Path 'C:\Windows\PolicyDefinitions\en-US\*' -Destination "\\$DcName\SYSVOL\$DomainName\Policies\PolicyDefinitions\en-US"  -Force
-    Copy-Item -Path 'C:\Windows\PolicyDefinitions\fr-FR\*' -Destination "\\$DcName\SYSVOL\$DomainName\Policies\PolicyDefinitions\fr-FR" -Force
+    New-Item -Path "\\$PdcName\SYSVOL\$DomainName\Policies\PolicyDefinitions" -ItemType Directory -Force
+    Copy-Item -Path 'C:\Windows\PolicyDefinitions\*' -Destination "\\$PdcName\SYSVOL\$DomainName\Policies\PolicyDefinitions" -Force
+    Copy-Item -Path 'C:\Windows\PolicyDefinitions\en-US\*' -Destination "\\$PdcName\SYSVOL\$DomainName\Policies\PolicyDefinitions\en-US"  -Force
+    Copy-Item -Path 'C:\Windows\PolicyDefinitions\fr-FR\*' -Destination "\\$PdcName\SYSVOL\$DomainName\Policies\PolicyDefinitions\fr-FR" -Force
     # Inject User GPOs for Users
     # Browse User CSV Files
     # Create and Assemble User GPOs
