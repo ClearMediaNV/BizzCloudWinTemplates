@@ -7,6 +7,7 @@ Copy-Item -Path 'C:\iNSTALL\GPO\Templates\admx\fr-FR\*' -Destination 'C:\Windows
 
 
 If ( $env:USERDOMAIN -ne $env:COMPUTERNAME ) {
+    # Lets Prep some AD Group Policies
     # Create Central ADM(X) Store
     # Copy ADM(X) files to Central ADM(X) Store
     [STRING]$DcName = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().PdcRoleOwner.Name
@@ -43,6 +44,7 @@ If ( $env:USERDOMAIN -ne $env:COMPUTERNAME ) {
         }
     }
     Else {
+    # Lets Prep some Local Policies
     # Install Extra Nice Stuff for using Set-PolicyFileEntry
     # Honor to Dave Wyatt
     Install-PackageProvider -Name 'NuGet' -Force
