@@ -5,7 +5,6 @@ Copy-Item -Path 'C:\iNSTALL\GPO\Templates\admx\*' -Destination 'C:\Windows\Polic
 Copy-Item -Path 'C:\iNSTALL\GPO\Templates\admx\en-US\*' -Destination 'C:\Windows\PolicyDefinitions\en-US' -Force
 Copy-Item -Path 'C:\iNSTALL\GPO\Templates\admx\fr-FR\*' -Destination 'C:\Windows\PolicyDefinitions\fr-FR' -Force
 
-
 If ( $env:USERDOMAIN -ne $env:COMPUTERNAME ) {
     # Lets Prep some AD Group Policies
     # Create Central ADM(X) Store
@@ -67,5 +66,3 @@ If ( $env:USERDOMAIN -ne $env:COMPUTERNAME ) {
             }
         }
     }
-
-
