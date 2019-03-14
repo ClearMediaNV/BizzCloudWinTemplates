@@ -5,7 +5,7 @@ Copy-Item -Path 'C:\iNSTALL\GPO\Templates\admx\*' -Destination 'C:\Windows\Polic
 Copy-Item -Path 'C:\iNSTALL\GPO\Templates\admx\en-US\*' -Destination 'C:\Windows\PolicyDefinitions\en-US' -Force
 Copy-Item -Path 'C:\iNSTALL\GPO\Templates\admx\fr-FR\*' -Destination 'C:\Windows\PolicyDefinitions\fr-FR' -Force
 
-If ( $env:USERDOMAIN -ne $env:COMPUTERNAME ) {
+If ( (Get-WmiObject -Class win32_computersystem).PartOfDomain ) {
     # Lets Prep some AD Group Policies
     # Create Central ADM(X) Store
     # Copy ADM(X) files to Central ADM(X) Store
