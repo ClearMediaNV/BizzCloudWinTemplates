@@ -103,6 +103,7 @@ New-Item -Path "$ScriptPath\3_Install_RDS_components.ps1" -type File -Force
 $Services = @{
 	'Audiosrv' =  'Auto'
 	'SCardSvr' = 'Auto'
+	'WSearch'  = 'Auto'
 	}
 ForEach ($Service in $Services.keys) {Add-Content -Path "$ScriptPath\3_Install_RDS_components.ps1" -Value "Set-Service -Name '$Service' -StartupType '$($Services.$Service)'"}
 #Create HashTable for Provisioning Roles & Features for each Family cfr Get-WindowsFeature
