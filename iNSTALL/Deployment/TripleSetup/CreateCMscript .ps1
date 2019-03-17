@@ -110,7 +110,7 @@ ForEach ($Service in $Services.keys) {Add-Content -Path "$ScriptPath\3_Install_R
 $Roles = [ordered]@{
 	'Windows TIFF IFilter' =  'Windows-TIFF-IFilter'
 	'Remote Desktop Services' = 'RDS-RD-Server'
-    'Group Policy Management' = 'GPMC'
+    	'Group Policy Management' = 'GPMC'
 	'Remote Server Administration Tools' = ('RSAT-AD-Tools','RSAT-DNS-Server','RSAT-RDS-Licensing-Diagnosis-UI','RDS-Licensing-UI')
 	}
 #Get all Roles & Features to install; use replace to separate roles & features in same Family
