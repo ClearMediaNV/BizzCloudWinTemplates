@@ -2,8 +2,7 @@
 # Change SecurityProtocol for downloading from GitHub
 $SavedSecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol
 [System.Net.ServicePointManager]::SecurityProtocol = 'Tls,Tls11,Tls12'
-Try
-    {
+Try {
     [STRING]$UrlDownload =  'https://github.com/ClearMediaNV/BizzCloudWinTemplates/archive/master.zip'
     [STRING]$Output = "$ENV:TEMP\$($UrlDownload.Split('/')[$_.count-1])"
     # Download Archive
@@ -17,8 +16,7 @@ Try
     Remove-Item -Path "$Output" -Force
     Remove-Item -Path "$ENV:TEMP\Template" -Recurse -Force
     }
-Catch
-    {
+Catch {
     Write-Output 'No Internet Connection. Please Check DNS Config'
     Start-Sleep -Seconds 5
     }
