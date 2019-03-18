@@ -1,7 +1,7 @@
 Key,ValueName,Type,Value
 HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer,NoDriveTypeAutoRun,Dword,255
 HKLM\Software\Policies\Microsoft\Windows\Personalization,NoChangingLockScreen,Dword,1
-HKLM\Software\Policies\Microsoft\Windows\Session Manager\Quota System,EnableCpuQuota,Dword,1
+HKLM\Software\Policies\Microsoft\Windows\Session Manager\Quota System,EnableCpuQuota,Dword,0
 HKLM\Software\Policies\Microsoft\Windows NT\Terminal Services,Shadow,Dword,2
 HKLM\Software\Policies\Microsoft\Windows NT\Terminal Services,LicensingMode,Dword,4
 HKLM\Software\Policies\Microsoft\Windows NT\Terminal Services,fResetBroken,Dword,1
