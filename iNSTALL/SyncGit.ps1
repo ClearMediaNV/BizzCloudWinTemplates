@@ -16,10 +16,10 @@ Try {
     Remove-Item -Path "$Output" -Force
     Remove-Item -Path "$ENV:TEMP\Template" -Recurse -Force
     }
-Catch {
-    Write-Output 'No Internet Connection. Please Check DNS Config'
-    Start-Sleep -Seconds 5
-    }
+Catch   {
+        Write-Output 'No Internet Connection. Please Check DNS Config'
+        Start-Sleep -Seconds 5
+        }
 # Restore Saved SecurityProtocol
 [System.Net.ServicePointManager]::SecurityProtocol = $SavedSecurityProtocol
 # The End
