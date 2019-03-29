@@ -17,7 +17,7 @@ Try {
     Remove-Item -Path "$ENV:TEMP\Template" -Recurse -Force
     }
 Catch   {
-        Write-Output 'No Internet Connection. Please Check DNS Config'
+        Write-Output 'No Internet Connection. Please Check DNS & Gateway Config'
         Start-Sleep -Seconds 5
         }
 # Restore Saved SecurityProtocol
