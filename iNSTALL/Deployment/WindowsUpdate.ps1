@@ -24,17 +24,18 @@ If ( $WindowsUpdateList.Count -eq 0 )
 # Report Windows Updates to CSV File 'c:\windows\logs\WindowsUpdate.csv'
 [PSCustomObject[]]$Table = $Null
 Foreach ( $Update in $WindowsUpdateList ) 
-    {$Table += [PSCustomObject] @{
+    {
+    $Table += [PSCustomObject] @{
                         'Title' = $Update.Title
                         'CategoriesName' = [STRING]$Update.Categories._NewEnum.Name
                         'BundledUpdatesTitle' = [STRING]$Update.BundledUpdates._NewEnum.Title
                         'BundledUpdatesLastDeploymentChangeTime' = [STRING]$Update.BundledUpdates._NewEnum.LastDeploymentChangeTime
                         'BundledUpdatesMinDownloadSize' = [STRING]$Update.BundledUpdates._NewEnum.MinDownloadSize
                         'KBArticleIDs' = [STRING]$Update.KBArticleIDs
-                        'IsDownloaded' = $Update.IsDownloaded
-                        'IsInstalled' = $Update.IsInstalled
-                        'IsUninstallable' = $Update.IsUninstallable
-                        'RebootRequired' = $Update.RebootRequired }
+                        'IsDownloaded' = [STRING]$Update.IsDownloaded
+                        'IsInstalled' = [STRING]$Update.IsInstalled
+                        'IsUninstallable' = [STRING]$Update.IsUninstallable
+                        'RebootRequired' = [STRING]$Update.RebootRequired }
     }
 
 $Table | Select-Object -Property Title,CategoriesName,BundledUpdatesTitle,BundledUpdatesLastDeploymentChangeTime,BundledUpdatesMinDownloadSize,KBArticleIDs,IsDownloaded,IsInstalled,IsUninstallable,RebootRequired | Export-Csv -Path 'c:\windows\logs\WindowsUpdate.csv' -Append -Force -NoTypeInformation
