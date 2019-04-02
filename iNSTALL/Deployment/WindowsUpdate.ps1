@@ -22,7 +22,7 @@ If ( $WindowsUpdateList.Count -eq 0 )
 	$WindowsUpdateInstaller.Install()
 	}
 # Report Windows Updates to CSV File 'c:\windows\logs\WindowsUpdate.csv'
-[PSCustomObject[]]$Table =$null
+[PSCustomObject[]]$Table = $Null
 Foreach ( $Update in $WindowsUpdateList ) 
     {$Table += [PSCustomObject] @{
                         'Title' = $Update.Title
