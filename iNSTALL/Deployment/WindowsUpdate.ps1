@@ -26,6 +26,7 @@ If ( $WindowsUpdateList.Count -eq 0 )
 Foreach ( $Update in $WindowsUpdateList ) 
     {
     $Table += [PSCustomObject] @{
+    			'DateTime' = $((Get-Date).tostring('dd-MM-yyyy HH:mm:ss '))
                         'Title' = $Update.Title
                         'CategoriesName' = [STRING]$Update.Categories._NewEnum.Name
                         'BundledUpdatesTitle' = [STRING]$Update.BundledUpdates._NewEnum.Title
@@ -38,7 +39,7 @@ Foreach ( $Update in $WindowsUpdateList )
                         'RebootRequired' = [STRING]$Update.RebootRequired }
     }
 
-$Table | Select-Object -Property Title,CategoriesName,BundledUpdatesTitle,BundledUpdatesLastDeploymentChangeTime,BundledUpdatesMinDownloadSize,KBArticleIDs,IsDownloaded,IsInstalled,IsUninstallable,RebootRequired | Export-Csv -Path 'c:\windows\logs\WindowsUpdate.csv' -Append -Force -NoTypeInformation
+$Table | Select-Object -Property DateTime,Title,CategoriesName,BundledUpdatesTitle,BundledUpdatesLastDeploymentChangeTime,BundledUpdatesMinDownloadSize,KBArticleIDs,IsDownloaded,IsInstalled,IsUninstallable,RebootRequired | Export-Csv -Path 'c:\windows\logs\WindowsUpdate.csv' -Append -Force -NoTypeInformation
 # Change WindowsUpdate Service to Disabled
 Set-Service -Name 'wuauserv' -StartupType Disabled
 
