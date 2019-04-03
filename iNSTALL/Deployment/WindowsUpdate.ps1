@@ -38,7 +38,7 @@ Foreach ( $Update in $WindowsUpdateList )
     {
     $Table += [PSCustomObject] @{
     			'DateTime' = (Get-Date).tostring('dd-MM-yyyy HH:mm:ss')
-                        'Title' = $Update.Title
+                        'Title' = [STRING]$Update.Title
                         'CategoriesName' = [STRING]$Update.Categories._NewEnum.Name
                         'BundledUpdatesTitle' = [STRING]$Update.BundledUpdates._NewEnum.Title
                         'BundledUpdatesLastDeploymentChangeTime' = [STRING]$Update.BundledUpdates._NewEnum.LastDeploymentChangeTime
