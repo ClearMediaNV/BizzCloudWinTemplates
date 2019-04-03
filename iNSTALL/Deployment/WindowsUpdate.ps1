@@ -32,14 +32,11 @@ Foreach ( $Update in $WindowsUpdateList )
                         'BundledUpdatesTitle' = [STRING]$Update.BundledUpdates._NewEnum.Title
                         'BundledUpdatesLastDeploymentChangeTime' = [STRING]$Update.BundledUpdates._NewEnum.LastDeploymentChangeTime
                         'BundledUpdatesMinDownloadSize' = [STRING]$Update.BundledUpdates._NewEnum.MinDownloadSize
-                        'KBArticleIDs' = [STRING]$Update.KBArticleIDs
-                        'IsDownloaded' = [STRING]$Update.IsDownloaded
-                        'IsInstalled' = [STRING]$Update.IsInstalled
-                        'IsUninstallable' = [STRING]$Update.IsUninstallable
-                        'RebootRequired' = [STRING]$Update.RebootRequired }
+                        'KBArticleIDs' = [STRING]$Update.KBArticleIDs }
     }
 
-$Table | Select-Object -Property DateTime,Title,CategoriesName,BundledUpdatesTitle,BundledUpdatesLastDeploymentChangeTime,BundledUpdatesMinDownloadSize,KBArticleIDs,IsDownloaded,IsInstalled,IsUninstallable,RebootRequired | Export-Csv -Path 'c:\windows\logs\WindowsUpdate.csv' -Append -Force -NoTypeInformation
+$Table | Select-Object -Property DateTime,Title,CategoriesName,BundledUpdatesTitle,BundledUpdatesLastDeploymentChangeTime,BundledUpdatesMinDownloadSize,KBArticleIDs | Export-Csv -Path 'c:\windows\logs\WindowsUpdate.csv' -Append -Force -NoTypeInformation
 # Change WindowsUpdate Service to Disabled
 Set-Service -Name 'wuauserv' -StartupType Disabled
-
+# Restart Computer for applying Windows Updates
+Restart-Computer
