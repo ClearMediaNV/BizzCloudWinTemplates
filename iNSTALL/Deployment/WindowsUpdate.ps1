@@ -37,7 +37,7 @@ If ( $WindowsUpdateList.Count -eq 0 )
 Foreach ( $Update in $WindowsUpdateList ) 
     {
     $Table += [PSCustomObject] @{
-    			'DateTime' = $((Get-Date).tostring('dd-MM-yyyy HH:mm:ss '))
+    			'DateTime' = (Get-Date).tostring('dd-MM-yyyy HH:mm:ss')
                         'Title' = $Update.Title
                         'CategoriesName' = [STRING]$Update.Categories._NewEnum.Name
                         'BundledUpdatesTitle' = [STRING]$Update.BundledUpdates._NewEnum.Title
