@@ -12,6 +12,10 @@ $WindowsUpdateDownloader = New-Object -ComObject 'Microsoft.Update.Downloader'
 $WindowsUpdateInstaller = New-Object -ComObject 'Microsoft.Update.Installer'
 # Search-Download-Install Windows Updates
 $WindowsUpdateList = $WindowsUpdateSearch.Search($Null).Updates
+Catch   {
+        Write-Output 'No Internet Connection. Please Check DNS & Gateway Config'
+        Start-Sleep -Seconds 5
+}
 If ( $WindowsUpdateList.Count -eq 0 )
 	{
 	Write-Output 'No Updates Available.'
