@@ -17,6 +17,7 @@ Try 	{
 Catch   {
         Write-Output 'WSUS not Reachable. No Internet Connection. Please Check DNS & Gateway Config'
         Start-Sleep -Seconds 5
+	Exit
 	}
 If ( $WindowsUpdateList.Count -eq 0 )
 	{
