@@ -13,6 +13,8 @@ $WindowsUpdateList = $WindowsUpdateSearch.Search($Null).Updates
 If ( $WindowsUpdateList.Count -eq 0 )
 	{
 	Write-Output 'No Updates Available.'
+	Start-Sleep -Seconds 5
+    	Exit
 	}
 	Else
 	{
@@ -39,4 +41,4 @@ $Table | Select-Object -Property DateTime,Title,CategoriesName,BundledUpdatesTit
 # Change WindowsUpdate Service to Disabled
 Set-Service -Name 'wuauserv' -StartupType Disabled
 # Restart Computer for applying Windows Updates
-Restart-Computer
+Restart-Computer -Force
