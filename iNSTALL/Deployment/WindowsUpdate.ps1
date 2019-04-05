@@ -13,24 +13,24 @@ $WindowsUpdateInstaller = New-Object -ComObject 'Microsoft.Update.Installer'
 # Search-Download-Install Windows Updates
 Try	{ $WindowsUpdateList = $WindowsUpdateSearch.Search($Null).Updates }
 	Catch 
-	{
-        Write-Output 'WSUS not Reachable. No Internet Connection. Please Check DNS & Gateway Config'
-        Start-Sleep -Seconds 5
-	Exit
-	}
-If ( $WindowsUpdateList.Count -eq 0 )
-	{
-	Write-Output 'No Updates Available.'
-	Start-Sleep -Seconds 5
-    	Exit
-	}
+		{
+        	Write-Output 'WSUS not Reachable. No Internet Connection. Please Check DNS & Gateway Config'
+        	Start-Sleep -Seconds 5
+		Exit
+		}
+If	( $WindowsUpdateList.Count -eq 0 )
+		{
+		Write-Output 'No Updates Available.'
+		Start-Sleep -Seconds 5
+    		Exit
+		}
 	Else
-	{
-	$WindowsUpdateDownloader.Updates = $WindowsUpdateList
-	$WindowsUpdateDownloader.Download()
-	$WindowsUpdateInstaller.Updates = $WindowsUpdateList
-	$WindowsUpdateInstaller.Install()
-	}
+		{
+		$WindowsUpdateDownloader.Updates = $WindowsUpdateList
+		$WindowsUpdateDownloader.Download()
+		$WindowsUpdateInstaller.Updates = $WindowsUpdateList
+		$WindowsUpdateInstaller.Install()
+		}
 # Report Windows Updates to CSV File 'c:\windows\logs\WindowsUpdate.csv'
 [PSCustomObject[]]$Table = $Null
 Foreach ( $Update in $WindowsUpdateList ) 
