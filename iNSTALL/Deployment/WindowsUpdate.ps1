@@ -33,17 +33,17 @@ If	( $WindowsUpdateList.Count -eq 0 )
 		}
 # Report Windows Updates to CSV File 'c:\windows\logs\WindowsUpdate.csv'
 [PSCustomObject[]]$Table = $Null
-Foreach ( $Update in $WindowsUpdateList ) 
-    {
-    $Table += [PSCustomObject] @{
+Foreach	( $Update in $WindowsUpdateList ) 
+		{ $Table += [PSCustomObject] @{
     			'DateTime' = (Get-Date).tostring('dd-MM-yyyy HH:mm:ss')
                         'Title' = [STRING]$Update.Title
                         'CategoriesName' = [STRING]$Update.Categories._NewEnum.Name
                         'BundledUpdatesTitle' = [STRING]$Update.BundledUpdates._NewEnum.Title
                         'BundledUpdatesLastDeploymentChangeTime' = [STRING]$Update.BundledUpdates._NewEnum.LastDeploymentChangeTime
                         'BundledUpdatesMinDownloadSize' = [STRING]$Update.BundledUpdates._NewEnum.MinDownloadSize
-                        'KBArticleIDs' = [STRING]$Update.KBArticleIDs }
-    }
+                        'KBArticleIDs' = [STRING]$Update.KBArticleIDs
+			}
+		}
 
 $Table | Select-Object -Property DateTime,Title,CategoriesName,BundledUpdatesTitle,BundledUpdatesLastDeploymentChangeTime,BundledUpdatesMinDownloadSize,KBArticleIDs | Export-Csv -Path 'c:\windows\logs\WindowsUpdate.csv' -Append -Force -NoTypeInformation
 # Change WindowsUpdate Service to Disabled
