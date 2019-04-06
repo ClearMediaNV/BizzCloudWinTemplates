@@ -8,8 +8,8 @@ Start-Service -Name 'wuauserv'
 # $WindowsUpdateServiceManager = New-Object -ComObject 'Microsoft.Update.ServiceManager'
 # Default Service = 'Windows Server Update Service' (Cfr GPO)
 $WindowsUpdateSearch = New-Object -ComObject 'Microsoft.Update.Searcher'
-$WindowsUpdateDownloader = New-Object -ComObject 'Microsoft.Update.Downloader'
-$WindowsUpdateInstaller = New-Object -ComObject 'Microsoft.Update.Installer'
+$WindowsUpdateDownload = New-Object -ComObject 'Microsoft.Update.Downloader'
+$WindowsUpdateInstall = New-Object -ComObject 'Microsoft.Update.Installer'
 # Search-Download-Install Windows Updates
 Try	{ $WindowsUpdateList = $WindowsUpdateSearch.Search($Null).Updates }
 	Catch 
@@ -26,10 +26,10 @@ If	( $WindowsUpdateList.Count -eq 0 )
 		}
 	Else
 		{
-		$WindowsUpdateDownloader.Updates = $WindowsUpdateList
-		$WindowsUpdateDownloader.Download()
-		$WindowsUpdateInstaller.Updates = $WindowsUpdateList
-		$WindowsUpdateInstaller.Install()
+		$WindowsUpdateDownload.Updates = $WindowsUpdateList
+		$WindowsUpdateDownload.Download()
+		$WindowsUpdateInstall.Updates = $WindowsUpdateList
+		$WindowsUpdateInstall.Install()
 		}
 # Report Windows Updates to CSV File 'c:\windows\logs\WindowsUpdate.csv'
 [PSCustomObject[]]$Table = $Null
