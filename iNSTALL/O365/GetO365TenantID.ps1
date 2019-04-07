@@ -10,7 +10,7 @@ $Form.Height = 245
 $Form.Width = 540
 $Form.StartPosition = 'CenterScreen'
 $Form.FormBorderStyle = 'fixedsingle'
-$Form.Topmost = $False
+$Form.Topmost = $True
 
 # Create ScriptBlock
 $ScriptBlock = 
