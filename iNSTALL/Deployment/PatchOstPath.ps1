@@ -3,10 +3,10 @@
 		Patch the Path To OST file in existing MAPI Profile
 	.DESCRIPTION
 		If MAPI Profile already created, GPO does not affect existing OST Path
-    .NOTES
+    	.NOTES
 		Default MapiProfile = 'Outlook'
-    .EXAMPLE
-        PatchOstPath.ps1 -OstPath 'D:\Outlook\User.ost' -MapiProfile 'Outlook'
+    	.EXAMPLE
+        	PatchOstPath.ps1 -OstPath 'D:\Outlook\User.ost' -MapiProfile 'Outlook'
 	#>
 param (
 	[Parameter(Position=0,Mandatory=$false)][STRING]$OstPath = "D:\Outlook\$env:USERNAME.ost",
