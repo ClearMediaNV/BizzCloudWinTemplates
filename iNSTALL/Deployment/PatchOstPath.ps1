@@ -4,7 +4,7 @@
 	.DESCRIPTION
 		If MAPI Profile already created, GPO does not affect existing OST Path
     	.NOTES
-		Default MapiProfile = 'Outlook'
+		Applies to Office 2016
     	.EXAMPLE
         	PatchOstPath.ps1 -OstPath 'D:\Outlook\User.ost' -MapiProfile 'Outlook'
 	#>
