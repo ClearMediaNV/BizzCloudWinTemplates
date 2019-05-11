@@ -5,6 +5,7 @@
 		If MAPI Profile already created, GPO does not affect existing OST Path
     	.NOTES
 		Applies to Office 2016
+		OST Must Be Enabled
     	.EXAMPLE
         	PatchOstPath.ps1 -OstPath 'D:\Outlook\User.ost' -MapiProfile 'Outlook'
 	#>
