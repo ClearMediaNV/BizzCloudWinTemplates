@@ -1,6 +1,6 @@
 Key,ValueName,Type,Value
-HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate,WUServer,"http://update.clearmedia.be"
-HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate,WUStatusServer,"http://update.clearmedia.be"
+HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate,WUServer,String,"http://update.clearmedia.be"
+HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate,WUStatusServer,String,"http://update.clearmedia.be"
 HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate,SetActiveHours,Dword,1
 HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate,ActiveHoursStart,Dword,16
 HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate,ActiveHoursEnd,Dword,6
