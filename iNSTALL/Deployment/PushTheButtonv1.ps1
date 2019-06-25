@@ -93,7 +93,7 @@ $Code1 = {
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox1.AddText("Installing Remote Server Administration Tools `n") } )
             $Job = Start-Job -Name 'Remote Server Administration Tools' -ScriptBlock { Install-WindowsFeature -Name  'RSAT-AD-Tools','RSAT-DNS-Server','RSAT-RDS-Licensing-Diagnosis-UI','RDS-Licensing-UI' -ErrorAction Stop }
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500  ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress1.Value = $I } ) }
-			$DnsForwarder.Split(',') |Sort-Object -Descending | ForEach-Object {
+			$DnsForwarder.Split(',') | ForEach-Object {
                     $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox1.AddText("Adding DNS Forwarder $_ `n") } )
                     $Job = Start-Job -Name "Adding DNS Forwarder $_" -ScriptBlock { Param( $DnsForwarder ) ; Add-DnsServerForwarder -IPAddress $DnsForwarder  -ErrorAction Stop } -ArgumentList ( $_ )
                     While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress1.Value = $I } )  }
@@ -132,6 +132,8 @@ $Code1 = {
 		$Runspace.SessionStateProxy.SetVariable("ClearmediaAdminUserName",$ClearmediaAdminUserName)
 		$Runspace.SessionStateProxy.SetVariable("ClearmediaAdminPassword",$ClearmediaAdminPassword)
         $code3 = {
+            $Error.Clear()
+            $ErrorList = @()
             [INT]$I = 0
 			[STRING]$ManagedOU = $ManagedOuName
             [STRING]$DomainNetbiosName = [System.Environment]::UserDomainName
@@ -158,7 +160,13 @@ $Code1 = {
                     $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox2.AddText("Creating OU $_ `n") } ) 
                     $I += 4
                     $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress2.Value = $I } )
-                    New-ADOrganizationalUnit -Name $_ -Path $($OUs.$_)
+                    New-ADOrganizationalUnit -Name $_ -Path $($OUs.$_) -ErrorAction Stop
+                    If ( $error ) {
+                        $ErrorList += "New-ADOrganizationalUnit -Name $_ -Path $($OUs.$_) -ErrorAction Stop"
+                        $ErrorList += $error[0].Exception.Message.ToString()
+                        $ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
+                        $Error.Clear()
+                        }
                     }
             #Create HashTable for Group Provisioning
             $Groups = [ordered]@{
@@ -179,7 +187,13 @@ $Code1 = {
                     $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox2.AddText("Adding Group  User to $Group in $($Groups.$Group) `n") } ) 
                     $I += 4
                     $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress2.Value = $I } )
-                    New-ADGroup -Name $Group -GroupScope 'Global' -Path $($Groups.$Group)
+                    New-ADGroup -Name $Group -GroupScope 'Global' -Path $($Groups.$Group) -ErrorAction Stop
+                    If ( $error ) {
+                        $ErrorList += "New-ADGroup -Name $Group -GroupScope 'Global' -Path $($Groups.$Group) -ErrorAction Stop"
+                        $ErrorList += $error[0].Exception.Message.ToString()
+                        $ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
+                        $Error.Clear()
+                        }
                     }
             #Create HashTable for User Provisioning
             $NewUserParams= @{
@@ -196,17 +210,35 @@ $Code1 = {
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox2.AddText("Creating $ClearmediaAdminUserName User `n") } ) 
             $I += 2
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress2.Value = $I } )
-            New-ADUser @NewUserParams
+            New-ADUser @NewUserParams -ErrorAction Stop
+            If ( $error ) {
+                $ErrorList += "New-ADUser @NewUserParams -ErrorAction Stop"
+                $ErrorList += $error[0].Exception.Message.ToString()
+                $ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
+                $Error.Clear()
+                }
             # Add ClearMedia User to Admin Groups
             ('Domain Admins','Enterprise Admins') | ForEach-Object { 
                     $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox2.AddText("Adding ClearMedia User to $_ `n") } ) 
                     $I += 4
                     $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress2.Value = $I } )
-                    Add-ADGroupMember -Identity "CN=$_,CN=Users,$ADRootDSE" -Members "CN=$($NewUserParams.Name),$($NewUserParams.Path)" 
+                    Add-ADGroupMember -Identity "CN=$_,CN=Users,$ADRootDSE" -Members "CN=$($NewUserParams.Name),$($NewUserParams.Path)"  -ErrorAction Stop
+                    If ( $error ) {
+                        $ErrorList += "Add-ADGroupMember -Identity CN=$_,CN=Users,$ADRootDSE -Members CN=$($NewUserParams.Name),$($NewUserParams.Path)  -ErrorAction Stop"
+                        $ErrorList += $error[0].Exception.Message.ToString()
+                        $ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
+                        $Error.Clear()
+                        }
                     }
-                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress2.Visibility = "Hidden" } )
-                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatus2.Content = "Installation Finished$(' .'*45)$(' '*20)" } )
-        }
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress2.Visibility = "Hidden" } )
+            If ( $ErrorList ) 
+                { 
+                $ErrorList | Out-File -FilePath 'c:\install\PushTheButtonError.log' -Append -Force
+                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatus2.Content = "Installation Finished with ERRORS$(' .'*25)$(' '*20)Please consult ErrorLog" } )
+                }
+                Else
+                { $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatus2.Content = "Installation Finished$(' .'*45)$(' '*20)" } ) }
+            }
         $PSinstance = [powershell]::Create().AddScript($Code3)
         $PSinstance.Runspace = $Runspace
         $job = $PSinstance.BeginInvoke()
