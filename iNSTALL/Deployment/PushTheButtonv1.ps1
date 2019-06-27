@@ -15,7 +15,7 @@ $Code1 = {
         Title="PushTheButton v1.0" Height="450" Width="800">
     <Grid>
         <TabControl HorizontalAlignment="Left" Height="359" Margin="29,28,0,0" VerticalAlignment="Top" Width="709">
-            <TabItem Name="TabItemCreateDC" Header="Create DC" Margin="-2,-2,-49,0">
+            <TabItem Name="TabItemCreateDC" Header="Create DC" Margin="-2,0,-60,0">
                 <Grid Background="#FFE5E5E5">
                     <Label Name="LabelDomainNetbiosName" Content="DomainNetbiosName" HorizontalAlignment="Left" Height="28" Margin="10,28,0,0" VerticalAlignment="Top" Width="125"/>
                     <Label Name="LabelDomainName" Content="DomainName" HorizontalAlignment="Left" Height="28" Margin="10,61,0,0" VerticalAlignment="Top" Width="125" RenderTransformOrigin="0.452,2.089"/>
@@ -34,7 +34,7 @@ $Code1 = {
                     </StatusBar>
                 </Grid>
             </TabItem>
-            <TabItem Name="TabItemCreateOU" Header="Create OU" Margin="55,0,-134,0">
+            <TabItem Name="TabItemCreateOU" Header="Create OU" Margin="64,0,-120,0">
                 <Grid Background="#FFE5E5E5">
                     <Label Name="LabelManagedOuName" Content="ManagedOuName" HorizontalAlignment="Left" Height="28" Margin="10,28,0,0" VerticalAlignment="Top" Width="165"/>
                     <Label Name="LabelClearmediaAdminUserName" Content="ClearmediaAdminUserName" HorizontalAlignment="Left" Height="28" Margin="10,61,0,0" VerticalAlignment="Top" Width="165" RenderTransformOrigin="0.452,2.089"/>
@@ -53,6 +53,22 @@ $Code1 = {
                     </StatusBar>
                 </Grid>
             </TabItem>
+            <TabItem Name="TabItemDeployRDS" Header="Deploy RDS" Margin="124,0,-180,0">
+                <Grid Background="#FFE5E5E5">
+                    <Label Name="LabelRdsServer" Content="RDS Server" HorizontalAlignment="Left" Height="28" Margin="10,28,0,0" VerticalAlignment="Top" Width="165"/>
+                    <TextBox Name="TextBoxRdsServer"  HorizontalAlignment="Left" Height="22" Margin="180,28,0,0" Text="RDS" VerticalAlignment="Top" Width="180" TabIndex="1" IsTabStop="False" RenderTransformOrigin="0.673,0.523"/>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,90,0,0" Height="160" Width="680"  HorizontalScrollBarVisibility="Disabled">
+                    <TextBlock Name="TextBlockOutBox3" Text="" Foreground="WHITE" Background="#FF22206F" />
+                    </ScrollViewer>
+                    <Button Name="ButtonStart3" Content="START" HorizontalAlignment="Left" Margin="388,28,0,0" VerticalAlignment="Top" Width="234" Height="88" Foreground="Blue" FontWeight="Bold" FontSize="24" Background="Red" Visibility="Visible" />
+                    <Button Name="ButtonReboot3" Content="REBOOT" HorizontalAlignment="Left" Margin="388,28,0,0" VerticalAlignment="Top" Width="234" Height="88" Foreground="Blue" FontWeight="Bold" FontSize="24" Background="Red" Visibility="Hidden"  />
+                     <StatusBar Name="StatusBarStatus3" HorizontalAlignment="Left" Height="24" Margin="10,296,0,0" VerticalAlignment="Top" Width="683" Background="#FFD6D2B0" >
+                        <Label Name="LabelStatus3" Content="In Progress ...." Height="25" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center"  Visibility="Hidden" />
+                        <ProgressBar Name="ProgressBarProgress3" Width="550" Height="15" Value="1" Visibility="Hidden" />
+                    </StatusBar>
+                </Grid>
+            </TabItem>
+
         </TabControl>
 
     </Grid>
@@ -245,6 +261,97 @@ $Code1 = {
         
     }
 	
+		Function Update-OutBox3 {
+		Param($syncHash,$RdsServer)
+        $Runspace = [runspacefactory]::CreateRunspace()
+        $Runspace.ApartmentState = "STA"
+        $Runspace.ThreadOptions = "ReuseThread"
+        $Runspace.Open()
+        $Runspace.SessionStateProxy.SetVariable("syncHash",$syncHash)
+		$Runspace.SessionStateProxy.SetVariable("RdsServer",$RdsServer)
+        $code4 = {
+            [INT]$I = 0
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress3.Value = $I } )
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox3.AddText("Setting Related RDS Services `n") } )
+			$Job = Invoke-Command -ComputerName $RdsServer -AsJob -JobName 'RdsServices' -ScriptBlock {
+				$Services = @{
+					'Audiosrv' =  'Auto'
+					'SCardSvr' = 'Auto'
+					'WSearch'  = 'Auto'
+					}
+				$Services.keys | ForEach-Object { Set-Service -Name $_ -StartupType $($Services.$_) }
+				}
+            While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress3.Value = $I } ) }
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox3.AddText("Installing RDS Related Roles & Features `n") } )
+			$Job = Invoke-Command -ComputerName $RdsServer -AsJob -JobName 'RdsRoles' -ScriptBlock {
+				$Roles = [ordered]@{
+					'Windows TIFF IFilter' =  'Windows-TIFF-IFilter'
+					'Remote Desktop Services' = 'RDS-RD-Server'
+					'Group Policy Management' = 'GPMC'
+					'Remote Server Administration Tools' = ('RSAT-AD-Tools','RSAT-DNS-Server','RSAT-RDS-Licensing-Diagnosis-UI','RDS-Licensing-UI')
+					}
+				$Roles.Values | ForEach-Object { Install-WindowsFeature -Name $_ }
+				}
+            While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress3.Value = $I } ) }
+            Get-Job | Select-Object -Property Name, State, Command, @{Name='Error';Expression={ $_.ChildJobs[0].JobStateInfo.Reason }} | Export-Csv -Path 'c:\install\Jobs.csv' -NoTypeInformation -Force
+            [Boolean]$JobError = Get-Job | Where-Object { $_.State -eq 'Failed' } | ForEach-Object { $_.count -gt 0 }
+            If ( $JobError ) 
+                {
+                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress3.Visibility = "Hidden" } )
+                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatus3.Content = "Installation Finished with ERRORS$(' .'*25)$(' '*20)Please consult Jobs.csv" } )
+                }
+                Else 
+                {
+                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress3.Visibility = "Hidden" } )
+                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatus3.Content = "Installation Finished$(' .'*45)$(' '*20)PLEASE REBOOT" } )
+                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ButtonStart3.Visibility = "Hidden" } )
+                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ButtonReboot3.Visibility = "Visible"  } )
+                }
+        }
+        $PSinstance = [powershell]::Create().AddScript($Code4)
+        $PSinstance.Runspace = $Runspace
+        $job = $PSinstance.BeginInvoke()
+        
+    }
+		Function ButtonReboot3 {
+		Param($syncHash,$RdsServer)
+        $Runspace = [runspacefactory]::CreateRunspace()
+        $Runspace.ApartmentState = "STA"
+        $Runspace.ThreadOptions = "ReuseThread"
+        $Runspace.Open()
+        $Runspace.SessionStateProxy.SetVariable("syncHash",$syncHash)
+		$Runspace.SessionStateProxy.SetVariable("RdsServer",$RdsServer)
+        $code5 = {
+            [INT]$I = 0
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress1.Value = $I } )
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox3.AddText("Rebooting $RdsServer `n") } )
+			$Job = Invoke-Command -ComputerName $RdsServer -AsJob -JobName 'Reboot RDS' -ScriptBlock {
+				Restart-Computer -Force
+				}
+            While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress3.Value = $I } ) }
+            [Boolean]$JobError = Get-Job | Where-Object { $_.State -eq 'Failed' } | ForEach-Object { $_.count -gt 0 }
+            If ( $JobError ) 
+                {
+                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress3.Visibility = "Hidden" } )
+				$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ButtonReboot3.Visibility = "Hidden"  } )
+                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatus3.Content = "Installation Finished with ERRORS$(' .'*25)$(' '*20)Please consult Jobs.csv" } )
+                }
+                Else 
+                {
+                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress3.Visibility = "Hidden" } )
+                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatus3.Content = "Reboot Initiated$(' .'*45)" } )
+                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ButtonStart3.Visibility = "Hidden" } )
+                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ButtonReboot3.Visibility = "Hidden"  } )
+                }
+			
+        }
+        $PSinstance = [powershell]::Create().AddScript($Code5)
+        $PSinstance.Runspace = $Runspace
+        $job = $PSinstance.BeginInvoke()
+        
+    }
+
+	
 	# AutoFind all controls
 	$XAML.SelectNodes("//*[@*[contains(translate(name(.),'n','N'),'Name')]]")  | ForEach-Object { $syncHash.Add($_.Name, $syncHash.Window.Findname($_.Name)) }
     #$syncHash.DomainNetbiosName = $SyncHash.TextBoxDomainNetbiosName.Text
@@ -269,6 +376,15 @@ $Code1 = {
         $syncHash.ProgressBarProgress2.Visibility = "Visible"
 		Update-OutBox2 -syncHash $syncHash -ManagedOuName $syncHash.TextBoxManagedOuName.Text -ClearmediaAdminUserName $SyncHash.TextBoxClearmediaAdminUserName.Text -ClearmediaAdminPassword $SyncHash.TextBoxClearmediaAdminPassword.Text
         # $SyncHash.host.ui.WriteVerboseLine($SyncHash.TextBoxDomainNetbiosName.Text)
+        })
+    $syncHash.ButtonStart3.Add_Click({
+        $syncHash.ButtonStart3.IsEnabled = $False
+        $syncHash.LabelStatus3.Visibility = "Visible"
+        $syncHash.ProgressBarProgress3.Visibility = "Visible"
+		Update-OutBox3 -syncHash $syncHash -RdsServer $syncHash.TextBoxRdsServer.Text
+        })
+    $syncHash.ButtonReboot3.Add_Click({
+		ButtonReboot3 -syncHash $syncHash -RdsServer $syncHash.TextBoxRdsServer.Text
         })
 
    $syncHash.Window.ShowDialog()
