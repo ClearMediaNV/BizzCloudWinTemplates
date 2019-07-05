@@ -1,3 +1,9 @@
+Version 1.4.1
+-----------
+Refactored Deployment - Windows search will now be active by default when rolling out an AiO machine, machines with the RDS role, Allows administrators to  change the path of Outlook .ost files, Adds scheduled task to give administrator more control when Windows updates are executed
+Refactored Bginfo - Added vmxnet3 driver & vmwaretools version to bginfo overview to counter issues with incompatible drivers (ex. version VmxNet 1.8.10), Updated PresetAndBgInfo : Added shortcut to allow quick bgcinfo refresh Added password never expires for local machine administrator, Registry patch to mitigate timeout issues with NLA
+Refactored syncgit - improved exception handling
+
 Version 1.4
 -----------
 Refactored iNSTALL folder structure

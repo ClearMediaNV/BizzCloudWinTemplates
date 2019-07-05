@@ -1,0 +1,6 @@
+Key,ValueName,Type,Value
+HKCU\Software\Policies\Google\Chrome,BackgroundModeEnabled,Dword,0
+HKCU\Software\Policies\Google\Chrome,HardwareAccelerationModeEnabled,Dword,0
+HKCU\SOFTWARE\Microsoft\Internet Explorer\Main,UseSWRender,Dword,1
+HKCU\Software\Adobe\Acrobat Reader\DC\3D,b3DAllowSelect,Dword,0
+HKCU\Software\Microsoft\Office\16.0\Common\Graphics,DisableHardwareAcceleration,Dword,1

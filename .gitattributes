@@ -4,6 +4,7 @@
 *.reg text eol=crlf
 *.xml text eol=crlf
 *.txt text eol=crlf
+*.csv text eol=crlf
 *.cmd text eol=crlf
 *.bat text eol=crlf
 *.ps? text eol=crlf

@@ -66,7 +66,7 @@ $Form2.MaximizeBox = $false
 $Form2.AutoSize = $true
 $Form2.StartPosition = 'CenterScreen'
 $Form2.FormBorderStyle = 'fixedsingle'
-$Form2.Topmost = $True
+#$Form2.Topmost = $True
 
 $Label = New-Object System.Windows.Forms.Label
 $Label.Text = 'Starting. Please wait ... '
@@ -88,7 +88,7 @@ $Form2.Controls.Add($PB)
 
 $Form2.Show() 
 
-# Download and Extract OfficeDeploymentTool
+# Download and Extract Office Deployment Tool
 $Url = 'https://www.microsoft.com/en-us/download/confirmation.aspx?id=49117'
 $UrlDownload =  (Invoke-WebRequest -Uri $url  -UseBasicParsing | ForEach-Object { $_.links } | Where-Object { $_.href -like '*officedeploymenttool*' }).href[0]
 $Output = $UrlDownload.Split('/')[$_.count-1]

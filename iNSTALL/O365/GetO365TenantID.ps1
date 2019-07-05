@@ -17,16 +17,16 @@ $ScriptBlock =
     {
     try
         {
-        [STRING]$Domainname = $textDomain.Text
-        $labelTenantID.Text = (Invoke-RestMethod -Uri "https://login.windows.net/$Domainname/.well-known/openid-configuration").token_endpoint.Split(‘/’)[3]
-        $labelTenantID.BackColor = 'LightGreen'
-        $labelTenantID.Refresh()
+        [STRING]$Domainname = $TextBoxDomain.Text
+        $TextBoxTenantID.Text = (Invoke-RestMethod -Uri "https://login.windows.net/$Domainname/.well-known/openid-configuration").token_endpoint.Split(‘/’)[3]
+        $TextBoxTenantID.BackColor = 'LightGreen'
+        $TextBoxTenantID.Refresh()
         }
     catch
         {
-        $labelTenantID.Text = "$DomainName not found !"
-        $labelTenantID.BackColor = 'Red'
-        $labelTenantID.Refresh()
+        $TextBoxTenantID.Text = "$DomainName not found"
+        $TextBoxTenantID.BackColor = 'Red'
+        $TextBoxTenantID.Refresh()
         }
     }
 	
@@ -42,7 +42,7 @@ $OKButton.Add_Click($ScriptBlock)
 $Form.AcceptButton = $OKButton
 $Form.Controls.Add($OKButton)
 
-#Add Cancel Button
+# Add Cancel Button
 $CancelButton = New-Object System.Windows.Forms.Button
 $CancelButton.Left = 350
 $CancelButton.Top = 160
@@ -52,43 +52,42 @@ $CancelButton.Text = 'CANCEL'
 $Form.CancelButton = $CancelButton
 $Form.Controls.Add($CancelButton)
 
-#Add Label
-$labelDomain = New-Object System.Windows.Forms.Label
-$labelDomain.AutoSize = $false
-$labelDomain.Top = 25
-$labelDomain.Left = 160
-$labelDomain.Width = 400
-$labelDomain.Height = 30
-$labelDomain.Font = 'Candara , 11pt, style=Regular'
-$labelDomain.Text = 'Please enter the Domain Name'
-$Form.Controls.Add($labelDomain)
+# Add Label
+$LabelDomain = New-Object System.Windows.Forms.Label
+$LabelDomain.AutoSize = $false
+$LabelDomain.Top = 25
+$LabelDomain.Left = 160
+$LabelDomain.Width = 400
+$LabelDomain.Height = 30
+$LabelDomain.Font = 'Candara , 11pt, style=Regular'
+$LabelDomain.Text = 'Please enter the Domain Name'
+$Form.Controls.Add($LabelDomain)
 
-#Add DomainName TextBox
-$textDomain = New-Object System.Windows.Forms.TextBox
-$textDomain.AutoSize = $false
-$textDomain.Top = 65
-$textDomain.Left = 40
-$textDomain.Width = 450
-$textDomain.Height = 30
-$textDomain.BackColor = 'green'
-$textDomain.Font = 'Candara , 14pt, style=Bold'
-$textDomain.TextAlign = 'Center'
-$textDomain.Text = 'ClearMedia.be'
-$Form.Controls.Add($textDomain)
+# Add DomainName TextBox
+$TextBoxDomain = New-Object System.Windows.Forms.TextBox
+$TextBoxDomain.AutoSize = $false
+$TextBoxDomain.Top = 65
+$TextBoxDomain.Left = 40
+$TextBoxDomain.Width = 450
+$TextBoxDomain.Height = 30
+$TextBoxDomain.BackColor = 'green'
+$TextBoxDomain.Font = 'Candara , 14pt, style=Bold'
+$TextBoxDomain.TextAlign = 'Center'
+$TextBoxDomain.Text = 'ClearMedia.be'
+$Form.Controls.Add($TextBoxDomain)
 
-#Add TenantID TextBox
-$labelTenantID = New-Object System.Windows.Forms.TextBox
-$labelTenantID.AutoSize = $false
-$labelTenantID.BorderStyle = 'None'
-$labelTenantID.BackColor = 'LightGray'
-$labelTenantID.Top = 95
-$labelTenantID.Left = 40
-$labelTenantID.Width = 449
-$labelTenantID.Height = 30
-$labelTenantID.Font = 'Candara , 14pt, style=Bold'
-$labelTenantID.TextAlign = 'Center'
-$labelTenantID.Text = ''
-$Form.Controls.Add($labelTenantID)
+# Add TenantID TextBox
+$TextBoxTenantID = New-Object System.Windows.Forms.TextBox
+$TextBoxTenantID.AutoSize = $false
+$TextBoxTenantID.BackColor = 'LightGray'
+$TextBoxTenantID.Top = 95
+$TextBoxTenantID.Left = 40
+$TextBoxTenantID.Width = 450
+$TextBoxTenantID.Height = 30
+$TextBoxTenantID.Font = 'Candara , 14pt, style=Bold'
+$TextBoxTenantID.TextAlign = 'Center'
+$TextBoxTenantID.Text = ''
+$Form.Controls.Add($TextBoxTenantID)
 
 $Form.ShowDialog()
 
