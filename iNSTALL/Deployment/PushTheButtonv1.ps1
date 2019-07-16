@@ -1,3 +1,5 @@
+Set-DisplayResolution -Height 800 -Width 1280 -Force
+
 Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase, System.Windows.Forms, System.Drawing
 
 $SyncHash = [hashtable]::Synchronized(@{})
@@ -12,7 +14,7 @@ $Code1 = {
 [XML]$XAML = @"
 	<Window 
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        Title="PushTheButton v1.0" Height="800" Width="1280">
+        Title="PushTheButton v1.0" Height="800" Width="1280" WindowState="Maximized">
     <Grid>
         <TabControl HorizontalAlignment="Left" Height="730" Margin="10,0,0,0" VerticalAlignment="Top" Width="1260">
             <TabItem Name="TabItemCreateDC" Header="Create DC" Margin="-2,0,-60,0">
