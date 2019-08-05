@@ -8,7 +8,8 @@ Try {
     # Download Archive
     (New-Object System.Net.WebClient).downloadFile($UrlDownload,$Output)
     # Unzip Archive to Temp
-    Expand-Archive -Path $Output -DestinationPath "$ENV:TEMP\Template" -Force
+    [VOID][System.Reflection.Assembly]::LoadWithPartialName("System.IO.Compression.FileSystem")
+    [System.IO.Compression.ZipFile]::ExtractToDirectory($Output, "$ENV:TEMP\Template") 
     # Cleanup and Copy iNSTALL Folder
     Remove-Item -Path 'c:\install\*'  -Recurse -Force
     Copy-Item -Path "$ENV:TEMP\Template\BizzCloudWinTemplates-master\iNSTALL\*" -Destination 'c:\iNSTALL' -Recurse -Force
