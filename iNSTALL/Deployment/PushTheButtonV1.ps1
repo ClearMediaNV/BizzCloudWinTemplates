@@ -3,15 +3,14 @@ Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase, Sys
 
 $SyncHash = [hashtable]::Synchronized(@{})
 $SyncHash.Host = $Host
-$Runspace = [runspacefactory]::CreateRunspace()
-$Runspace.ApartmentState = "STA"
-$Runspace.ThreadOptions = "ReuseThread" 
-$Runspace.Open()
-$Runspace.SessionStateProxy.SetVariable('syncHash',$syncHash)
+#$Runspace = [runspacefactory]::CreateRunspace()
+#$Runspace.ApartmentState = "STA"
+#$Runspace.ThreadOptions = "ReuseThread" 
+#$Runspace.Open()
+#$Runspace.SessionStateProxy.SetVariable('syncHash',$syncHash)
 
-$Code1 = {
 [XML]$XAML = @"
-	<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Title="PushTheButton v1.0" Height="800" Width="1280" WindowState="Maximized">
+	<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Title="PushTheButton v1.0" Height="800" Width="1280" WindowState="Maximized"  ShowInTaskbar = "True" Topmost="True">
     <Grid>
         <TabControl HorizontalAlignment="Left" Height="730" Margin="10,0,0,0" VerticalAlignment="Top" Width="1260">
             <TabItem Name="TabItemDeployDC" Header="Deploy DC" Margin="-2,0,-60,0">
@@ -25,8 +24,8 @@ $Code1 = {
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
                     <TextBlock Name="TextBlockOutBox1" Text="" Foreground="WHITE" Background="#FF22206F" />
                     </ScrollViewer>
-                    <Button Name="ButtonStart1" Content="START"  HorizontalAlignment="Left" Margin="950,28,0,0" VerticalAlignment="Top" Width="250" Height="150" Foreground="Blue" FontWeight="Bold" FontSize="50" Background="Red" Visibility="Visible" />
-                    <Button Name="ButtonReboot1" Content="REBOOT"  HorizontalAlignment="Left" Margin="950,28,0,0" VerticalAlignment="Top" Width="250" Height="150" Foreground="Blue" FontWeight="Bold" FontSize="50" Background="Red" Visibility="Hidden"  />
+                    <Button Name="DeployDcStart" Content="START"  HorizontalAlignment="Left" Margin="950,28,0,0" VerticalAlignment="Top" Width="250" Height="150" Foreground="Blue" FontWeight="Bold" FontSize="50" Background="Red" Visibility="Visible" />
+                    <Button Name="DeployDcReboot" Content="REBOOT"  HorizontalAlignment="Left" Margin="950,28,0,0" VerticalAlignment="Top" Width="250" Height="150" Foreground="Blue" FontWeight="Bold" FontSize="50" Background="Red" Visibility="Hidden"  />
                      <StatusBar Name="StatusBarStatus1" HorizontalAlignment="Left" Height="24" Margin="2,670,0,0" VerticalAlignment="Top" Width="1256" Background="#FFD6D2B0" >
                         <Label Name="LabelStatus1" Content="In Progress ...." Height="25" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center"  Visibility="Hidden" />
                         <ProgressBar Name="ProgressBarProgress1" Width="1150" Height="15" Value="1" Visibility="Hidden" />
@@ -44,8 +43,7 @@ $Code1 = {
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
                     <TextBlock Name="TextBlockOutBox2" Text="" Foreground="WHITE" Background="#FF22206F" />
                     </ScrollViewer>
-                    <Button Name="ButtonStart2" Content="START"  HorizontalAlignment="Left" Margin="950,28,0,0" VerticalAlignment="Top" Width="250" Height="150" Foreground="Blue" FontWeight="Bold" FontSize="50" Background="Red" Visibility="Visible" />
-                    <Button Name="ButtonReboot2" Content="REBOOT"  HorizontalAlignment="Left" Margin="950,28,0,0" VerticalAlignment="Top" Width="250" Height="150" Foreground="Blue" FontWeight="Bold" FontSize="50" Background="Red" Visibility="Hidden"  />
+                    <Button Name="DeployOUStart" Content="START"  HorizontalAlignment="Left" Margin="950,28,0,0" VerticalAlignment="Top" Width="250" Height="150" Foreground="Blue" FontWeight="Bold" FontSize="50" Background="Red" Visibility="Visible" />
                      <StatusBar Name="StatusBarStatus2" HorizontalAlignment="Left" Height="24" Margin="2,670,0,0" VerticalAlignment="Top" Width="1256" Background="#FFD6D2B0" >
                         <Label Name="LabelStatus2" Content="In Progress ...." Height="25" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center"  Visibility="Hidden" />
                         <ProgressBar Name="ProgressBarProgress2" Width="1150" Height="15" Value="1" Visibility="Hidden" />
@@ -74,8 +72,7 @@ $Code1 = {
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
                         <TextBlock Name="TextBlockOutBox4" Text="" Foreground="WHITE" Background="#FF22206F" />
                     </ScrollViewer>
-                    <Button Name="ButtonStart4" Content="START" HorizontalAlignment="Left" Margin="950,28,0,0" VerticalAlignment="Top" Width="250" Height="150" Foreground="Blue" FontWeight="Bold" FontSize="50" Background="Red" Visibility="Visible" />
-                    <Button Name="ButtonReboot4" Content="REBOOT" HorizontalAlignment="Left" Margin="950,28,0,0" VerticalAlignment="Top" Width="250" Height="150" Foreground="Blue" FontWeight="Bold" FontSize="50" Background="Red" Visibility="Hidden"  />
+                    <Button Name="DeployStandardGpoStart" Content="START" HorizontalAlignment="Left" Margin="950,28,0,0" VerticalAlignment="Top" Width="250" Height="150" Foreground="Blue" FontWeight="Bold" FontSize="50" Background="Red" Visibility="Visible" />
                     <StatusBar Name="StatusBarStatus4" HorizontalAlignment="Left" Height="24" Margin="2,670,0,0" VerticalAlignment="Top" Width="1256" Background="#FFD6D2B0" >
                         <Label Name="LabelStatus4" Content="In Progress ...." Height="25" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center"  Visibility="Hidden" />
                         <ProgressBar Name="ProgressBarProgress4" Width="1150" Height="15" Value="1" Visibility="Hidden" />
@@ -100,8 +97,7 @@ $Code1 = {
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
                         <TextBlock Name="TextBlockOutBox5" Text="" Foreground="WHITE" Background="#FF22206F" />
                     </ScrollViewer>
-                    <Button Name="ButtonStart5" Content="START" HorizontalAlignment="Left" Margin="950,28,0,0" VerticalAlignment="Top" Width="250" Height="150" Foreground="Blue" FontWeight="Bold" FontSize="50" Background="Red" Visibility="Visible" />
-                    <Button Name="ButtonReboot5" Content="REBOOT" HorizontalAlignment="Left" Margin="950,28,0,0" VerticalAlignment="Top" Width="250" Height="150" Foreground="Blue" FontWeight="Bold" FontSize="50" Background="Red" Visibility="Hidden"  />
+                    <Button Name="DeployFolderRedirectionStart" Content="START" HorizontalAlignment="Left" Margin="950,28,0,0" VerticalAlignment="Top" Width="250" Height="150" Foreground="Blue" FontWeight="Bold" FontSize="50" Background="Red" Visibility="Visible" />
                     <StatusBar Name="StatusBarStatus5" HorizontalAlignment="Left" Height="24" Margin="2,670,0,0" VerticalAlignment="Top" Width="1256" Background="#FFD6D2B0" >
                         <Label Name="LabelStatus5" Content="In Progress ...." Height="25" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center"  Visibility="Hidden" />
                         <ProgressBar Name="ProgressBarProgress5" Width="1150" Height="15" Value="1" Visibility="Hidden" />
@@ -128,8 +124,8 @@ $Code1 = {
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
                     <TextBlock Name="TextBlockOutBox3" Text="" Foreground="WHITE" Background="#FF22206F" />
                     </ScrollViewer>
-                    <Button Name="ButtonStart3" Content="START" HorizontalAlignment="Left" Margin="950,28,0,0" VerticalAlignment="Top" Width="250" Height="150" Foreground="Blue" FontWeight="Bold" FontSize="50" Background="Red"  Visibility="Visible" />
-                    <Button Name="ButtonReboot3" Content="REBOOT"  HorizontalAlignment="Left" Margin="950,28,0,0" VerticalAlignment="Top" Width="250" Height="150" Foreground="Blue" FontWeight="Bold" FontSize="50" Background="Red" Visibility="Hidden"  />
+                    <Button Name="DeployRdsStart" Content="START" HorizontalAlignment="Left" Margin="950,28,0,0" VerticalAlignment="Top" Width="250" Height="150" Foreground="Blue" FontWeight="Bold" FontSize="50" Background="Red"  Visibility="Visible" />
+                    <Button Name="DeployRdsReboot" Content="REBOOT"  HorizontalAlignment="Left" Margin="950,28,0,0" VerticalAlignment="Top" Width="250" Height="150" Foreground="Blue" FontWeight="Bold" FontSize="50" Background="Red" Visibility="Hidden"  />
                      <StatusBar Name="StatusBarStatus3" HorizontalAlignment="Left" Height="24" Margin="2,670,0,0" VerticalAlignment="Top" Width="1256" Background="#FFD6D2B0" >
                         <Label Name="LabelStatus3" Content="In Progress ...." Height="25" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center"  Visibility="Hidden" />
                         <ProgressBar Name="ProgressBarProgress3" Width="1150" Height="15" Value="1" Visibility="Hidden" />
@@ -154,8 +150,7 @@ $Code1 = {
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
                     <TextBlock Name="TextBlockOutBox6" Text="" Foreground="WHITE" Background="#FF22206F" />
                     </ScrollViewer>
-                    <Button Name="ButtonStart6" Content="START" HorizontalAlignment="Left" Margin="950,28,0,0" VerticalAlignment="Top" Width="250" Height="150" Foreground="Blue" FontWeight="Bold" FontSize="50" Background="Red"  Visibility="Visible" />
-                    <Button Name="ButtonReboot6" Content="REBOOT"  HorizontalAlignment="Left" Margin="950,28,0,0" VerticalAlignment="Top" Width="250" Height="150" Foreground="Blue" FontWeight="Bold" FontSize="50" Background="Red" Visibility="Hidden"  />
+                    <Button Name="DeployUserStart" Content="START" HorizontalAlignment="Left" Margin="950,28,0,0" VerticalAlignment="Top" Width="250" Height="150" Foreground="Blue" FontWeight="Bold" FontSize="50" Background="Red"  Visibility="Visible" />
                      <StatusBar Name="StatusBarStatus6" HorizontalAlignment="Left" Height="24" Margin="2,670,0,0" VerticalAlignment="Top" Width="1256" Background="#FFD6D2B0" >
                         <Label Name="LabelStatus6" Content="In Progress ...." Height="25" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center"  Visibility="Hidden" />
                         <ProgressBar Name="ProgressBarProgress6" Width="1150" Height="15" Value="1" Visibility="Hidden" />
@@ -173,7 +168,7 @@ $Code1 = {
     $syncHash.Window=[Windows.Markup.XamlReader]::Load( $reader )
 	
 	# Functions
-	Function Update-OutBox1 {
+	Function DeployDcStart {
 		Param($syncHash,$DnsForwarder,$DomainNetbiosName,$DomainDnsName)
         $Runspace = [runspacefactory]::CreateRunspace()
         $Runspace.ApartmentState = "STA"
@@ -231,7 +226,7 @@ $Code1 = {
         $job = $PSinstance.BeginInvoke()
         
     }
-	Function Update-OutBox2 {
+	Function DeployOuStart {
 		Param($syncHash,$ManagedOuName,$ClearmediaAdminUserName,$ClearmediaAdminPassword)
         $Runspace = [runspacefactory]::CreateRunspace()
         $Runspace.ApartmentState = "STA"
@@ -354,174 +349,7 @@ $Code1 = {
         $job = $PSinstance.BeginInvoke()
         
     }
-	
-	Function Update-OutBox3 {
-		Param($syncHash,$RdsServerIpAddress,$RdsServerName,$AdminUserName,$AdminPassword,$CheckBoxOstFolderRootPath,$OstFolderRootPath,$CheckBoxUserDataFolderRootPath,$UserDataFolderRootPath,$RdsOuPath,$DomainDnsName)
-        $Runspace = [runspacefactory]::CreateRunspace()
-        $Runspace.ApartmentState = "STA"
-        $Runspace.ThreadOptions = "ReuseThread"
-        $Runspace.Open()
-        $Runspace.SessionStateProxy.SetVariable("syncHash",$syncHash)
-		$Runspace.SessionStateProxy.SetVariable("RdsServerIpAddress",$RdsServerIpAddress)
-		$Runspace.SessionStateProxy.SetVariable("RdsServerName",$RdsServerName)
-		$Runspace.SessionStateProxy.SetVariable("AdminUserName",$AdminUserName)
-		$Runspace.SessionStateProxy.SetVariable("AdminPassword",$AdminPassword)
-		$Runspace.SessionStateProxy.SetVariable("CheckBoxOstFolderRootPath",$CheckBoxOstFolderRootPath)
-		$Runspace.SessionStateProxy.SetVariable("OstFolderRootPath",$OstFolderRootPath)
-		$Runspace.SessionStateProxy.SetVariable("CheckBoxUserDataFolderRootPath",$CheckBoxUserDataFolderRootPath)
-		$Runspace.SessionStateProxy.SetVariable("UserDataFolderRootPath",$UserDataFolderRootPath)
-		$Runspace.SessionStateProxy.SetVariable("RdsOuPath",$RdsOuPath)
-		$Runspace.SessionStateProxy.SetVariable("DomainDnsName",$DomainDnsName)
-
-        $code4 = {
-            [INT]$I = 0
-            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress3.Value = $I } )
-            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox3.AddText("Connecting to $RdsServerIpAddress `n") } )
-            $UserName = "$AdminUserName"
-            $Password = "$AdminPassword"
-            $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ("$RdsServerIpAddress\$UserName", $(ConvertTo-SecureString -String $Password -AsPlainText -Force))
-            Set-Item WSMan:\localhost\Client\TrustedHosts -Value "$RdsServerIpAddress" -Force
-            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox3.AddText("Setting Autostart for RDS related Services `n") } )			
-            $Job = Invoke-Command -ComputerName $RdsServerIpAddress  -Credential $Credential  -AsJob -JobName 'RdsServices' -ScriptBlock {
-				$Services = @{
-					'Audiosrv' =  'Auto'
-					'SCardSvr' = 'Auto'
-					'WSearch'  = 'Auto'
-					}
-				$Services.keys | ForEach-Object { Set-Service -Name $_ -StartupType $($Services.$_) }
-				}
-            While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress3.Value = $I } ) }
-            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox3.AddText("Installing RDS Related Roles & Features `n") } )
-			$Job = Invoke-Command -ComputerName $RdsServerIpAddress  -Credential $Credential  -AsJob -JobName 'RdsRoles' -ScriptBlock {
-				$Roles = [ordered]@{
-					'Windows TIFF IFilter' =  'Windows-TIFF-IFilter'
-					'Remote Desktop Services' = 'RDS-RD-Server'
-					'Group Policy Management' = 'GPMC'
-					'Remote Server Administration Tools' = ('RSAT-AD-Tools','RSAT-DNS-Server','RSAT-RDS-Licensing-Diagnosis-UI','RDS-Licensing-UI')
-					}
-				$Roles.Values | ForEach-Object { Install-WindowsFeature -Name $_ }
-				}
-            If ( $CheckBoxOstFolderRootPath ) {
-                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox3.AddText("Configuring Disk 'DataOST' `n") } )
-                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox3.AddText("Creating D:\Users & Setting NTFS Security `n") } )
-            		$Job = Invoke-Command -ComputerName "$RdsServerIpAddress"  -Credential $Credential  -AsJob -JobName 'DataOST' -ScriptBlock {
-                    Param($OstFolderRootPath) ; 
-                    if ( (Get-Disk)[1].OperationalStatus -eq 'Offline' ) { Initialize-Disk -Number 1 }
-                    New-Partition -DiskNumber 1 -AssignDriveLetter -UseMaximumSize | Format-Volume -FileSystem NTFS -NewFileSystemLabel 'DataOst'
-                    Get-Acl -Path 'D:\' | ForEach-Object {
-                            $objACL = $_
-                            $objACL.Access | Where-Object { $_.IdentityReference -inotin ('NT AUTHORITY\SYSTEM','BUILTIN\Administrators') } | ForEach-Object { $objACL.RemoveAccessRule($_) }
-                            Set-Acl "D:\" $objACL
-                            }
-                    # $FolderPath = 'D:\Users'
-                    New-Item -Path $OstFolderRootPath -type directory -Force
-                    $Acl = Get-Acl  -Path  $OstFolderRootPath
-                    $acl.SetAccessRuleProtection($true,$false)
-                    $accessrule = New-Object system.security.AccessControl.FileSystemAccessRule("NT AUTHORITY\SYSTEM", "FullControl", "ObjectInherit,ContainerInherit", "None", "Allow")
-                    $acl.AddAccessRule($accessrule)
-                    $accessrule = New-Object system.security.AccessControl.FileSystemAccessRule("BUILTIN\Administrators", "FullControl", "ObjectInherit,ContainerInherit", "None", "Allow")
-                    $acl.AddAccessRule($accessrule)
-                    Set-Acl  -Path $OstFolderRootPath $acl
-                    } -ArgumentList ($OstFolderRootPath) 
-                    }
-            While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress3.Value = $I } ) }
-            If ( $CheckBoxUserDataFolderRootPath ) {
-                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox3.AddText("Configuring Disk 'DATA' `n") } )
-                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox3.AddText("Creating E:\Users & Setting NTFS Security `n") } )
-                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox3.AddText("Creating Hidden Share 'Users' `n") } )
-			        $Job = Invoke-Command -ComputerName "$RdsServerIpAddress"  -Credential $Credential  -AsJob -JobName 'UserData' -ScriptBlock {
-                    Param($UserDataFolderRootPath) ; 
-                    if ( (Get-Disk)[2].OperationalStatus -eq 'Offline' ) { Initialize-Disk -Number 2 }
-                    New-Partition -DiskNumber 2 -AssignDriveLetter -UseMaximumSize | Format-Volume -FileSystem NTFS -NewFileSystemLabel 'Data'
-                    Get-Acl -Path 'E:\' | ForEach-Object {
-                            $objACL = $_
-                            $objACL.Access | Where-Object { $_.IdentityReference -inotin ('NT AUTHORITY\SYSTEM','BUILTIN\Administrators') } | ForEach-Object { $objACL.RemoveAccessRule($_) }
-                            Set-Acl "E:\" $objACL
-                            }
-                    # $FolderPath = 'E:\Users'
-                    New-Item -Path $UserDataFolderRootPath -type directory -Force
-                    $Acl = Get-Acl  -Path  $UserDataFolderRootPath
-                    $acl.SetAccessRuleProtection($true,$false)
-                    $accessrule = New-Object system.security.AccessControl.FileSystemAccessRule("NT AUTHORITY\SYSTEM", "FullControl", "ObjectInherit,ContainerInherit", "None", "Allow")
-                    $acl.AddAccessRule($accessrule)
-                    $accessrule = New-Object system.security.AccessControl.FileSystemAccessRule("BUILTIN\Administrators", "FullControl", "ObjectInherit,ContainerInherit", "None", "Allow")
-                    $acl.AddAccessRule($accessrule)
-                    Set-Acl  -Path $UserDataFolderRootPath $acl
-                    New-SmbShare -Name 'Users$' -Path $UserDataFolderRootPath -FullAccess 'Everyone'
-                    } -ArgumentList ($UserDataFolderRootPath) 
-                    }
-            While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress3.Value = $I } ) }
-            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox3.AddText("Configuring IPv4 Proxy 192.168.13.100 `n") } )
-            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox3.AddText("Joining to Domain $DomainDnsName `n") } )
-            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox3.AddText("Renaming NetBiosName to $RdsServerName `n") } )
-			$Job = Invoke-Command -ComputerName "$RdsServerIpAddress"  -Credential $Credential  -AsJob -JobName 'RenameJoinRDS' -ScriptBlock {
-                    Param($RdsServerIpAddress,$RdsServerName,$AdminUserName,$AdminPassword,$RdsOuPath) ; 
-                    Get-NetIPConfiguration | Set-DnsClientServerAddress -ServerAddresses '192.168.13.100'
-                    $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ("$RdsServerIpAddress\$AdminUserName", $(ConvertTo-SecureString -String $AdminPassword -AsPlainText -Force))
-                    Add-Computer -DomainName $DomainDnsName -OUPath $RdsOuPath -Credential $Credential
-                    Rename-Computer  -NewName "$RdsServerName" -LocalCredential $Credential -DomainCredential $Credential -Force
-                    } -ArgumentList ($RdsServerIpAddress,$RdsServerName,$AdminUserName,$AdminPassword,$RdsOuPath) 
-            While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress3.Value = $I } ) }
-
-            Get-Job | Select-Object -Property Name, State, Command, @{Name='Error';Expression={ $_.ChildJobs[0].JobStateInfo.Reason }} | Export-Csv -Path "$env:windir\Logs\PushTheButtonJobs.csv" -NoTypeInformation -Force
-            If ((Get-Job).Where({$_.State -eq 'Failed'}).count -ne 0 ) 
-                {
-                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress3.Visibility = "Hidden" } )
-                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatus3.Content = "Installation Finished with ERRORS$(' .'*25)$(' '*20)Please consult PushTheButtonJobs.csv" } )
-                }
-                Else 
-                {
-                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress3.Visibility = "Hidden" } )
-                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatus3.Content = "Installation Finished$(' .'*135)$(' '*30) Please  REBOOT" } )
-                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ButtonStart3.Visibility = "Hidden" } )
-                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ButtonReboot3.Visibility = "Visible"  } )
-                }
-        }
-        $PSinstance = [powershell]::Create().AddScript($Code4)
-        $PSinstance.Runspace = $Runspace
-        $job = $PSinstance.BeginInvoke()
-        
-    }
-	Function ButtonReboot3 {
-		Param($syncHash,$RdsServerIpAddress,$AdminUserName,$AdminPassword)
-        $Runspace = [runspacefactory]::CreateRunspace()
-        $Runspace.ApartmentState = "STA"
-        $Runspace.ThreadOptions = "ReuseThread"
-        $Runspace.Open()
-        $Runspace.SessionStateProxy.SetVariable("syncHash",$syncHash)
-		$Runspace.SessionStateProxy.SetVariable("RdsServerIpAddress",$RdsServerIpAddress)
-		$Runspace.SessionStateProxy.SetVariable("AdminUserName",$AdminUserName)
-		$Runspace.SessionStateProxy.SetVariable("AdminPassword",$AdminPassword)
-        $code5 = {
-            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox3.AddText("Rebooting $RdsServerIpAddress `n") } )
-            $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ("$RdsServerIpAddress\$AdminUserName", $(ConvertTo-SecureString -String $AdminPassword -AsPlainText -Force))
-            Set-Item WSMan:\localhost\Client\TrustedHosts -Value "$RdsServerIpAddress" -Force
-			$Job = Invoke-Command -ComputerName $RdsServerIpAddress -Credential $Credential -AsJob -JobName "RebootRDS" -ScriptBlock {
-				Restart-Computer -Force
-				}
-            Get-Job | Select-Object -Property Name, State, Command, @{Name='Error';Expression={ $_.ChildJobs[0].JobStateInfo.Reason }} | Export-Csv -Path "$env:windir\Logs\PushTheButtonJobs.csv" -NoTypeInformation -Force
-            While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress3.Value = $I } ) }
-            If ((Get-Job).Where({$_.State -eq 'Failed'}).count -ne 0 ) 
-                {
-                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress3.Visibility = "Hidden" } )
-				$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ButtonReboot3.Visibility = "Hidden"  } )
-                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatus3.Content = "REBOOT Finished with ERRORS$(' .'*25)$(' '*20)Please consult PushTheButtonJobs.csv" } )
-                }
-                Else 
-                {
-                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress3.Visibility = "Hidden" } )
-                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatus3.Content = "Reboot Initiated$(' .'*45)" } )
-                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ButtonStart3.Visibility = "Hidden" } )
-                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ButtonReboot3.Visibility = "Hidden"  } )
-                }
-			
-        }
-        $PSinstance = [powershell]::Create().AddScript($Code5)
-        $PSinstance.Runspace = $Runspace
-        $job = $PSinstance.BeginInvoke()
-        
-    }
-	Function Update-OutBox4 {
+	Function DeployStandardGpoStart {
 		Param($syncHash,$TemplateSourcePath,$RdsOuPath,$UsersOuPath,$OstPath,$CheckBox1,$CheckBox2,$CheckBox3,$CheckBox4,$CheckBox5,$CheckBox6,$CheckBox7)
         $Runspace = [runspacefactory]::CreateRunspace()
         $Runspace.ApartmentState = "STA"
@@ -931,7 +759,7 @@ $Code1 = {
         $job = $PSinstance.BeginInvoke()
         
     }
-	Function Update-OutBox5 {
+	Function DeployFolderRedirectionStart {
 		Param($syncHash,$CheckBoxDocuments,$DocumentsPath,$CheckBoxMusic,$MusicPath,$CheckBoxPictures,$PicturesPath,$CheckBoxVideos,$VideosPath,$UsersOuPath)
         $Runspace = [runspacefactory]::CreateRunspace()
         $Runspace.ApartmentState = "STA"
@@ -1037,7 +865,173 @@ $Code1 = {
         $PSinstance.Runspace = $Runspace
         $job = $PSinstance.BeginInvoke()       
         }
-	Function Update-OutBox6 {
+	Function DeployRdsStart {
+		Param($syncHash,$RdsServerIpAddress,$RdsServerName,$AdminUserName,$AdminPassword,$CheckBoxOstFolderRootPath,$OstFolderRootPath,$CheckBoxUserDataFolderRootPath,$UserDataFolderRootPath,$RdsOuPath,$DomainDnsName)
+        $Runspace = [runspacefactory]::CreateRunspace()
+        $Runspace.ApartmentState = "STA"
+        $Runspace.ThreadOptions = "ReuseThread"
+        $Runspace.Open()
+        $Runspace.SessionStateProxy.SetVariable("syncHash",$syncHash)
+		$Runspace.SessionStateProxy.SetVariable("RdsServerIpAddress",$RdsServerIpAddress)
+		$Runspace.SessionStateProxy.SetVariable("RdsServerName",$RdsServerName)
+		$Runspace.SessionStateProxy.SetVariable("AdminUserName",$AdminUserName)
+		$Runspace.SessionStateProxy.SetVariable("AdminPassword",$AdminPassword)
+		$Runspace.SessionStateProxy.SetVariable("CheckBoxOstFolderRootPath",$CheckBoxOstFolderRootPath)
+		$Runspace.SessionStateProxy.SetVariable("OstFolderRootPath",$OstFolderRootPath)
+		$Runspace.SessionStateProxy.SetVariable("CheckBoxUserDataFolderRootPath",$CheckBoxUserDataFolderRootPath)
+		$Runspace.SessionStateProxy.SetVariable("UserDataFolderRootPath",$UserDataFolderRootPath)
+		$Runspace.SessionStateProxy.SetVariable("RdsOuPath",$RdsOuPath)
+		$Runspace.SessionStateProxy.SetVariable("DomainDnsName",$DomainDnsName)
+
+        $code4 = {
+            [INT]$I = 0
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress3.Value = $I } )
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox3.AddText("Connecting to $RdsServerIpAddress `n") } )
+            $UserName = "$AdminUserName"
+            $Password = "$AdminPassword"
+            $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ("$RdsServerIpAddress\$UserName", $(ConvertTo-SecureString -String $Password -AsPlainText -Force))
+            Set-Item WSMan:\localhost\Client\TrustedHosts -Value "$RdsServerIpAddress" -Force
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox3.AddText("Setting Autostart for RDS related Services `n") } )			
+            $Job = Invoke-Command -ComputerName $RdsServerIpAddress  -Credential $Credential  -AsJob -JobName 'RdsServices' -ScriptBlock {
+				$Services = @{
+					'Audiosrv' =  'Auto'
+					'SCardSvr' = 'Auto'
+					'WSearch'  = 'Auto'
+					}
+				$Services.keys | ForEach-Object { Set-Service -Name $_ -StartupType $($Services.$_) }
+				}
+            While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress3.Value = $I } ) }
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox3.AddText("Installing RDS Related Roles & Features `n") } )
+			$Job = Invoke-Command -ComputerName $RdsServerIpAddress  -Credential $Credential  -AsJob -JobName 'RdsRoles' -ScriptBlock {
+				$Roles = [ordered]@{
+					'Windows TIFF IFilter' =  'Windows-TIFF-IFilter'
+					'Remote Desktop Services' = 'RDS-RD-Server'
+					'Group Policy Management' = 'GPMC'
+					'Remote Server Administration Tools' = ('RSAT-AD-Tools','RSAT-DNS-Server','RSAT-RDS-Licensing-Diagnosis-UI','RDS-Licensing-UI')
+					}
+				$Roles.Values | ForEach-Object { Install-WindowsFeature -Name $_ }
+				}
+            If ( $CheckBoxOstFolderRootPath ) {
+                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox3.AddText("Configuring Disk 'DataOST' `n") } )
+                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox3.AddText("Creating D:\Users & Setting NTFS Security `n") } )
+            		$Job = Invoke-Command -ComputerName "$RdsServerIpAddress"  -Credential $Credential  -AsJob -JobName 'DataOST' -ScriptBlock {
+                    Param($OstFolderRootPath) ; 
+                    if ( (Get-Disk)[1].OperationalStatus -eq 'Offline' ) { Initialize-Disk -Number 1 }
+                    New-Partition -DiskNumber 1 -AssignDriveLetter -UseMaximumSize | Format-Volume -FileSystem NTFS -NewFileSystemLabel 'DataOst'
+                    Get-Acl -Path 'D:\' | ForEach-Object {
+                            $objACL = $_
+                            $objACL.Access | Where-Object { $_.IdentityReference -inotin ('NT AUTHORITY\SYSTEM','BUILTIN\Administrators') } | ForEach-Object { $objACL.RemoveAccessRule($_) }
+                            Set-Acl "D:\" $objACL
+                            }
+                    # $FolderPath = 'D:\Users'
+                    New-Item -Path $OstFolderRootPath -type directory -Force
+                    $Acl = Get-Acl  -Path  $OstFolderRootPath
+                    $acl.SetAccessRuleProtection($true,$false)
+                    $accessrule = New-Object system.security.AccessControl.FileSystemAccessRule("NT AUTHORITY\SYSTEM", "FullControl", "ObjectInherit,ContainerInherit", "None", "Allow")
+                    $acl.AddAccessRule($accessrule)
+                    $accessrule = New-Object system.security.AccessControl.FileSystemAccessRule("BUILTIN\Administrators", "FullControl", "ObjectInherit,ContainerInherit", "None", "Allow")
+                    $acl.AddAccessRule($accessrule)
+                    Set-Acl  -Path $OstFolderRootPath $acl
+                    } -ArgumentList ($OstFolderRootPath) 
+                    }
+            While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress3.Value = $I } ) }
+            If ( $CheckBoxUserDataFolderRootPath ) {
+                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox3.AddText("Configuring Disk 'DATA' `n") } )
+                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox3.AddText("Creating E:\Users & Setting NTFS Security `n") } )
+                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox3.AddText("Creating Hidden Share 'Users' `n") } )
+			        $Job = Invoke-Command -ComputerName "$RdsServerIpAddress"  -Credential $Credential  -AsJob -JobName 'UserData' -ScriptBlock {
+                    Param($UserDataFolderRootPath) ; 
+                    if ( (Get-Disk)[2].OperationalStatus -eq 'Offline' ) { Initialize-Disk -Number 2 }
+                    New-Partition -DiskNumber 2 -AssignDriveLetter -UseMaximumSize | Format-Volume -FileSystem NTFS -NewFileSystemLabel 'Data'
+                    Get-Acl -Path 'E:\' | ForEach-Object {
+                            $objACL = $_
+                            $objACL.Access | Where-Object { $_.IdentityReference -inotin ('NT AUTHORITY\SYSTEM','BUILTIN\Administrators') } | ForEach-Object { $objACL.RemoveAccessRule($_) }
+                            Set-Acl "E:\" $objACL
+                            }
+                    # $FolderPath = 'E:\Users'
+                    New-Item -Path $UserDataFolderRootPath -type directory -Force
+                    $Acl = Get-Acl  -Path  $UserDataFolderRootPath
+                    $acl.SetAccessRuleProtection($true,$false)
+                    $accessrule = New-Object system.security.AccessControl.FileSystemAccessRule("NT AUTHORITY\SYSTEM", "FullControl", "ObjectInherit,ContainerInherit", "None", "Allow")
+                    $acl.AddAccessRule($accessrule)
+                    $accessrule = New-Object system.security.AccessControl.FileSystemAccessRule("BUILTIN\Administrators", "FullControl", "ObjectInherit,ContainerInherit", "None", "Allow")
+                    $acl.AddAccessRule($accessrule)
+                    Set-Acl  -Path $UserDataFolderRootPath $acl
+                    New-SmbShare -Name 'Users$' -Path $UserDataFolderRootPath -FullAccess 'Everyone'
+                    } -ArgumentList ($UserDataFolderRootPath) 
+                    }
+            While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress3.Value = $I } ) }
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox3.AddText("Configuring IPv4 Proxy 192.168.13.100 `n") } )
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox3.AddText("Joining to Domain $DomainDnsName `n") } )
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox3.AddText("Renaming NetBiosName to $RdsServerName `n") } )
+			$Job = Invoke-Command -ComputerName "$RdsServerIpAddress"  -Credential $Credential  -AsJob -JobName 'RenameJoinRDS' -ScriptBlock {
+                    Param($RdsServerIpAddress,$RdsServerName,$AdminUserName,$AdminPassword,$RdsOuPath) ; 
+                    Get-NetIPConfiguration | Set-DnsClientServerAddress -ServerAddresses '192.168.13.100'
+                    $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ("$RdsServerIpAddress\$AdminUserName", $(ConvertTo-SecureString -String $AdminPassword -AsPlainText -Force))
+                    Add-Computer -DomainName $DomainDnsName -OUPath $RdsOuPath -Credential $Credential
+                    Rename-Computer  -NewName "$RdsServerName" -LocalCredential $Credential -DomainCredential $Credential -Force
+                    } -ArgumentList ($RdsServerIpAddress,$RdsServerName,$AdminUserName,$AdminPassword,$RdsOuPath) 
+            While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress3.Value = $I } ) }
+
+            Get-Job | Select-Object -Property Name, State, Command, @{Name='Error';Expression={ $_.ChildJobs[0].JobStateInfo.Reason }} | Export-Csv -Path "$env:windir\Logs\PushTheButtonJobs.csv" -NoTypeInformation -Force
+            If ((Get-Job).Where({$_.State -eq 'Failed'}).count -ne 0 ) 
+                {
+                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress3.Visibility = "Hidden" } )
+                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatus3.Content = "Installation Finished with ERRORS$(' .'*25)$(' '*20)Please consult PushTheButtonJobs.csv" } )
+                }
+                Else 
+                {
+                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress3.Visibility = "Hidden" } )
+                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatus3.Content = "Installation Finished$(' .'*135)$(' '*30) Please  REBOOT" } )
+                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ButtonStart3.Visibility = "Hidden" } )
+                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ButtonReboot3.Visibility = "Visible"  } )
+                }
+        }
+        $PSinstance = [powershell]::Create().AddScript($Code4)
+        $PSinstance.Runspace = $Runspace
+        $job = $PSinstance.BeginInvoke()
+        
+    }
+	Function DeployRdsReboot {
+		Param($syncHash,$RdsServerIpAddress,$AdminUserName,$AdminPassword)
+        $Runspace = [runspacefactory]::CreateRunspace()
+        $Runspace.ApartmentState = "STA"
+        $Runspace.ThreadOptions = "ReuseThread"
+        $Runspace.Open()
+        $Runspace.SessionStateProxy.SetVariable("syncHash",$syncHash)
+		$Runspace.SessionStateProxy.SetVariable("RdsServerIpAddress",$RdsServerIpAddress)
+		$Runspace.SessionStateProxy.SetVariable("AdminUserName",$AdminUserName)
+		$Runspace.SessionStateProxy.SetVariable("AdminPassword",$AdminPassword)
+        $code5 = {
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox3.AddText("Rebooting $RdsServerIpAddress `n") } )
+            $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ("$RdsServerIpAddress\$AdminUserName", $(ConvertTo-SecureString -String $AdminPassword -AsPlainText -Force))
+            Set-Item WSMan:\localhost\Client\TrustedHosts -Value "$RdsServerIpAddress" -Force
+			$Job = Invoke-Command -ComputerName $RdsServerIpAddress -Credential $Credential -AsJob -JobName "RebootRDS" -ScriptBlock {
+				Restart-Computer -Force
+				}
+            Get-Job | Select-Object -Property Name, State, Command, @{Name='Error';Expression={ $_.ChildJobs[0].JobStateInfo.Reason }} | Export-Csv -Path "$env:windir\Logs\PushTheButtonJobs.csv" -NoTypeInformation -Force
+            While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress3.Value = $I } ) }
+            If ((Get-Job).Where({$_.State -eq 'Failed'}).count -ne 0 ) 
+                {
+                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress3.Visibility = "Hidden" } )
+				$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ButtonReboot3.Visibility = "Hidden"  } )
+                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatus3.Content = "REBOOT Finished with ERRORS$(' .'*25)$(' '*20)Please consult PushTheButtonJobs.csv" } )
+                }
+                Else 
+                {
+                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress3.Visibility = "Hidden" } )
+                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatus3.Content = "Reboot Initiated$(' .'*45)" } )
+                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ButtonStart3.Visibility = "Hidden" } )
+                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ButtonReboot3.Visibility = "Hidden"  } )
+                }
+			
+        }
+        $PSinstance = [powershell]::Create().AddScript($Code5)
+        $PSinstance.Runspace = $Runspace
+        $job = $PSinstance.BeginInvoke()
+        
+    }
+	Function DeployUserStart {
 		Param($syncHash,$PrincipalName,$UserGivenName,$UserSurname,$Department,$HomeDirectory,$HomeDrive,$UsersOuPath,$RdsServerIpAddress,$AdminUserName,$AdminPassword,$DomainDnsName,$DomainNetbiosName)
         $Runspace = [runspacefactory]::CreateRunspace()
         $Runspace.ApartmentState = "STA"
@@ -1142,75 +1136,92 @@ $Code1 = {
 	$XAML.SelectNodes("//*[@*[contains(translate(name(.),'n','N'),'Name')]]")  | ForEach-Object { $syncHash.Add($_.Name, $syncHash.Window.Findname($_.Name)) }
 
 	# Click Actions
-    $syncHash.ButtonStart1.Add_Click({
-        $syncHash.ButtonStart1.IsEnabled = $False
+    $syncHash.DeployDcStart.Add_Click({
+        $syncHash.DeployDcStart.IsEnabled = $False
+		$syncHash.DeployOUStart.IsEnabled = $False
+        $syncHash.DeployStandardGpoStart.IsEnabled = $False
+        $syncHash.DeployFolderRedirectionStart.IsEnabled = $False
+		$syncHash.DeployRdsStart.IsEnabled = $False
+        $syncHash.DeployUserStart.IsEnabled = $False
         $syncHash.LabelStatus1.Visibility = "Visible"
         $syncHash.ProgressBarProgress1.Visibility = "Visible"
-		Update-OutBox1 -syncHash $syncHash -DnsForwarder $syncHash.TextBoxDnsServerForwarders.Text -DomainNetbiosName $SyncHash.TextBoxDomainNetbiosName.Text -DomainDnsName $SyncHash.TextBoxDomainDnsName.Text
+		DeployDcStart -syncHash $syncHash -DnsForwarder $syncHash.TextBoxDnsServerForwarders.Text -DomainNetbiosName $SyncHash.TextBoxDomainNetbiosName.Text -DomainDnsName $SyncHash.TextBoxDomainDnsName.Text
         # $SyncHash.host.ui.WriteVerboseLine($SyncHash.TextBoxDomainNetbiosName.Text)
         })
-    $syncHash.ButtonReboot1.Add_Click({
+    $syncHash.DeployDcReboot.Add_Click({
         Restart-Computer
         })
-    $syncHash.ButtonStart2.Add_Click({
-		$syncHash.ButtonStart1.IsEnabled = $False
-        $syncHash.ButtonStart2.IsEnabled = $False
+    $syncHash.DeployOUStart.Add_Click({
+        $syncHash.DeployDcStart.IsEnabled = $False
+		$syncHash.DeployOUStart.IsEnabled = $False
+        $syncHash.DeployStandardGpoStart.IsEnabled = $False
+        $syncHash.DeployFolderRedirectionStart.IsEnabled = $False
+		$syncHash.DeployRdsStart.IsEnabled = $False
+        $syncHash.DeployUserStart.IsEnabled = $False
         $syncHash.LabelStatus2.Visibility = "Visible"
         $syncHash.ProgressBarProgress2.Visibility = "Visible"
-		Update-OutBox2 -syncHash $syncHash -ManagedOuName $syncHash.TextBoxManagedOuName.Text -ClearmediaAdminUserName $SyncHash.TextBoxClearmediaAdminUserName.Text -ClearmediaAdminPassword $SyncHash.TextBoxClearmediaAdminPassword.Text
+		DeployOUStart -syncHash $syncHash -ManagedOuName $syncHash.TextBoxManagedOuName.Text -ClearmediaAdminUserName $SyncHash.TextBoxClearmediaAdminUserName.Text -ClearmediaAdminPassword $SyncHash.TextBoxClearmediaAdminPassword.Text
         # $SyncHash.host.ui.WriteVerboseLine($SyncHash.TextBoxDomainNetbiosName.Text)
         })
-    $syncHash.ButtonStart3.Add_Click({
-        $syncHash.ButtonStart3.IsEnabled = $False
-        $syncHash.LabelStatus3.Visibility = "Visible"
-        $syncHash.ProgressBarProgress3.Visibility = "Visible"
-		Update-OutBox3 -syncHash $syncHash -RdsServerIpAddress  $syncHash.TextBoxRdsServerIpAddress.Text -RdsServerName $syncHash.TextBoxRdsServerName.Text -AdminUserName $syncHash.TextBoxAdminUserName.Text -AdminPassword $syncHash.TextBoxAdminPassword.Text -CheckBoxOstFolderRootPath $SyncHash.CheckBoxOstFolderRootPath.IsChecked -OstFolderRootPath $syncHash.TextBoxOstFolderRootPath.Text -CheckBoxUserDataFolderRootPath $SyncHash.CheckBoxUserDataFolderRootPath.IsChecked -UserDataFolderRootPath $syncHash.TextBoxUserDataFolderRootPath.Text -RdsOuPath $SyncHash.TextBoxRdsOuPath.Text -DomainDnsName $SyncHash.TextBoxDomainDnsName.Text
-        })
-    $syncHash.ButtonReboot3.Add_Click({
-        $syncHash.LabelStatus3.Visibility = "Visible"
-        $syncHash.ProgressBarProgress3.Visibility = "Hidden"
-        ButtonReboot3 -syncHash $syncHash -RdsServerIpAddress  $syncHash.TextBoxRdsServerIpAddress.Text -AdminUserName $syncHash.TextBoxAdminUserName.Text -AdminPassword $syncHash.TextBoxAdminPassword.Text
-        })
-    $syncHash.ButtonStart4.Add_Click({
-		$syncHash.ButtonStart1.IsEnabled = $False
-        $syncHash.ButtonStart2.IsEnabled = $False
-		$syncHash.ButtonStart3.IsEnabled = $False
+    $syncHash.DeployStandardGpoStart.Add_Click({
+        $syncHash.DeployDcStart.IsEnabled = $False
+		$syncHash.DeployOUStart.IsEnabled = $False
+        $syncHash.DeployStandardGpoStart.IsEnabled = $False
+        $syncHash.DeployFolderRedirectionStart.IsEnabled = $False
+		$syncHash.DeployRdsStart.IsEnabled = $False
+        $syncHash.DeployUserStart.IsEnabled = $False
         $syncHash.LabelStatus4.Visibility = "Visible"
         $syncHash.ProgressBarProgress4.Visibility = "Visible"
-		Update-OutBox4 -syncHash $syncHash -TemplateSourcePath $syncHash.TextBoxTemplateSourcePath.Text -RdsOuPath $SyncHash.TextBoxRdsOuPath.Text -UsersOuPath $SyncHash.TextBoxUsersOuPath.Text -OstPath $SyncHash.TextBoxOstPath.Text -CheckBox1 $SyncHash.CheckBox1.IsChecked -CheckBox2 $SyncHash.CheckBox2.IsChecked -CheckBox3 $SyncHash.CheckBox3.IsChecked -CheckBox4 $SyncHash.CheckBox4.IsChecked -CheckBox5 $SyncHash.CheckBox5.IsChecked -CheckBox6 $SyncHash.CheckBox6.IsChecked -CheckBox7 $SyncHash.CheckBox7.IsChecked
+		DeployStandardGpoStart -syncHash $syncHash -TemplateSourcePath $syncHash.TextBoxTemplateSourcePath.Text -RdsOuPath $SyncHash.TextBoxRdsOuPath.Text -UsersOuPath $SyncHash.TextBoxUsersOuPath.Text -OstPath $SyncHash.TextBoxOstPath.Text -CheckBox1 $SyncHash.CheckBox1.IsChecked -CheckBox2 $SyncHash.CheckBox2.IsChecked -CheckBox3 $SyncHash.CheckBox3.IsChecked -CheckBox4 $SyncHash.CheckBox4.IsChecked -CheckBox5 $SyncHash.CheckBox5.IsChecked -CheckBox6 $SyncHash.CheckBox6.IsChecked -CheckBox7 $SyncHash.CheckBox7.IsChecked
         #$SyncHash.host.ui.WriteVerboseLine($SyncHash.checkBox2.IsChecked)
         })
-    $syncHash.ButtonStart5.Add_Click({
-		$syncHash.ButtonStart1.IsEnabled = $False
-        $syncHash.ButtonStart2.IsEnabled = $False
-		$syncHash.ButtonStart3.IsEnabled = $False
-		$syncHash.ButtonStart4.IsEnabled = $False
+    $syncHash.DeployFolderRedirectionStart.Add_Click({
+        $syncHash.DeployDcStart.IsEnabled = $False
+		$syncHash.DeployOUStart.IsEnabled = $False
+        $syncHash.DeployStandardGpoStart.IsEnabled = $False
+        $syncHash.DeployFolderRedirectionStart.IsEnabled = $False
+		$syncHash.DeployRdsStart.IsEnabled = $False
+        $syncHash.DeployUserStart.IsEnabled = $False
         $syncHash.LabelStatus5.Visibility = "Visible"
         $syncHash.ProgressBarProgress5.Visibility = "Visible"
-		Update-OutBox5 -syncHash $syncHash -CheckBoxDocuments $syncHash.CheckBoxDocuments.IsChecked -DocumentsPath $syncHash.TextBoxDocumentsPath.Text -CheckBoxMusic $syncHash.CheckBoxMusic.IsChecked -MusicPath $syncHash.TextBoxMusicPath.Text -CheckBoxPictures $syncHash.CheckBoxPictures.IsChecked -PicturesPath $syncHash.TextBoxPicturesPath.Text -CheckBoxVideos $syncHash.CheckBoxVideos.IsChecked -VideosPath $syncHash.TextBoxVideosPath.Text -UsersOuPath $SyncHash.TextBoxUsersOuPath.Text
+		DeployFolderRedirectionStart -syncHash $syncHash -CheckBoxDocuments $syncHash.CheckBoxDocuments.IsChecked -DocumentsPath $syncHash.TextBoxDocumentsPath.Text -CheckBoxMusic $syncHash.CheckBoxMusic.IsChecked -MusicPath $syncHash.TextBoxMusicPath.Text -CheckBoxPictures $syncHash.CheckBoxPictures.IsChecked -PicturesPath $syncHash.TextBoxPicturesPath.Text -CheckBoxVideos $syncHash.CheckBoxVideos.IsChecked -VideosPath $syncHash.TextBoxVideosPath.Text -UsersOuPath $SyncHash.TextBoxUsersOuPath.Text
         #$SyncHash.host.ui.WriteVerboseLine($SyncHash.checkBox2.IsChecked)
         })
-    $syncHash.ButtonStart6.Add_Click({
-		$syncHash.ButtonStart1.IsEnabled = $False
-        $syncHash.ButtonStart2.IsEnabled = $False
-		$syncHash.ButtonStart3.IsEnabled = $False
-		$syncHash.ButtonStart4.IsEnabled = $False
-		$syncHash.ButtonStart5.IsEnabled = $False
+    $syncHash.DeployRdsStart.Add_Click({
+        $syncHash.DeployDcStart.IsEnabled = $False
+		$syncHash.DeployOUStart.IsEnabled = $False
+        $syncHash.DeployStandardGpoStart.IsEnabled = $False
+        $syncHash.DeployFolderRedirectionStart.IsEnabled = $False
+		$syncHash.DeployRdsStart.IsEnabled = $False
+        $syncHash.DeployUserStart.IsEnabled = $False
+        $syncHash.LabelStatus3.Visibility = "Visible"
+        $syncHash.ProgressBarProgress3.Visibility = "Visible"
+		DeployRdsStart -syncHash $syncHash -RdsServerIpAddress  $syncHash.TextBoxRdsServerIpAddress.Text -RdsServerName $syncHash.TextBoxRdsServerName.Text -AdminUserName $syncHash.TextBoxAdminUserName.Text -AdminPassword $syncHash.TextBoxAdminPassword.Text -CheckBoxOstFolderRootPath $SyncHash.CheckBoxOstFolderRootPath.IsChecked -OstFolderRootPath $syncHash.TextBoxOstFolderRootPath.Text -CheckBoxUserDataFolderRootPath $SyncHash.CheckBoxUserDataFolderRootPath.IsChecked -UserDataFolderRootPath $syncHash.TextBoxUserDataFolderRootPath.Text -RdsOuPath $SyncHash.TextBoxRdsOuPath.Text -DomainDnsName $SyncHash.TextBoxDomainDnsName.Text
+        })
+    $syncHash.DeployRdsReboot.Add_Click({
+        $syncHash.DeployRdsReboot.Visibility = "Visible"
+        $syncHash.ProgressBarProgress3.Visibility = "Hidden"
+        DeployRdsReboot -syncHash $syncHash -RdsServerIpAddress  $syncHash.TextBoxRdsServerIpAddress.Text -AdminUserName $syncHash.TextBoxAdminUserName.Text -AdminPassword $syncHash.TextBoxAdminPassword.Text
+        })
+    $syncHash.DeployUserStart.Add_Click({
+        $syncHash.DeployDcStart.IsEnabled = $False
+		$syncHash.DeployOUStart.IsEnabled = $False
+        $syncHash.DeployStandardGpoStart.IsEnabled = $False
+        $syncHash.DeployFolderRedirectionStart.IsEnabled = $False
+		$syncHash.DeployRdsStart.IsEnabled = $False
+        $syncHash.DeployUserStart.IsEnabled = $False
         $syncHash.LabelStatus6.Visibility = "Visible"
-        $syncHash.ProgressBarProgress5.Visibility = "Visible"
-		Update-OutBox6 -syncHash $syncHash -PrincipalName $syncHash.TextBoxUserPrincipalName.Text -UserGivenName $syncHash.TextBoxUserGivenName.Text -UserSurname $syncHash.TextBoxUserSurname.Text -Department $syncHash.TextBoxDepartment.Text -HomeDirectory $syncHash.TextBoxHomeDirectory.Text -HomeDrive $syncHash.TextBoxHomeDrive.Text -UsersOuPath $syncHash.TextBoxUsersOuPath.Text -RdsServerIpAddress $syncHash.TextBoxRdsServerIpAddress.Text -AdminUserName $syncHash.TextBoxAdminUserName.Text -AdminPassword $syncHash.TextBoxAdminPassword.Text -DomainDnsName $SyncHash.TextBoxDomainDnsName.Text -DomainNetbiosName $SyncHash.TextBoxDomainNetbiosName.Text
+        $syncHash.ProgressBarProgress6.Visibility = "Visible"
+		DeployUserStart -syncHash $syncHash -PrincipalName $syncHash.TextBoxUserPrincipalName.Text -UserGivenName $syncHash.TextBoxUserGivenName.Text -UserSurname $syncHash.TextBoxUserSurname.Text -Department $syncHash.TextBoxDepartment.Text -HomeDirectory $syncHash.TextBoxHomeDirectory.Text -HomeDrive $syncHash.TextBoxHomeDrive.Text -UsersOuPath $syncHash.TextBoxUsersOuPath.Text -RdsServerIpAddress $syncHash.TextBoxRdsServerIpAddress.Text -AdminUserName $syncHash.TextBoxAdminUserName.Text -AdminPassword $syncHash.TextBoxAdminPassword.Text -DomainDnsName $SyncHash.TextBoxDomainDnsName.Text -DomainNetbiosName $SyncHash.TextBoxDomainNetbiosName.Text
 
 
         #$SyncHash.host.ui.WriteVerboseLine($SyncHash.checkBox2.IsChecked)
         })
-
+   $syncHash.Window.Add_Closing({[System.Windows.Forms.Application]::Exit() ; Stop-Process $pid})
+ 
 
    $syncHash.Window.ShowDialog()
-   $Runspace.Close()
-   $Runspace.Dispose()
-}
 
-
-$PSinstance1 = [powershell]::Create().AddScript($Code1)
-$PSinstance1.Runspace = $Runspace
-$job = $PSinstance1.BeginInvoke()
+   #$Runspace.Close()
+   #$Runspace.Dispose()
+   
