@@ -984,6 +984,9 @@ $SyncHash.Host = $Host
                 {
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress3.Visibility = "Hidden" } )
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatus3.Content = "Installation Finished with ERRORS$(' .'*25)$(' '*20)Please consult PushTheButtonJobs.csv" } )
+                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.DeployRdsStart.IsEnabled = $True } )
+                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.DeployRdsStart.Visibility = "Visible" } )
+                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.DeployUserStart.IsEnabled = $True } )
                 }
                 Else 
                 {
@@ -1159,7 +1162,7 @@ $SyncHash.Host = $Host
         Restart-Computer
         })
     $syncHash.DeployOUStart.Add_Click({
-        $syncHash.DeployDcStart.IsEnabled = $False
+        $syncHash.DeployDcStart.Visibility = "Hidden"
 		$syncHash.DeployOUStart.IsEnabled = $False
         $syncHash.LabelStatus2.Visibility = "Visible"
         $syncHash.ProgressBarProgress2.Visibility = "Visible"
@@ -1167,8 +1170,8 @@ $SyncHash.Host = $Host
         # $SyncHash.host.ui.WriteVerboseLine($SyncHash.TextBoxDomainNetbiosName.Text)
         })
     $syncHash.DeployStandardGpoStart.Add_Click({
-        $syncHash.DeployDcStart.IsEnabled = $False
-		$syncHash.DeployOUStart.IsEnabled = $False
+        $syncHash.DeployDcStart.Visibility = "Hidden"
+		$syncHash.DeployOUStart.Visibility = "Hidden"
         $syncHash.DeployStandardGpoStart.IsEnabled = $False
         $syncHash.LabelStatus4.Visibility = "Visible"
         $syncHash.ProgressBarProgress4.Visibility = "Visible"
@@ -1176,19 +1179,19 @@ $SyncHash.Host = $Host
         #$SyncHash.host.ui.WriteVerboseLine($SyncHash.checkBox2.IsChecked)
         })
     $syncHash.DeployFolderRedirectionStart.Add_Click({
-        $syncHash.DeployDcStart.IsEnabled = $False
-		$syncHash.DeployOUStart.IsEnabled = $False
-        $syncHash.DeployFolderRedirectionStart.IsEnabled = $False
+        $syncHash.DeployDcStart.Visibility = "Visible"
+		$syncHash.DeployOUStart.Visibility = "Hidden"
+        $syncHash.DeployFolderRedirectionStart.Visibility = "Hidden"
         $syncHash.LabelStatus5.Visibility = "Visible"
         $syncHash.ProgressBarProgress5.Visibility = "Visible"
 		DeployFolderRedirectionStart -syncHash $syncHash -CheckBoxDocuments $syncHash.CheckBoxDocuments.IsChecked -DocumentsPath $syncHash.TextBoxDocumentsPath.Text -CheckBoxMusic $syncHash.CheckBoxMusic.IsChecked -MusicPath $syncHash.TextBoxMusicPath.Text -CheckBoxPictures $syncHash.CheckBoxPictures.IsChecked -PicturesPath $syncHash.TextBoxPicturesPath.Text -CheckBoxVideos $syncHash.CheckBoxVideos.IsChecked -VideosPath $syncHash.TextBoxVideosPath.Text -UsersOuPath $SyncHash.TextBoxUsersOuPath.Text
         #$SyncHash.host.ui.WriteVerboseLine($SyncHash.checkBox2.IsChecked)
         })
     $syncHash.DeployRdsStart.Add_Click({
-        $syncHash.DeployDcStart.IsEnabled = $False
-		$syncHash.DeployOUStart.IsEnabled = $False
-        $syncHash.DeployStandardGpoStart.IsEnabled = $False
-        $syncHash.DeployFolderRedirectionStart.IsEnabled = $False
+        $syncHash.DeployDcStart.Visibility = "Hidden"
+		$syncHash.DeployOUStart.Visibility = "Hidden"
+        $syncHash.DeployStandardGpoStart.Visibility = "Hidden"
+        $syncHash.DeployFolderRedirectionStart.Visibility = "Hidden"
         $syncHash.DeployRdsStart.IsEnabled = $False		
         $syncHash.DeployUserStart.IsEnabled = $False
         $syncHash.LabelStatus3.Visibility = "Visible"
@@ -1201,8 +1204,8 @@ $SyncHash.Host = $Host
         DeployRdsReboot -syncHash $syncHash -RdsServerIpAddress  $syncHash.TextBoxRdsServerIpAddress.Text -AdminUserName $syncHash.TextBoxAdminUserName.Text -AdminPassword $syncHash.TextBoxAdminPassword.Text
         })
     $syncHash.DeployUserStart.Add_Click({
-        $syncHash.DeployDcStart.IsEnabled = $False
-		$syncHash.DeployOUStart.IsEnabled = $False
+        $syncHash.DeployDcStart.Visibility = "Visible"
+		$syncHash.DeployOUStart.Visibility = "Hidden"
         $syncHash.DeployStandardGpoStart.IsEnabled = $False
         $syncHash.DeployFolderRedirectionStart.IsEnabled = $False
 		$syncHash.DeployRdsStart.IsEnabled = $False
