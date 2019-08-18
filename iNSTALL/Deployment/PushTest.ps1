@@ -1,8 +1,18 @@
-$DomainNetbiosName = "Joc"
-$DomainDNSName = "Joc.cloud"
+# Check History
+Try { $DeployDcStart = Get-ItemPropertyValue -Path 'HKCU:\Software\ClearMedia\PushTheButton' -Name 'DeployDcStart' }
+    Catch { $DeployDcStart = 'Visible' }
+Try { $DeployOuStart = Get-ItemPropertyValue -Path 'HKCU:\Software\ClearMedia\PushTheButton' -Name 'DeployDcStart' }
+    Catch { $DeployOuStart = 'Visible' }
+
+Try { $DomainNetbiosName = Get-ItemPropertyValue -Path 'HKCU:\Software\ClearMedia\PushTheButton' -Name 'DomainNetbiosName' }
+    Catch { $DomainNetbiosName = 'ClearMedia'}
+Try { $DomainDNSName = Get-ItemPropertyValue -Path 'HKCU:\Software\ClearMedia\PushTheButton' -Name 'DomainDNSName' }
+    Catch { $DomainDNSName = 'ClearMedia.cloud' }
 $ADRootDSE = $(($DomainDNSName.Replace('.',',DC=')).insert(0,'DC='))
-$RdsOuPath = "OU=RDS,OU=Servers,OU=SME,$ADRootDSE"
-$UsersOuPath = "OU=Users,OU=SME,$ADRootDSE"
+Try { $RdsOuPath = Get-ItemPropertyValue -Path 'HKCU:\Software\ClearMedia\PushTheButton' -Name 'RdsOuPath' }
+    Catch { $RdsOuPath = "OU=RDS,OU=Servers,OU=SME,$ADRootDSE" }
+Try { $UsersOuPath = Get-ItemPropertyValue -Path 'HKCU:\Software\ClearMedia\PushTheButton' -Name 'RdsOuPath' }
+    Catch { $UsersOuPath = "OU=Users,OU=SME,$ADRootDSE" }
 
 Set-DisplayResolution -Height 800 -Width 1280 -Force
 Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase, System.Windows.Forms, System.Drawing
@@ -30,7 +40,7 @@ $SyncHash.Host = $Host
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
                     <TextBlock Name="TextBlockOutBox1" Text="" Foreground="WHITE" Background="#FF22206F" />
                     </ScrollViewer>
-                    <Button Name="DeployDcStart" Content="START"  HorizontalAlignment="Left" Margin="950,28,0,0" VerticalAlignment="Top" Width="250" Height="150" Foreground="Blue" FontWeight="Bold" FontSize="50" Background="Red" Visibility="Visible" />
+                    <Button Name="DeployDcStart" Content="START"  HorizontalAlignment="Left" Margin="950,28,0,0" VerticalAlignment="Top" Width="250" Height="150" Foreground="Blue" FontWeight="Bold" FontSize="50" Background="Red" Visibility="$DeployDcStart" />
                     <Button Name="DeployDcReboot" Content="REBOOT"  HorizontalAlignment="Left" Margin="950,28,0,0" VerticalAlignment="Top" Width="250" Height="150" Foreground="Blue" FontWeight="Bold" FontSize="50" Background="Red" Visibility="Hidden"  />
                      <StatusBar Name="StatusBarStatus1" HorizontalAlignment="Left" Height="24" Margin="2,670,0,0" VerticalAlignment="Top" Width="1256" Background="#FFD6D2B0" >
                         <Label Name="LabelStatus1" Content="In Progress ...." Height="25" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center"  Visibility="Hidden" />
@@ -49,7 +59,7 @@ $SyncHash.Host = $Host
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
                     <TextBlock Name="TextBlockOutBox2" Text="" Foreground="WHITE" Background="#FF22206F" />
                     </ScrollViewer>
-                    <Button Name="DeployOUStart" Content="START"  HorizontalAlignment="Left" Margin="950,28,0,0" VerticalAlignment="Top" Width="250" Height="150" Foreground="Blue" FontWeight="Bold" FontSize="50" Background="Red" Visibility="Visible" />
+                    <Button Name="DeployOUStart" Content="START"  HorizontalAlignment="Left" Margin="950,28,0,0" VerticalAlignment="Top" Width="250" Height="150" Foreground="Blue" FontWeight="Bold" FontSize="50" Background="Red" Visibility="$DeployOuStart" />
                      <StatusBar Name="StatusBarStatus2" HorizontalAlignment="Left" Height="24" Margin="2,670,0,0" VerticalAlignment="Top" Width="1256" Background="#FFD6D2B0" >
                         <Label Name="LabelStatus2" Content="In Progress ...." Height="25" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center"  Visibility="Hidden" />
                         <ProgressBar Name="ProgressBarProgress2" Width="1150" Height="15" Value="1" Visibility="Hidden" />
@@ -204,7 +214,7 @@ $SyncHash.Host = $Host
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox1.AddText("Installing Remote Server Administration Tools `n") } )
             $Job = Start-Job -Name 'Remote Server Administration Tools' -ScriptBlock { Install-WindowsFeature -Name  'RSAT-AD-Tools','RSAT-DNS-Server','RSAT-RDS-Licensing-Diagnosis-UI','RDS-Licensing-UI' -ErrorAction Stop }
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500  ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress1.Value = $I } ) }
-			$DnsForwarder.Split(',')  | Sort-Object -Descending | ForEach-Object {
+			$DnsForwarder.Split(',') | Sort-Object -Descending | ForEach-Object {
                     $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox1.AddText("Adding DNS Forwarder $_ `n") } )
                     $Job = Start-Job -Name "Adding DNS Forwarder $_" -ScriptBlock { Param( $DnsForwarder ) ; Add-DnsServerForwarder -IPAddress ($DnsForwarder.Split(',') | Sort-Object) -ErrorAction Stop } -ArgumentList ( $_ )
                     While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress1.Value = $I } )  }
@@ -221,6 +231,10 @@ $SyncHash.Host = $Host
                 }
                 Else 
                 {
+				New-Item -Path  'HKCU:\Software\ClearMedia\PushTheButton' -Force
+				New-ItemProperty -Path 'HKCU:\Software\ClearMedia\PushTheButton' -Name 'DeployDcStart' -PropertyType 'String' -Value 'Hidden' -Force
+				New-ItemProperty -Path 'HKCU:\Software\ClearMedia\PushTheButton' -Name 'DomainNetbiosName' -PropertyType 'String' -Value $DomainNetbiosName -Force
+				New-ItemProperty -Path 'HKCU:\Software\ClearMedia\PushTheButton' -Name 'DomainDNSName' -PropertyType 'String' -Value $DomainDNSName -Force
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress1.Visibility = "Hidden" } )
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatus1.Content = "Installation Finished$(' .'*45)$(' '*20)PLEASE REBOOT" } )
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.DeployDcStart.Visibility = "Hidden" } )
@@ -349,7 +363,11 @@ $SyncHash.Host = $Host
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatus2.Content = "Installation Finished with ERRORS$(' .'*25)$(' '*20)Please consult PushTheButtonError.log" } )
                 }
                 Else
-                { $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatus2.Content = "Installation Finished$(' .'*45)$(' '*20)" } ) }
+                {
+				New-Item -Path  'HKCU:\Software\ClearMedia\PushTheButton' -Force
+				New-ItemProperty -Path 'HKCU:\Software\ClearMedia\PushTheButton' -Name 'DeployOuStart' -PropertyType 'String' -Value 'Hidden' -Force
+				$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatus2.Content = "Installation Finished$(' .'*45)$(' '*20)" } )
+				}
             }
         $PSinstance = [powershell]::Create().AddScript($Code3)
         $PSinstance.Runspace = $Runspace
@@ -761,6 +779,9 @@ $SyncHash.Host = $Host
 				}
                 Else
                 {
+				New-Item -Path  'HKCU:\Software\ClearMedia\PushTheButton' -Force
+				New-ItemProperty -Path 'HKCU:\Software\ClearMedia\PushTheButton' -Name 'RdsOuPath' -PropertyType 'String' -Value $RdsOuPath -Force
+				New-ItemProperty -Path 'HKCU:\Software\ClearMedia\PushTheButton' -Name 'UsersOuPath' -PropertyType 'String' -Value $UsersOuPath -Force
 				$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatus4.Content = "Installation Finished$(' .'*45)$(' '*20)" } )
 				$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.DeployStandardGpoStart.Visibility = "Visible"  } )
 				}
@@ -1156,14 +1177,14 @@ $SyncHash.Host = $Host
 	# Click Actions
     $syncHash.DeployDcStart.Add_Click({
         $syncHash.DeployDcStart.IsEnabled = $False
-	$syncHash.DeployOUStart.IsEnabled = $False
+		$syncHash.DeployOUStart.IsEnabled = $False
         $syncHash.DeployStandardGpoStart.IsEnabled = $False
         $syncHash.DeployFolderRedirectionStart.IsEnabled = $False
-	$syncHash.DeployRdsStart.IsEnabled = $False
+        $syncHash.DeployRdsStart.IsEnabled = $False		
         $syncHash.DeployUserStart.IsEnabled = $False
         $syncHash.LabelStatus1.Visibility = "Visible"
         $syncHash.ProgressBarProgress1.Visibility = "Visible"
-	DeployDcStart -syncHash $syncHash -DnsForwarder $syncHash.TextBoxDnsServerForwarders.Text -DomainNetbiosName $SyncHash.TextBoxDomainNetbiosName.Text -DomainDnsName $SyncHash.TextBoxDomainDnsName.Text
+		DeployDcStart -syncHash $syncHash -DnsForwarder $syncHash.TextBoxDnsServerForwarders.Text -DomainNetbiosName $SyncHash.TextBoxDomainNetbiosName.Text -DomainDnsName $SyncHash.TextBoxDomainDnsName.Text
         # $SyncHash.host.ui.WriteVerboseLine($SyncHash.TextBoxDomainNetbiosName.Text)
         })
     $syncHash.DeployDcReboot.Add_Click({
