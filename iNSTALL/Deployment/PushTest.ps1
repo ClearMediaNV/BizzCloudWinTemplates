@@ -221,8 +221,8 @@ $SyncHash.Host = $Host
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress1.Visibility = "Hidden" } )
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatus1.Content = "Installation Finished$(' .'*45)$(' '*20)PLEASE REBOOT" } )
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.DeployDcStart.Visibility = "Hidden" } )
-                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.DeployDcSReboot.IsEnabled = $True } )
-                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.DeployDcSReboot.Visibility = "Visible" } )				
+                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.DeployDcReboot.IsEnabled = $True } )
+                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.DeployDcReboot.Visibility = "Visible" } )				
                 }
         }
         $PSinstance = [powershell]::Create().AddScript($Code2)
@@ -1153,13 +1153,14 @@ $SyncHash.Host = $Host
 	# Click Actions
     $syncHash.DeployDcStart.Add_Click({
         $syncHash.DeployDcStart.IsEnabled = $False
-		$syncHash.DeployOUStart.IsEnabled = $False
+	$syncHash.DeployOUStart.IsEnabled = $False
         $syncHash.DeployStandardGpoStart.IsEnabled = $False
         $syncHash.DeployFolderRedirectionStart.IsEnabled = $False
+	$syncHash.DeployRdsStart.IsEnabled = $False
         $syncHash.DeployUserStart.IsEnabled = $False
         $syncHash.LabelStatus1.Visibility = "Visible"
         $syncHash.ProgressBarProgress1.Visibility = "Visible"
-		DeployDcStart -syncHash $syncHash -DnsForwarder $syncHash.TextBoxDnsServerForwarders.Text -DomainNetbiosName $SyncHash.TextBoxDomainNetbiosName.Text -DomainDnsName $SyncHash.TextBoxDomainDnsName.Text
+	DeployDcStart -syncHash $syncHash -DnsForwarder $syncHash.TextBoxDnsServerForwarders.Text -DomainNetbiosName $SyncHash.TextBoxDomainNetbiosName.Text -DomainDnsName $SyncHash.TextBoxDomainDnsName.Text
         # $SyncHash.host.ui.WriteVerboseLine($SyncHash.TextBoxDomainNetbiosName.Text)
         })
     $syncHash.DeployDcReboot.Add_Click({
