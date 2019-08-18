@@ -1,3 +1,6 @@
+$DomainNetbiosName = "Joc"
+$DomainDNSName = "Joc.cloud"
+
 Set-DisplayResolution -Height 800 -Width 1280 -Force
 Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase, System.Windows.Forms, System.Drawing
 
@@ -18,8 +21,8 @@ $SyncHash.Host = $Host
                     <Label Name="LabelDomainNetbiosName" Content="Domain NetbiosName" HorizontalAlignment="Left" Height="28" Margin="10,28,0,0" VerticalAlignment="Top" Width="165"/>
                     <Label Name="LabelDomainName" Content="Domain Name" HorizontalAlignment="Left" Height="28" Margin="10,61,0,0" VerticalAlignment="Top" Width="165" RenderTransformOrigin="0.452,2.089"/>
                     <Label Name="LabelDnsServerForwarders" Content="Dns Server Forwarders" HorizontalAlignment="Left" Height="28" Margin="10,94,0,0" VerticalAlignment="Top" Width="165"/>
-                    <TextBox Name="TextBoxDomainNetbiosName"  HorizontalAlignment="Left" Height="22" Margin="180,28,0,0" Text="ClearMedia" VerticalAlignment="Top" Width="180" TabIndex="1" IsTabStop="False" RenderTransformOrigin="0.673,0.523"/>
-                    <TextBox Name="TextBoxDomainDnsName" HorizontalAlignment="Left" Height="22" Margin="180,61,0,0" Text="ClearMedia.cloud" VerticalAlignment="Top" Width="180" RenderTransformOrigin="0.462,0.455"/>
+                    <TextBox Name="TextBoxDomainNetbiosName"  HorizontalAlignment="Left" Height="22" Margin="180,28,0,0" Text="$DomainNetbiosName" VerticalAlignment="Top" Width="180" TabIndex="1" IsTabStop="False" RenderTransformOrigin="0.673,0.523"/>
+                    <TextBox Name="TextBoxDomainDnsName" HorizontalAlignment="Left" Height="22" Margin="180,61,0,0" Text="$DomainDNSName" VerticalAlignment="Top" Width="180" RenderTransformOrigin="0.462,0.455"/>
                     <TextBox Name="TextBoxDnsServerForwarders" HorizontalAlignment="Left" Height="22" Margin="180,94,0,0" Text="195.238.2.21,195.238.2.22,8.8.8.8" VerticalAlignment="Top" Width="180"/>
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
                     <TextBlock Name="TextBlockOutBox1" Text="" Foreground="WHITE" Background="#FF22206F" />
@@ -1128,14 +1131,15 @@ $SyncHash.Host = $Host
                 {
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress6.Visibility = "Hidden" } )
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatus6.Content = "User Added with ERRORS$(' .'*25)$(' '*20)Please consult PushTheButtonJobs.csv" } )
-                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.DeployUserStart.Visibility = "Hidden"  } )								
+                							
                 }
                 Else 
                 {
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress6.Visibility = "Hidden" } )
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatus6.Content = "User Added $(' .'*135)$(' '*30)" } )
-                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.DeployUserStart.Visibility = "Hidden"  } )								
+                								
                 }
+		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.DeployUserStart.Visibility = "Visible"  } )	
             }
         $PSinstance = [powershell]::Create().AddScript($Code6)
         $PSinstance.Runspace = $Runspace
@@ -1204,12 +1208,12 @@ $SyncHash.Host = $Host
         DeployRdsReboot -syncHash $syncHash -RdsServerIpAddress  $syncHash.TextBoxRdsServerIpAddress.Text -AdminUserName $syncHash.TextBoxAdminUserName.Text -AdminPassword $syncHash.TextBoxAdminPassword.Text
         })
     $syncHash.DeployUserStart.Add_Click({
-        $syncHash.DeployDcStart.Visibility = "Visible"
+        $syncHash.DeployUserStart.Visibility = "Hidden"
 		$syncHash.DeployOUStart.Visibility = "Hidden"
         $syncHash.DeployStandardGpoStart.IsEnabled = $False
         $syncHash.DeployFolderRedirectionStart.IsEnabled = $False
-		$syncHash.DeployRdsStart.IsEnabled = $False
-        $syncHash.DeployUserStart.IsEnabled = $False
+	
+        
         $syncHash.LabelStatus6.Visibility = "Visible"
         $syncHash.ProgressBarProgress6.Visibility = "Visible"
 		DeployUserStart -syncHash $syncHash -PrincipalName $syncHash.TextBoxUserPrincipalName.Text -UserGivenName $syncHash.TextBoxUserGivenName.Text -UserSurname $syncHash.TextBoxUserSurname.Text -Department $syncHash.TextBoxDepartment.Text -HomeDirectory $syncHash.TextBoxHomeDirectory.Text -HomeDrive $syncHash.TextBoxHomeDrive.Text -UsersOuPath $syncHash.TextBoxUsersOuPath.Text -RdsServerIpAddress $syncHash.TextBoxRdsServerIpAddress.Text -AdminUserName $syncHash.TextBoxAdminUserName.Text -AdminPassword $syncHash.TextBoxAdminPassword.Text -DomainDnsName $SyncHash.TextBoxDomainDnsName.Text -DomainNetbiosName $SyncHash.TextBoxDomainNetbiosName.Text
