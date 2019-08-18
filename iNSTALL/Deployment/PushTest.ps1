@@ -5,9 +5,8 @@ Try { Get-Item -Path  'HKLM:\Software\ClearMedia\PushTheButton' | Out-Null }
     Catch { Get-Item -Path  'HKLM:\Software\ClearMedia\PushTheButton' }
 Try { $DeployDcStart = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DeployDcStart' }
     Catch { $DeployDcStart = 'Visible' }
-Try { $DeployOuStart = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DeployDcStart' }
+Try { $DeployOuStart = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DeployOuStart' }
     Catch { $DeployOuStart = 'Visible' }
-
 Try { $DomainNetbiosName = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DomainNetbiosName' }
     Catch { $DomainNetbiosName = 'ClearMedia'}
 Try { $DomainDNSName = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DomainDNSName' }
