@@ -1,4 +1,5 @@
 # Check History
+New-Item -Path  'HKCU:\Software\ClearMedia\PushTheButton' -Force
 Try { $DeployDcStart = Get-ItemPropertyValue -Path 'HKCU:\Software\ClearMedia\PushTheButton' -Name 'DeployDcStart' }
     Catch { $DeployDcStart = 'Visible' }
 Try { $DeployOuStart = Get-ItemPropertyValue -Path 'HKCU:\Software\ClearMedia\PushTheButton' -Name 'DeployDcStart' }
@@ -231,10 +232,9 @@ $SyncHash.Host = $Host
                 }
                 Else 
                 {
-				New-Item -Path  'HKCU:\Software\ClearMedia\PushTheButton' -Force
-				New-ItemProperty -Path 'HKCU:\Software\ClearMedia\PushTheButton' -Name 'DeployDcStart' -PropertyType 'String' -Value 'Hidden' -Force
-				New-ItemProperty -Path 'HKCU:\Software\ClearMedia\PushTheButton' -Name 'DomainNetbiosName' -PropertyType 'String' -Value $DomainNetbiosName -Force
-				New-ItemProperty -Path 'HKCU:\Software\ClearMedia\PushTheButton' -Name 'DomainDNSName' -PropertyType 'String' -Value $DomainDNSName -Force
+		New-ItemProperty -Path 'HKCU:\Software\ClearMedia\PushTheButton' -Name 'DeployDcStart' -PropertyType 'String' -Value 'Hidden' -Force
+		New-ItemProperty -Path 'HKCU:\Software\ClearMedia\PushTheButton' -Name 'DomainNetbiosName' -PropertyType 'String' -Value $DomainNetbiosName -Force
+		New-ItemProperty -Path 'HKCU:\Software\ClearMedia\PushTheButton' -Name 'DomainDNSName' -PropertyType 'String' -Value $DomainDNSName -Force
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress1.Visibility = "Hidden" } )
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatus1.Content = "Installation Finished$(' .'*45)$(' '*20)PLEASE REBOOT" } )
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.DeployDcStart.Visibility = "Hidden" } )
@@ -364,10 +364,9 @@ $SyncHash.Host = $Host
                 }
                 Else
                 {
-				New-Item -Path  'HKCU:\Software\ClearMedia\PushTheButton' -Force
-				New-ItemProperty -Path 'HKCU:\Software\ClearMedia\PushTheButton' -Name 'DeployOuStart' -PropertyType 'String' -Value 'Hidden' -Force
-				$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatus2.Content = "Installation Finished$(' .'*45)$(' '*20)" } )
-				}
+		New-ItemProperty -Path 'HKCU:\Software\ClearMedia\PushTheButton' -Name 'DeployOuStart' -PropertyType 'String' -Value 'Hidden' -Force
+		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatus2.Content = "Installation Finished$(' .'*45)$(' '*20)" } )
+		}
             }
         $PSinstance = [powershell]::Create().AddScript($Code3)
         $PSinstance.Runspace = $Runspace
@@ -779,12 +778,11 @@ $SyncHash.Host = $Host
 				}
                 Else
                 {
-				New-Item -Path  'HKCU:\Software\ClearMedia\PushTheButton' -Force
-				New-ItemProperty -Path 'HKCU:\Software\ClearMedia\PushTheButton' -Name 'RdsOuPath' -PropertyType 'String' -Value $RdsOuPath -Force
-				New-ItemProperty -Path 'HKCU:\Software\ClearMedia\PushTheButton' -Name 'UsersOuPath' -PropertyType 'String' -Value $UsersOuPath -Force
-				$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatus4.Content = "Installation Finished$(' .'*45)$(' '*20)" } )
-				$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.DeployStandardGpoStart.Visibility = "Visible"  } )
-				}
+		New-ItemProperty -Path 'HKCU:\Software\ClearMedia\PushTheButton' -Name 'RdsOuPath' -PropertyType 'String' -Value $RdsOuPath -Force
+		New-ItemProperty -Path 'HKCU:\Software\ClearMedia\PushTheButton' -Name 'UsersOuPath' -PropertyType 'String' -Value $UsersOuPath -Force
+		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatus4.Content = "Installation Finished$(' .'*45)$(' '*20)" } )
+		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.DeployStandardGpoStart.Visibility = "Visible"  } )
+		}
             }
         $PSinstance = [powershell]::Create().AddScript($Code4)
         $PSinstance.Runspace = $Runspace
