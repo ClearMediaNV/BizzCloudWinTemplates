@@ -1,5 +1,8 @@
 $DomainNetbiosName = "Joc"
 $DomainDNSName = "Joc.cloud"
+$ADRootDSE = $(($DomainDNSName.Replace('.',',DC=')).insert(0,'DC='))
+$RdsOuPath = "OU=RDS,OU=Servers,OU=SME,$ADRootDSE"
+$UsersOuPath = "OU=Users,OU=SME,$ADRootDSE"
 
 Set-DisplayResolution -Height 800 -Width 1280 -Force
 Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase, System.Windows.Forms, System.Drawing
@@ -59,9 +62,9 @@ $SyncHash.Host = $Host
                     <Label Name="LabelTemplateSourcePath" Content="ADM(X) Source Path" Margin="7,32,0,0" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" />
                     <TextBox Name="TextBoxTemplateSourcePath" Margin="135,36,0,0" Text="C:\Install\GPO\Templates" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Width="275"/>
                     <Label Name="LabelRdsOuPath" Content="RDS OU Path" Margin="7,80,0,0" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" />
-                    <TextBox Name="TextBoxRdsOuPath" Margin="90,84,0,0" Text="OU=RDS,OU=Servers,OU=SME,DC=ClearMedia,DC=cloud" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Width="320"/>
+                    <TextBox Name="TextBoxRdsOuPath" Margin="90,84,0,0" Text="$RdsOuPath" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Width="320"/>
                     <Label Name="LabelUsersOuPath" Content="Users OU Path" Margin="435,80,0,0" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" />
-                    <TextBox Name="TextBoxUsersOuPath" Margin="560,84,0,0" Text="OU=Users,OU=SME,DC=ClearMedia,DC=cloud" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Width="265"/>
+                    <TextBox Name="TextBoxUsersOuPath" Margin="560,84,0,0" Text="$UsersOuPath" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Width="265"/>
 
                     <CheckBox Name="checkBox2" Content="StandardRdsServerPolicy" HorizontalAlignment="Left" Margin="12,115,0,0" VerticalAlignment="Top" IsChecked="True"/>
                     <CheckBox Name="checkBox3" Content="StandardServerWindowsUpdate" HorizontalAlignment="Left" Margin="12,135,0,0" VerticalAlignment="Top" IsChecked="True"/>
