@@ -1230,6 +1230,7 @@ $SyncHash.Host = $Host
     $syncHash.DeployRdsReboot.Add_Click({
         $syncHash.DeployRdsReboot.Visibility = "Hidden"
         $syncHash.ProgressBarProgress3.Visibility = "Hidden"
+	$syncHash.DeployUserStart.IsEnabled = $True
         DeployRdsReboot -syncHash $syncHash -RdsServerIpAddress  $syncHash.TextBoxRdsServerIpAddress.Text -AdminUserName $syncHash.TextBoxAdminUserName.Text -AdminPassword $syncHash.TextBoxAdminPassword.Text
         })
     $syncHash.DeployUserStart.Add_Click({
