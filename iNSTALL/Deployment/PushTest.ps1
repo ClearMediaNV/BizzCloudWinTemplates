@@ -14,7 +14,7 @@ Try { $DomainDNSName = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedia\Pu
 $ADRootDSE = $(($DomainDNSName.Replace('.',',DC=')).insert(0,'DC='))
 Try { $RdsOuPath = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'RdsOuPath' }
     Catch { $RdsOuPath = "OU=RDS,OU=Servers,OU=SME,$ADRootDSE" }
-Try { $UsersOuPath = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'RdsOuPath' }
+Try { $UsersOuPath = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'UsersOuPath' }
     Catch { $UsersOuPath = "OU=Users,OU=SME,$ADRootDSE" }
 
 Set-DisplayResolution -Height 800 -Width 1280 -Force
@@ -1091,8 +1091,6 @@ $SyncHash.Host = $Host
             [INT]$I = 0
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress6.Value = $I } )
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox6.AddText("Connecting to $RdsServerIpAddress `n") } )
-            $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ("$RdsServerIpAddress\$AdminUserName", $(ConvertTo-SecureString -String $AdminPassword -AsPlainText -Force))
-            Set-Item WSMan:\localhost\Client\TrustedHosts -Value "$RdsServerIpAddress" -Force
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox6.AddText("Creating User $PrincipalName in $UsersOuPath `n") } )
             $Job = Start-Job -Name 'Active Directory Add User' -ScriptBlock {
                     Param ($PrincipalName,$UserGivenName,$UserSurname,$Department,$HomeDirectory,$HomeDrive,$UsersOuPath,$DomainDnsName)
@@ -1117,7 +1115,7 @@ $SyncHash.Host = $Host
                     } -ArgumentList ($PrincipalName,$UserGivenName,$UserSurname,$Department,$HomeDirectory,$HomeDrive,$UsersOuPath,$DomainDnsName)
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress6.Value = $I } ) }
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox6.AddText("Creating User $HomeDirectory\$PrincipalName SubFolder  `n") } )
-            $Job = Invoke-Command -ComputerName "$RdsServerIpAddress"  -Credential $Credential  -AsJob -JobName  'Create User Data Folder' -ScriptBlock {
+            $Job = Invoke-Command -ComputerName "$RdsServerIpAddress" -AsJob -JobName  'Create User Data Folder' -ScriptBlock {
                     Param ($HomeDirectory,$PrincipalName,$DomainNetbiosName)
                     [STRING]$FolderPath = "$HomeDirectory\$PrincipalName"
                     New-Item -Path $FolderPath -type directory -Force
@@ -1134,7 +1132,7 @@ $SyncHash.Host = $Host
                     } -ArgumentList ($HomeDirectory,$PrincipalName,$DomainNetbiosName)
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress6.Value = $I } ) }
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox6.AddText("Creating User D:\Users\$PrincipalName SubFolder  `n") } )
-            $Job = Invoke-Command -ComputerName "$RdsServerIpAddress"  -Credential $Credential  -AsJob -JobName  'Create User OST Folder' -ScriptBlock {
+            $Job = Invoke-Command -ComputerName "$RdsServerIpAddress" -AsJob -JobName  'Create User OST Folder' -ScriptBlock {
                     Param ($PrincipalName,$DomainNetbiosName)
                     [STRING]$FolderPath = "D:\Users\$PrincipalName"
                     New-Item -Path $FolderPath -type directory -Force
