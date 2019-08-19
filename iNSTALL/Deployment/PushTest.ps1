@@ -236,7 +236,7 @@ $SyncHash.Host = $Host
 		New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DomainNetbiosName' -PropertyType 'String' -Value $DomainNetbiosName -Force
 		New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DomainDNSName' -PropertyType 'String' -Value $DomainDNSName -Force
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress1.Visibility = "Hidden" } )
-                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatus1.Content = "Installation Finished$(' .'*45)$(' '*20)PLEASE REBOOT" } )
+                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatus1.Content = "Installation Finished$(' .'*135)$(' '*30) Please  REBOOT" } )
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.DeployDcStart.Visibility = "Hidden" } )
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.DeployDcReboot.IsEnabled = $True } )
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.DeployDcReboot.Visibility = "Visible" } )				
