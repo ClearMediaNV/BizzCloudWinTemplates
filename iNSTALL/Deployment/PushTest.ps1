@@ -1,8 +1,6 @@
 # Check History
-Try { Get-Item -Path  'HKLM:\Software\ClearMedia' | Out-Null } 
-    Catch { New-Item -Path  'HKLM:\Software\ClearMedia' }
-Try { Get-Item -Path  'HKLM:\Software\ClearMedia\PushTheButton' | Out-Null }
-    Catch { Get-Item -Path  'HKLM:\Software\ClearMedia\PushTheButton' }
+New-Item -Path  'HKLM:\Software\ClearMedia'
+New-Item -Path  'HKLM:\Software\ClearMedia\PushTheButton'
 Try { $DeployDcStart = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DeployDcStart' }
     Catch { $DeployDcStart = 'Visible' }
 Try { $DeployOuStart = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DeployOuStart' }
