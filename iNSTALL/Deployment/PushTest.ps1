@@ -949,7 +949,7 @@ $SyncHash.Host = $Host
             		$Job = Invoke-Command -ComputerName "$RdsServerIpAddress"  -Credential $Credential  -AsJob -JobName 'DataOST' -ScriptBlock {
                     Param($OstFolderRootPath) ; 
                     if ( (Get-Disk)[1].OperationalStatus -eq 'Offline' ) { Initialize-Disk -Number 1 }
-                    New-Partition -DiskNumber 1 -AssignDriveLetter -UseMaximumSize | Format-Volume -FileSystem NTFS -NewFileSystemLabel 'DataOst'
+                    New-Partition -DiskNumber 1 -DriveLetter E -UseMaximumSize | Format-Volume -FileSystem NTFS -NewFileSystemLabel 'DataOst'
                     Get-Acl -Path 'D:\' | ForEach-Object {
                             $objACL = $_
                             $objACL.Access | Where-Object { $_.IdentityReference -inotin ('NT AUTHORITY\SYSTEM','BUILTIN\Administrators') } | ForEach-Object { $objACL.RemoveAccessRule($_) }
@@ -974,7 +974,7 @@ $SyncHash.Host = $Host
 			        $Job = Invoke-Command -ComputerName "$RdsServerIpAddress"  -Credential $Credential  -AsJob -JobName 'UserData' -ScriptBlock {
                     Param($UserDataFolderRootPath) ; 
                     if ( (Get-Disk)[2].OperationalStatus -eq 'Offline' ) { Initialize-Disk -Number 2 }
-                    New-Partition -DiskNumber 2 -AssignDriveLetter -UseMaximumSize | Format-Volume -FileSystem NTFS -NewFileSystemLabel 'Data'
+                    New-Partition -DiskNumber 2 -DriveLetter E -UseMaximumSize | Format-Volume -FileSystem NTFS -NewFileSystemLabel 'Data'
                     Get-Acl -Path 'E:\' | ForEach-Object {
                             $objACL = $_
                             $objACL.Access | Where-Object { $_.IdentityReference -inotin ('NT AUTHORITY\SYSTEM','BUILTIN\Administrators') } | ForEach-Object { $objACL.RemoveAccessRule($_) }
@@ -1090,6 +1090,8 @@ $SyncHash.Host = $Host
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress6.Value = $I } )
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox6.AddText("Connecting to $RdsServerIpAddress `n") } )
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox6.AddText("Creating User $PrincipalName in $UsersOuPath `n") } )
+	    $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ("$RdsServerIpAddress\$UserName", $(ConvertTo-SecureString -String $Password -AsPlainText -Force))
+            Set-Item WSMan:\localhost\Client\TrustedHosts -Value "$RdsServerIpAddress" -Force
             $Job = Start-Job -Name 'Active Directory Add User' -ScriptBlock {
                     Param ($PrincipalName,$UserGivenName,$UserSurname,$Department,$HomeDirectory,$HomeDrive,$UsersOuPath,$DomainDnsName)
                     [STRING]$RandomPasswordPlainText = ((([char[]](65..90) | sort {get-random})[0..2] + ([char[]](33,35,36,37,42,43,45) | sort {get-random})[0] + ([char[]](97..122) | sort {get-random})[0..4] + ([char[]](48..57) | sort {get-random})[0]) | get-random -Count 10) -join ''
@@ -1113,7 +1115,7 @@ $SyncHash.Host = $Host
                     } -ArgumentList ($PrincipalName,$UserGivenName,$UserSurname,$Department,$HomeDirectory,$HomeDrive,$UsersOuPath,$DomainDnsName)
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress6.Value = $I } ) }
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox6.AddText("Creating User $HomeDirectory\$PrincipalName SubFolder  `n") } )
-            $Job = Invoke-Command -ComputerName "$RdsServerIpAddress" -Credential $Credential  -AsJob -JobName  'Create User Data Folder' -ScriptBlock {
+	    $Job = Invoke-Command -ComputerName "$RdsServerIpAddress" -Credential $Credential  -AsJob -JobName  'Create User Data Folder' -ScriptBlock {
                     Param ($HomeDirectory,$PrincipalName,$DomainNetbiosName)
                     [STRING]$FolderPath = "$HomeDirectory\$PrincipalName"
                     New-Item -Path $FolderPath -type directory -Force
@@ -1130,9 +1132,7 @@ $SyncHash.Host = $Host
                     } -ArgumentList ($HomeDirectory,$PrincipalName,$DomainNetbiosName)
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress6.Value = $I } ) }
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox6.AddText("Creating User D:\Users\$PrincipalName SubFolder  `n") } )
-	    $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ("$RdsServerIpAddress\$AdminUserName", $(ConvertTo-SecureString -String $AdminPassword -AsPlainText -Force))
-            Set-Item WSMan:\localhost\Client\TrustedHosts -Value "$RdsServerIpAddress" -Force
-            $Job = Invoke-Command -ComputerName "$RdsServerIpAddress" -Credential $Credential  -AsJob -JobName  'Create User OST Folder' -ScriptBlock {
+	    $Job = Invoke-Command -ComputerName "$RdsServerIpAddress" -Credential $Credential  -AsJob -JobName  'Create User OST Folder' -ScriptBlock {
                     Param ($PrincipalName,$DomainNetbiosName)
                     [STRING]$FolderPath = "D:\Users\$PrincipalName"
                     New-Item -Path $FolderPath -type directory -Force
