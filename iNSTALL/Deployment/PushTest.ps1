@@ -949,7 +949,7 @@ $SyncHash.Host = $Host
             		$Job = Invoke-Command -ComputerName "$RdsServerIpAddress"  -Credential $Credential  -AsJob -JobName 'DataOST' -ScriptBlock {
                     Param($OstFolderRootPath) ; 
                     if ( (Get-Disk)[1].OperationalStatus -eq 'Offline' ) { Initialize-Disk -Number 1 }
-                    New-Partition -DiskNumber 1 -DriveLetter E -UseMaximumSize | Format-Volume -FileSystem NTFS -NewFileSystemLabel 'DataOst'
+                    New-Partition -DiskNumber 1 -DriveLetter D -UseMaximumSize | Format-Volume -FileSystem NTFS -NewFileSystemLabel 'DataOst'
                     Get-Acl -Path 'D:\' | ForEach-Object {
                             $objACL = $_
                             $objACL.Access | Where-Object { $_.IdentityReference -inotin ('NT AUTHORITY\SYSTEM','BUILTIN\Administrators') } | ForEach-Object { $objACL.RemoveAccessRule($_) }
