@@ -1113,7 +1113,7 @@ $SyncHash.Host = $Host
                     } -ArgumentList ($PrincipalName,$UserGivenName,$UserSurname,$Department,$HomeDirectory,$HomeDrive,$UsersOuPath,$DomainDnsName)
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress6.Value = $I } ) }
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox6.AddText("Creating User $HomeDirectory\$PrincipalName SubFolder  `n") } )
-            $Job = Invoke-Command -ComputerName "$RdsServerIpAddress" -AsJob -JobName  'Create User Data Folder' -ScriptBlock {
+            $Job = Invoke-Command -ComputerName "$RdsServerIpAddress" -Credential $Credential  -AsJob -JobName  'Create User Data Folder' -ScriptBlock {
                     Param ($HomeDirectory,$PrincipalName,$DomainNetbiosName)
                     [STRING]$FolderPath = "$HomeDirectory\$PrincipalName"
                     New-Item -Path $FolderPath -type directory -Force
@@ -1130,7 +1130,9 @@ $SyncHash.Host = $Host
                     } -ArgumentList ($HomeDirectory,$PrincipalName,$DomainNetbiosName)
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress6.Value = $I } ) }
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox6.AddText("Creating User D:\Users\$PrincipalName SubFolder  `n") } )
-            $Job = Invoke-Command -ComputerName "$RdsServerIpAddress" -AsJob -JobName  'Create User OST Folder' -ScriptBlock {
+	    $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ("$RdsServerIpAddress\$AdminUserName", $(ConvertTo-SecureString -String $AdminPassword -AsPlainText -Force))
+            Set-Item WSMan:\localhost\Client\TrustedHosts -Value "$RdsServerIpAddress" -Force
+            $Job = Invoke-Command -ComputerName "$RdsServerIpAddress" -Credential $Credential  -AsJob -JobName  'Create User OST Folder' -ScriptBlock {
                     Param ($PrincipalName,$DomainNetbiosName)
                     [STRING]$FolderPath = "D:\Users\$PrincipalName"
                     New-Item -Path $FolderPath -type directory -Force
