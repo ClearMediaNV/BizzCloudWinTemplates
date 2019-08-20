@@ -9,11 +9,13 @@ Try { $DomainNetbiosName = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedi
     Catch { $DomainNetbiosName = 'ClearMedia'}
 Try { $DomainDNSName = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DomainDNSName' }
     Catch { $DomainDNSName = 'ClearMedia.cloud' }
+Try { $ManagedOuName = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'ManagedOuName' }
+    Catch { $ManagedOuName = 'SME' }
 $ADRootDSE = $(($DomainDNSName.Replace('.',',DC=')).insert(0,'DC='))
 Try { $RdsOuPath = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'RdsOuPath' }
-    Catch { $RdsOuPath = "OU=RDS,OU=Servers,OU=SME,$ADRootDSE" }
+    Catch { $RdsOuPath = "OU=RDS,OU=Servers,OU=$ManagedOuName,$ADRootDSE" }
 Try { $UsersOuPath = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'UsersOuPath' }
-    Catch { $UsersOuPath = "OU=Users,OU=SME,$ADRootDSE" }
+    Catch { $UsersOuPath = "OU=Users,OU=$ManagedOuName,$ADRootDSE" }
 
 Set-DisplayResolution -Height 800 -Width 1280 -Force
 Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase, System.Windows.Forms, System.Drawing
@@ -54,7 +56,7 @@ $SyncHash.Host = $Host
                     <Label Name="LabelManagedOuName" Content="Managed Ou Name" HorizontalAlignment="Left" Height="28" Margin="10,28,0,0" VerticalAlignment="Top" Width="165"/>
                     <Label Name="LabelClearmediaAdminUserName" Content="ClearmediaAdmin UserName" HorizontalAlignment="Left" Height="28" Margin="10,61,0,0" VerticalAlignment="Top" Width="165" RenderTransformOrigin="0.452,2.089"/>
                     <Label Name="LabelClearmediaAdminPassword" Content="ClearmediaAdmin Password" HorizontalAlignment="Left" Height="28" Margin="10,94,0,0" VerticalAlignment="Top" Width="165"/>
-                    <TextBox Name="TextBoxManagedOuName"  HorizontalAlignment="Left" Height="22" Margin="180,28,0,0" Text="SME" VerticalAlignment="Top" Width="180" TabIndex="1" IsTabStop="False" RenderTransformOrigin="0.673,0.523"/>
+                    <TextBox Name="TextBoxManagedOuName"  HorizontalAlignment="Left" Height="22" Margin="180,28,0,0" Text="$ManagedOuName" VerticalAlignment="Top" Width="180" TabIndex="1" IsTabStop="False" RenderTransformOrigin="0.673,0.523"/>
                     <TextBox Name="TextBoxClearmediaAdminUserName" HorizontalAlignment="Left" Height="22" Margin="180,61,0,0" Text="ClearmediaAdmin" VerticalAlignment="Top" Width="180" RenderTransformOrigin="0.462,0.455"/>
                     <TextBox Name="TextBoxClearmediaAdminPassword" HorizontalAlignment="Left" Height="22" Margin="180,94,0,0" Text="*********" VerticalAlignment="Top" Width="180"/>
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
@@ -155,15 +157,10 @@ $SyncHash.Host = $Host
                     <Label Name="LabelUserGivenName" Content="User Given Name" HorizontalAlignment="Left" Height="28" Margin="10,61,0,0" VerticalAlignment="Top" Width="165" RenderTransformOrigin="0.452,2.089"/>
                     <Label Name="LabelUserSurname" Content="User Sur Name" HorizontalAlignment="Left" Height="28" Margin="10,94,0,0" VerticalAlignment="Top" Width="165"/>
                     <Label Name="LabelDepartment" Content="Department" HorizontalAlignment="Left" Height="28" Margin="10,127,0,0" VerticalAlignment="Top" Width="165"/>
-                    <Label Name="LabelHomeDirectory" Content="HomeDirectory" HorizontalAlignment="Left" Height="28" Margin="10,160,0,0" VerticalAlignment="Top" Width="165"/>
-                    <Label Name="LabelHomeDrive" Content="HomeDrive" HorizontalAlignment="Left" Height="28" Margin="10,193,0,0" VerticalAlignment="Top" Width="165"/>
                     <TextBox Name="TextBoxUserPrincipalName"  HorizontalAlignment="Left" Height="22" Margin="180,32,0,0" Text="" VerticalAlignment="Top" Width="180" TabIndex="1" IsTabStop="False" RenderTransformOrigin="0.673,0.523"/>
                     <TextBox Name="TextBoxUserGivenName" HorizontalAlignment="Left" Height="22" Margin="180,65,0,0" Text="" VerticalAlignment="Top" Width="180" RenderTransformOrigin="0.462,0.455"/>
                     <TextBox Name="TextBoxUserSurname" HorizontalAlignment="Left" Height="22" Margin="180,98,0,0" Text="" VerticalAlignment="Top" Width="180"/>
                     <TextBox Name="TextBoxDepartment" HorizontalAlignment="Left" Height="22" Margin="180,131,0,0" Text="" VerticalAlignment="Top" Width="180"/>
-                    <TextBox Name="TextBoxHomeDirectory" HorizontalAlignment="Left" Height="22" Margin="180,164,0,0" Text="E:\Users" VerticalAlignment="Top" Width="180"/>
-                    <TextBox Name="TextBoxHomeDrive" HorizontalAlignment="Left" Height="22" Margin="180,197,0,0" Text="P:" VerticalAlignment="Top" Width="180"/>
-
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
                     <TextBlock Name="TextBlockOutBox6" Text="" Foreground="WHITE" Background="#FF22206F" />
                     </ScrollViewer>
@@ -236,7 +233,7 @@ $SyncHash.Host = $Host
 		New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DomainNetbiosName' -PropertyType 'String' -Value $DomainNetbiosName -Force
 		New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DomainDNSName' -PropertyType 'String' -Value $DomainDNSName -Force
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress1.Visibility = "Hidden" } )
-                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatus1.Content = "Installation Finished$(' .'*135)$(' '*30) Please  REBOOT" } )
+                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatus1.Content = "Installation Finished$(' .'*45)$(' '*20)PLEASE REBOOT" } )
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.DeployDcStart.Visibility = "Hidden" } )
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.DeployDcReboot.IsEnabled = $True } )
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.DeployDcReboot.Visibility = "Visible" } )				
@@ -364,7 +361,10 @@ $SyncHash.Host = $Host
                 }
                 Else
                 {
+		New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'ManagedOuName' -PropertyType 'String' -Value $ManagedOuName -Force
 		New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DeployOuStart' -PropertyType 'String' -Value 'Hidden' -Force
+		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBoxRdsOuPath.Text = "OU=RDS,OU=Servers,OU=$ManagedOuName,$ADRootDSE" } )
+		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBoxUsersOuPath.Text = "OU=Users,OU=$ManagedOuName,$ADRootDSE" } )
 		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatus2.Content = "Installation Finished$(' .'*45)$(' '*20)" } )
 		}
             }
@@ -1076,8 +1076,6 @@ $SyncHash.Host = $Host
 		$Runspace.SessionStateProxy.SetVariable("UserGivenName",$UserGivenName)
 		$Runspace.SessionStateProxy.SetVariable("UserSurname",$UserSurname)
 		$Runspace.SessionStateProxy.SetVariable("Department",$Department)
-		$Runspace.SessionStateProxy.SetVariable("HomeDirectory",$HomeDirectory)
-		$Runspace.SessionStateProxy.SetVariable("HomeDrive",$HomeDrive)
 		$Runspace.SessionStateProxy.SetVariable("UsersOuPath",$UsersOuPath)
 		$Runspace.SessionStateProxy.SetVariable("RdsServerIpAddress",$RdsServerIpAddress)
 		$Runspace.SessionStateProxy.SetVariable("AdminUserName",$AdminUserName)
@@ -1090,10 +1088,10 @@ $SyncHash.Host = $Host
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress6.Value = $I } )
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox6.AddText("Connecting to $RdsServerIpAddress `n") } )
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox6.AddText("Creating User $PrincipalName in $UsersOuPath `n") } )
-	    $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ("$RdsServerIpAddress\$UserName", $(ConvertTo-SecureString -String $Password -AsPlainText -Force))
+	    $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ("$RdsServerIpAddress\$AdminUserName", $(ConvertTo-SecureString -String $AdminPassword -AsPlainText -Force))
             Set-Item WSMan:\localhost\Client\TrustedHosts -Value "$RdsServerIpAddress" -Force
             $Job = Start-Job -Name 'Active Directory Add User' -ScriptBlock {
-                    Param ($PrincipalName,$UserGivenName,$UserSurname,$Department,$HomeDirectory,$HomeDrive,$UsersOuPath,$DomainDnsName)
+                    Param ($PrincipalName,$UserGivenName,$UserSurname,$Department,$UsersOuPath,$DomainDnsName)
                     [STRING]$RandomPasswordPlainText = ((([char[]](65..90) | sort {get-random})[0..2] + ([char[]](33,35,36,37,42,43,45) | sort {get-random})[0] + ([char[]](97..122) | sort {get-random})[0..4] + ([char[]](48..57) | sort {get-random})[0]) | get-random -Count 10) -join ''
                     $NewUserParams = @{
                     	    'UserPrincipalName' = "$($PrincipalName)@$($DomainDnsName)"
@@ -1108,16 +1106,15 @@ $SyncHash.Host = $Host
 	                        'ChangePasswordAtLogon' = $FALSE
 		                    'AccountPassword' =  ConvertTo-SecureString $RandomPasswordPlainText -AsPlainText -Force
 	                        'Path' = $UsersOuPath
-                            'HomeDirectory' = "$HomeDirectory\$PrincipalName"
-                            'HomeDrive' = $HomeDrive
+				'HomeDirectory' = "E:\users\$PrincipalName"
                              }
                     New-ADUser @NewUserParams -ErrorAction Stop
-                    } -ArgumentList ($PrincipalName,$UserGivenName,$UserSurname,$Department,$HomeDirectory,$HomeDrive,$UsersOuPath,$DomainDnsName)
+                    } -ArgumentList ($PrincipalName,$UserGivenName,$UserSurname,$Department,$UsersOuPath,$DomainDnsName)
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress6.Value = $I } ) }
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox6.AddText("Creating User $HomeDirectory\$PrincipalName SubFolder  `n") } )
 	    $Job = Invoke-Command -ComputerName "$RdsServerIpAddress" -Credential $Credential  -AsJob -JobName  'Create User Data Folder' -ScriptBlock {
                     Param ($HomeDirectory,$PrincipalName,$DomainNetbiosName)
-                    [STRING]$FolderPath = "$HomeDirectory\$PrincipalName"
+                    [STRING]$FolderPath = "E:\Users\$PrincipalName"
                     New-Item -Path $FolderPath -type directory -Force
                     $Acl = Get-Acl  -Path  $FolderPath
                     $acl.SetAccessRuleProtection($true,$false)
@@ -1240,7 +1237,7 @@ $SyncHash.Host = $Host
         
         $syncHash.LabelStatus6.Visibility = "Visible"
         $syncHash.ProgressBarProgress6.Visibility = "Visible"
-		DeployUserStart -syncHash $syncHash -PrincipalName $syncHash.TextBoxUserPrincipalName.Text -UserGivenName $syncHash.TextBoxUserGivenName.Text -UserSurname $syncHash.TextBoxUserSurname.Text -Department $syncHash.TextBoxDepartment.Text -HomeDirectory $syncHash.TextBoxHomeDirectory.Text -HomeDrive $syncHash.TextBoxHomeDrive.Text -UsersOuPath $syncHash.TextBoxUsersOuPath.Text -RdsServerIpAddress $syncHash.TextBoxRdsServerIpAddress.Text -AdminUserName $syncHash.TextBoxAdminUserName.Text -AdminPassword $syncHash.TextBoxAdminPassword.Text -DomainDnsName $SyncHash.TextBoxDomainDnsName.Text -DomainNetbiosName $SyncHash.TextBoxDomainNetbiosName.Text
+		DeployUserStart -syncHash $syncHash -PrincipalName $syncHash.TextBoxUserPrincipalName.Text -UserGivenName $syncHash.TextBoxUserGivenName.Text -UserSurname $syncHash.TextBoxUserSurname.Text -Department $syncHash.TextBoxDepartment.Text -UsersOuPath $syncHash.TextBoxUsersOuPath.Text -RdsServerIpAddress $syncHash.TextBoxRdsServerIpAddress.Text -AdminUserName $syncHash.TextBoxAdminUserName.Text -AdminPassword $syncHash.TextBoxAdminPassword.Text -DomainDnsName $SyncHash.TextBoxDomainDnsName.Text -DomainNetbiosName $SyncHash.TextBoxDomainNetbiosName.Text
 
 
         #$SyncHash.host.ui.WriteVerboseLine($SyncHash.checkBox2.IsChecked)
