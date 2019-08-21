@@ -948,22 +948,24 @@ $SyncHash.Host = $Host
                     $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox3.AddText("Creating D:\Users & Setting NTFS Security `n") } )
             		$Job = Invoke-Command -ComputerName "$RdsServerIpAddress"  -Credential $Credential  -AsJob -JobName 'DataOST' -ScriptBlock {
                     Param($OstFolderRootPath) ; 
-                    if ( (Get-Disk)[1].OperationalStatus -eq 'Offline' ) { Initialize-Disk -Number 1 }
-                    New-Partition -DiskNumber 1 -DriveLetter D -UseMaximumSize | Format-Volume -FileSystem NTFS -NewFileSystemLabel 'DataOst'
-                    Get-Acl -Path 'D:\' | ForEach-Object {
+                    if ( (get-disk -Number 1).AllocatedSize -eq 0 ) {
+			Initialize-Disk -Number 1
+                    	New-Partition -DiskNumber 1 -DriveLetter D -UseMaximumSize | Format-Volume -FileSystem NTFS -NewFileSystemLabel 'DataOst'
+                    	Get-Acl -Path 'D:\' | ForEach-Object {
                             $objACL = $_
                             $objACL.Access | Where-Object { $_.IdentityReference -inotin ('NT AUTHORITY\SYSTEM','BUILTIN\Administrators') } | ForEach-Object { $objACL.RemoveAccessRule($_) }
                             Set-Acl "D:\" $objACL
                             }
-                    # $FolderPath = 'D:\Users'
-                    New-Item -Path $OstFolderRootPath -type directory -Force
-                    $Acl = Get-Acl  -Path  $OstFolderRootPath
-                    $acl.SetAccessRuleProtection($true,$false)
-                    $accessrule = New-Object system.security.AccessControl.FileSystemAccessRule("NT AUTHORITY\SYSTEM", "FullControl", "ObjectInherit,ContainerInherit", "None", "Allow")
-                    $acl.AddAccessRule($accessrule)
-                    $accessrule = New-Object system.security.AccessControl.FileSystemAccessRule("BUILTIN\Administrators", "FullControl", "ObjectInherit,ContainerInherit", "None", "Allow")
-                    $acl.AddAccessRule($accessrule)
-                    Set-Acl  -Path $OstFolderRootPath $acl
+                    	# $FolderPath = 'D:\Users'
+                    	New-Item -Path $OstFolderRootPath -type directory -Force
+                   	$Acl = Get-Acl  -Path  $OstFolderRootPath
+                    	$acl.SetAccessRuleProtection($true,$false)
+                    	$accessrule = New-Object system.security.AccessControl.FileSystemAccessRule("NT AUTHORITY\SYSTEM", "FullControl", "ObjectInherit,ContainerInherit", "None", "Allow")
+                    	$acl.AddAccessRule($accessrule)
+                    	$accessrule = New-Object system.security.AccessControl.FileSystemAccessRule("BUILTIN\Administrators", "FullControl", "ObjectInherit,ContainerInherit", "None", "Allow")
+                    	$acl.AddAccessRule($accessrule)
+                    	Set-Acl  -Path $OstFolderRootPath $acl
+			}
                     } -ArgumentList ($OstFolderRootPath) 
                     }
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress3.Value = $I } ) }
@@ -973,23 +975,25 @@ $SyncHash.Host = $Host
                     $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox3.AddText("Creating Hidden Share 'Users' `n") } )
 			        $Job = Invoke-Command -ComputerName "$RdsServerIpAddress"  -Credential $Credential  -AsJob -JobName 'UserData' -ScriptBlock {
                     Param($UserDataFolderRootPath) ; 
-                    if ( (Get-Disk)[2].OperationalStatus -eq 'Offline' ) { Initialize-Disk -Number 2 }
-                    New-Partition -DiskNumber 2 -DriveLetter E -UseMaximumSize | Format-Volume -FileSystem NTFS -NewFileSystemLabel 'Data'
-                    Get-Acl -Path 'E:\' | ForEach-Object {
+                    if ( (get-disk -Number 2).AllocatedSize -eq 0 ) {
+			Initialize-Disk -Number 2
+                    	New-Partition -DiskNumber 2 -DriveLetter E -UseMaximumSize | Format-Volume -FileSystem NTFS -NewFileSystemLabel 'Data'
+                    	Get-Acl -Path 'E:\' | ForEach-Object {
                             $objACL = $_
                             $objACL.Access | Where-Object { $_.IdentityReference -inotin ('NT AUTHORITY\SYSTEM','BUILTIN\Administrators') } | ForEach-Object { $objACL.RemoveAccessRule($_) }
                             Set-Acl "E:\" $objACL
                             }
-                    # $FolderPath = 'E:\Users'
-                    New-Item -Path $UserDataFolderRootPath -type directory -Force
-                    $Acl = Get-Acl  -Path  $UserDataFolderRootPath
-                    $acl.SetAccessRuleProtection($true,$false)
-                    $accessrule = New-Object system.security.AccessControl.FileSystemAccessRule("NT AUTHORITY\SYSTEM", "FullControl", "ObjectInherit,ContainerInherit", "None", "Allow")
-                    $acl.AddAccessRule($accessrule)
-                    $accessrule = New-Object system.security.AccessControl.FileSystemAccessRule("BUILTIN\Administrators", "FullControl", "ObjectInherit,ContainerInherit", "None", "Allow")
-                    $acl.AddAccessRule($accessrule)
-                    Set-Acl  -Path $UserDataFolderRootPath $acl
-                    New-SmbShare -Name 'Users$' -Path $UserDataFolderRootPath -FullAccess 'Everyone'
+                    	# $FolderPath = 'E:\Users'
+                    	New-Item -Path $UserDataFolderRootPath -type directory -Force
+                    	$Acl = Get-Acl  -Path  $UserDataFolderRootPath
+                    	$acl.SetAccessRuleProtection($true,$false)
+                    	$accessrule = New-Object system.security.AccessControl.FileSystemAccessRule("NT AUTHORITY\SYSTEM", "FullControl", "ObjectInherit,ContainerInherit", "None", "Allow")
+                    	$acl.AddAccessRule($accessrule)
+                    	$accessrule = New-Object system.security.AccessControl.FileSystemAccessRule("BUILTIN\Administrators", "FullControl", "ObjectInherit,ContainerInherit", "None", "Allow")
+                    	$acl.AddAccessRule($accessrule)
+                    	Set-Acl  -Path $UserDataFolderRootPath $acl
+                    	New-SmbShare -Name 'Users$' -Path $UserDataFolderRootPath -FullAccess 'Everyone'
+			}
                     } -ArgumentList ($UserDataFolderRootPath) 
                     }
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress3.Value = $I } ) }
