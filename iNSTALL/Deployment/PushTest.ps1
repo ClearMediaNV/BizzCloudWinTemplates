@@ -307,7 +307,7 @@ $SyncHash.Host = $Host
 	                "$DomainNetbiosName-SSLVPN-USERS" = "OU=NetAccess,OU=Groups,OU=$ManagedOU,$ADRootDSE"
                     }
             ForEach ($Group in $Groups.keys) {
-                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox2.AddText("Adding Group  User to $Group in $($Groups.$Group) `n") } ) 
+                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox2.AddText("Adding Group  User $Group in $($Groups.$Group) `n") } ) 
                     $I += 4
                     $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress2.Value = $I } )
                     New-ADGroup -Name $Group -GroupScope 'Global' -Path $($Groups.$Group) -ErrorAction Stop
