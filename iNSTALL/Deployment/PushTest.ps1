@@ -934,7 +934,7 @@ $SyncHash.Host = $Host
 				}
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress3.Value = $I } ) }
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox3.AddText("Installing RDS Related Roles & Features `n") } )
-			$Job = Invoke-Command -ComputerName $RdsServerIpAddress  -Credential $Credential  -AsJob -JobName 'RdsRoles' -ScriptBlock {
+	    $Job = Invoke-Command -ComputerName $RdsServerIpAddress  -Credential $Credential  -AsJob -JobName 'RdsRoles' -ScriptBlock {
 				$Roles = [ordered]@{
 					'Windows TIFF IFilter' =  'Windows-TIFF-IFilter'
 					'Remote Desktop Services' = 'RDS-RD-Server'
@@ -943,6 +943,7 @@ $SyncHash.Host = $Host
 					}
 				$Roles.Values | ForEach-Object { Install-WindowsFeature -Name $_ }
 				}
+	    While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgress3.Value = $I } ) }
             If ( $CheckBoxOstFolderRootPath ) {
                     $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox3.AddText("Configuring Disk 'DataOST' `n") } )
                     $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox3.AddText("Creating D:\Users & Setting NTFS Security `n") } )
