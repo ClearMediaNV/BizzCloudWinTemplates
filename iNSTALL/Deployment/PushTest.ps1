@@ -1180,10 +1180,10 @@ $SyncHash.Host = $Host
         
     }
 	
-	# AutoFind all controls
+# AutoFind Windows Presentation Form Controls
 	$XAML.SelectNodes("//*[@*[contains(translate(name(.),'n','N'),'Name')]]")  | ForEach-Object { $syncHash.Add($_.Name, $syncHash.Window.Findname($_.Name)) }
 
-	# Click Actions
+# Init Windows Presentation Form Actions
     $syncHash.DeployDcStart.Add_Click({
         $syncHash.DeployDcStart.IsEnabled = $False
 		$syncHash.DeployOUStart.IsEnabled = $False
