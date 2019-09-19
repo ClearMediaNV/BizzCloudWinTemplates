@@ -28,11 +28,6 @@ Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase, Sys
 # Init Synchronised Hastable for RunSpaces Aka MultiThreading
 $SyncHash = [hashtable]::Synchronized(@{})
 $SyncHash.Host = $Host
-#$Runspace = [runspacefactory]::CreateRunspace()
-#$Runspace.ApartmentState = "STA"
-#$Runspace.ThreadOptions = "ReuseThread" 
-#$Runspace.Open()
-#$Runspace.SessionStateProxy.SetVariable('syncHash',$syncHash)
 
 # Init Config Xaml Windows Presentation Form
 [XML]$XAML = @"
@@ -1260,7 +1255,3 @@ $SyncHash.Host = $Host
  
 
    $syncHash.Window.ShowDialog()
-
-   #$Runspace.Close()
-   #$Runspace.Dispose()
-   
