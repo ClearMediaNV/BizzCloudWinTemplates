@@ -13,7 +13,7 @@ Try { $DomainDNSName = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedia\Pu
     Catch { $DomainDNSName = 'ClearMedia.cloud' }
 Try { $ManagedOuName = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'ManagedOuName' }
     Catch { $ManagedOuName = 'SME' }
-$ADRootDSE = $(($DomainDNSName.Replace('.',',DC=')).insert(0,'DC='))
+$ADRootDSE = $(($DomainDNSName.Replace('.',',DC=')).Insert(0,'DC='))
 Try { $RdsOuPath = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'RdsOuPath' }
     Catch { $RdsOuPath = "OU=RDS,OU=Servers,OU=$ManagedOuName,$ADRootDSE" }
 Try { $UsersOuPath = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'UsersOuPath' }
