@@ -16,6 +16,7 @@ Try { $RdsOuPath = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedia\PushTh
     Catch { $RdsOuPath = "OU=RDS,OU=Servers,OU=$ManagedOuName,$ADRootDSE" }
 Try { $UsersOuPath = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'UsersOuPath' }
     Catch { $UsersOuPath = "OU=Users,OU=$ManagedOuName,$ADRootDSE" }
+
 # Set Full Screen HD 800 x 1280
 Set-DisplayResolution -Height 800 -Width 1280 -Force
 Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase, System.Windows.Forms, System.Drawing
