@@ -20,6 +20,8 @@ Try { $UsersOuPath = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedia\Push
 
 # Set Full Screen HD 800 x 1280
 Set-DisplayResolution -Height 800 -Width 1280 -Force
+
+# Load Assemblies
 Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase, System.Windows.Forms, System.Drawing
 
 $SyncHash = [hashtable]::Synchronized(@{})
