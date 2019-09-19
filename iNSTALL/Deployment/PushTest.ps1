@@ -185,7 +185,6 @@ $SyncHash.Host = $Host
     $syncHash.Window=[Windows.Markup.XamlReader]::Load( $reader )
 
 # Init Windows Presentation Form Functions
-	# Functions
 	Function DeployDcStart {
 		Param($syncHash,$DnsForwarder,$DomainNetbiosName,$DomainDnsName)
         $Runspace = [runspacefactory]::CreateRunspace()
