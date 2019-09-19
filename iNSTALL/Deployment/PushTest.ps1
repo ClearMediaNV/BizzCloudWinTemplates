@@ -24,6 +24,7 @@ Set-DisplayResolution -Height 800 -Width 1280 -Force
 # Load Assemblies
 Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase, System.Windows.Forms, System.Drawing
 
+# Init Synchronised Hastable for RunSpaces Aka MultiThreading
 $SyncHash = [hashtable]::Synchronized(@{})
 $SyncHash.Host = $Host
 #$Runspace = [runspacefactory]::CreateRunspace()
@@ -32,6 +33,7 @@ $SyncHash.Host = $Host
 #$Runspace.Open()
 #$Runspace.SessionStateProxy.SetVariable('syncHash',$syncHash)
 
+# Init Config Xaml Windows Presentation Form
 [XML]$XAML = @"
 	<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Title="PushTheButton v1.0" Height="800" Width="1280" WindowState="Maximized"  ShowInTaskbar = "True" Topmost="True">
     <Grid>
@@ -182,9 +184,11 @@ $SyncHash.Host = $Host
 	</Window>
 "@
 
+# Start Windows Presentation Form
     $reader=(New-Object System.Xml.XmlNodeReader $xaml)
     $syncHash.Window=[Windows.Markup.XamlReader]::Load( $reader )
-	
+
+# Init Windows Presentation Form Functions
 	# Functions
 	Function DeployDcStart {
 		Param($syncHash,$DnsForwarder,$DomainNetbiosName,$DomainDnsName)
