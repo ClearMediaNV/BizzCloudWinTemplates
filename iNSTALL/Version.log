@@ -1,6 +1,6 @@
 Version 1.4.1
 -----------
-Refactored Deployment - Windows search will now be active rolling out RDS role - Allows administrators to  change the path of Outlook .ost files, Adds scheduled task to give administrator more control when Windows updates are executed
+Refactored Deployment - Windows search will now be active rolling out RDS role - PatchOstPath.ps1 runs runnin in EndUser context patches the path of Outlook .ost files - WindowsUpdate.ps1 starter for orchestrating Windows Updates and Reboot a Full Controlled manner
 Refactored Bginfo - Added VmxNet3 driver & vmwaretools version to BgInfo overview to counter issues with incompatible drivers (ex. version VmxNet3 1.8.10) - PresetAndBgInfo shortcut on Desktop - Password never expires for local machine administrator - Registry patch to mitigate timeout issues with NLA on earlier Template Versions
 Refactored SyncGit - Improved exception handling
 
