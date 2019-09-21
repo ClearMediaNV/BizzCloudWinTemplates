@@ -262,11 +262,11 @@ $SyncHash.Host = $Host
             $ErrorList = @()
             [INT]$I = 0
 			[STRING]$ManagedOU = $ManagedOuName
-            [STRING]$DomainNetbiosName = [System.Environment]::UserDomainName
+            [STRING]$DomainNetbiosName = $Env:USERDOMAIN
 			If ( $ClearmediaAdminPassword -eq "*********" ) { [STRING]$ClearmediaAdminPassword = ((([char[]](65..90) | sort {get-random})[0..2] + ([char[]](33,35,36,37,42,43,45) | sort {get-random})[0] + ([char[]](97..122) | sort {get-random})[0..4] + ([char[]](48..57) | sort {get-random})[0]) | get-random -Count 10) -join '' }
 			$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBoxClearmediaAdminPassword.Text = $ClearmediaAdminPassword } )
 			# Get ADRootDSE
-			$ADRootDSE = $(($env:USERDNSDOMAIN.Replace('.',',DC=')).Insert(0,'DC='))
+			$ADRootDSE = $(($Env:USERDNSDOMAIN.Replace('.',',DC=')).Insert(0,'DC='))
 			#Create HashTable for OU Provisioning
 			$OUs = [ordered]@{
 				"$ManagedOU" =  "$ADRootDSE"
