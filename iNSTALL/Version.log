@@ -1,8 +1,12 @@
+Version 1.4.2
+-------------
+Refactored SyncGit - readability - Unzip implemented with DotNet for compatabilty with Windows2012R2 Templates
+
 Version 1.4.1
------------
+-------------
 Refactored Deployment - Windows search will now be active rolling out RDS role - PatchOstPath.ps1 running in EndUser context patches the path of Outlook .ost files - WindowsUpdate.ps1 starter for orchestrating Windows Updates and Reboot a Full Controlled manner
-Refactored Bginfo - Added VmxNet3 driver & vmwaretools version to BgInfo overview to counter issues with incompatible drivers (ex. version VmxNet3 1.8.10) - PresetAndBgInfo shortcut on Desktop - Password never expires for local machine administrator - Registry patch to mitigate timeout issues with NLA on earlier Template Versions
-Refactored SyncGit - Improved exception handling
+Refactored Bginfo - added VmxNet3 driver & VMwareTools version to BgInfo overview to counter issues with incompatible drivers (ex. version VmxNet3 1.8.10) - PresetAndBgInfo shortcut on Desktop - Password never expires for local machine administrator - Registry patch to mitigate timeout issues with NLA on earlier Template Versions
+Refactored SyncGit - improved exception handling
 
 Version 1.4
 -----------
