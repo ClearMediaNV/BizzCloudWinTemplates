@@ -261,8 +261,7 @@ $SyncHash.Host = $Host
             $Error.Clear()
             $ErrorList = @()
             [INT]$I = 0
-			[STRING]$ManagedOU = $ManagedOuName
-            [STRING]$DomainNetbiosName = $Env:USERDOMAIN
+	    [STRING]$ManagedOU = $ManagedOuName
 			If ( $ClearmediaAdminPassword -eq "*********" ) { [STRING]$ClearmediaAdminPassword = ((([char[]](65..90) | sort {get-random})[0..2] + ([char[]](33,35,36,37,42,43,45) | sort {get-random})[0] + ([char[]](97..122) | sort {get-random})[0..4] + ([char[]](48..57) | sort {get-random})[0]) | get-random -Count 10) -join '' }
 			$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBoxClearmediaAdminPassword.Text = $ClearmediaAdminPassword } )
 			# Get ADRootDSE
@@ -296,18 +295,18 @@ $SyncHash.Host = $Host
                     }
             #Create HashTable for Group Provisioning
             $Groups = [ordered]@{
-                    "$DomainNetbiosName-Admins"= "OU=Groups,OU=$ManagedOU,$ADRootDSE"
-                    "$DomainNetbiosName-Users" = "OU=Groups,OU=$ManagedOU,$ADRootDSE"
-                    "$DomainNetbiosName-THINPRINT-USERS" = "OU=Groups,OU=$ManagedOU,$ADRootDSE"
-                    "$DomainNetbiosName-RAS-USERS" = "OU=RAS,OU=Groups,OU=$ManagedOU,$ADRootDSE"
-	                "$DomainNetbiosName-RAS-Office-USERS" = "OU=RAS,OU=Groups,OU=$ManagedOU,$ADRootDSE"
-                    "$DomainNetbiosName-RAS-Desktop-USERS" = "OU=RAS,OU=Groups,OU=$ManagedOU,$ADRootDSE"
-                    "$DomainNetbiosName-RAS-Explorer-USERS" = "OU=RAS,OU=Groups,OU=$ManagedOU,$ADRootDSE"
-                    "$DomainNetbiosName-RAS-InternetExplorer-USERS" = "OU=RAS,OU=Groups,OU=$ManagedOU,$ADRootDSE"
-                    "$DomainNetbiosName-RAS-AdobeReader-USERS" = "OU=RAS,OU=Groups,OU=$ManagedOU,$ADRootDSE"
-	                "$DomainNetbiosName-FTP-USERS" = "OU=NetAccess,OU=Groups,OU=$ManagedOU,$ADRootDSE"
-	                "$DomainNetbiosName-RDP-USERS" = "OU=NetAccess,OU=Groups,OU=$ManagedOU,$ADRootDSE"
-	                "$DomainNetbiosName-SSLVPN-USERS" = "OU=NetAccess,OU=Groups,OU=$ManagedOU,$ADRootDSE"
+                    'Admins'= "OU=Groups,OU=$ManagedOU,$ADRootDSE"
+                    'Users' = "OU=Groups,OU=$ManagedOU,$ADRootDSE"
+                    'THINPRINT-Users' = "OU=Groups,OU=$ManagedOU,$ADRootDSE"
+                    'RAS-Users' = "OU=RAS,OU=Groups,OU=$ManagedOU,$ADRootDSE"
+	            'RAS-Office-Users' = "OU=RAS,OU=Groups,OU=$ManagedOU,$ADRootDSE"
+                    'RAS-Desktop-Users' = "OU=RAS,OU=Groups,OU=$ManagedOU,$ADRootDSE"
+                    'RAS-Explorer-Users' = "OU=RAS,OU=Groups,OU=$ManagedOU,$ADRootDSE"
+                    'RAS-InternetExplorer-Users' = "OU=RAS,OU=Groups,OU=$ManagedOU,$ADRootDSE"
+                    'RAS-AdobeReader-Users' = "OU=RAS,OU=Groups,OU=$ManagedOU,$ADRootDSE"
+	            'FTP-Users' = "OU=NetAccess,OU=Groups,OU=$ManagedOU,$ADRootDSE"
+	            'RDP-Users' = "OU=NetAccess,OU=Groups,OU=$ManagedOU,$ADRootDSE"
+	            'SSLVPN-Users' = "OU=NetAccess,OU=Groups,OU=$ManagedOU,$ADRootDSE"
                     }
             ForEach ($Group in $Groups.keys) {
                     $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox2.AddText("Adding Group $Group in $($Groups.$Group) `n") } ) 
