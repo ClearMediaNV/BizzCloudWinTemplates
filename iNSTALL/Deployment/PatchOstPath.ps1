@@ -19,7 +19,7 @@ param (
 # Type: PT_UNICODE
 # DASL: http://schemas.microsoft.com/mapi/proptag/0x6610001F
 If ( $MapiProfile -eq '' ) { [STRING]$MapiProfile = Get-ItemPropertyValue -Path 'HKCU:\SOFTWARE\Microsoft\Office\16.0\Outlook' -Name 'DefaultProfile' -ErrorAction SilentlyContinue }
-If ( (Get-ChildItem -Path "HKCU:\SOFTWARE\Microsoft\Office\16.0\Outlook\Profiles" | Select-Object -ExpandProperty PSChildName) -ne $MapiProfile )
+If ( (Get-ChildItem -Path 'HKCU:\SOFTWARE\Microsoft\Office\16.0\Outlook\Profiles' | Select-Object -ExpandProperty PSChildName) -ne $MapiProfile )
     {
     Write-Output 'No Mapi Profile'
     Start-Sleep -Seconds 5
