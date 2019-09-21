@@ -3,22 +3,24 @@
 $SavedSecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol
 [System.Net.ServicePointManager]::SecurityProtocol = 'Tls,Tls11,Tls12'
 Try {
-    [STRING]$UrlDownload =  'https://github.com/ClearMediaNV/BizzCloudWinTemplates/archive/master.zip'
-    [STRING]$Output = "$ENV:TEMP\Template.zip"
+    [STRING]$Branch = 'master'
+    [STRING]$UrlDownload = "https://github.com/ClearMediaNV/BizzCloudWinTemplates/archive/$Branch.zip"
+    [STRING]$FileDownload = "$ENV:TEMP\$Branch.zip"
+    [STRING]$FolderDownload = "$ENV:TEMP\$Branch"
     # Download Archive
-    (New-Object System.Net.WebClient).downloadFile($UrlDownload,$Output)
+    (New-Object System.Net.WebClient).downloadFile($UrlDownload,$FileDownload)
     # Unzip Archive to Temp
     [VOID][System.Reflection.Assembly]::LoadWithPartialName("System.IO.Compression.FileSystem")
-    [System.IO.Compression.ZipFile]::ExtractToDirectory($Output, "$ENV:TEMP\Template") 
+    [System.IO.Compression.ZipFile]::ExtractToDirectory($FileDownload, "$FolderDownload") 
     # Cleanup and Copy iNSTALL Folder
     Remove-Item -Path 'c:\install\*'  -Recurse -Force
-    Copy-Item -Path "$ENV:TEMP\Template\BizzCloudWinTemplates-master\iNSTALL\*" -Destination 'c:\iNSTALL' -Recurse -Force
+    Copy-Item -Path "$FolderDownload\BizzCloudWinTemplates-$Branch\iNSTALL\*" -Destination 'c:\iNSTALL' -Recurse -Force
     # Cleanup Temp Folder
-    Remove-Item -Path "$Output" -Force
-    Remove-Item -Path "$ENV:TEMP\Template" -Recurse -Force
+    Remove-Item -Path "$FileDownload" -Force
+    Remove-Item -Path "$FolderDownload" -Recurse -Force
     }
 Catch   {
-        Write-Output 'No Internet Connection. Please Check DNS & Gateway Config'
+        Write-Output 'GitHub Connection Error. Please Check DNS & Gateway Config. Please Check https://github.com/ClearMediaNV'
         Start-Sleep -Seconds 5
         }
 # Restore Saved SecurityProtocol
