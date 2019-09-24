@@ -271,10 +271,8 @@ $SyncHash.Host = $Host
 				"$ManagedOU" =  "$ADRootDSE"
 				'Users'= "OU=$ManagedOU,$ADRootDSE"
 				'Light Users' = "OU=Users,OU=$ManagedOU,$ADRootDSE"
-				'Admin Users' = "OU=$ManagedOU,$ADRootDSE"
+				'Admin Users' = "OU=Users,OU=$ManagedOU,$ADRootDSE"
 				'Groups' = "OU=$ManagedOU,$ADRootDSE"
-				'RAS' = "OU=Groups,OU=$ManagedOU,$ADRootDSE"
-				'NetAccess' = "OU=Groups,OU=$ManagedOU,$ADRootDSE"
 				'Servers' = "OU=$ManagedOU,$ADRootDSE"
 				'RDS' = "OU=Servers,OU=$ManagedOU,$ADRootDSE"
 				'DATA' = "OU=Servers,OU=$ManagedOU,$ADRootDSE"
@@ -295,19 +293,17 @@ $SyncHash.Host = $Host
                     }
             #Create HashTable for Group Provisioning
             $Groups = [ordered]@{
-                    'Admins'= "OU=Groups,OU=$ManagedOU,$ADRootDSE"
-                    'Users' = "OU=Groups,OU=$ManagedOU,$ADRootDSE"
-                    'THINPRINT-Users' = "OU=Groups,OU=$ManagedOU,$ADRootDSE"
-                    'RAS-Users' = "OU=RAS,OU=Groups,OU=$ManagedOU,$ADRootDSE"
-	            'RAS-Office-Users' = "OU=RAS,OU=Groups,OU=$ManagedOU,$ADRootDSE"
-                    'RAS-Desktop-Users' = "OU=RAS,OU=Groups,OU=$ManagedOU,$ADRootDSE"
-                    'RAS-Explorer-Users' = "OU=RAS,OU=Groups,OU=$ManagedOU,$ADRootDSE"
-                    'RAS-InternetExplorer-Users' = "OU=RAS,OU=Groups,OU=$ManagedOU,$ADRootDSE"
-                    'RAS-AdobeReader-Users' = "OU=RAS,OU=Groups,OU=$ManagedOU,$ADRootDSE"
-	            'FTP-Users' = "OU=NetAccess,OU=Groups,OU=$ManagedOU,$ADRootDSE"
-	            'RDP-Users' = "OU=NetAccess,OU=Groups,OU=$ManagedOU,$ADRootDSE"
-	            'SSLVPN-Users' = "OU=NetAccess,OU=Groups,OU=$ManagedOU,$ADRootDSE"
-                    }
+	    		'THINPRINT-Users' = "OU=Groups,OU=$ManagedOU,$ADRootDSE"
+                    	'RAS-Users' = "OU=Groups,OU=$ManagedOU,$ADRootDSE"
+	                'RAS-Office-Users' = "OU=Groups,OU=$ManagedOU,$ADRootDSE"
+                    	'RAS-Desktop-Users' = "OU=Groups,OU=$ManagedOU,$ADRootDSE"
+                    	'RAS-Explorer-Users' = "OU=Groups,OU=$ManagedOU,$ADRootDSE"
+                    	'RAS-InternetExplorer-Users' = "OU=Groups,OU=$ManagedOU,$ADRootDSE"
+                    	'RAS-AdobeReader-Users' = "OU=Groups,OU=$ManagedOU,$ADRootDSE"
+	                'FTP-Users' = "OU=Groups,OU=$ManagedOU,$ADRootDSE"
+	                'RDP-Users' = "OU=Groups,OU=$ManagedOU,$ADRootDSE"
+	                'SSLVPN-Users' = "OU=Groups,OU=$ManagedOU,$ADRootDSE"
+			}
             ForEach ($Group in $Groups.keys) {
                     $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox2.AddText("Adding Group $Group in $($Groups.$Group) `n") } ) 
                     $I += 4
@@ -327,7 +323,7 @@ $SyncHash.Host = $Host
 		        'DisplayName' = $ClearmediaAdminUserName
 		        'Description' = $ClearmediaAdminUserName
 		        'EmailAddress' = 'support@clearmedia.be'
-		        'Path' = "OU=Admin Users,OU=$ManagedOU,$ADRootDSE"
+		        'Path' = "OU=Admin Users,OU=Users,OU=$ManagedOU,$ADRootDSE"
 		        'PasswordNeverExpires' = $TRUE
 		        'AccountPassword' =  ConvertTo-SecureString $ClearmediaAdminPassword -AsPlainText -Force
 		        }
