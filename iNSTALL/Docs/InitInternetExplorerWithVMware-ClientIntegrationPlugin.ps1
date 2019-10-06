@@ -1,5 +1,7 @@
 # Kill IEXPLORE.exe
-Get-Process -Name 'iexplore' -ErrorAction SilentlyContinue | Stop-Process
+Get-Process -Name 'iexplore' -ErrorAction SilentlyContinue | ForEach-Object { $_.CloseMainWindow() } | Out-Null
+start-sleep -Seconds 2
+Get-Process -Name 'iexplore' -ErrorAction SilentlyContinue | ForEach-Object { $_.Kill() } | Out-Null
 # Install Adobe Flash Player
 # dism.exe /online /add-package /packagepath:"$((Get-Item -Path 'C:\Windows\servicing\Packages\Adobe-Flash-For-Windows-Package*.mum').FullName)"[STRING]$UrlDownload =  'http://vsphereclient.vmware.com/vsphereclient/1/2/3/0/3/8/6/6/VMware-ClientIntegrationPlugin-6.2.0.exe'
 # Download and Install VMware-ClientIntegrationPlugin-6.2.0
