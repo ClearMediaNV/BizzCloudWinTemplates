@@ -78,18 +78,16 @@ $SyncHash.Host = $Host
                     <TextBox Name="TextBoxTemplateSourcePath" Margin="135,36,0,0" Text="C:\Install\GPO\Templates" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Width="275"/>
                     <Label Name="LabelRdsOuPath" Content="RDS OU Path" Margin="7,80,0,0" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" />
                     <TextBox Name="TextBoxRdsOuPath" Margin="90,84,0,0" Text="$RdsOuPath" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Width="320"/>
-                    <Label Name="LabelUsersOuPath" Content="Users OU Path" Margin="435,80,0,0" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" />
-                    <TextBox Name="TextBoxUsersOuPath" Margin="560,84,0,0" Text="$UsersOuPath" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Width="265"/>
-
+                    <Label Name="LabelUsersOuPath" Content="Users OU Path" Margin="545,80,0,0" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" />
+                    <TextBox Name="TextBoxUsersOuPath" Margin="650,84,0,0" Text="$UsersOuPath" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Width="250"/>
                     <CheckBox Name="checkBox2" Content="StandardRdsServerPolicy" HorizontalAlignment="Left" Margin="12,115,0,0" VerticalAlignment="Top" IsChecked="True"/>
                     <CheckBox Name="checkBox3" Content="StandardServerWindowsUpdate" HorizontalAlignment="Left" Margin="12,135,0,0" VerticalAlignment="Top" IsChecked="True"/>
-                    <CheckBox Name="checkBox4" Content="StandardUserPolicy" HorizontalAlignment="Left" Margin="440,115,0,0" VerticalAlignment="Top" IsChecked="True"/>
-                    <CheckBox Name="checkBox5" Content="StandardHardwareAccelerationUserPolicy" HorizontalAlignment="Left" Margin="440,135,0,0" VerticalAlignment="Top" IsChecked="True"/>
-                    <CheckBox Name="checkBox6" Content="StandardO365UserPolicy" HorizontalAlignment="Left" Margin="440,155,0,0" VerticalAlignment="Top" IsChecked="True"/>
-                    <CheckBox Name="checkBox7" Content="StandardOutlookUserPolicy" HorizontalAlignment="Left" Margin="440,175,0,0" VerticalAlignment="Top" IsChecked="True"/>
-                    <Label Name="LabelOstPath" Content="Outlook OST Path" Margin="435,195,0,0" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" />
-                    <TextBox Name="TextBoxOstPath" Margin="560,199,0,0" Text='D:\Users\%USERNAME%' Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Width="265"/>
-
+                    <CheckBox Name="checkBox4" Content="StandardUserPolicy" HorizontalAlignment="Left" Margin="550,115,0,0" VerticalAlignment="Top" IsChecked="True"/>
+                    <CheckBox Name="checkBox5" Content="StandardHardwareAccelerationUserPolicy" HorizontalAlignment="Left" Margin="550,135,0,0" VerticalAlignment="Top" IsChecked="True"/>
+                    <CheckBox Name="checkBox6" Content="StandardO365UserPolicy" HorizontalAlignment="Left" Margin="550,155,0,0" VerticalAlignment="Top" IsChecked="True"/>
+                    <CheckBox Name="checkBox7" Content="StandardOutlookUserPolicy" HorizontalAlignment="Left" Margin="550,175,0,0" VerticalAlignment="Top" IsChecked="True"/>
+                    <Label Name="LabelOstPath" Content="Outlook OST Path" Margin="545,195,0,0" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" />
+                    <TextBox Name="TextBoxOstPath" Margin="650,199,0,0" Text='D:\Users\%USERNAME%' Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Width="250"/>
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
                         <TextBlock Name="TextBlockOutBox4" Text="" Foreground="WHITE" Background="#FF22206F" />
                     </ScrollViewer>
@@ -141,13 +139,13 @@ $SyncHash.Host = $Host
 					<CheckBox Name="CheckBoxUserDataFolderRootPath" Content="Standard User Data Root Path on E: Drive" HorizontalAlignment="Left" Margin="10,220,0,0" VerticalAlignment="Top" IsChecked="True"/>
                     <TextBox Name="TextBoxUserDataFolderRootPath" Margin="180,243,0,0" Text='E:\Users' Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Width="180"/>
 
-                    <CheckBox Name="CheckBoxRasx" Content="Deploy Parallels RAS" HorizontalAlignment="Left" Margin="440,28,0,0" VerticalAlignment="Top" IsChecked="False"/>
-                    <Label Name="LabelRasLicenseEmailx" Content="Parallels RAS Email" HorizontalAlignment="Left" Height="28" Margin="480,61,0,0" VerticalAlignment="Top" Width="165"/>
-                    <Label Name="LabelRasLicensePasswordx" Content="Parallels RAS Password" HorizontalAlignment="Left" Height="28" Margin="480,94,0,0" VerticalAlignment="Top" Width="165" RenderTransformOrigin="0.452,2.089"/>
-                    <TextBox Name="TextBoxRasLicenseEmailx"  HorizontalAlignment="Left" Height="22" Margin="620,65,0,0" Text="Support@ClearMedia.be" VerticalAlignment="Top" Width="180" TabIndex="1" IsTabStop="False" RenderTransformOrigin="0.673,0.523"/>
-                    <TextBox Name="TextBoxRasLicensePasswordx" HorizontalAlignment="Left" Height="22" Margin="620,99,0,0" Text="*********" VerticalAlignment="Top" Width="180" RenderTransformOrigin="0.462,0.455"/>
-                    <Label Name="LabelRasKeyx" Content="Parallels RAS Key" HorizontalAlignment="Left" Height="28" Margin="480,127,0,0" VerticalAlignment="Top" Width="165" RenderTransformOrigin="0.452,2.089"/>
-                    <TextBox Name="TextBoxRasKeyx" Margin="620,127,0,0" Text="TRIAL" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Width="180"/>
+                    <CheckBox Name="CheckBoxRasx" Content="Deploy Parallels RAS" HorizontalAlignment="Left" Margin="550,28,0,0" VerticalAlignment="Top" IsChecked="False"/>
+                    <Label Name="LabelRasLicenseEmailx" Content="Parallels RAS Email" HorizontalAlignment="Left" Height="28" Margin="550,61,0,0" VerticalAlignment="Top" Width="165"/>
+                    <Label Name="LabelRasLicensePasswordx" Content="Parallels RAS Password" HorizontalAlignment="Left" Height="28" Margin="550,94,0,0" VerticalAlignment="Top" Width="165" RenderTransformOrigin="0.452,2.089"/>
+                    <TextBox Name="TextBoxRasLicenseEmailx"  HorizontalAlignment="Left" Height="22" Margin="713,65,0,0" Text="Support@ClearMedia.be" VerticalAlignment="Top" Width="180" TabIndex="1" IsTabStop="False" RenderTransformOrigin="0.673,0.523"/>
+                    <TextBox Name="TextBoxRasLicensePasswordx" HorizontalAlignment="Left" Height="22" Margin="713,98,0,0" Text="*********" VerticalAlignment="Top" Width="180" RenderTransformOrigin="0.462,0.455"/>
+                    <Label Name="LabelRasKeyx" Content="Parallels RAS Key" HorizontalAlignment="Left" Height="28" Margin="550,127,0,0" VerticalAlignment="Top" Width="165" RenderTransformOrigin="0.452,2.089"/>
+                    <TextBox Name="TextBoxRasKeyx" Margin="713,131,0,0" Text="TRIAL" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Width="180"/>
 
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
                     <TextBlock Name="TextBlockOutBox3" Text="" Foreground="WHITE" Background="#FF22206F" />
@@ -168,13 +166,11 @@ $SyncHash.Host = $Host
                     <TextBox Name="TextBoxO365ServerIpAddress"  HorizontalAlignment="Left" Height="22" Margin="180,32,0,0" Text="192.168.13.101" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target - Server IpAddress - Server Name"/>
                     <TextBox Name="TextBoxO365AdminUserName" HorizontalAlignment="Left" Height="22" Margin="180,65,0,0" Text="Administrator" VerticalAlignment="Top" Width="180" RenderTransformOrigin="0.462,0.455"/>
                     <TextBox Name="TextBoxO365AdminPassword" HorizontalAlignment="Left" Height="22" Margin="180,98,0,0" Text="*********" VerticalAlignment="Top" Width="180" ToolTip="Fill in the Password"/>
-
-                    <RadioButton Name="RadioButton1" Content="O365ProPlusRetail 32 Bit" HorizontalAlignment="Left" Height="22" Margin="10,160,0,0" VerticalAlignment="Top" ClickMode="Press" IsChecked="True"/>
-                    <RadioButton Name="RadioButton2" Content="O365ProPlusRetail 64 Bit" HorizontalAlignment="Left" Height="22" Margin="10,193,0,0" VerticalAlignment="Top" ClickMode="Press" IsChecked="False"/>
-                    <RadioButton Name="RadioButton3" Content="O365BusinessRetail 32 Bit" HorizontalAlignment="Left" Height="22" Margin="10,193,0,0" VerticalAlignment="Top" ClickMode="Press" IsChecked="False" Visibility="Hidden"/>
-                    <RadioButton Name="RadioButton4" Content="O365BusinessRetail 64 Bit" HorizontalAlignment="Left" Height="22" Margin="10,226,0,0" VerticalAlignment="Top" ClickMode="Press" IsChecked="False" Visibility="Hidden"/>
-
-					<CheckBox Name="CheckBoxExcludeApp" Content="Exclude Teams App" HorizontalAlignment="Left" Height="22" Margin="10,226,0,0" VerticalAlignment="Top" IsChecked="False"/>
+                    <RadioButton Name="RadioButton1" Content="O365ProPlusRetail 32 Bit" HorizontalAlignment="Left" Height="22" Margin="550,28,0,0" VerticalAlignment="Top" ClickMode="Press" IsChecked="True"/>
+                    <RadioButton Name="RadioButton2" Content="O365ProPlusRetail 64 Bit" HorizontalAlignment="Left" Height="22" Margin="550,61,0,0" VerticalAlignment="Top" ClickMode="Press" IsChecked="False"/>
+                    <RadioButton Name="RadioButton3" Content="O365BusinessRetail 32 Bit" HorizontalAlignment="Left" Height="22" Margin="550,94,0,0" VerticalAlignment="Top" ClickMode="Press" IsChecked="False"/>
+                    <RadioButton Name="RadioButton4" Content="O365BusinessRetail 64 Bit" HorizontalAlignment="Left" Height="22" Margin="550,127,0,0" VerticalAlignment="Top" ClickMode="Press" IsChecked="False"/>
+					<CheckBox Name="CheckBoxExcludeApp" Content="Exclude Teams App" HorizontalAlignment="Left" Height="22" Margin="750,28,0,0" VerticalAlignment="Top" IsChecked="False"/>
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
                     <TextBlock Name="TextBlockOutBox7" Text="" Foreground="WHITE" Background="#FF22206F" />
                     </ScrollViewer>
@@ -190,10 +186,10 @@ $SyncHash.Host = $Host
                     <Label Name="LabelWuServerIpAddress" Content="Server IpAddress(es)" HorizontalAlignment="Left" Height="28" Margin="10,28,0,0" VerticalAlignment="Top" Width="165"/>
                     <Label Name="LabelWuAdminUserName" Content="Administrator Name" HorizontalAlignment="Left" Height="28" Margin="10,61,0,0" VerticalAlignment="Top" Width="165"/>
                     <Label Name="LabelWuAdminPassword" Content="Administrator Password" HorizontalAlignment="Left" Height="28" Margin="10,94,0,0" VerticalAlignment="Top" Width="165"/>
-                    <Label Name="LabelWuDayOfWeek" Content="Scheduled Day of Week" HorizontalAlignment="Left" Height="28" Margin="10,127,0,0" VerticalAlignment="Top" Width="165"/>
-                    <Label Name="LabelWuTime" Content="Scheduled Time (Hr : Min)" HorizontalAlignment="Left" Height="28" Margin="10,160,0,0" VerticalAlignment="Top" Width="165"/>
-                    <Label Name="LabelWuTimex" Content=":" HorizontalAlignment="Left" Height="28" Margin="284,160,0,0" VerticalAlignment="Top" Width="20"/>
-                    <ComboBox Name="ComboBoxWuDayOfWeek" HorizontalAlignment="Left" Height="24" Margin="180,131,0,0" VerticalAlignment="Top" Width="100" SelectedIndex="1" ToolTip="Select Day from List">
+                    <Label Name="LabelWuDayOfWeek" Content="Scheduled Day of Week" HorizontalAlignment="Left" Height="28" Margin="550,28,0,0" VerticalAlignment="Top" Width="165"/>
+                    <Label Name="LabelWuTime" Content="Scheduled Time (Hr : Min)" HorizontalAlignment="Left" Height="28" Margin="550,61,0,0" VerticalAlignment="Top" Width="165"/>
+                    <Label Name="LabelWuTimex" Content=":" HorizontalAlignment="Left" Height="28" Margin="797,58,0,0" VerticalAlignment="Top" Width="20"/>
+                    <ComboBox Name="ComboBoxWuDayOfWeek" HorizontalAlignment="Left" Height="24" Margin="713,28,0,0" VerticalAlignment="Top" Width="180" SelectedIndex="1" ToolTip="Select Day from List">
                         <ComboBoxItem Content="Monday" IsSelected="True"/>
                         <ComboBoxItem Content="Tuesday"/>
                         <ComboBoxItem Content="Wednesday"/>
@@ -202,7 +198,7 @@ $SyncHash.Host = $Host
                         <ComboBoxItem Content="Saterday"/>
                         <ComboBoxItem Content="Sunday"/>
                     </ComboBox>
-                    <ComboBox Name="ComboBoxWuTimeHour" HorizontalAlignment="Left" Height="24" Margin="180,163,0,0" VerticalAlignment="Top" Width="100" SelectedIndex="4" ToolTip="Select Hour from List">
+                    <ComboBox Name="ComboBoxWuTimeHour" HorizontalAlignment="Left" Height="24" Margin="713,61,0,0" VerticalAlignment="Top" Width="80" SelectedIndex="4" ToolTip="Select Hour from List">
                         <ComboBoxItem Content="00" IsSelected="True"/>
                         <ComboBoxItem Content="01"/>
                         <ComboBoxItem Content="02"/>
@@ -228,7 +224,7 @@ $SyncHash.Host = $Host
                         <ComboBoxItem Content="22"/>
                         <ComboBoxItem Content="23"/>
                     </ComboBox>
-                    <ComboBox Name="ComboBoxWuTimeMinutes" HorizontalAlignment="Left" Height="24" Margin="300,163,0,0" VerticalAlignment="Top" Width="100" SelectedIndex="0" ToolTip="Select Minutes from List">
+                    <ComboBox Name="ComboBoxWuTimeMinutes" HorizontalAlignment="Left" Height="24" Margin="813,61,0,0" VerticalAlignment="Top" Width="80" SelectedIndex="0" ToolTip="Select Minutes from List">
                         <ComboBoxItem Content="00" IsSelected="True"/>
                         <ComboBoxItem Content="10"/>
                         <ComboBoxItem Content="20"/>
@@ -249,17 +245,22 @@ $SyncHash.Host = $Host
                     </StatusBar>
                 </Grid>
             </TabItem>
-
             <TabItem Name="TabItemDeployUSER" Header="Deploy USER" Margin="402,0,-450,0">
                 <Grid Background="#FFE5E5E5">
-                    <Label Name="LabelUserName" Content="User Name" HorizontalAlignment="Left" Height="28" Margin="10,28,0,0" VerticalAlignment="Top" Width="165"/>
-                    <Label Name="LabelUserGivenName" Content="User Given Name" HorizontalAlignment="Left" Height="28" Margin="10,61,0,0" VerticalAlignment="Top" Width="165" RenderTransformOrigin="0.452,2.089"/>
-                    <Label Name="LabelUserSurname" Content="User Sur Name" HorizontalAlignment="Left" Height="28" Margin="10,94,0,0" VerticalAlignment="Top" Width="165"/>
-                    <Label Name="LabelDepartment" Content="Department" HorizontalAlignment="Left" Height="28" Margin="10,127,0,0" VerticalAlignment="Top" Width="165"/>
-                    <TextBox Name="TextBoxUserPrincipalName"  HorizontalAlignment="Left" Height="22" Margin="180,32,0,0" Text="" VerticalAlignment="Top" Width="180" TabIndex="1" IsTabStop="False" RenderTransformOrigin="0.673,0.523"/>
-                    <TextBox Name="TextBoxUserGivenName" HorizontalAlignment="Left" Height="22" Margin="180,65,0,0" Text="" VerticalAlignment="Top" Width="180" RenderTransformOrigin="0.462,0.455"/>
-                    <TextBox Name="TextBoxUserSurname" HorizontalAlignment="Left" Height="22" Margin="180,98,0,0" Text="" VerticalAlignment="Top" Width="180"/>
-                    <TextBox Name="TextBoxDepartment" HorizontalAlignment="Left" Height="22" Margin="180,131,0,0" Text="" VerticalAlignment="Top" Width="180"/>
+                    <Label Name="LabelDeployUSERServerIpAddress" Content="Server IpAddress(es)" HorizontalAlignment="Left" Height="28" Margin="10,28,0,0" VerticalAlignment="Top" Width="165"/>
+                    <Label Name="LabelDeployUSERAdminUserName" Content="Administrator Name" HorizontalAlignment="Left" Height="28" Margin="10,61,0,0" VerticalAlignment="Top" Width="165"/>
+                    <Label Name="LabelDeployUSERAdminPassword" Content="Administrator Password" HorizontalAlignment="Left" Height="28" Margin="10,94,0,0" VerticalAlignment="Top" Width="165"/>
+                    <Label Name="LabelUserName" Content="User Name" HorizontalAlignment="Left" Height="28" Margin="550,28,0,0" VerticalAlignment="Top" Width="165"/>
+                    <Label Name="LabelUserGivenName" Content="User Given Name" HorizontalAlignment="Left" Height="28" Margin="550,61,0,0" VerticalAlignment="Top" Width="165" RenderTransformOrigin="0.452,2.089"/>
+                    <Label Name="LabelUserSurname" Content="User Sur Name" HorizontalAlignment="Left" Height="28" Margin="550,94,0,0" VerticalAlignment="Top" Width="165"/>
+                    <Label Name="LabelDepartment" Content="Department" HorizontalAlignment="Left" Height="28" Margin="550,127,0,0" VerticalAlignment="Top" Width="165"/>
+                    <TextBox Name="TextBoxDeployUSERServerIpAddress"  HorizontalAlignment="Left" Height="22" Margin="180,32,0,0" Text="192.168.13.101" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target - Server IpAddress - Server Name"/>
+                    <TextBox Name="TextBoxDeployUSERAdminUserName" HorizontalAlignment="Left" Height="22" Margin="180,65,0,0" Text="Administrator" VerticalAlignment="Top" Width="180" RenderTransformOrigin="0.462,0.455"/>
+                    <TextBox Name="TextBoxDeployUSERAdminPassword" HorizontalAlignment="Left" Height="22" Margin="180,98,0,0" Text="*********" VerticalAlignment="Top" Width="180" ToolTip="Fill in the Password"/>
+                    <TextBox Name="TextBoxUserPrincipalName"  HorizontalAlignment="Left" Height="22" Margin="713,32,0,0" Text="" VerticalAlignment="Top" Width="180" TabIndex="1" IsTabStop="False" RenderTransformOrigin="0.673,0.523"/>
+                    <TextBox Name="TextBoxUserGivenName" HorizontalAlignment="Left" Height="22" Margin="713,65,0,0" Text="" VerticalAlignment="Top" Width="180" RenderTransformOrigin="0.462,0.455"/>
+                    <TextBox Name="TextBoxUserSurname" HorizontalAlignment="Left" Height="22" Margin="713,98,0,0" Text="" VerticalAlignment="Top" Width="180"/>
+                    <TextBox Name="TextBoxDepartment" HorizontalAlignment="Left" Height="22" Margin="713,131,0,0" Text="" VerticalAlignment="Top" Width="180"/>
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
                     <TextBlock Name="TextBlockOutBox6" Text="" Foreground="WHITE" Background="#FF22206F" />
                     </ScrollViewer>
