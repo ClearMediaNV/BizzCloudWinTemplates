@@ -29,7 +29,7 @@ Add-Type -AssemblyName PresentationFramework
 $SyncHash = [hashtable]::Synchronized(@{})
 $SyncHash.Host = $Host
 
-# Init Config Xaml Windows Presentation Form
+# Init Config Xaml WPF - Windows Presentation Form
 [XML]$XAML = @"
 	<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Title="PushTheButton v1.0" Height="800" Width="1280" WindowState="Maximized"  ShowInTaskbar = "True" Topmost="True">
     <Grid>
