@@ -278,11 +278,11 @@ $SyncHash.Host = $Host
 	</Window>
 "@
 
-# Start Windows Presentation Form
+# Start WPF - Windows Presentation Form
     $reader=(New-Object System.Xml.XmlNodeReader $xaml)
     $syncHash.Window=[Windows.Markup.XamlReader]::Load( $reader )
 
-# Init Windows Presentation Form Functions
+# Init WPF - Windows Presentation Form Functions
 	Function DeployDcStart {
 		Param($syncHash,$DnsForwarder,$DomainNetbiosName,$DomainDnsName)
         $Runspace = [runspacefactory]::CreateRunspace()
