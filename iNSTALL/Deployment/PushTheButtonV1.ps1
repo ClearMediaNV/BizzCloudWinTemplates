@@ -22,7 +22,7 @@ Try { $UsersOuPath = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedia\Push
 # Set Full Screen HD 800 x 1280
 Set-DisplayResolution -Height 800 -Width 1280 -Force
 
-# Load Assemblies
+# Load Assemblies WPF - Windows Presentation Form
 Add-Type -AssemblyName PresentationFramework
 
 # Init Synchronised Hastable for RunSpaces Aka MultiThreading
