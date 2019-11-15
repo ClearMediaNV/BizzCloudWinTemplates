@@ -278,7 +278,7 @@ $SyncHash.Host = $Host
 	</Window>
 "@
 
-# Start ( WPF - Windows Presentation Form )
+# Init ( WPF - Windows Presentation Form )
     $reader=(New-Object System.Xml.XmlNodeReader $xaml)
     $syncHash.Window=[Windows.Markup.XamlReader]::Load( $reader )
 
