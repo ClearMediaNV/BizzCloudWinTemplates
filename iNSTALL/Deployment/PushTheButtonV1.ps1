@@ -22,14 +22,14 @@ Try { $UsersOuPath = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedia\Push
 # Set Full Screen HD 800 x 1280
 Set-DisplayResolution -Height 800 -Width 1280 -Force
 
-# Load Assemblies ( WPF - Windows Presentation Form )
+# Load Assemblies ( WPF - Windows Presentation Framework )
 Add-Type -AssemblyName PresentationFramework
 
 # Init Synchronised Hastable for RunSpaces Aka MultiThreading
 $SyncHash = [hashtable]::Synchronized(@{})
 $SyncHash.Host = $Host
 
-# Init Config Xaml ( WPF - Windows Presentation Form )
+# Init Config Xaml ( WPF - Windows Presentation Framework )
 [XML]$XAML = @"
 	<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Title="PushTheButton v1.0" Height="800" Width="1280" WindowState="Maximized"  ShowInTaskbar = "True" Topmost="True">
     <Grid>
@@ -278,11 +278,11 @@ $SyncHash.Host = $Host
 	</Window>
 "@
 
-# Init ( WPF - Windows Presentation Form )
+# Init ( WPF - Windows Presentation Framework )
     $reader=(New-Object System.Xml.XmlNodeReader $xaml)
     $syncHash.Window=[Windows.Markup.XamlReader]::Load( $reader )
 
-# Init ( WPF - Windows Presentation Form ) Functions
+# Init ( WPF - Windows Presentation Framework ) Functions
 	Function DeployDcStart {
 		Param($syncHash,$DnsForwarder,$DomainNetbiosName,$DomainDnsName)
         $Runspace = [runspacefactory]::CreateRunspace()
@@ -1540,10 +1540,10 @@ Shutdown.exe /r /t 5 /f /c 'Scheduled Windows Updates with Reboot' /d p:0:0
     }
 
 	
-# AutoFind ( WPF - Windows Presentation Form ) Controls
+# AutoFind ( WPF - Windows Presentation Framework ) Controls
 	$XAML.SelectNodes("//*[@*[contains(translate(name(.),'n','N'),'Name')]]")  | ForEach-Object { $syncHash.Add($_.Name, $syncHash.Window.Findname($_.Name)) }
 
-# Init ( WPF - Windows Presentation Form ) Actions
+# Init ( WPF - Windows Presentation Framework ) Actions
     $syncHash.DeployDcStart.Add_Click({
         $syncHash.DeployDcStart.IsEnabled = $False
 	$syncHash.DeployOUStart.IsEnabled = $False
@@ -1640,8 +1640,8 @@ Shutdown.exe /r /t 5 /f /c 'Scheduled Windows Updates with Reboot' /d p:0:0
 	DeployWUStart -syncHash $syncHash -WuServerIpAddress $syncHash.TextBoxWuServerIpAddress.Text -WuAdminUserName $syncHash.TextBoxWuAdminUserName.Text -WuAdminPassword $syncHash.TextBoxWuAdminPassword.Text -WuDayOfWeek $syncHash.ComboBoxWuDayOfWeek.SelectedIndex -WuTimeHour $syncHash.ComboBoxWuTimeHour.SelectedIndex -WuTimeMinutes $syncHash.ComboBoxWuTimeMinutes.SelectedIndex
         })
 
-# Close ( WPF - Windows Presentation Form ) Process on Exit
+# Close ( WPF - Windows Presentation Framework ) Process on Exit
    $syncHash.Window.Add_Closing({[System.Windows.Forms.Application]::Exit() ; Stop-Process $pid})
  
-# Start ( WPF - Windows Presentation Form ) Process 
+# Start ( WPF - Windows Presentation Framework ) Process 
    $syncHash.Window.ShowDialog()
