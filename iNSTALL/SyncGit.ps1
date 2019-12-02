@@ -19,10 +19,10 @@ Try {
     Remove-Item -Path "$FileDownload" -Force
     Remove-Item -Path "$FolderDownload" -Recurse -Force
     }
-Catch   {
-        Write-Output 'GitHub Connection Error. Please Check DNS & Gateway Config. Please Check https://github.com/ClearMediaNV'
-        Start-Sleep -Seconds 5
-        }
+   Catch {
+         Write-Output 'GitHub Connection Error. Please Check DNS & Gateway Config. Please Check https://github.com/ClearMediaNV'
+         Start-Sleep -Seconds 5
+         }
 # Restore Saved SecurityProtocol
 [System.Net.ServicePointManager]::SecurityProtocol = $SavedSecurityProtocol
 # The End
