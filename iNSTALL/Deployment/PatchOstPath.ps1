@@ -7,10 +7,10 @@
 		Applies to Office 2016
 		OST Must Be Enabled
     	.EXAMPLE
-        	PatchOstPath.ps1 -OstPath 'D:\Outlook\User.ost' -MapiProfile 'Outlook'
+        	PatchOstPath.ps1 -OstPath "D:\Users\$env:USERNAME\$env:USERNAME.ost' -MapiProfile 'Outlook"
 	#>
 param (
-	[Parameter(Position=0,Mandatory=$false)][STRING]$OstPath = "D:\Outlook\$env:USERNAME.ost",
+	[Parameter(Position=0,Mandatory=$false)][STRING]$OstPath = "D:\Users\$env:USERNAME\$env:USERNAME.ost",
   	[Parameter(Position=1,Mandatory=$false)][STRING]$MapiProfile = ''
 	)
 # Cfr MFCMAPI
