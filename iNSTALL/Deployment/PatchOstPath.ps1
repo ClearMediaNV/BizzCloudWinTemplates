@@ -10,8 +10,8 @@
         	PatchOstPath.ps1 -OstPath "D:\User\$Env:UserName\$Env:UserName.ost" -MapiProfile 'Outlook'
 	#>
 param (
-	[Parameter(Position=0,Mandatory=$false)][STRING]$OstPath = "D:\User\$Env:UserName\$Env:UserName.ost",
-  	[Parameter(Position=1,Mandatory=$false)][STRING]$MapiProfile = ''
+	[Parameter(Position=0,Mandatory=$True)][STRING]$OstPath = "D:\User\$Env:UserName\$Env:UserName.ost",
+  	[Parameter(Position=1,Mandatory=$False)][STRING]$MapiProfile = ''
 	)
 # Cfr MFCMAPI
 # Property Name: PR_PROFILE_OFFLINE_STORE_PATH_W
