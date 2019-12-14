@@ -4,8 +4,8 @@ try {
     if ( Test-Path -Path $TeamsUpdateExePath ) {
         # Uninstall app
         Write-Output ' Uninstalling Teams process'
-        $proc = Start-Process -FilePath $TeamsUpdateExePath -ArgumentList '-uninstall -s' -PassThru
-        $proc.WaitForExit()
+        $Process = Start-Process -FilePath $TeamsUpdateExePath -ArgumentList '-uninstall -s' -PassThru
+        $Process.WaitForExit()
         }
     if ( Test-Path -Path $TeamsPath ) {
         Write-Output ' Deleting Teams directory'
