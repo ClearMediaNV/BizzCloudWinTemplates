@@ -14,5 +14,5 @@ try {
     }
 catch   {
         Write-Error -ErrorRecord $_
-        exit /b 1
+        Exit /b 1
         }
