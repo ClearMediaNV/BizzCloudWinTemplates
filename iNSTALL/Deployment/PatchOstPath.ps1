@@ -25,8 +25,7 @@ If ( (Get-ChildItem -Path 'HKCU:\SOFTWARE\Microsoft\Office\16.0\Outlook\Profiles
     Start-Sleep -Seconds 5
     Exit
     }
-[BYTE[]]$PathArray = $Null
-$OstPath.ToCharArray() | ForEach-Object { $PathArray += ($_,0) } ; $PathArray += (0,0)
+[BYTE[]]$PathArray = $Null ; $OstPath.ToCharArray() | ForEach-Object { $PathArray += ($_,0) } ; $PathArray += (0,0)
 If  ( Get-ChildItem -Path "HKCU:\SOFTWARE\Microsoft\Office\16.0\Outlook\Profiles\$MapiProfile" | Where-Object { $_.Property -eq '001f6610' } )
     {
     Get-ChildItem -Path "HKCU:\SOFTWARE\Microsoft\Office\16.0\Outlook\Profiles\$MapiProfile" | Where-Object { $_.Property -eq '001f6610' } | ForEach-Object { Set-ItemProperty -LiteralPath $_.PSPath   -Name '001f6610' -Value $PathArray }
