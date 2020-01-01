@@ -8,7 +8,7 @@ Try {
     $FileDownload = "$ENV:TEMP\$Branch.zip"
     $FolderDownload = "$ENV:TEMP\$Branch"
     # Download Archive
-    [System.Net.WebClient]::new().downloadFile($UrlDownload,$FileDownload)
+    (New-Object System.Net.WebClient).downloadFile($UrlDownload,$Output)
     # Unzip Archive to Temp Folder
     [VOID][System.Reflection.Assembly]::LoadWithPartialName("System.IO.Compression.FileSystem")
     [System.IO.Compression.ZipFile]::ExtractToDirectory($FileDownload, "$FolderDownload") 
