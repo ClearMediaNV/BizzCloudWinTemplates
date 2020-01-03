@@ -36,7 +36,7 @@ $SyncHash.Host = $Host
 # Init ( WPF - Windows Presentation Framework ) Config
 [XML]$XAML = @"
 	<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Title="PushTheButton v1.0" Height="800" Width="1280" WindowState="Maximized"  ShowInTaskbar = "True" Topmost="True">
-    <Grid>
+	<Grid>
         <TabControl HorizontalAlignment="Left" Height="730" Margin="10,0,0,0" VerticalAlignment="Top" Width="1260">
             <TabItem Name="TabItemDeployDC" Header="Deploy DC" Margin="-2,0,-60,0">
                 <Grid Background="#FFE5E5E5">
@@ -277,10 +277,8 @@ $SyncHash.Host = $Host
                     </StatusBar>
                 </Grid>
             </TabItem>
-
         </TabControl>
-
-    </Grid>
+	</Grid>
 	</Window>
 "@
 
@@ -289,16 +287,16 @@ $SyncHash.Host = $Host
     $syncHash.Window=[Windows.Markup.XamlReader]::Load( $reader )
 
 # Init ( WPF - Windows Presentation Framework ) Functions
-	Function DeployDcStart {
-		Param($syncHash,$DnsForwarder,$DomainNetbiosName,$DomainDnsName)
+Function DeployDcStart {
+	Param($syncHash,$DnsForwarder,$DomainNetbiosName,$DomainDnsName)
         $Runspace = [runspacefactory]::CreateRunspace()
         $Runspace.ApartmentState = "STA"
         $Runspace.ThreadOptions = "ReuseThread"
         $Runspace.Open()
         $Runspace.SessionStateProxy.SetVariable("syncHash",$syncHash)
-		$Runspace.SessionStateProxy.SetVariable("DnsForwarder",$DnsForwarder)
-		$Runspace.SessionStateProxy.SetVariable("DomainNetbiosName",$DomainNetbiosName)
-		$Runspace.SessionStateProxy.SetVariable("DomainDnsName",$DomainDnsName)
+	$Runspace.SessionStateProxy.SetVariable("DnsForwarder",$DnsForwarder)
+	$Runspace.SessionStateProxy.SetVariable("DomainNetbiosName",$DomainNetbiosName)
+	$Runspace.SessionStateProxy.SetVariable("DomainDnsName",$DomainDnsName)
         $code = {
             [INT]$I = 0
             [STRING]$RandomPasswordPlainText = ((([char[]](65..90) | sort {get-random})[0..2] + ([char[]](33,35,36,37,42,43,45) | sort {get-random})[0] + ([char[]](97..122) | sort {get-random})[0..4] + ([char[]](48..57) | sort {get-random})[0]) | get-random -Count 10) -join ''
@@ -318,8 +316,8 @@ $SyncHash.Host = $Host
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployDcStart.Value = $I } )  }
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox1.AddText(" Installing Remote Server Administration Tools `n") } )
             $Job = Start-Job -Name 'Remote Server Administration Tools' -ScriptBlock { Install-WindowsFeature -Name  'RSAT-AD-Tools','RSAT-DNS-Server','RSAT-RDS-Licensing-Diagnosis-UI','RDS-Licensing-UI' -ErrorAction Stop }
-            While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500  ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployDcStart.Value = $I } ) }
-			$DnsForwarder.Split(',') | Sort-Object -Descending | ForEach-Object {
+	    While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500  ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployDcStart.Value = $I } ) }
+	    $DnsForwarder.Split(',') | Sort-Object -Descending | ForEach-Object {
                     $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox1.AddText(" Adding DNS Forwarder $_ `n") } )
                     $Job = Start-Job -Name "Adding DNS Forwarder $_" -ScriptBlock { Param( $DnsForwarder ) ; Add-DnsServerForwarder -IPAddress ($DnsForwarder.Split(',') | Sort-Object) -ErrorAction Stop } -ArgumentList ( $_ )
                     While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployDcStart.Value = $I } )  }
@@ -339,9 +337,9 @@ $SyncHash.Host = $Host
                 }
                 Else 
                 {
-		    New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DeployDcStart' -PropertyType 'String' -Value 'Hidden' -Force
-		    New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DomainNetbiosName' -PropertyType 'String' -Value $DomainNetbiosName -Force
-		    New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DomainDNSName' -PropertyType 'String' -Value $DomainDNSName -Force
+		New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DeployDcStart' -PropertyType 'String' -Value 'Hidden' -Force
+		New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DomainNetbiosName' -PropertyType 'String' -Value $DomainNetbiosName -Force
+		New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DomainDNSName' -PropertyType 'String' -Value $DomainDNSName -Force
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployDcStart.Visibility = "Hidden" } )
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatusDeployDcStart.Content = "Deployment Finished $(' .'*135)$(' '*30) Please  REBOOT" } )
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.DeployDcStart.Visibility = "Hidden" } )
@@ -352,52 +350,51 @@ $SyncHash.Host = $Host
         $PSinstance = [powershell]::Create().AddScript($Code)
         $PSinstance.Runspace = $Runspace
         $job = $PSinstance.BeginInvoke()
-        
-    }
-	Function DeployOuStart {
-		Param($syncHash,$ManagedOuName,$ClearmediaAdminUserName,$ClearmediaAdminPassword)
+	}
+Function DeployOuStart {
+	Param($syncHash,$ManagedOuName,$ClearmediaAdminUserName,$ClearmediaAdminPassword)
         $Runspace = [runspacefactory]::CreateRunspace()
         $Runspace.ApartmentState = "STA"
         $Runspace.ThreadOptions = "ReuseThread"
         $Runspace.Open()
         $Runspace.SessionStateProxy.SetVariable("syncHash",$syncHash)
-		$Runspace.SessionStateProxy.SetVariable("ManagedOuName",$ManagedOuName)
-		$Runspace.SessionStateProxy.SetVariable("ClearmediaAdminUserName",$ClearmediaAdminUserName)
-		$Runspace.SessionStateProxy.SetVariable("ClearmediaAdminPassword",$ClearmediaAdminPassword)
+	$Runspace.SessionStateProxy.SetVariable("ManagedOuName",$ManagedOuName)
+	$Runspace.SessionStateProxy.SetVariable("ClearmediaAdminUserName",$ClearmediaAdminUserName)
+	$Runspace.SessionStateProxy.SetVariable("ClearmediaAdminPassword",$ClearmediaAdminPassword)
         $code = {
             $Error.Clear()
             $ErrorList = @()
             [INT]$I = 0
-	        [STRING]$ManagedOU = $ManagedOuName
-			If ( $ClearmediaAdminPassword -eq "$('*'*18)" ) { [STRING]$ClearmediaAdminPassword = ((([char[]](65..90) | sort {get-random})[0..2] + ([char[]](33,35,36,37,42,43,45) | sort {get-random})[0] + ([char[]](97..122) | sort {get-random})[0..4] + ([char[]](48..57) | sort {get-random})[0]) | get-random -Count 10) -join '' }
-			$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBoxClearmediaAdminPassword.Text = $ClearmediaAdminPassword } )
-			# Get ADRootDSE
-			$ADRootDSE = $(($Env:USERDNSDOMAIN.Replace('.',',DC=')).Insert(0,'DC='))
-			#Create HashTable for OU Provisioning
-			$OUs = [ordered]@{
-				"$ManagedOU" =  "$ADRootDSE"
-				'Users'= "OU=$ManagedOU,$ADRootDSE"
-				'Light Users' = "OU=Users,OU=$ManagedOU,$ADRootDSE"
-				'Admin Users' = "OU=Users,OU=$ManagedOU,$ADRootDSE"
-				'Groups' = "OU=$ManagedOU,$ADRootDSE"
-				'Servers' = "OU=$ManagedOU,$ADRootDSE"
-				'RDS' = "OU=Servers,OU=$ManagedOU,$ADRootDSE"
-				'DATA' = "OU=Servers,OU=$ManagedOU,$ADRootDSE"
-				'WEB' = "OU=Servers,OU=$ManagedOU,$ADRootDSE"
-				}
-			# Create OU Structure
-			$OUs.keys | ForEach-Object { 
-                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox2.AddText(" Creating OU $_ `n") } ) 
-                    $I += 4
-                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployOUStart.Value = $I } )
-                    New-ADOrganizationalUnit -Name $_ -Path $($OUs.$_) -ErrorAction Stop
-                    If ( $error ) {
+	    [STRING]$ManagedOU = $ManagedOuName
+	    If ( $ClearmediaAdminPassword -eq "$('*'*18)" ) { [STRING]$ClearmediaAdminPassword = ((([char[]](65..90) | sort {get-random})[0..2] + ([char[]](33,35,36,37,42,43,45) | sort {get-random})[0] + ([char[]](97..122) | sort {get-random})[0..4] + ([char[]](48..57) | sort {get-random})[0]) | get-random -Count 10) -join '' }
+	    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBoxClearmediaAdminPassword.Text = $ClearmediaAdminPassword } )
+	    # Get ADRootDSE
+	    $ADRootDSE = $(($Env:USERDNSDOMAIN.Replace('.',',DC=')).Insert(0,'DC='))
+	    #Create HashTable for OU Provisioning
+	    $OUs = [ordered]@{
+	    	"$ManagedOU" =  "$ADRootDSE"
+		'Users'= "OU=$ManagedOU,$ADRootDSE"
+		'Light Users' = "OU=Users,OU=$ManagedOU,$ADRootDSE"
+		'Admin Users' = "OU=Users,OU=$ManagedOU,$ADRootDSE"
+		'Groups' = "OU=$ManagedOU,$ADRootDSE"
+		'Servers' = "OU=$ManagedOU,$ADRootDSE"
+		'RDS' = "OU=Servers,OU=$ManagedOU,$ADRootDSE"
+		'DATA' = "OU=Servers,OU=$ManagedOU,$ADRootDSE"
+		'WEB' = "OU=Servers,OU=$ManagedOU,$ADRootDSE"
+		}
+	    # Create OU Structure
+	    $OUs.keys | ForEach-Object { 
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox2.AddText(" Creating OU $_ `n") } ) 
+            $I += 4
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployOUStart.Value = $I } )
+            New-ADOrganizationalUnit -Name $_ -Path $($OUs.$_) -ErrorAction Stop
+            If ( $error ) {
                         $ErrorList += "New-ADOrganizationalUnit -Name $_ -Path $($OUs.$_) -ErrorAction Stop"
                         $ErrorList += $error[0].Exception.Message.ToString()
                         $ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
                         $Error.Clear()
                         }
-                    }
+            }
             #Create HashTable for Group Provisioning
             $Groups = [ordered]@{
 	    		        'THINPRINT-Users' = "OU=Groups,OU=$ManagedOU,$ADRootDSE"
@@ -466,97 +463,96 @@ $SyncHash.Host = $Host
                 }
                 Else
                 {
-        		New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'ManagedOuName' -PropertyType 'String' -Value $ManagedOuName -Force
-        		New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'RdsOuPath' -PropertyType 'String' -Value "OU=RDS,OU=Servers,OU=$ManagedOuName,$ADRootDSE" -Force
-        		New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'UsersOuPath' -PropertyType 'String' -Value "OU=Users,OU=$ManagedOuName,$ADRootDSE" -Force
-        		New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DeployOuStart' -PropertyType 'String' -Value 'Hidden' -Force
-        		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBoxRdsOuPath.Text = "OU=RDS,OU=Servers,OU=$ManagedOuName,$ADRootDSE" } )
-        		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBoxUsersOuPath.Text = "OU=Users,OU=$ManagedOuName,$ADRootDSE" } )
-        		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatusDeployOUStart.Content = "Deployment Finished $(' .'*135)$(' '*30)" } )
+        	New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'ManagedOuName' -PropertyType 'String' -Value $ManagedOuName -Force
+        	New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'RdsOuPath' -PropertyType 'String' -Value "OU=RDS,OU=Servers,OU=$ManagedOuName,$ADRootDSE" -Force
+        	New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'UsersOuPath' -PropertyType 'String' -Value "OU=Users,OU=$ManagedOuName,$ADRootDSE" -Force
+        	New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DeployOuStart' -PropertyType 'String' -Value 'Hidden' -Force
+        	$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBoxRdsOuPath.Text = "OU=RDS,OU=Servers,OU=$ManagedOuName,$ADRootDSE" } )
+        	$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBoxUsersOuPath.Text = "OU=Users,OU=$ManagedOuName,$ADRootDSE" } )
+        	$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatusDeployOUStart.Content = "Deployment Finished $(' .'*135)$(' '*30)" } )
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.DeployStandardGpoStart.IsEnabled = $True } )
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.DeployFolderRedirectionStart.IsEnabled = $True } )
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.DeployRdsStart.IsEnabled = $True } )
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.DeployO365Start.IsEnabled = $True } )
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.DeployWUStart.IsEnabled = $True } )
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.DeployUserStart.IsEnabled = $True } )
-        		}
+        	}
             }
         $PSinstance = [powershell]::Create().AddScript($Code)
         $PSinstance.Runspace = $Runspace
         $job = $PSinstance.BeginInvoke()
-        
-    }
-	Function DeployStandardGpoStart {
-		Param($syncHash,$TemplateSourcePath,$RdsOuPath,$UsersOuPath,$OstPath,$CheckBox1,$CheckBox2,$CheckBox3,$CheckBox4,$CheckBox5,$CheckBox6,$CheckBox7)
+        }
+Function DeployStandardGpoStart {
+	Param($syncHash,$TemplateSourcePath,$RdsOuPath,$UsersOuPath,$OstPath,$CheckBox1,$CheckBox2,$CheckBox3,$CheckBox4,$CheckBox5,$CheckBox6,$CheckBox7)
         $Runspace = [runspacefactory]::CreateRunspace()
         $Runspace.ApartmentState = "STA"
         $Runspace.ThreadOptions = "ReuseThread"
         $Runspace.Open()
         $Runspace.SessionStateProxy.SetVariable("syncHash",$syncHash)
-		$Runspace.SessionStateProxy.SetVariable("TemplateSourcePath",$TemplateSourcePath)
-		$Runspace.SessionStateProxy.SetVariable("RdsOuPath",$RdsOuPath)
-		$Runspace.SessionStateProxy.SetVariable("UsersOuPath",$UsersOuPath)
-		$Runspace.SessionStateProxy.SetVariable("OstPath",$OstPath)
-		$Runspace.SessionStateProxy.SetVariable("CheckBox1",$CheckBox1)
-		$Runspace.SessionStateProxy.SetVariable("CheckBox2",$CheckBox2)
-		$Runspace.SessionStateProxy.SetVariable("CheckBox3",$CheckBox3)
-		$Runspace.SessionStateProxy.SetVariable("CheckBox4",$CheckBox4)
-		$Runspace.SessionStateProxy.SetVariable("CheckBox5",$CheckBox5)
-		$Runspace.SessionStateProxy.SetVariable("CheckBox6",$CheckBox6)
-		$Runspace.SessionStateProxy.SetVariable("CheckBox7",$CheckBox7)
+	$Runspace.SessionStateProxy.SetVariable("TemplateSourcePath",$TemplateSourcePath)
+	$Runspace.SessionStateProxy.SetVariable("RdsOuPath",$RdsOuPath)
+	$Runspace.SessionStateProxy.SetVariable("UsersOuPath",$UsersOuPath)
+	$Runspace.SessionStateProxy.SetVariable("OstPath",$OstPath)
+	$Runspace.SessionStateProxy.SetVariable("CheckBox1",$CheckBox1)
+	$Runspace.SessionStateProxy.SetVariable("CheckBox2",$CheckBox2)
+	$Runspace.SessionStateProxy.SetVariable("CheckBox3",$CheckBox3)
+	$Runspace.SessionStateProxy.SetVariable("CheckBox4",$CheckBox4)
+	$Runspace.SessionStateProxy.SetVariable("CheckBox5",$CheckBox5)
+	$Runspace.SessionStateProxy.SetVariable("CheckBox6",$CheckBox6)
+	$Runspace.SessionStateProxy.SetVariable("CheckBox7",$CheckBox7)
         $code = {
-            $Error.Clear()
-            $ErrorList = @()
-            [INT]$I = 0
-			# Get ADRootDSE
-			$ADRootDSE = $(($env:USERDNSDOMAIN.Replace('.',',DC=')).Insert(0,'DC='))
-            # Copy ADM(X) Files to Local ADM(X) Store
-    if ( $CheckBox1 ) {			
-            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox4.AddText(" Copying ADM(X) Files to Local ADM(X) Store `n") } ) 
-            $I += 4 ; If ( $I -ge 100 ) { $I = 1 }
-            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployStandardGpoStart.Value = $I } )
-            Copy-Item -Path "$TemplateSourcePath\admx\*" -Destination 'C:\Windows\PolicyDefinitions' -ErrorAction Continue -Force
+		$Error.Clear()
+		$ErrorList = @()
+		[INT]$I = 0
+		# Get ADRootDSE
+		$ADRootDSE = $(($env:USERDNSDOMAIN.Replace('.',',DC=')).Insert(0,'DC='))
+            	# Copy ADM(X) Files to Local ADM(X) Store
+    		if ( $CheckBox1 ) {
+			$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox4.AddText(" Copying ADM(X) Files to Local ADM(X) Store `n") } ) 
+            		$I += 4 ; If ( $I -ge 100 ) { $I = 1 }
+            		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployStandardGpoStart.Value = $I } )
+            		Copy-Item -Path "$TemplateSourcePath\admx\*" -Destination 'C:\Windows\PolicyDefinitions' -ErrorAction Continue -Force
 			If ( $error ) {
-                        $ErrorList += "Copy-Item -Path $TemplateSourcePath\admx\* -Destination 'C:\Windows\PolicyDefinitions' -ErrorAction Stop -Force"
-                        $ErrorList += $error[0].Exception.Message.ToString()
-                        $ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
-                        $Error.Clear()
-                        }
-            $I += 4 ; If ( $I -ge 100 ) { $I = 1 }
-            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployStandardGpoStart.Value = $I } )
-            Copy-Item -Path "$TemplateSourcePath\admx\en-US\*" -Destination 'C:\Windows\PolicyDefinitions\en-US' -ErrorAction Continue -Force
+                        	$ErrorList += "Copy-Item -Path $TemplateSourcePath\admx\* -Destination 'C:\Windows\PolicyDefinitions' -ErrorAction Stop -Force"
+                        	$ErrorList += $error[0].Exception.Message.ToString()
+                        	$ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
+                        	$Error.Clear()
+                        	}
+            		$I += 4 ; If ( $I -ge 100 ) { $I = 1 }
+            		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployStandardGpoStart.Value = $I } )
+			Copy-Item -Path "$TemplateSourcePath\admx\en-US\*" -Destination 'C:\Windows\PolicyDefinitions\en-US' -ErrorAction Continue -Force
 			If ( $error ) {
-                        $ErrorList += "Copy-Item -Path $TemplateSourcePath\admx\en-US\* -Destination 'C:\Windows\PolicyDefinitions' -ErrorAction Stop -Force"
-                        $ErrorList += $error[0].Exception.Message.ToString()
-                        $ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
-                        $Error.Clear()
-                        }
-            $I += 4 ; If ( $I -ge 100 ) { $I = 1 }
-            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployStandardGpoStart.Value = $I } )
-            Copy-Item -Path "$TemplateSourcePath\admx\fr-FR\*" -Destination 'C:\Windows\PolicyDefinitions\fr-FR' -ErrorAction Continue -Force
+                        	$ErrorList += "Copy-Item -Path $TemplateSourcePath\admx\en-US\* -Destination 'C:\Windows\PolicyDefinitions' -ErrorAction Stop -Force"
+                        	$ErrorList += $error[0].Exception.Message.ToString()
+                        	$ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
+                        	$Error.Clear()
+                        	}
+            		$I += 4 ; If ( $I -ge 100 ) { $I = 1 }
+            		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployStandardGpoStart.Value = $I } )
+            		Copy-Item -Path "$TemplateSourcePath\admx\fr-FR\*" -Destination 'C:\Windows\PolicyDefinitions\fr-FR' -ErrorAction Continue -Force
 			If ( $error ) {
-                        $ErrorList += "Copy-Item -Path $TemplateSourcePath\admx\fr-FR\* -Destination 'C:\Windows\PolicyDefinitions' -ErrorAction Stop -Force"
-                        $ErrorList += $error[0].Exception.Message.ToString()
-                        $ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
-                        $Error.Clear()
-                        }
+                        	$ErrorList += "Copy-Item -Path $TemplateSourcePath\admx\fr-FR\* -Destination 'C:\Windows\PolicyDefinitions' -ErrorAction Stop -Force"
+                        	$ErrorList += $error[0].Exception.Message.ToString()
+                        	$ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
+                        	$Error.Clear()
+                        	}
 			# Create Central ADM(X) Store
 			# Copy ADM(X) files to Central ADM(X) Store
 			[STRING]$PdcName = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().PdcRoleOwner.Name
 			[STRING]$DomainName = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().Name
 			$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox4.AddText(" Creating Central ADM(X) Store `n") } ) 
-            $I += 4 ; If ( $I -ge 100 ) { $I = 1 }
-            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployStandardGpoStart.Value = $I } )
+            		$I += 4 ; If ( $I -ge 100 ) { $I = 1 }
+            		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployStandardGpoStart.Value = $I } )
 			New-Item -Path "\\$PdcName\SYSVOL\$DomainName\Policies\PolicyDefinitions" -ItemType Directory -ErrorAction Continue -Force
 			If ( $error ) {
-                        $ErrorList += "New-Item -Path \\$PdcName\SYSVOL\$DomainName\Policies\PolicyDefinitions -ItemType Directory -ErrorAction Stop -Force"
-                        $ErrorList += $error[0].Exception.Message.ToString()
-                        $ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
-                        $Error.Clear()
-                        }
+                        	$ErrorList += "New-Item -Path \\$PdcName\SYSVOL\$DomainName\Policies\PolicyDefinitions -ItemType Directory -ErrorAction Stop -Force"
+                        	$ErrorList += $error[0].Exception.Message.ToString()
+                        	$ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
+                        	$Error.Clear()
+                        	}
 			$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox4.AddText(" Copying ADM(X) files to Central ADM(X) Store `n") } ) 
-            $I += 4 ; If ( $I -ge 100 ) { $I = 1 }
-            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployStandardGpoStart.Value = $I } )
+            		$I += 4 ; If ( $I -ge 100 ) { $I = 1 }
+            		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployStandardGpoStart.Value = $I } )
 			Copy-Item -Path 'C:\Windows\PolicyDefinitions\*' -Destination "\\$PdcName\SYSVOL\$DomainName\Policies\PolicyDefinitions" -ErrorAction Continue -Force
 			If ( $error ) {
                         $ErrorList += "Copy-Item -Path 'C:\Windows\PolicyDefinitions\*' -Destination \\$PdcName\SYSVOL\$DomainName\Policies\PolicyDefinitions -ErrorAction Stop -Force"
@@ -564,19 +560,19 @@ $SyncHash.Host = $Host
                         $ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
                         $Error.Clear()
                         }
-            $I += 4 ; If ( $I -ge 100 ) { $I = 1 }
-            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployStandardGpoStart.Value = $I } )
+            		$I += 4 ; If ( $I -ge 100 ) { $I = 1 }
+            		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployStandardGpoStart.Value = $I } )
 			Copy-Item -Path 'C:\Windows\PolicyDefinitions\en-US\*' -Destination "\\$PdcName\SYSVOL\$DomainName\Policies\PolicyDefinitions\en-US" -ErrorAction Continue  -Force
 			If ( $error ) {
-                        $ErrorList += "Copy-Item -Path 'C:\Windows\PolicyDefinitions\en-US\*' -Destination \\$PdcName\SYSVOL\$DomainName\Policies\PolicyDefinitions\en-US -ErrorAction Stop  -Force"
-                        $ErrorList += $error[0].Exception.Message.ToString()
-                        $ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
-                        $Error.Clear()
-                        }
-            }
-	# Create and Assemble Computer GPOs
-	# Link Computer GPOs to OU RDS
-	$StandardRdsServerPolicy = (
+                        	$ErrorList += "Copy-Item -Path 'C:\Windows\PolicyDefinitions\en-US\*' -Destination \\$PdcName\SYSVOL\$DomainName\Policies\PolicyDefinitions\en-US -ErrorAction Stop  -Force"
+                        	$ErrorList += $error[0].Exception.Message.ToString()
+                        	$ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
+                        	$Error.Clear()
+                        	}
+			}
+		# Create and Assemble Computer GPOs
+		# Link Computer GPOs to OU RDS
+		$StandardRdsServerPolicy = (
 				'HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer,NoDriveTypeAutoRun,Dword,255',
 				'HKLM\Software\Policies\Microsoft\Windows\Personalization,NoChangingLockScreen,Dword,1',
 				'HKLM\Software\Policies\Microsoft\Windows\Session Manager\Quota System,EnableCpuQuota,Dword,0',
@@ -586,7 +582,7 @@ $SyncHash.Host = $Host
 				'HKLM\Software\Policies\Microsoft\Windows NT\Terminal Services,LicenseServers,String,192.168.13.100',
 				'HKLM\Software\Policies\Microsoft\Windows NT\Terminal Services,MaxDisconnectionTime,Dword,28800000'
 				)
-	$StandardServerWindowsUpdate = (
+		$StandardServerWindowsUpdate = (
 				'HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate,WUServer,String,http://update.clearmedia.be',
 				'HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate,WUStatusServer,String,http://update.clearmedia.be',
 				'HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate,SetActiveHours,Dword,1',
@@ -596,9 +592,9 @@ $SyncHash.Host = $Host
 				'HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate\AU,UseWUServer,Dword,1',
 				'HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate\AU,NoAutoRebootWithLoggedOnUsers,Dword,1'
 				)
-	# Create and Assemble User GPOs
-	# Link User GPOs to OU Users
-	$StandardUserPolicy = (
+		# Create and Assemble User GPOs
+		# Link User GPOs to OU Users
+		$StandardUserPolicy = (
 				'HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer,NoDrives,Dword,4',
 				'HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer,NoHardwareTab,Dword,1',
 				'HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer,NoInplaceSharing,Dword,1',
@@ -611,14 +607,14 @@ $SyncHash.Host = $Host
 				'HKCU\Software\Policies\Microsoft\Windows Mail,ManualLaunchAllowed,Dword,0',
 				'HKCU\Software\Policies\Microsoft\Windows Mail,DisableCommunities,Dword,1'
 				)
-	$StandardHardwareAccelerationUserPolicy = (
+		$StandardHardwareAccelerationUserPolicy = (
 				'HKCU\Software\Policies\Google\Chrome,BackgroundModeEnabled,Dword,0',
 				'HKCU\Software\Policies\Google\Chrome,HardwareAccelerationModeEnabled,Dword,0',
 				'HKCU\SOFTWARE\Microsoft\Internet Explorer\Main,UseSWRender,Dword,1',
 				'HKCU\Software\Adobe\Acrobat Reader\DC\3D,b3DAllowSelect,Dword,0',
 				'HKCU\Software\Microsoft\Office\16.0\Common\Graphics,DisableHardwareAcceleration,Dword,1'
 				)
-	$StandardO365UserPolicy = (
+		$StandardO365UserPolicy = (
 				'HKCU\Software\policies\microsoft\office\16.0\common,qmenable,Dword,0',
 				'HKCU\Software\policies\microsoft\office\16.0\common,sendcustomerdata,Dword,0',
 				'HKCU\Software\policies\microsoft\office\16.0\common,updatereliabilitydata,Dword,0',
@@ -638,7 +634,7 @@ $SyncHash.Host = $Host
 				'HKCU\Software\policies\microsoft\office\16.0\publisher\preferences,backgroundsave,String,1',
 				'HKCU\Software\policies\microsoft\office\16.0\word\options,autosaveinterval,Dword,15'
 				)
-	$StandardOutlookUserPolicy = (
+		$StandardOutlookUserPolicy = (
 				'HKCU\Software\policies\microsoft\office\16.0\outlook\cached mode,cachedexchangemode,Dword,2',
 				'HKCU\Software\policies\microsoft\office\16.0\outlook\cached mode,syncwindowsetting,Dword,0',
 				'HKCU\Software\policies\microsoft\office\16.0\outlook\cached mode,syncwindowsettingdays,Dword,180',
@@ -646,124 +642,121 @@ $SyncHash.Host = $Host
 				"HKCU\Software\policies\microsoft\office\16.0\outlook,forceostpath,ExpandString,$OstPath",
 				"HKCU\Software\policies\microsoft\office\16.0\outlook,forcepstpath,ExpandString,$OstPath"
 				)
-    if ( $CheckBox2 ) {
+		If ( $CheckBox2 ) {
 			$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox4.AddText(" Creating StandardRdsServerPolicy Policy `n") } ) 
-            $I += 4 ; If ( $I -ge 100 ) { $I = 1 }
-            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployStandardGpoStart.Value = $I } )
+            		$I += 4 ; If ( $I -ge 100 ) { $I = 1 }
+            		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployStandardGpoStart.Value = $I } )
 			$GpoName = 'StandardRdsServerPolicy'
 			New-GPO -Name $GpoName -ErrorAction Continue
 			If ( $error ) {
-                        $ErrorList += "New-GPO -Name $GpoName -ErrorAction Stop"
-                        $ErrorList += $error[0].Exception.Message.ToString()
-                        $ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
-                        $Error.Clear()
-                        }
+                        	$ErrorList += "New-GPO -Name $GpoName -ErrorAction Stop"
+                        	$ErrorList += $error[0].Exception.Message.ToString()
+                        	$ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
+                        	$Error.Clear()
+                        	}
 			$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox4.AddText(" Linking StandardRdsServerPolicy Policy to $RdsOuPath `n") } ) 
-            $I += 4 ; If ( $I -ge 100 ) { $I = 1 }
-            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployStandardGpoStart.Value = $I } )
+            		$I += 4 ; If ( $I -ge 100 ) { $I = 1 }
+            		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployStandardGpoStart.Value = $I } )
 			New-GPLink -Name $GpoName -Target $RdsOuPath -ErrorAction Continue
 			If ( $error ) {
-                        $ErrorList += "New-GPLink -Name $GpoName -Target $RdsOuPath -ErrorAction Stop"
-                        $ErrorList += $error[0].Exception.Message.ToString()
-                        $ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
-                        $Error.Clear()
-                        }
+                        	$ErrorList += "New-GPLink -Name $GpoName -Target $RdsOuPath -ErrorAction Stop"
+                        	$ErrorList += $error[0].Exception.Message.ToString()
+                        	$ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
+                        	$Error.Clear()
+                        	}
 			$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox4.AddText(" Injecting StandardRdsServerPolicy Policy Keys `n") } ) 
-            $I += 4 ; If ( $I -ge 100 ) { $I = 1 }
-            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployStandardGpoStart.Value = $I } )
+            		$I += 4 ; If ( $I -ge 100 ) { $I = 1 }
+            		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployStandardGpoStart.Value = $I } )
 			$StandardRdsServerPolicy | ForEach-Object {
-                $I += 4 ; If ( $I -ge 100 ) { $I = 1 }
-                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployStandardGpoStart.Value = $I } )
-                $Table = $_.Split(',')
-				If ( $Table[2] -eq 'Dword' ) { [INT]$Value = $Table[3] } Else { [STRING]$Value = $Table[3] }
-				Set-GPRegistryValue -Name "$GpoName" -Key $Table[0] -ValueName $Table[1] -Type $Table[2] -Value $Value  -ErrorAction Continue
-			    If ( $error ) {
-                        $ErrorList += "Set-GPRegistryValue -Name $GpoName -Key $Table[0] -ValueName $Table[1] -Type $Table[2] -Value $Value  -ErrorAction Stop"
-                        $ErrorList += $error[0].Exception.Message.ToString()
-                        $ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
-                        $Error.Clear()
-                        }
-				}
-            }
-    if ( $CheckBox3 ) {
+                	$I += 4 ; If ( $I -ge 100 ) { $I = 1 }
+                	$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployStandardGpoStart.Value = $I } )
+                	$Table = $_.Split(',')
+			If ( $Table[2] -eq 'Dword' ) { [INT]$Value = $Table[3] } Else { [STRING]$Value = $Table[3] }
+			Set-GPRegistryValue -Name "$GpoName" -Key $Table[0] -ValueName $Table[1] -Type $Table[2] -Value $Value  -ErrorAction Continue
+			If ( $error ) {
+                        	$ErrorList += "Set-GPRegistryValue -Name $GpoName -Key $Table[0] -ValueName $Table[1] -Type $Table[2] -Value $Value  -ErrorAction Stop"
+                        	$ErrorList += $error[0].Exception.Message.ToString()
+                        	$ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
+                        	$Error.Clear()
+                        	}
+			}
+    		If ( $CheckBox3 ) {
 			$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox4.AddText(" Creating StandardServerWindowsUpdate Policy `n") } ) 
-            $I += 4 ; If ( $I -ge 100 ) { $I = 1 }
-            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployStandardGpoStart.Value = $I } )
+            		$I += 4 ; If ( $I -ge 100 ) { $I = 1 }
+            		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployStandardGpoStart.Value = $I } )
 			$GpoName = 'StandardServerWindowsUpdate'
 			New-GPO -Name $GpoName -ErrorAction Ignore
 			If ( $error ) {
-                        $ErrorList += "New-GPO -Name $GpoName -ErrorAction Stop"
-                        $ErrorList += $error[0].Exception.Message.ToString()
-                        $ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
-                        $Error.Clear()
-                        }
+                        	$ErrorList += "New-GPO -Name $GpoName -ErrorAction Stop"
+                        	$ErrorList += $error[0].Exception.Message.ToString()
+                        	$ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
+                        	$Error.Clear()
+                        	}
 			$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox4.AddText(" Linking StandardServerWindowsUpdate Policy to $RdsOuPath `n") } ) 
-            $I += 4 ; If ( $I -ge 100 ) { $I = 1 }
-            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployStandardGpoStart.Value = $I } )
+            		$I += 4 ; If ( $I -ge 100 ) { $I = 1 }
+            		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployStandardGpoStart.Value = $I } )
 			New-GPLink -Name $GpoName -Target $RdsOuPath -ErrorAction Continue
 			If ( $error ) {
-                        $ErrorList += "New-GPLink -Name $GpoName -Target $RdsOuPath -ErrorAction Stop"
-                        $ErrorList += $error[0].Exception.Message.ToString()
-                        $ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
-                        $Error.Clear()
-                        }
+                        	$ErrorList += "New-GPLink -Name $GpoName -Target $RdsOuPath -ErrorAction Stop"
+                        	$ErrorList += $error[0].Exception.Message.ToString()
+                        	$ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
+                        	$Error.Clear()
+                        	}
 			$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox4.AddText(" Injecting StandardServerWindowsUpdate Policy Keys `n") } ) 
-            $I += 4 ; If ( $I -ge 100 ) { $I = 1 }
-            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployStandardGpoStart.Value = $I } )
+            		$I += 4 ; If ( $I -ge 100 ) { $I = 1 }
+            		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployStandardGpoStart.Value = $I } )
 			$StandardServerWindowsUpdate | ForEach-Object {
-                $I += 4 ; If ( $I -ge 100 ) { $I = 1 }
-                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployStandardGpoStart.Value = $I } )
-				$Table = $_.Split(',')
-				If ( $Table[2] -eq 'Dword' ) { [INT]$Value = $Table[3] } Else { [STRING]$Value = $Table[3] }
-				Set-GPRegistryValue -Name "$GpoName" -Key $Table[0] -ValueName $Table[1] -Type $Table[2] -Value $Value  -ErrorAction Continue
-			    If ( $error ) {
-                        $ErrorList += "Set-GPRegistryValue -Name $GpoName -Key $Table[0] -ValueName $Table[1] -Type $Table[2] -Value $Value  -ErrorAction Stop"
-                        $ErrorList += $error[0].Exception.Message.ToString()
-                        $ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
-                        $Error.Clear()
-                        }
-				}
-            }
-    if ( $CheckBox4 ) {
+                	$I += 4 ; If ( $I -ge 100 ) { $I = 1 }
+                	$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployStandardGpoStart.Value = $I } )
+			$Table = $_.Split(',')
+			If ( $Table[2] -eq 'Dword' ) { [INT]$Value = $Table[3] } Else { [STRING]$Value = $Table[3] }
+			Set-GPRegistryValue -Name "$GpoName" -Key $Table[0] -ValueName $Table[1] -Type $Table[2] -Value $Value  -ErrorAction Continue
+			If ( $error ) {
+                        	$ErrorList += "Set-GPRegistryValue -Name $GpoName -Key $Table[0] -ValueName $Table[1] -Type $Table[2] -Value $Value  -ErrorAction Stop"
+                        	$ErrorList += $error[0].Exception.Message.ToString()
+                        	$ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
+                        	$Error.Clear()
+                        	}
+			}
+		If ( $CheckBox4 ) {
 			$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox4.AddText(" Creating StandardUserPolicy Policy `n") } ) 
-            $I += 4 ; If ( $I -ge 100 ) { $I = 1 }
-            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployStandardGpoStart.Value = $I } )
+            		$I += 4 ; If ( $I -ge 100 ) { $I = 1 }
+            		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployStandardGpoStart.Value = $I } )
 			$GpoName = 'StandardUserPolicy'
 			New-GPO -Name $GpoName -ErrorAction Ignore
 			If ( $error ) {
-                        $ErrorList += "New-GPO -Name $GpoName -ErrorAction Stop"
-                        $ErrorList += $error[0].Exception.Message.ToString()
-                        $ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
-                        $Error.Clear()
-                        }
+                        	$ErrorList += "New-GPO -Name $GpoName -ErrorAction Stop"
+                        	$ErrorList += $error[0].Exception.Message.ToString()
+                        	$ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
+                        	$Error.Clear()
+                        	}
 			$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox4.AddText(" Linking $GpoName  Policy to $UsersOuPath `n") } ) 
-            $I += 4 ; If ( $I -ge 100 ) { $I = 1 }
-            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployStandardGpoStart.Value = $I } )
+            		$I += 4 ; If ( $I -ge 100 ) { $I = 1 }
+            		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployStandardGpoStart.Value = $I } )
 			New-GPLink -Name $GpoName -Target $UsersOuPath -ErrorAction Continue
 			If ( $error ) {
-                        $ErrorList += "New-GPLink -Name $GpoName -Target $UsersOuPath -ErrorAction Stop"
-                        $ErrorList += $error[0].Exception.Message.ToString()
-                        $ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
-                        $Error.Clear()
-                        }
+                        	$ErrorList += "New-GPLink -Name $GpoName -Target $UsersOuPath -ErrorAction Stop"
+                        	$ErrorList += $error[0].Exception.Message.ToString()
+                        	$ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
+                        	$Error.Clear()
+                        	}
 			$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox4.AddText(" Injecting $GpoName  Policy Keys `n") } ) 
-            $I += 4 ; If ( $I -ge 100 ) { $I = 1 }
-            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployStandardGpoStart.Value = $I } )
+            		$I += 4 ; If ( $I -ge 100 ) { $I = 1 }
+            		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployStandardGpoStart.Value = $I } )
 			$StandardUserPolicy | ForEach-Object {
-                $I += 4 ; If ( $I -ge 100 ) { $I = 1 }
-                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployStandardGpoStart.Value = $I } )
-				$Table = $_.Split(',')
-				If ( $Table[2] -eq 'Dword' ) { [INT]$Value = $Table[3] } Else { [STRING]$Value = $Table[3] }
-				Set-GPRegistryValue -Name "$GpoName" -Key $Table[0] -ValueName $Table[1] -Type $Table[2] -Value $Value  -ErrorAction Continue
-			    If ( $error ) {
-                        $ErrorList += "Set-GPRegistryValue -Name $GpoName -Key $Table[0] -ValueName $Table[1] -Type $Table[2] -Value $Value  -ErrorAction Stop"
-                        $ErrorList += $error[0].Exception.Message.ToString()
-                        $ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
-                        $Error.Clear()
-                        }
-				}
-            }
-    if ( $CheckBox5 ) {
+                	$I += 4 ; If ( $I -ge 100 ) { $I = 1 }
+                	$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployStandardGpoStart.Value = $I } )
+			$Table = $_.Split(',')
+			If ( $Table[2] -eq 'Dword' ) { [INT]$Value = $Table[3] } Else { [STRING]$Value = $Table[3] }
+			Set-GPRegistryValue -Name "$GpoName" -Key $Table[0] -ValueName $Table[1] -Type $Table[2] -Value $Value  -ErrorAction Continue
+			If ( $error ) {
+                        	$ErrorList += "Set-GPRegistryValue -Name $GpoName -Key $Table[0] -ValueName $Table[1] -Type $Table[2] -Value $Value  -ErrorAction Stop"
+                        	$ErrorList += $error[0].Exception.Message.ToString()
+                        	$ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
+                        	$Error.Clear()
+                        	}
+			}
+    		If ( $CheckBox5 ) {
 			$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox4.AddText(" Creating StandardHardwareAccelerationUserPolicy Policy `n") } ) 
             $I += 4 ; If ( $I -ge 100 ) { $I = 1 }
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployStandardGpoStart.Value = $I } )
