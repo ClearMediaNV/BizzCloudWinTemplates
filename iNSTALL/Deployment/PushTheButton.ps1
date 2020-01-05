@@ -1069,10 +1069,7 @@ $SyncHash.Host = $Host
                     	# $ACL.SetAccessRuleProtection($true,$true)
 						[STRING]$Root = 'D:\'
 						$ACL = Get-Acl -Path $Root
-						$AccessRule = New-Object system.security.AccessControl.FileSystemAccessRule('NT AUTHORITY\SYSTEM', 'FullControl', 'None', 'None', 'Allow')
-                    	$ACL.AddAccessRule($AccessRule)
-						$AccessRule = New-Object system.security.AccessControl.FileSystemAccessRule('BUILTIN\Administrators', 'FullControl', 'None', 'None', 'Allow')
-                    	$ACL.AddAccessRule($AccessRule)
+						$ACL.Access | Where-Object { $_.IdentityReference -inotin ('NT AUTHORITY\SYSTEM','BUILTIN\Administrators') } | ForEach-Object { $ACL.RemoveAccessRule($_) }
 						Set-Acl -Path $Root -AclObject $ACL
                         # Create User Folder
                     	# $OstFolderRootPath = 'D:\Users'
@@ -1092,12 +1089,7 @@ $SyncHash.Host = $Host
                     	# $ACL.SetAccessRuleProtection($true,$true)
 						[STRING]$Root = 'E:\'
 						$ACL = Get-Acl -Path $Root
-						$AccessRule = New-Object system.security.AccessControl.FileSystemAccessRule('NT AUTHORITY\SYSTEM', 'FullControl', 'None', 'None', 'Allow')
-                    	$ACL.AddAccessRule($AccessRule)
-						$AccessRule = New-Object system.security.AccessControl.FileSystemAccessRule('BUILTIN\Administrators', 'FullControl', 'None', 'None', 'Allow')
-                    	$ACL.AddAccessRule($AccessRule)
-                    	$AccessRule = New-Object system.security.AccessControl.FileSystemAccessRule('BUILTIN\Users', 'ReadData, ReadAttributes, Synchronize', 'None', 'None', 'Allow')
-                    	$ACL.AddAccessRule($AccessRule)
+						$ACL.Access | Where-Object { $_.IdentityReference -inotin ('NT AUTHORITY\SYSTEM','BUILTIN\Administrators') } | ForEach-Object { $ACL.RemoveAccessRule($_) }
 						Set-Acl -Path $Root -AclObject $ACL
                         # Create User Folder
                     	# $DataFolderRootPath = 'E:\Users'
