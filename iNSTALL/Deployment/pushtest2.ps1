@@ -790,7 +790,7 @@ $SyncHash.Host = $Host
 				$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox4.AddText(" Creating StandardO365UserPolicy Policy `n") } ) 
 				$I += 4 ; If ( $I -ge 100 ) { $I = 1 } ; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployStandardGpoStart.Value = $I } )
 				$GpoName = 'StandardO365UserPolicy'
-				New-GPLink -Name "$GpoName" -Target "$FullUsersOuPath" -ErrorAction Continue
+				New-GPO -Name $GpoName -ErrorAction Ignore
 				If ( $error ) {
                     $ErrorList += "New-GPO -Name $GpoName -ErrorAction Stop"
                     $ErrorList += $error[0].Exception.Message.ToString()
@@ -799,7 +799,7 @@ $SyncHash.Host = $Host
                     }
 				$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox4.AddText(" Linking $GpoName  Policy to $FullUsersOuPath `n") } )
 				$I += 4 ; If ( $I -ge 100 ) { $I = 1 } ; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployStandardGpoStart.Value = $I } )
-				New-GPLink -Name "$GpoName" -Target "$UsersOuPath.Insert(0,'OU=Full Users,')" -ErrorAction Continue
+				New-GPLink -Name "$GpoName" -Target "$FullUsersOuPath" -ErrorAction Continue
 				If ( $error ) {
                     $ErrorList += "New-GPLink -Name $GpoName -Target $UsersOuPath -ErrorAction Stop"
                     $ErrorList += $error[0].Exception.Message.ToString()
@@ -826,7 +826,7 @@ $SyncHash.Host = $Host
 				$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox4.AddText(" Creating StandardOutlookUserPolicy Policy `n") } ) 
 				$I += 4 ; If ( $I -ge 100 ) { $I = 1 } ; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployStandardGpoStart.Value = $I } )
 				$GpoName = 'StandardOutlookUserPolicy'
-				New-GPLink -Name "$GpoName" -Target "$FullUsersOuPath" -ErrorAction Continue
+				New-GPO -Name $GpoName -ErrorAction Ignore
 				If ( $error ) {
                     $ErrorList += "New-GPO -Name $GpoName -ErrorAction Stop"
                     $ErrorList += $error[0].Exception.Message.ToString()
@@ -835,7 +835,7 @@ $SyncHash.Host = $Host
                     }
 				$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox4.AddText(" Linking $GpoName  Policy to $FullUsersOuPath `n") } )
 				$I += 4 ; If ( $I -ge 100 ) { $I = 1 } ;  $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployStandardGpoStart.Value = $I } )
-				New-GPLink -Name "$GpoName" -Target "$UsersOuPath.Insert(0,'OU=Full Users,')" -ErrorAction Continue
+				New-GPLink -Name "$GpoName" -Target "$FullUsersOuPath" -ErrorAction Continue
 				If ( $error ) {
                     $ErrorList += "New-GPLink -Name $GpoName -Target $UsersOuPath -ErrorAction Stop"
                     $ErrorList += $error[0].Exception.Message.ToString()
