@@ -38,6 +38,24 @@ $SyncHash.Host = $Host
 	<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Title="PushTheButton v1.0" Height="800" Width="1280" WindowState="Maximized"  ShowInTaskbar = "True" Topmost="False">
     <Grid>
         <TabControl HorizontalAlignment="Left" Height="730" Margin="10,0,0,0" VerticalAlignment="Top" Width="1260">
+            <TabItem Name="Firebox" Header="   Configure FireboxV   ">
+                <Grid Background="#FFE5E5E5">
+                    <Label Name="LabelFireboxIpAddress" Content="Firebox IpAddress(es)" HorizontalAlignment="Left" Height="28" Margin="30,28,0,0" VerticalAlignment="Top" Width="165"/>
+                    <Label Name="LabelFireboxAdminUserName" Content="Firebox Admin Name" HorizontalAlignment="Left" Height="28" Margin="30,61,0,0" VerticalAlignment="Top" Width="165" RenderTransformOrigin="0.452,2.089"/>
+                    <Label Name="LabelFireboxAdminPassword" Content="Firebox Admin Password" HorizontalAlignment="Left" Height="28" Margin="30,94,0,0" VerticalAlignment="Top" Width="165"/>
+                    <TextBox Name="TextBoxFireboxIpAddress"  HorizontalAlignment="Left" Height="22" Margin="180,32,0,0" Text="192.168.13.254" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target - Server IpAddress - Server Name"/>
+                    <TextBox Name="TextBoxFireboxAdminUserName" HorizontalAlignment="Left" Height="22" Margin="180,65,0,0" Text="admin" VerticalAlignment="Top" Width="180" RenderTransformOrigin="0.462,0.455"/>
+                    <TextBox Name="TextBoxFireboxAdminPassword"" HorizontalAlignment="Left" Height="22" Margin="180,98,0,0" Text="readwrite" VerticalAlignment="Top" Width="180" ToolTip="Fill in the Password"/>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
+                    <TextBlock Name="TextBlockFirebox" Text="" Foreground="WHITE" Background="#FF22206F" />
+                    </ScrollViewer>
+                    <Button Name="FireboxStart" Content="START" HorizontalAlignment="Left" Margin="950,28,0,0" VerticalAlignment="Top" Width="250" Height="150" Foreground="Blue" FontWeight="Bold" FontSize="50" Background="Red" IsEnabled="True" Visibility="Visible" ToolTip="Push It real Good" ToolTipService.ShowDuration="1000"/>
+                     <StatusBar Name="StatusBarFirebox" HorizontalAlignment="Left" Height="24" Margin="2,670,0,0" VerticalAlignment="Top" Width="1256" Background="#FFD6D2B0" >
+                        <Label Name="LabelStatusFirebox" Content="In Progress ...." Height="25" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center"  Visibility="Hidden" />
+                        <ProgressBar Name="ProgressBarFirebox" Width="1150" Height="15" Value="1" Visibility="Hidden" />
+                    </StatusBar>
+                </Grid>
+            </TabItem>
             <TabItem Name="TabItemDeployDC" Header="   Deploy DC   ">
                 <Grid Background="#FFE5E5E5">
                     <Label Name="LabelDomainNetbiosName" Content="Domain NetbiosName" HorizontalAlignment="Left" Height="28" Margin="30,28,0,0" VerticalAlignment="Top" Width="165"/>
