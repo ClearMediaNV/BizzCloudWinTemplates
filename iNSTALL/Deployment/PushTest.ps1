@@ -38,7 +38,7 @@ $SyncHash.Host = $Host
 	<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Title="PushTheButton v1.0" Height="800" Width="1280" WindowState="Maximized"  ShowInTaskbar = "True" Topmost="False">
     <Grid>
         <TabControl HorizontalAlignment="Left" Height="730" Margin="10,0,0,0" VerticalAlignment="Top" Width="1260">
-            <TabItem Name="TabItemDeployDC" Header="Deploy DC" Margin="-2,0,-60,0">
+            <TabItem Name="TabItemDeployDC" Header="   Deploy DC   ">
                 <Grid Background="#FFE5E5E5">
                     <Label Name="LabelDomainNetbiosName" Content="Domain NetbiosName" HorizontalAlignment="Left" Height="28" Margin="30,28,0,0" VerticalAlignment="Top" Width="165"/>
                     <Label Name="LabelDomainName" Content="Domain Name" HorizontalAlignment="Left" Height="28" Margin="30,61,0,0" VerticalAlignment="Top" Width="165" RenderTransformOrigin="0.452,2.089"/>
@@ -57,7 +57,7 @@ $SyncHash.Host = $Host
                     </StatusBar>
                 </Grid>
             </TabItem>
-            <TabItem Name="TabItemDeployOU" Header="Deploy OU" Margin="64,0,-120,0">
+            <TabItem Name="TabItemDeployOU" Header="   Deploy OU   ">
                 <Grid Background="#FFE5E5E5">
                     <Label Name="LabelManagedOuName" Content="Managed OU Name" HorizontalAlignment="Left" Height="28" Margin="30,28,0,0" VerticalAlignment="Top" Width="165"/>
                     <Label Name="LabelClearmediaAdminUserName" Content="ClearmediaAdmin UserName" HorizontalAlignment="Left" Height="28" Margin="30,61,0,0" VerticalAlignment="Top" Width="165" RenderTransformOrigin="0.452,2.089"/>
@@ -75,7 +75,7 @@ $SyncHash.Host = $Host
                     </StatusBar>
                 </Grid>
             </TabItem>
-            <TabItem Name="TabItemDelployGPO" Header="Deploy Standard GPO" Margin="124,0,-180,0">
+            <TabItem Name="TabItemDelployGPO" Header="   Deploy Standard GPO   ">
                 <Grid Background="#FFE5E5E5">
                     <CheckBox Name="CheckBoxCopyAdmFiles" Content="Copy ADM(X) Files to Local and Central ADM(X) Store" HorizontalAlignment="Left" Margin="32,12,0,0" VerticalAlignment="Top" IsChecked="True"/>
                     <Label Name="LabelTemplateSourcePath" Content="ADM(X) Source Path" Margin="27,32,0,0" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" />
@@ -102,7 +102,7 @@ $SyncHash.Host = $Host
                     </StatusBar>
                 </Grid>
             </TabItem>
-            <TabItem Name="TabItemFolderRedirection" Header="Deploy Folder Redirection" Margin="184,0,-240,0">
+            <TabItem Name="TabItemFolderRedirection" Header="   Deploy Folder Redirection   ">
                 <Grid Background="#FFE5E5E5">
                     <CheckBox Name="CheckBoxDocuments" Content="Documents" HorizontalAlignment="Left" Margin="30,12,0,0" VerticalAlignment="Top" IsChecked="True"/>
                     <Label Name="LabelDocumentsPath" Content="Documents Path" Margin="50,32,0,0" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" Width="300" />
@@ -126,7 +126,7 @@ $SyncHash.Host = $Host
                     </StatusBar>
                 </Grid>
             </TabItem>
-            <TabItem Name="TabItemDeployRDS" Header="Deploy RDS" Margin="244,0,-300,0">
+            <TabItem Name="TabItemDeployRDS" Header="   Deploy RDS    ">
                 <Grid Background="#FFE5E5E5">
                     <Label Name="LabelRdsServerIpAddress" Content="RDS Server IpAddress" HorizontalAlignment="Left" Height="28" Margin="30,28,0,0" VerticalAlignment="Top" Width="165"/>
                     <Label Name="LabelAdminUserName" Content="Administrator Name" HorizontalAlignment="Left" Height="28" Margin="30,61,0,0" VerticalAlignment="Top" Width="165"/>
@@ -158,7 +158,7 @@ $SyncHash.Host = $Host
                     </StatusBar>
                 </Grid>
             </TabItem>
-            <TabItem Name="TabItemDeployO365" Header="Deploy O365" Margin="304,0,-360,0">
+            <TabItem Name="TabItemDeployO365" Header="   Deploy O365   ">
                 <Grid Background="#FFE5E5E5">
                     <Label Name="LabelO365ServerIpAddress" Content="Server IpAddress(es)" HorizontalAlignment="Left" Height="28" Margin="30,28,0,0" VerticalAlignment="Top" Width="165"/>
                     <Label Name="LabelO365AdminUserName" Content="Administrator Name" HorizontalAlignment="Left" Height="28" Margin="30,61,0,0" VerticalAlignment="Top" Width="165" RenderTransformOrigin="0.452,2.089"/>
@@ -181,7 +181,7 @@ $SyncHash.Host = $Host
                     </StatusBar>
                 </Grid>
             </TabItem>
-            <TabItem Name="TabItemDeployWU" Header="Deploy Windows Updates" Margin="364,0,-398,0">
+            <TabItem Name="TabItemDeployWU" Header="   Deploy Windows Updates   ">
                 <Grid Background="#FFE5E5E5">
                     <Label Name="LabelWuServerIpAddress" Content="Server IpAddress(es)" HorizontalAlignment="Left" Height="28" Margin="30,28,0,0" VerticalAlignment="Top" Width="165"/>
                     <Label Name="LabelWuAdminUserName" Content="Administrator Name" HorizontalAlignment="Left" Height="28" Margin="30,61,0,0" VerticalAlignment="Top" Width="165"/>
@@ -245,7 +245,7 @@ $SyncHash.Host = $Host
                     </StatusBar>
                 </Grid>
             </TabItem>
-            <TabItem Name="TabItemDeployUSER" Header="Deploy USER" Margin="402,0,-450,0">
+            <TabItem Name="TabItemDeployUSER" Header="   Deploy USER   ">
                 <Grid Background="#FFE5E5E5">
                     <Label Name="LabelDeployUSERServerIpAddress" Content="Server IpAddress(es)" HorizontalAlignment="Left" Height="28" Margin="30,28,0,0" VerticalAlignment="Top" Width="165"/>
                     <Label Name="LabelDeployUSERAdminUserName" Content="Administrator Name" HorizontalAlignment="Left" Height="28" Margin="30,61,0,0" VerticalAlignment="Top" Width="165"/>
