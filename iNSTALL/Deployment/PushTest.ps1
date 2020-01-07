@@ -40,19 +40,23 @@ $SyncHash.Host = $Host
         <TabControl HorizontalAlignment="Left" Height="730" Margin="10,0,0,0" VerticalAlignment="Top" Width="1260">
             <TabItem Name="Firebox" Header="   Configure FireboxV   ">
                 <Grid Background="#FFE5E5E5">
-                    <Label Name="LabelFireboxIpAddress" Content="Firebox IpAddress(es)" HorizontalAlignment="Left" Height="28" Margin="30,28,0,0" VerticalAlignment="Top" Width="165"/>
-                    <Label Name="LabelFireboxAdminUserName" Content="Firebox Admin Name" HorizontalAlignment="Left" Height="28" Margin="30,61,0,0" VerticalAlignment="Top" Width="165" RenderTransformOrigin="0.452,2.089"/>
+                    <Label Name="LabelFireboxIpAddress" Content="Firebox IP Address" HorizontalAlignment="Left" Height="28" Margin="30,28,0,0" VerticalAlignment="Top" Width="165"/>
+                    <Label Name="LabelFireboxAdminUserName" Content="Firebox Admin Name" HorizontalAlignment="Left" Height="28" Margin="30,61,0,0" VerticalAlignment="Top" Width="165"/>
                     <Label Name="LabelFireboxAdminPassword" Content="Firebox Admin Password" HorizontalAlignment="Left" Height="28" Margin="30,94,0,0" VerticalAlignment="Top" Width="165"/>
-                    <TextBox Name="TextBoxFireboxIpAddress"  HorizontalAlignment="Left" Height="22" Margin="180,32,0,0" Text="192.168.13.254" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target - Server IpAddress - Server Name"/>
-                    <TextBox Name="TextBoxFireboxAdminUserName" HorizontalAlignment="Left" Height="22" Margin="180,65,0,0" Text="admin" VerticalAlignment="Top" Width="180" RenderTransformOrigin="0.462,0.455"/>
-                    <TextBox Name="TextBoxFireboxAdminPassword"" HorizontalAlignment="Left" Height="22" Margin="180,98,0,0" Text="readwrite" VerticalAlignment="Top" Width="180" ToolTip="Fill in the Password"/>
+                    <Label Name="LabelFireboxIpSubnet" Content="Firebox IP Address/SubNet" HorizontalAlignment="Left" Height="28" Margin="30,127,0,0" VerticalAlignment="Top" Width="165"/>
+                    <Label Name="LabelFireboxIpGateway" Content="Firebox Gateway IP Address" HorizontalAlignment="Left" Height="28" Margin="30,160,0,0" VerticalAlignment="Top" Width="165"/>
+                    <TextBox Name="TextBoxFireboxIpAddress"  HorizontalAlignment="Left" Height="22" Margin="200,32,0,0" Text="192.168.13.254" VerticalAlignment="Top" Width="180"/>
+                    <TextBox Name="TextBoxFireboxAdminUserName" HorizontalAlignment="Left" Height="22" Margin="200,65,0,0" Text="admin" VerticalAlignment="Top" Width="180"/>
+                    <TextBox Name="TextBoxFireboxAdminPassword" HorizontalAlignment="Left" Height="22" Margin="200,98,0,0" Text="readwrite" VerticalAlignment="Top" Width="180"/>
+                    <TextBox Name="TextBoxFireboxFireboxIpSubnet" HorizontalAlignment="Left" Height="22" Margin="200,131,0,0" Text="172.16.25.104/24" VerticalAlignment="Top" Width="180"/>
+                    <TextBox Name="TextBoxFireboxIpGateway" HorizontalAlignment="Left" Height="22" Margin="200,164,0,0" Text="172.16.25.1" VerticalAlignment="Top" Width="180"/>
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
-                    <TextBlock Name="TextBlockFirebox" Text="" Foreground="WHITE" Background="#FF22206F" />
+                    <TextBlock Name="TextBlockOutBoxFirebox" Text="" Foreground="WHITE" Background="#FF22206F" />
                     </ScrollViewer>
                     <Button Name="FireboxStart" Content="START" HorizontalAlignment="Left" Margin="950,28,0,0" VerticalAlignment="Top" Width="250" Height="150" Foreground="Blue" FontWeight="Bold" FontSize="50" Background="Red" IsEnabled="True" Visibility="Visible" ToolTip="Push It real Good" ToolTipService.ShowDuration="1000"/>
                      <StatusBar Name="StatusBarFirebox" HorizontalAlignment="Left" Height="24" Margin="2,670,0,0" VerticalAlignment="Top" Width="1256" Background="#FFD6D2B0" >
-                        <Label Name="LabelStatusFirebox" Content="In Progress ...." Height="25" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center"  Visibility="Hidden" />
-                        <ProgressBar Name="ProgressBarFirebox" Width="1150" Height="15" Value="1" Visibility="Hidden" />
+                        <Label Name="LabelStatusFireboxStart" Content="In Progress ...." Height="25" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center"  Visibility="Hidden" />
+                        <ProgressBar Name="ProgressBarFireboxStart" Width="1150" Height="15" Value="1" Visibility="Hidden" />
                     </StatusBar>
                 </Grid>
             </TabItem>
