@@ -33,12 +33,32 @@ Add-Type -AssemblyName PresentationFramework
 $SyncHash = [hashtable]::Synchronized(@{})
 $SyncHash.Host = $Host
 
-# Init ( WPF - Windows Presentation Framework ) Config
 [XML]$XAML = @"
 	<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Title="PushTheButton v1.0" Height="800" Width="1280" WindowState="Maximized"  ShowInTaskbar = "True" Topmost="False">
     <Grid>
         <TabControl HorizontalAlignment="Left" Height="730" Margin="10,0,0,0" VerticalAlignment="Top" Width="1260">
-            <TabItem Name="Firebox" Header="   Configure FireboxV   ">
+            <TabControl.Resources>
+                <Style TargetType="TabItem">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="TabItem">
+                                <Border Name="Border" BorderBrush="Gainsboro" BorderThickness="1,1,1,0" CornerRadius="8,8,8,8" Margin="3,2">
+                                    <ContentPresenter Name="ContentSite" Margin="10,2" HorizontalAlignment="Center" VerticalAlignment="Center" ContentSource="Header"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter TargetName="Border" Property="Background" Value="LightSkyBlue"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="False">
+                                        <Setter TargetName="Border" Property="Background" Value="GhostWhite"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </TabControl.Resources>
+            <TabItem Name="Firebox" Header="   Deploy FireboxV   ">
                 <Grid Background="#FFE5E5E5">
                     <Label Name="LabelFireboxIpAddress" Content="Firebox IP Address" HorizontalAlignment="Left" Height="28" Margin="30,28,0,0" VerticalAlignment="Top" Width="165"/>
                     <Label Name="LabelFireboxAdminUserName" Content="Firebox Admin Name" HorizontalAlignment="Left" Height="28" Margin="30,61,0,0" VerticalAlignment="Top" Width="165"/>
@@ -53,10 +73,10 @@ $SyncHash.Host = $Host
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
                     <TextBlock Name="TextBlockOutBoxFirebox" Text="" Foreground="WHITE" Background="#FF22206F" />
                     </ScrollViewer>
-                    <Button Name="FireboxStart" Content="START" HorizontalAlignment="Left" Margin="950,28,0,0" VerticalAlignment="Top" Width="250" Height="150" Foreground="Blue" FontWeight="Bold" FontSize="50" Background="Red" IsEnabled="True" Visibility="Visible" ToolTip="Push It real Good" ToolTipService.ShowDuration="1000"/>
+                    <Button Name="ButtonFireboxStart" Content="START" HorizontalAlignment="Left" Margin="950,28,0,0" VerticalAlignment="Top" Width="250" Height="150" Foreground="Blue" FontWeight="Bold" FontSize="50" Background="Red" IsEnabled="True" Visibility="Visible" ToolTip="Push It real Good" ToolTipService.ShowDuration="1000"/>
                      <StatusBar Name="StatusBarFirebox" HorizontalAlignment="Left" Height="24" Margin="2,670,0,0" VerticalAlignment="Top" Width="1256" Background="#FFD6D2B0" >
-                        <Label Name="LabelStatusFireboxStart" Content="In Progress ...." Height="25" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center"  Visibility="Hidden" />
-                        <ProgressBar Name="ProgressBarFireboxStart" Width="1150" Height="15" Value="1" Visibility="Hidden" />
+                        <Label Name="LabelStatusFirebox" Content="In Progress ...." Height="25" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center"  Visibility="Hidden" />
+                        <ProgressBar Name="ProgressBarFirebox" Width="1150" Height="15" Value="1" Visibility="Hidden" />
                     </StatusBar>
                 </Grid>
             </TabItem>
@@ -309,6 +329,69 @@ $SyncHash.Host = $Host
     $syncHash.Window=[Windows.Markup.XamlReader]::Load( $reader )
 
 # Init ( WPF - Windows Presentation Framework ) Functions
+	Function DeployFireboxStart {
+		Param($syncHash,$FireboxIpAddress,$FireboxAdminUserName,$FireboxAdminPassword,$FireboxFireboxIpSubnet,$FireboxIpGateway)
+        $Runspace = [runspacefactory]::CreateRunspace()
+        $Runspace.ApartmentState = "STA"
+        $Runspace.ThreadOptions = "ReuseThread"
+        $Runspace.Open()
+        $Runspace.SessionStateProxy.SetVariable("syncHash",$syncHash)
+		$Runspace.SessionStateProxy.SetVariable("FireboxIpAddress",$FireboxIpAddress)
+		$Runspace.SessionStateProxy.SetVariable("FireboxAdminUserName",$FireboxAdminUserName)
+		$Runspace.SessionStateProxy.SetVariable("FireboxAdminPassword",$FireboxAdminPassword)
+		$Runspace.SessionStateProxy.SetVariable("FireboxFireboxIpSubnet",$FireboxFireboxIpSubnet)
+		$Runspace.SessionStateProxy.SetVariable("FireboxIpGateway",$FireboxIpGateway)
+        $code = {
+			[INT]$I = 0
+	        $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ("$FireboxAdminUserName", $(ConvertTo-SecureString -String $FireboxAdminPassword -AsPlainText -Force))
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarFirebox.Value = $I } )
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxFirebox.AddText(" Installing PowerShell Module sshsessions `n") } )
+            Install-PackageProvider -Name Nuget -MinimumVersion '2.8.5.201' -Force -ErrorAction Stop
+            Install-Module -Name 'sshsessions' -Force -ErrorAction Stop
+            $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarFirebox.Value = $I } )
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxFirebox.AddText(" Importing PowerShell Module sshsessions `n") } )
+            Import-Module -Name 'sshsessions' -ErrorAction Stop
+            $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarFirebox.Value = $I } )
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxFirebox.AddText(" Creating SSH Session `n") } )
+            $Credentials = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ("$FireboxAdminUserName", $(ConvertTo-SecureString -String $FireboxAdminPassword -AsPlainText -Force))
+            New-SshSession -ComputerName $FireboxIpAddress -Port 4118 -Credential $Credentials
+            $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarFirebox.Value = $I } )
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxFirebox.AddText(" Creating SSH Stream `n") } )
+            $Stream = $SshSessions[$FireboxIpAddress].CreateShellStream("dumb", 0, 0, 0, 0, 1024)
+            $Return = $Stream.Read() ; $Return = $Stream.Read()
+            $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarFirebox.Value = $I } )
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxFirebox.AddText(" Sending conf `n") } )
+            do  { $Stream.WriteLine("conf") ; Start-Sleep -Seconds 2 ; $Return = $Stream.Read() } until ( $Return.Split([CHAR]10).Split([CHAR]13)[-1] -eq 'WG(config)#' )
+            $Return = $Stream.Read() ; $Return = $Stream.Read()
+            $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarFirebox.Value = $I } )
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxFirebox.AddText(" Sending int f 0 `n") } )
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxFirebox.AddText(" Sending ip a $FireboxFireboxIpSubnet d $FireboxIpGateway `n") } )
+            do  { $Stream.WriteLine("int f 0") ; Start-Sleep -Seconds 2 ; $Stream.WriteLine("ip a $FireboxFireboxIpSubnet d $FireboxIpGateway") ; $Return = $Stream.Read() } until ( $Return.Split([CHAR]10).Split([CHAR]13)[-1] -eq 'WG(config/if-fe00)#' )
+            $Return = $Stream.Read() ; $Return = $Stream.Read()
+            $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarFirebox.Value = $I } )
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxFirebox.AddText(" Sending exit `n") } )
+            do  { $Stream.WriteLine("exit") ; Start-Sleep -Seconds 2 ; $Return = $Stream.Read() } until ( $Return.Split([CHAR]10).Split([CHAR]13)[-1] -eq 'WG#' )
+            $Return = $Stream.Read() ; $Return = $Stream.Read()
+            $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarFirebox.Value = $I } )
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxFirebox.AddText(" Sending reboot `n") } )
+            do  { $Stream.WriteLine("reboot") ; Start-Sleep -Seconds 2 ; $Return = $Stream.Read() } until ( $Return.Split([CHAR]10).Split([CHAR]13)[-1] -eq 'Reboot (yes or no)? ' )
+            $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployDcStart.Value = $I } )
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxFirebox.AddText(" Sending yes `n") } )
+            $Stream.WriteLine("yes") ; Start-Sleep -Seconds 2
+            $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarFirebox.Value = $I } )
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxFirebox.AddText(" Closing SSH Stream `n") } )
+            Start-Sleep -Seconds 3 ; $Stream.Close() ; $Stream.Dispose()
+            $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarFirebox.Value = $I } )
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxFirebox.AddText(" Removing SSH Session `n") } )
+            Remove-SshSession ; Start-Sleep -Seconds 3
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarFirebox.Visibility = "Hidden" } )
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatusFirebox.Visibility = "Hidden" } )
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ButtonFireboxStart.IsEnabled = $True } )
+			}
+        $PSinstance = [powershell]::Create().AddScript($Code)
+        $PSinstance.Runspace = $Runspace
+        $job = $PSinstance.BeginInvoke()
+		}
 	Function DeployDcStart {
 		Param($syncHash,$DnsForwarder,$DomainNetbiosName,$DomainDnsName)
         $Runspace = [runspacefactory]::CreateRunspace()
@@ -1083,16 +1166,15 @@ $SyncHash.Host = $Host
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox3.AddText(" Creating D:\Users and Setting NTFS Security `n") } )
             $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'DataOST' -ScriptBlock {
                     Param($OstFolderRootPath)
-                    If ( (get-disk -Number 1).AllocatedSize -eq 0 ) {
+                    if ( (get-disk -Number 1).AllocatedSize -eq 0 ) {
 			            Initialize-Disk -Number 1
-                    	New-Partition -DiskNumber 1 -DriveLetter 'D' -UseMaximumSize | Format-Volume -FileSystem NTFS -NewFileSystemLabel 'DataOst'
-                        # Set ACL FullControl to System & Administrators on Root
-                        # Disable Inheritance
-                    	# $ACL.SetAccessRuleProtection($true,$true)
-						[STRING]$Root = 'D:\'
-						$ACL = Get-Acl -Path $Root
-						$ACL.Access | Where-Object { $_.IdentityReference -inotin ('NT AUTHORITY\SYSTEM','BUILTIN\Administrators') } | ForEach-Object { $ACL.RemoveAccessRule($_) }
-						Set-Acl -Path $Root -AclObject $ACL
+                    	New-Partition -DiskNumber 1 -DriveLetter D -UseMaximumSize | Format-Volume -FileSystem NTFS -NewFileSystemLabel 'DataOst'
+                        # Remove All but System & Administrators from ACL on Root
+                    	Get-Acl -Path 'D:\' | ForEach-Object {
+                            $ACL = $_
+                            $ACL.Access | Where-Object { $_.IdentityReference -inotin ('NT AUTHORITY\SYSTEM','BUILTIN\Administrators') } | ForEach-Object { $ACL.RemoveAccessRule($_) }
+                            Set-Acl -Path 'D:\' -AclObject $ACL
+                            }
                         # Create User Folder
                     	# $OstFolderRootPath = 'D:\Users'
                     	New-Item -Path $OstFolderRootPath -type directory -Force
@@ -1102,20 +1184,31 @@ $SyncHash.Host = $Host
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox3.AddText(" Configuring Disk 'DATA' `n") } )
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox3.AddText(" Creating E:\Users and Setting NTFS Security `n") } )
 			$Job = Invoke-Command -Session $PsSession -AsJob -JobName 'UserData' -ScriptBlock {
-                    Param($DataFolderRootPath)
-                    If ( (get-disk -Number 2).AllocatedSize -eq 0 ) {
+                    Param($DataFolderRootPath) ; 
+                    if ( (get-disk -Number 2).AllocatedSize -eq 0 ) {
 			            Initialize-Disk -Number 2
-                    	New-Partition -DiskNumber 2 -DriveLetter 'E' -UseMaximumSize | Format-Volume -FileSystem NTFS -NewFileSystemLabel 'Data'
-                        # Set ACL FullControl to System & Administrators , Set ACL ListOnly to Users on Root
-                        # Disable Inheritance
-                    	# $ACL.SetAccessRuleProtection($true,$true)
-						[STRING]$Root = 'E:\'
-						$ACL = Get-Acl -Path $Root
-						$ACL.Access | Where-Object { $_.IdentityReference -inotin ('NT AUTHORITY\SYSTEM','BUILTIN\Administrators') } | ForEach-Object { $ACL.RemoveAccessRule($_) }
-						Set-Acl -Path $Root -AclObject $ACL
+                    	New-Partition -DiskNumber 2 -DriveLetter E -UseMaximumSize | Format-Volume -FileSystem NTFS -NewFileSystemLabel 'Data'
+                        # Remove All but System & Administrators from ACL on Root
+                    	Get-Acl -Path 'E:\' | ForEach-Object {
+                            $ACL = $_
+                            $ACL.Access | Where-Object { $_.IdentityReference -inotin ('NT AUTHORITY\SYSTEM','BUILTIN\Administrators') } | ForEach-Object { $ACL.RemoveAccessRule($_) }
+                            Set-Acl -Path 'E:\' -AclObject $ACL
+                            }
+                        # Add Users with Folder List Only to ACL on Root
+                        $ACL = Get-Acl -Path 'E:\'
+                    	$AccessRule = New-Object system.security.AccessControl.FileSystemAccessRule('BUILTIN\Users', 'ReadData, ReadAttributes, Synchronize', 'None', 'None', 'Allow')
+                    	$ACL.AddAccessRule($AccessRule)
+                    	Set-Acl -Path 'E:\' -AclObject $ACL
                         # Create User Folder
                     	# $DataFolderRootPath = 'E:\Users'
                     	New-Item -Path $DataFolderRootPath -type directory -Force
+                    	$Acl = Get-Acl  -Path  $DataFolderRootPath
+                        # Disable Inheritance
+                    	# $ACL.SetAccessRuleProtection($true,$true)
+                        # Add Users with Folder List Only to ACL on $DataFolderRootPath
+                    	$AccessRule = New-Object system.security.AccessControl.FileSystemAccessRule('BUILTIN\Users', 'ReadData, ReadAttributes, Synchronize', 'None', 'None', 'Allow')
+                    	$ACL.AddAccessRule($AccessRule)
+                    	Set-Acl -Path $DataFolderRootPath -AclObject $ACL
 			            }
                     } -ArgumentList ($DataFolderRootPath)
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployRdsStart.Value = $I } ) }
@@ -1174,8 +1267,8 @@ $SyncHash.Host = $Host
             }
         $PSinstance = [powershell]::Create().AddScript($Code)
         $PSinstance.Runspace = $Runspace
-        $job = $PSinstance.BeginInvoke()      
-		}
+        $job = $PSinstance.BeginInvoke()
+    }
 	Function DeployRdsReboot {
 		Param($syncHash,$RdsServerIpAddress,$AdminUserName,$AdminPassword)
         $Runspace = [runspacefactory]::CreateRunspace()
@@ -1461,13 +1554,12 @@ Shutdown.exe /r /t 5 /f /c 'Scheduled Windows Updates with Reboot' /d p:0:0
 		$Runspace.SessionStateProxy.SetVariable("DomainNetbiosName",$DomainNetbiosName)
         $code = {
             [INT]$I = 0
-			$FullUsersOuPath = $UsersOuPath.Insert(0,'OU=Full Users,')
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployUserStart.Value = $I } )
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox6.AddText(" Connecting to $ServerIpAddress `n") } )
 	        $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ("$ServerIpAddress\$AdminUserName", $(ConvertTo-SecureString -String $AdminPassword -AsPlainText -Force))
             Set-Item WSMan:\localhost\Client\TrustedHosts -Value "$ServerIpAddress" -Force
             Try { $PsSession = New-PSSession -ComputerName $ServerIpAddress -Credential $Credential -ErrorAction Stop }
-                Catch {
+                    Catch {
                     $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployUserStart.Visibility = "Hidden" } )
                     $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatusDeployUserStart.Content = "Connection Failure $(' .'*130)$(' '*30)Please check Server - Username - Password" } )
                     $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.DeployUserStart.IsEnabled = $True } )
@@ -1476,35 +1568,35 @@ Shutdown.exe /r /t 5 /f /c 'Scheduled Windows Updates with Reboot' /d p:0:0
                     }
             [STRING]$RandomPasswordPlainText = ((([char[]](65..90) | sort {get-random})[0..2] + ([char[]](33,35,36,37,42,43,45) | sort {get-random})[0] + ([char[]](97..122) | sort {get-random})[0..4] + ([char[]](48..57) | sort {get-random})[0]) | get-random -Count 10) -join ''
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBoxUserPassword.Text = $RandomPasswordPlainText } )
-            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox6.AddText(" Creating User $PrincipalName in $FullUsersOuPath `n") } )
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox6.AddText(" Creating User $PrincipalName in $UsersOuPath `n") } )
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox6.AddText(" With Password $RandomPasswordPlainText `n") } )
             $Job = Start-Job -Name 'Active Directory Add User' -ScriptBlock {
-                Param ($PrincipalName,$UserGivenName,$UserSurname,$Department,$FullUsersOuPath,$DomainDnsName,$RandomPasswordPlainText)
-                $NewUserParams = @{
-					'UserPrincipalName' = "$($PrincipalName)@$($DomainDnsName)"
-		            'DisplayName' = $PrincipalName
-		            'Name' = $PrincipalName
-		            'SamAccountName' = $PrincipalName
-                    'GivenName' = $UserGivenName
-                    'Surname' = $UserSurname
-            		'Description' = $ClearmediaAdminUserName
-                    'Department' = $Department
-                    'Enabled' = $TRUE
-	                'ChangePasswordAtLogon' = $FALSE
-		            'AccountPassword' =  ConvertTo-SecureString $RandomPasswordPlainText -AsPlainText -Force
-	                'Path' = $FullUsersOuPath
-				    'HomeDirectory' = "E:\users\$PrincipalName"
-                    }
-                New-ADUser @NewUserParams -ErrorAction Stop
-                } -ArgumentList ($PrincipalName,$UserGivenName,$UserSurname,$Department,$FullUsersOuPath,$DomainDnsName,$RandomPasswordPlainText)
+                    Param ($PrincipalName,$UserGivenName,$UserSurname,$Department,$UsersOuPath,$DomainDnsName,$RandomPasswordPlainText)
+                    $NewUserParams = @{
+                    	    'UserPrincipalName' = "$($PrincipalName)@$($DomainDnsName)"
+		                    'DisplayName' = $PrincipalName
+		                    'Name' = $PrincipalName
+		                    'SamAccountName' = $PrincipalName
+                        	'GivenName' = $UserGivenName
+                        	'Surname' = $UserSurname
+            		        'Description' = $ClearmediaAdminUserName
+                        	'Department' = $Department
+                        	'Enabled' = $TRUE
+	                        'ChangePasswordAtLogon' = $FALSE
+		                    'AccountPassword' =  ConvertTo-SecureString $RandomPasswordPlainText -AsPlainText -Force
+	                        'Path' = $UsersOuPath
+				            'HomeDirectory' = "E:\users\$PrincipalName"
+                             }
+                    New-ADUser @NewUserParams -ErrorAction Stop
+                    } -ArgumentList ($PrincipalName,$UserGivenName,$UserSurname,$Department,$UsersOuPath,$DomainDnsName,$RandomPasswordPlainText)
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarProgressDeployUserStart.Value = $I } ) }
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBox6.AddText(" Creating User OST Folder `n") } )
 	        $Job = Invoke-Command -ComputerName "$ServerIpAddress" -Credential $Credential  -AsJob -JobName  'Create User OST Folder' -ScriptBlock {
                     Param ($USEROstFolderRootPath,$PrincipalName,$DomainNetbiosName)
                     [STRING]$FolderPath = "D:\Users\$PrincipalName"
                     New-Item -Path $FolderPath -type directory -Force
-					# Add ACL Modify to PrincipalName on FolderPath
                     $ACL = Get-Acl  -Path  $FolderPath
+                    $ACL.SetAccessRuleProtection($true,$true)
                     $AccessRule = New-Object system.security.AccessControl.FileSystemAccessRule("$DomainNetbiosName\$PrincipalName", 'Modify', 'ObjectInherit,ContainerInherit', 'None', 'Allow')
                     $ACL.AddAccessRule($AccessRule)
                     Set-Acl  -Path $FolderPath -AclObject $ACL
@@ -1515,8 +1607,8 @@ Shutdown.exe /r /t 5 /f /c 'Scheduled Windows Updates with Reboot' /d p:0:0
                     Param ($USERDataFolderRootPath,$PrincipalName,$DomainNetbiosName)
                     [STRING]$FolderPath = "E:\Users\$PrincipalName"
                     New-Item -Path $FolderPath -type directory -Force
-					# Add ACL Modify to PrincipalName on FolderPath
                     $ACL = Get-Acl  -Path  $FolderPath
+                    $ACL.SetAccessRuleProtection($true,$true)
                     $AccessRule = New-Object system.security.AccessControl.FileSystemAccessRule("$DomainNetbiosName\$PrincipalName", 'Modify', 'ObjectInherit,ContainerInherit', 'None', 'Allow')
                     $ACL.AddAccessRule($AccessRule)
                     Set-Acl  -Path $FolderPath -AclObject $ACL
@@ -1538,17 +1630,25 @@ Shutdown.exe /r /t 5 /f /c 'Scheduled Windows Updates with Reboot' /d p:0:0
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.DeployWUStart.IsEnabled = $True } )
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.DeployUserStart.IsEnabled = $True } )                				                								
                 }
-			$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.DeployUserStart.Visibility = "Visible"  } )	
+		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.DeployUserStart.Visibility = "Visible"  } )	
             }
         $PSinstance = [powershell]::Create().AddScript($Code)
         $PSinstance.Runspace = $Runspace
         $job = $PSinstance.BeginInvoke()
-		}
+        
+    }
 
 # AutoFind ( WPF - Windows Presentation Framework ) Controls
 	$XAML.SelectNodes("//*[@*[contains(translate(name(.),'n','N'),'Name')]]")  | ForEach-Object { $syncHash.Add($_.Name, $syncHash.Window.Findname($_.Name)) }
 
 # Init ( WPF - Windows Presentation Framework ) Actions
+    $syncHash.DeployFireboxStart.Add_Click({
+        $syncHash.ButtonFireboxStart.IsEnabled = $False
+        $syncHash.LabelStatusFirebox.Visibility = "Visible"
+        $syncHash.ProgressBarFirebox.Visibility = "Visible"
+	    DeployFireboxStart -syncHash $syncHash -FireboxIpAddress $syncHash.TextBoxFireboxIpAddress.Text -FireboxAdminUserName $SyncHash.TextBoxFireboxAdminUserName.Text -FireboxAdminPassword $SyncHash.TextBoxFireboxAdminPassword.Text -FireboxIpSubnet $SyncHash.TextBoxFireboxFireboxIpSubnet.Text -FireboxIpGateway $SyncHash.TextBoxFireboxIpGateway.Text
+        # $SyncHash.host.ui.WriteVerboseLine($SyncHash.TextBoxDomainNetbiosName.Text)
+        })
     $syncHash.DeployDcStart.Add_Click({
         $syncHash.DeployDcStart.IsEnabled = $False
 	    $syncHash.DeployOUStart.IsEnabled = $False
