@@ -330,7 +330,7 @@ $SyncHash.Host = $Host
 
 # Init ( WPF - Windows Presentation Framework ) Functions
 	Function DeployFireboxStart {
-		Param($syncHash,$FireboxIpAddress,$FireboxAdminUserName,$FireboxAdminPassword,$FireboxFireboxIpSubnet,$FireboxIpGateway)
+		Param($syncHash,$FireboxIpAddress,$FireboxAdminUserName,$FireboxAdminPassword,$FireboxIpSubnet,$FireboxIpGateway)
         $Runspace = [runspacefactory]::CreateRunspace()
         $Runspace.ApartmentState = "STA"
         $Runspace.ThreadOptions = "ReuseThread"
