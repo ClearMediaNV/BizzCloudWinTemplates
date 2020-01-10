@@ -1646,7 +1646,7 @@ Shutdown.exe /r /t 5 /f /c 'Scheduled Windows Updates with Reboot' /d p:0:0
         $syncHash.ButtonFireboxStart.IsEnabled = $False
         $syncHash.LabelStatusFirebox.Visibility = "Visible"
         $syncHash.ProgressBarFirebox.Visibility = "Visible"
-	    DeployFireboxStart -syncHash $syncHash -FireboxIpAddress $syncHash.TextBoxFireboxIpAddress.Text -FireboxAdminUserName $SyncHash.TextBoxFireboxAdminUserName.Text -FireboxAdminPassword $SyncHash.TextBoxFireboxAdminPassword.Text -FireboxIpSubnet $SyncHash.TextBoxFireboxFireboxIpSubnet.Text -FireboxIpGateway $SyncHash.TextBoxFireboxIpGateway.Text
+	    DeployFireboxStart -syncHash $syncHash -FireboxIpAddress $syncHash.TextBoxFireboxIpAddress.Text -FireboxAdminUserName $SyncHash.TextBoxFireboxAdminUserName.Text -FireboxAdminPassword $SyncHash.TextBoxFireboxAdminPassword.Text -FireboxIpSubnet $SyncHash.TextBoxFireboxIpSubnet.Text -FireboxIpGateway $SyncHash.TextBoxFireboxIpGateway.Text
         # $SyncHash.host.ui.WriteVerboseLine($SyncHash.TextBoxDomainNetbiosName.Text)
         })
     $syncHash.DeployDcStart.Add_Click({
