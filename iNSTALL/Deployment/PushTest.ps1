@@ -339,7 +339,7 @@ $SyncHash.Host = $Host
 		$Runspace.SessionStateProxy.SetVariable("FireboxIpAddress",$FireboxIpAddress)
 		$Runspace.SessionStateProxy.SetVariable("FireboxAdminUserName",$FireboxAdminUserName)
 		$Runspace.SessionStateProxy.SetVariable("FireboxAdminPassword",$FireboxAdminPassword)
-		$Runspace.SessionStateProxy.SetVariable("FireboxFireboxIpSubnet",$FireboxFireboxIpSubnet)
+		$Runspace.SessionStateProxy.SetVariable("FireboxIpSubnet",$FireboxFireboxIpSubnet)
 		$Runspace.SessionStateProxy.SetVariable("FireboxIpGateway",$FireboxIpGateway)
         $code = {
 			[INT]$I = 0
