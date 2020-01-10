@@ -1642,7 +1642,7 @@ Shutdown.exe /r /t 5 /f /c 'Scheduled Windows Updates with Reboot' /d p:0:0
 	$XAML.SelectNodes("//*[@*[contains(translate(name(.),'n','N'),'Name')]]")  | ForEach-Object { $syncHash.Add($_.Name, $syncHash.Window.Findname($_.Name)) }
 
 # Init ( WPF - Windows Presentation Framework ) Actions
-    $syncHash.DeployFireboxStart.Add_Click({
+    $syncHash.ButtonFireboxStart.Add_Click({
         $syncHash.ButtonFireboxStart.IsEnabled = $False
         $syncHash.LabelStatusFirebox.Visibility = "Visible"
         $syncHash.ProgressBarFirebox.Visibility = "Visible"
