@@ -132,8 +132,7 @@ $SyncHash.Host = $Host
                     <GradientStop Color="Black" Offset="0.8" />
                     </LinearGradientBrush>
                     </Border.Background>
-                    <Button Name="ButtonDeployDcReboot" Content="REBOOT" BorderBrush="Transparent" Background="Red" Foreground="Blue" FontSize="40
-					" FontWeight="Bold">
+                    <Button Name="ButtonDeployDcReboot" Content="REBOOT" BorderBrush="Transparent" Background="Red" Foreground="Blue" FontSize="40" FontWeight="Bold">
                     <Button.Resources>
                     <Style TargetType="{x:Type Border}">
                     <Setter Property="CornerRadius" Value="220"/>
@@ -752,14 +751,13 @@ $SyncHash.Host = $Host
                 }
                 Else 
 				{
-        		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatusOU.Content = "Deployment Finished $(' .'*135)$(' '*30)" } )
         		New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'ManagedOuName' -PropertyType 'String' -Value $ManagedOuName -Force
         		New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'RdsOuPath' -PropertyType 'String' -Value "OU=RDS,OU=Servers,OU=$ManagedOuName,$ADRootDSE" -Force
         		New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'UsersOuPath' -PropertyType 'String' -Value "OU=Users,OU=$ManagedOuName,$ADRootDSE" -Force
         		New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DeployOuStart' -PropertyType 'String' -Value 'Hidden' -Force
-                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployOUStart.Visibility = "Hidden"  } )				
         		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBoxRdsOuPath.Text = "OU=RDS,OU=Servers,OU=$ManagedOuName,$ADRootDSE" } )
         		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBoxUsersOuPath.Text = "OU=Users,OU=$ManagedOuName,$ADRootDSE" } )
+        		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatusOU.Content = "Deployment Finished $(' .'*135)$(' '*30)" } )
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployStandardGpoStart.IsEnabled = $True } )
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployFolderRedirectionStart.IsEnabled = $True } )
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployRdsStart.IsEnabled = $True } )
@@ -921,6 +919,7 @@ $SyncHash.Host = $Host
 			$StandardOutlookUserPolicy = (
 				'HKCU\Software\policies\microsoft\office\16.0\outlook\cached mode,cachedexchangemode,Dword,2',
 				'HKCU\Software\policies\microsoft\office\16.0\outlook\cached mode,syncwindowsetting,Dword,0',
+				'HKCU\Software\policies\microsoft\office\16.0\outlook\cached mode,syncwindowsettingdays,Dword,180',
 				'HKCU\Software\policies\microsoft\office\16.0\outlook\cached mode,enable,Dword,1',
 				"HKCU\Software\policies\microsoft\office\16.0\outlook,forceostpath,ExpandString,$OstPath",
 				"HKCU\Software\policies\microsoft\office\16.0\outlook,forcepstpath,ExpandString,$OstPath"
@@ -1155,11 +1154,10 @@ $SyncHash.Host = $Host
 				}
                 Else
                 {
-		        $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatusGPO.Content = "Deployment Finished $(' .'*135)$(' '*30)" } )
 		        New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'RdsOuPath' -PropertyType 'String' -Value $RdsOuPath -Force
 		        New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'UsersOuPath' -PropertyType 'String' -Value $UsersOuPath -Force
 		        New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DeployStandardGpoStart' -PropertyType 'String' -Value 'Hidden' -Force
-                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployStandardGpoStart.Visibility = "Hidden"  } )				
+		        $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatusGPO.Content = "Deployment Finished $(' .'*135)$(' '*30)" } )
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployFolderRedirectionStart.IsEnabled = $True } )
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployRdsStart.IsEnabled = $True } )
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployO365Start.IsEnabled = $True } )
@@ -1271,14 +1269,13 @@ $SyncHash.Host = $Host
                 }
 				Else
                 {
-                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatusFolderRedirection.Content = "Deployment Finished $(' .'*135)$(' '*30)" } ) 
-				New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DeployFolderRedirectionStart' -PropertyType 'String' -Value 'Hidden' -Force
-                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployFolderRedirectionStart.Visibility = "Hidden"  } )				
-				$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployRdsStart.IsEnabled = $True } )
-				$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployO365Start.IsEnabled = $True } )
-				$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployWUStart.IsEnabled = $True } )
-				$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployUserStart.IsEnabled = $True } )                				
-				}
+                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatusFolderRedirection.Content = "Deployment Finished $(' .'*135)$(' '*30)" } ) }
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.DeployFolderRedirectionStart.Visibility = "Visible"  } )
+            New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DeployFolderRedirectionStart' -PropertyType 'String' -Value 'Hidden' -Force
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployRdsStart.IsEnabled = $True } )
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployO365Start.IsEnabled = $True } )
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployWUStart.IsEnabled = $True } )
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployUserStart.IsEnabled = $True } )                				
             }
 		$PSinstance = [powershell]::Create().AddScript($Code)
 		$PSinstance.Runspace = $Runspace
@@ -1758,7 +1755,7 @@ Shutdown.exe /r /t 5 /f /c 'Scheduled Windows Updates with Reboot' /d p:0:0
                     Return
                     }
             [STRING]$RandomPasswordPlainText = ((([char[]](65..90) | sort {get-random})[0..2] + ([char[]](33,35,36,37,42,43,45) | sort {get-random})[0] + ([char[]](97..122) | sort {get-random})[0..4] + ([char[]](48..57) | sort {get-random})[0]) | get-random -Count 10) -join ''
-            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBoxUSERUserPassword.Text = $RandomPasswordPlainText } )
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBoxUserPassword.Text = $RandomPasswordPlainText } )
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxUser.AddText(" Creating User $PrincipalName in $UsersOuPath `n") } )
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxUser.AddText(" With Password $RandomPasswordPlainText `n") } )
             $Job = Start-Job -Name 'Active Directory Add User' -ScriptBlock {
@@ -1774,16 +1771,17 @@ Shutdown.exe /r /t 5 /f /c 'Scheduled Windows Updates with Reboot' /d p:0:0
                         	'Enabled' = $TRUE
 	                        'ChangePasswordAtLogon' = $FALSE
 		                    'AccountPassword' =  ConvertTo-SecureString $RandomPasswordPlainText -AsPlainText -Force
-	                        'Path' = $UsersOuPath
+	                        'Path' = $OuPath
 				            'HomeDirectory' = "E:\users\$PrincipalName"
                              }
                     New-ADUser @NewUserParams -ErrorAction Stop
                     } -ArgumentList ($PrincipalName,$UserGivenName,$UserSurname,$Department,$OuPath,$DomainDnsName,$RandomPasswordPlainText)
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarUser.Value = $I } ) }
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxUser.AddText(" Creating User OST Folder `n") } )
-	        $Job = Invoke-Command -ComputerName "$ServerIpAddress" -Credential $Credential  -AsJob -JobName  'Create User OST Folder' -ScriptBlock {
+	        $Job = Invoke-Command -Session $PsSession -AsJob -JobName  'Create User OST Folder' -ScriptBlock {
                     Param ($OstFolderRootPath,$PrincipalName,$DomainNetbiosName)
-                    [STRING]$FolderPath = "$($OstFolderRootPath)\$PrincipalName"
+                    [STRING]$FolderPath = "D:\Users\$PrincipalName"
+                    # [STRING]$FolderPath = "$($OstFolderRootPath)\$PrincipalName"
                     New-Item -Path $FolderPath -type directory -Force
                     $ACL = Get-Acl  -Path  $FolderPath
                     $ACL.SetAccessRuleProtection($true,$true)
@@ -1793,9 +1791,10 @@ Shutdown.exe /r /t 5 /f /c 'Scheduled Windows Updates with Reboot' /d p:0:0
                     } -ArgumentList ($OstFolderRootPath,$PrincipalName,$DomainNetbiosName)
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarUser.Value = $I } ) }
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxUser.AddText(" Creating User DATA Folder `n") } )
-	        $Job = Invoke-Command -ComputerName "$ServerIpAddress" -Credential $Credential  -AsJob -JobName  'Create User Data Folder' -ScriptBlock {
+	        $Job = Invoke-Command -Session $PsSession -AsJob -JobName  'Create User Data Folder' -ScriptBlock {
                     Param ($DataFolderRootPath,$PrincipalName,$DomainNetbiosName)
-                    [STRING]$FolderPath = "$($DataFolderRootPath)\$PrincipalName"
+                    [STRING]$FolderPath = "E:\Users\$PrincipalName"
+                    # [STRING]$FolderPath = "$($DataFolderRootPath)\$PrincipalName"
                     New-Item -Path $FolderPath -type directory -Force
                     $ACL = Get-Acl  -Path  $FolderPath
                     $ACL.SetAccessRuleProtection($true,$true)
@@ -1936,7 +1935,7 @@ Shutdown.exe /r /t 5 /f /c 'Scheduled Windows Updates with Reboot' /d p:0:0
         $syncHash.LabelStatusUser.Content = "In Progress ...."
         $syncHash.LabelStatusUser.Visibility = "Visible"
         $syncHash.ProgressBarUser.Visibility = "Visible"
-	    DeployUserStart -syncHash $syncHash -ServerIpAddress $syncHash.TextBoxUSERServerIpAddress.Text -AdminUserName $syncHash.TextBoxUSERAdminUserName.Text -AdminPassword $syncHash.TextBoxUSERAdminPassword.Text -UserType $syncHash.ComboBoxUSERUserType.SelectedIndex -OstFolderRootPath $syncHash.TextBoxUSEROstFolderRootPath -DataFolderRootPath $syncHash.TextBoxUSERUserDataFolderRootPath -PrincipalName $syncHash.TextBoxUSERUserAccountName.Text -UserGivenName $syncHash.TextBoxUserGivenName.Text -UserSurname $syncHash.TextBoxUserSurname.Text -UsersOuPath $syncHash.TextBoxUsersOuPath.Text -DomainDnsName $SyncHash.TextBoxDomainDnsName.Text -DomainNetbiosName $SyncHash.TextBoxDomainNetbiosName.Text
+	    DeployUserStart -syncHash $syncHash -ServerIpAddress $syncHash.TextBoxUSERServerIpAddress.Text -AdminUserName $syncHash.TextBoxUSERAdminUserName.Text -AdminPassword $syncHash.TextBoxUSERAdminPassword.Text -UserType $syncHash.ComboBoxUSERUserType.SelectedIndex -OstFolderRootPath $syncHash.TextBoxUSEROstFolderRootPath -DataFolderRootPath $syncHash.TextBoxUSERUserDataFolderRootPath -PrincipalName $syncHash.TextBoxUSERUserAccountName.Text -UserGivenName $syncHash.TextBoxUserGivenName.Text -UserSurname $syncHash.TextBoxUserSurname.Text -OuPath $syncHash.TextBoxUsersOuPath.Text -DomainDnsName $SyncHash.TextBoxDomainDnsName.Text -DomainNetbiosName $SyncHash.TextBoxDomainNetbiosName.Text
         #$SyncHash.host.ui.WriteVerboseLine($SyncHash.CheckBoxStandardRdsServerPolicy.IsChecked)
         })
 
