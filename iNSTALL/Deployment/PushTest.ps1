@@ -132,7 +132,7 @@ $SyncHash.Host = $Host
                     <GradientStop Color="Black" Offset="0.8" />
                     </LinearGradientBrush>
                     </Border.Background>
-                    <Button Name="ButtonDeployDcReboot" Content="REBOOT" BorderBrush="Transparent" Background="Red" Foreground="Blue" FontSize="50" FontWeight="Bold">
+                    <Button Name="ButtonDeployDcReboot" Content="REBOOT" BorderBrush="Transparent" Background="Red" Foreground="Blue" FontSize="40" FontWeight="Bold">
                     <Button.Resources>
                     <Style TargetType="{x:Type Border}">
                     <Setter Property="CornerRadius" Value="220"/>
