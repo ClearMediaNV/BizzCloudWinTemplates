@@ -1771,7 +1771,7 @@ Shutdown.exe /r /t 5 /f /c 'Scheduled Windows Updates with Reboot' /d p:0:0
                         	'Enabled' = $TRUE
 	                        'ChangePasswordAtLogon' = $FALSE
 		                    'AccountPassword' =  ConvertTo-SecureString $RandomPasswordPlainText -AsPlainText -Force
-	                        'Path' = $OuPath
+	                        'Path' = "OU=Full Users,OU=Users,OU=PME,DC=LOL,DC=CLOUD"
 				            'HomeDirectory' = "E:\users\$PrincipalName"
                              }
                     New-ADUser @NewUserParams -ErrorAction Stop
