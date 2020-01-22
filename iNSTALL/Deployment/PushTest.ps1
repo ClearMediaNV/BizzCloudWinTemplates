@@ -1764,7 +1764,7 @@ Shutdown.exe /r /t 5 /f /c 'Scheduled Windows Updates with Reboot' /d p:0:0
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxUser.AddText(" Creating User $PrincipalName in $OuPath `n") } )
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxUser.AddText(" With Password $RandomPasswordPlainText `n") } )
             $Job = Start-Job -Name 'Active Directory Add User' -ScriptBlock {
-                    Param ($PrincipalName,$UserGivenName,$UserSurname,$Department,$OuPath,$DomainDnsName,$RandomPasswordPlainText)
+                    Param ($PrincipalName,$UserGivenName,$UserSurname,$OuPath,$DomainDnsName,$RandomPasswordPlainText)
                     $NewUserParams = @{
                     	    'UserPrincipalName' = "$($PrincipalName)@$($DomainDnsName)"
 		                    'DisplayName' = $PrincipalName
@@ -1776,11 +1776,11 @@ Shutdown.exe /r /t 5 /f /c 'Scheduled Windows Updates with Reboot' /d p:0:0
                         	'Enabled' = $TRUE
 	                        'ChangePasswordAtLogon' = $FALSE
 		                    'AccountPassword' =  ConvertTo-SecureString $RandomPasswordPlainText -AsPlainText -Force
-	                        'Path' = "OU=Full Users,$OuPath"
+	                        'Path' = $OuPath
 				            'HomeDirectory' = "E:\users\$PrincipalName"
                              }
                     New-ADUser @NewUserParams -ErrorAction Stop
-                    } -ArgumentList ($PrincipalName,$UserGivenName,$UserSurname,$Department,$OuPath,$DomainDnsName,$RandomPasswordPlainText)
+                    } -ArgumentList ($PrincipalName,$UserGivenName,$UserSurname,$OuPath,$DomainDnsName,$RandomPasswordPlainText)
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarUser.Value = $I } ) }
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxUser.AddText(" Creating User OST Folder `n") } )
 	        $Job = Invoke-Command -Session $PsSession -AsJob -JobName  'Create User OST Folder' -ScriptBlock {
