@@ -1764,7 +1764,7 @@ Shutdown.exe /r /t 5 /f /c 'Scheduled Windows Updates with Reboot' /d p:0:0
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxUser.AddText(" Creating User $PrincipalName in $OuPath `n") } )
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxUser.AddText(" With Password $RandomPasswordPlainText `n") } )
             $Job = Start-Job -Name 'Active Directory Add User' -ScriptBlock {
-                    Param ($PrincipalName,$UserGivenName,$UserSurname,$OuPath,$DomainDnsName,$RandomPasswordPlainText)
+                    Param ($DataFolderRootPath,$PrincipalName,$UserGivenName,$UserSurname,$OuPath,$DomainDnsName,$RandomPasswordPlainText)
                     $NewUserParams = @{
                     	    'UserPrincipalName' = "$($PrincipalName)@$($DomainDnsName)"
 		                    'DisplayName' = $PrincipalName
@@ -1777,16 +1777,16 @@ Shutdown.exe /r /t 5 /f /c 'Scheduled Windows Updates with Reboot' /d p:0:0
 	                        'ChangePasswordAtLogon' = $FALSE
 		                    'AccountPassword' =  ConvertTo-SecureString $RandomPasswordPlainText -AsPlainText -Force
 	                        'Path' = $OuPath
-				            'HomeDirectory' = "E:\users\$PrincipalName"
+				            'HomeDirectory' = "$DataFolderRootPath\$PrincipalName"
                              }
                     New-ADUser @NewUserParams -ErrorAction Stop
-                    } -ArgumentList ($PrincipalName,$UserGivenName,$UserSurname,$OuPath,$DomainDnsName,$RandomPasswordPlainText)
+                    } -ArgumentList ($DataFolderRootPath,$PrincipalName,$UserGivenName,$UserSurname,$OuPath,$DomainDnsName,$RandomPasswordPlainText)
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarUser.Value = $I } ) }
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxUser.AddText(" Creating User OST Folder `n") } )
 	        $Job = Invoke-Command -Session $PsSession -AsJob -JobName  'Create User OST Folder' -ScriptBlock {
                     Param ($OstFolderRootPath,$PrincipalName,$DomainNetbiosName)
-                    [STRING]$FolderPath = "D:\Users\$PrincipalName"
-                    # [STRING]$FolderPath = "$($OstFolderRootPath)\$PrincipalName"
+                    # [STRING]$FolderPath = "D:\Users\$PrincipalName"
+                    [STRING]$FolderPath = "$OstFolderRootPath\$PrincipalName"
                     New-Item -Path $FolderPath -type directory -Force
                     $ACL = Get-Acl  -Path  $FolderPath
                     $ACL.SetAccessRuleProtection($true,$true)
@@ -1798,8 +1798,8 @@ Shutdown.exe /r /t 5 /f /c 'Scheduled Windows Updates with Reboot' /d p:0:0
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxUser.AddText(" Creating User DATA Folder `n") } )
 	        $Job = Invoke-Command -Session $PsSession -AsJob -JobName  'Create User Data Folder' -ScriptBlock {
                     Param ($DataFolderRootPath,$PrincipalName,$DomainNetbiosName)
-                    [STRING]$FolderPath = "E:\Users\$PrincipalName"
-                    # [STRING]$FolderPath = "$($DataFolderRootPath)\$PrincipalName"
+                    # [STRING]$FolderPath = "E:\Users\$PrincipalName"
+                    [STRING]$FolderPath = "$DataFolderRootPath\$PrincipalName"
                     New-Item -Path $FolderPath -type directory -Force
                     $ACL = Get-Acl  -Path  $FolderPath
                     $ACL.SetAccessRuleProtection($true,$true)
@@ -1940,7 +1940,7 @@ Shutdown.exe /r /t 5 /f /c 'Scheduled Windows Updates with Reboot' /d p:0:0
         $syncHash.LabelStatusUser.Content = "In Progress ...."
         $syncHash.LabelStatusUser.Visibility = "Visible"
         $syncHash.ProgressBarUser.Visibility = "Visible"
-	    DeployUserStart -syncHash $syncHash -ServerIpAddress $syncHash.TextBoxUSERServerIpAddress.Text -AdminUserName $syncHash.TextBoxUSERAdminUserName.Text -AdminPassword $syncHash.TextBoxUSERAdminPassword.Text -UserType $syncHash.ComboBoxUSERUserType.SelectedIndex -OstFolderRootPath $syncHash.TextBoxUSEROstFolderRootPath -DataFolderRootPath $syncHash.TextBoxUSERUserDataFolderRootPath -PrincipalName $syncHash.TextBoxUSERUserAccountName.Text -UserGivenName $syncHash.TextBoxUserGivenName.Text -UserSurname $syncHash.TextBoxUserSurname.Text -OuPath $syncHash.TextBoxUsersOuPath.Text -DomainDnsName $SyncHash.TextBoxDomainDnsName.Text -DomainNetbiosName $SyncHash.TextBoxDomainNetbiosName.Text
+	    DeployUserStart -syncHash $syncHash -ServerIpAddress $syncHash.TextBoxUSERServerIpAddress.Text -AdminUserName $syncHash.TextBoxUSERAdminUserName.Text -AdminPassword $syncHash.TextBoxUSERAdminPassword.Text -UserType $syncHash.ComboBoxUSERUserType.SelectedIndex -OstFolderRootPath $syncHash.TextBoxUSEROstFolderRootPath.Text -DataFolderRootPath $syncHash.TextBoxUSERDataFolderRootPath.Text -PrincipalName $syncHash.TextBoxUSERUserAccountName.Text -UserGivenName $syncHash.TextBoxUserGivenName.Text -UserSurname $syncHash.TextBoxUserSurname.Text -OuPath $syncHash.TextBoxUsersOuPath.Text -DomainDnsName $SyncHash.TextBoxDomainDnsName.Text -DomainNetbiosName $SyncHash.TextBoxDomainNetbiosName.Text
         #$SyncHash.host.ui.WriteVerboseLine($SyncHash.CheckBoxStandardRdsServerPolicy.IsChecked)
         })
 
