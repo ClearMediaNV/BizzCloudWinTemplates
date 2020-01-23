@@ -102,9 +102,11 @@ $SyncHash.Host = $Host
                     <Label Name="LabelDomainNetbiosName" Content="Domain NetbiosName" HorizontalAlignment="Left" Height="28" Margin="30,28,0,0" VerticalAlignment="Top" Width="165"/>
                     <Label Name="LabelDomainName" Content="Domain Name" HorizontalAlignment="Left" Height="28" Margin="30,61,0,0" VerticalAlignment="Top" Width="165" RenderTransformOrigin="0.452,2.089"/>
                     <Label Name="LabelDnsServerForwarders" Content="Dns Server Forwarders" HorizontalAlignment="Left" Height="28" Margin="30,94,0,0" VerticalAlignment="Top" Width="165"/>
+                    <Label Name="LabelSafeModeAdministratorPassword" Content="AD Restore Mode Password" HorizontalAlignment="Left" Height="28" Margin="30,127,0,0" VerticalAlignment="Top" Width="165"/>
                     <TextBox Name="TextBoxDomainNetbiosName"  HorizontalAlignment="Left" Height="22" Margin="200,28,0,0" Text="$DomainNetbiosName" VerticalAlignment="Top" Width="180" TabIndex="1" IsTabStop="False" RenderTransformOrigin="0.673,0.523"/>
                     <TextBox Name="TextBoxDomainDnsName" HorizontalAlignment="Left" Height="22" Margin="200,61,0,0" Text="$DomainDNSName" VerticalAlignment="Top" Width="180" RenderTransformOrigin="0.462,0.455"/>
                     <TextBox Name="TextBoxDnsServerForwarders" HorizontalAlignment="Left" Height="22" Margin="200,94,0,0" Text="195.238.2.21,195.238.2.22,8.8.8.8" VerticalAlignment="Top" Width="180"/>
+                    <TextBox Name="TextBoxSafeModeAdministratorPassword" HorizontalAlignment="Left" Height="22" Margin="200,127,0,0" Text="$('*'*35)" VerticalAlignment="Top" Width="180"/>
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
                     <TextBlock Name="TextBlockOutBoxDC" Text="" Foreground="WHITE" Background="#FF22206F" />
                     </ScrollViewer>
@@ -154,7 +156,7 @@ $SyncHash.Host = $Host
                     <Label Name="LabelClearmediaAdminPassword" Content="ClearmediaAdmin Password" HorizontalAlignment="Left" Height="28" Margin="30,94,0,0" VerticalAlignment="Top" Width="165"/>
                     <TextBox Name="TextBoxManagedOuName"  HorizontalAlignment="Left" Height="22" Margin="200,28,0,0" Text="$ManagedOuName" VerticalAlignment="Top" Width="180" TabIndex="1" IsTabStop="False" RenderTransformOrigin="0.673,0.523"/>
                     <TextBox Name="TextBoxClearmediaAdminUserName" HorizontalAlignment="Left" Height="22" Margin="200,61,0,0" Text="ClearmediaAdmin" VerticalAlignment="Top" Width="180" RenderTransformOrigin="0.462,0.455"/>
-                    <TextBox Name="TextBoxClearmediaAdminPassword" HorizontalAlignment="Left" Height="22" Margin="200,94,0,0" Text="$('*'*18)" VerticalAlignment="Top" Width="180"/>
+                    <TextBox Name="TextBoxClearmediaAdminPassword" HorizontalAlignment="Left" Height="22" Margin="200,94,0,0" Text="$('*'*35)" VerticalAlignment="Top" Width="180"/>
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
                     <TextBlock Name="TextBlockOutBoxOU" Text="" Foreground="WHITE" Background="#FF22206F" />
                     </ScrollViewer>
@@ -575,19 +577,23 @@ $SyncHash.Host = $Host
         $job = $PSinstance.BeginInvoke()
 		}
 	Function DeployDcStart {
-		Param($syncHash,$DnsForwarder,$DomainNetbiosName,$DomainDnsName)
+		Param($syncHash,$SafeModeAdministratorPassword,$DnsForwarder,$DomainNetbiosName,$DomainDnsName)
         $Runspace = [runspacefactory]::CreateRunspace()
         $Runspace.ApartmentState = "STA"
         $Runspace.ThreadOptions = "ReuseThread"
         $Runspace.Open()
         $Runspace.SessionStateProxy.SetVariable("syncHash",$syncHash)
+		$Runspace.SessionStateProxy.SetVariable("DnsForwarder",$SafeModeAdministratorPassword)
 		$Runspace.SessionStateProxy.SetVariable("DnsForwarder",$DnsForwarder)
 		$Runspace.SessionStateProxy.SetVariable("DomainNetbiosName",$DomainNetbiosName)
 		$Runspace.SessionStateProxy.SetVariable("DomainDnsName",$DomainDnsName)
         $code = {
 			[INT]$I = 0
-            [STRING]$RandomPasswordPlainText = ((([char[]](65..90) | sort {get-random})[0..2] + ([char[]](33,35,36,37,42,43,45) | sort {get-random})[0] + ([char[]](97..122) | sort {get-random})[0..4] + ([char[]](48..57) | sort {get-random})[0]) | get-random -Count 10) -join ''
-            $SafeModeAdministratorPassword = ConvertTo-SecureString $RandomPasswordPlainText -AsPlainText -Force
+			If ( $SafeModeAdministratorPassword -eq "$('*'*35)" ) {
+				[STRING]$RandomPasswordPlainText = ((([char[]](65..90) | sort {get-random})[0..2] + ([char[]](33,35,36,37,42,43,45) | sort {get-random})[0] + ([char[]](97..122) | sort {get-random})[0..4] + ([char[]](48..57) | sort {get-random})[0]) | get-random -Count 10) -join ''
+				$SafeModeAdministratorPassword = ConvertTo-SecureString $RandomPasswordPlainText -AsPlainText -Force
+				$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBoxSafeModeAdministratorPassword.Text = $SafeModeAdministratorPassword } )
+				}
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarDc.Value = $I } )
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxDC.AddText(" Installing Active Directory Domain Services `n") } )
             $Job = Start-Job -Name 'Active Directory Domain Services' -ScriptBlock { Install-WindowsFeature -Name 'AD-Domain-Services' -ErrorAction Stop }
@@ -1853,7 +1859,7 @@ Shutdown.exe /r /t 5 /f /c 'Scheduled Windows Updates with Reboot' /d p:0:0
         $syncHash.BorderDeployUserStart.IsEnabled = $False
         $syncHash.LabelStatusDc.Visibility = "Visible"
         $syncHash.ProgressBarDc.Visibility = "Visible"
-	    DeployDcStart -syncHash $syncHash -DnsForwarder $syncHash.TextBoxDnsServerForwarders.Text -DomainNetbiosName $SyncHash.TextBoxDomainNetbiosName.Text -DomainDnsName $SyncHash.TextBoxDomainDnsName.Text
+	    DeployDcStart -syncHash $syncHash -SafeModeAdministratorPassword $syncHash.TextBoxSafeModeAdministratorPassword.Text -DnsForwarder $syncHash.TextBoxDnsServerForwarders.Text -DomainNetbiosName $SyncHash.TextBoxDomainNetbiosName.Text -DomainDnsName $SyncHash.TextBoxDomainDnsName.Text
         # $SyncHash.host.ui.WriteVerboseLine($SyncHash.TextBoxDomainNetbiosName.Text)
         })
     $syncHash.ButtonDeployDcReboot.Add_Click({ Restart-Computer })
