@@ -583,17 +583,15 @@ $SyncHash.Host = $Host
         $Runspace.ThreadOptions = "ReuseThread"
         $Runspace.Open()
         $Runspace.SessionStateProxy.SetVariable("syncHash",$syncHash)
-		$Runspace.SessionStateProxy.SetVariable("DnsForwarder",$SafeModeAdministratorPassword)
+		$Runspace.SessionStateProxy.SetVariable("SafeModeAdministratorPassword",$SafeModeAdministratorPassword)
 		$Runspace.SessionStateProxy.SetVariable("DnsForwarder",$DnsForwarder)
 		$Runspace.SessionStateProxy.SetVariable("DomainNetbiosName",$DomainNetbiosName)
 		$Runspace.SessionStateProxy.SetVariable("DomainDnsName",$DomainDnsName)
         $code = {
 			[INT]$I = 0
-			If ( $SafeModeAdministratorPassword -eq "$('*'*35)" ) {
-				[STRING]$RandomPasswordPlainText = ((([char[]](65..90) | sort {get-random})[0..2] + ([char[]](33,35,36,37,42,43,45) | sort {get-random})[0] + ([char[]](97..122) | sort {get-random})[0..4] + ([char[]](48..57) | sort {get-random})[0]) | get-random -Count 10) -join ''
-				$SafeModeAdministratorPassword = ConvertTo-SecureString $RandomPasswordPlainText -AsPlainText -Force
-				$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBoxSafeModeAdministratorPassword.Text = $SafeModeAdministratorPassword } )
-				}
+			[STRING]$RandomPasswordPlainText = ((([char[]](65..90) | sort {get-random})[0..2] + ([char[]](33,35,36,37,42,43,45) | sort {get-random})[0] + ([char[]](97..122) | sort {get-random})[0..4] + ([char[]](48..57) | sort {get-random})[0]) | get-random -Count 10) -join ''
+			If ( $SafeModeAdministratorPassword -ne "$('*'*35)" ) { $SafeModeAdministratorPassword = ConvertTo-SecureString $SafeModeAdministratorPassword -AsPlainText -Force }
+                Else { $SafeModeAdministratorPassword = ConvertTo-SecureString $RandomPasswordPlainText -AsPlainText -Force ; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBoxSafeModeAdministratorPassword.Text = $RandomPasswordPlainText } ) }
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarDc.Value = $I } )
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxDC.AddText(" Installing Active Directory Domain Services `n") } )
             $Job = Start-Job -Name 'Active Directory Domain Services' -ScriptBlock { Install-WindowsFeature -Name 'AD-Domain-Services' -ErrorAction Stop }
