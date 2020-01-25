@@ -1751,6 +1751,8 @@ Shutdown.exe /r /t 5 /f /c 'Scheduled Windows Updates with Reboot' /d p:0:0
         $code = {
             [INT]$I = 0
 			[STRING]$OuPath = "OU=$(('Full Users','Light Users')[$UserType]),$OuPath"
+			[STRING]$RandomPasswordPlainText = ((([char[]](65..90) | sort {get-random})[0..2] + ([char[]](33,35,36,37,42,43,45) | sort {get-random})[0] + ([char[]](97..122) | sort {get-random})[0..4] + ([char[]](48..57) | sort {get-random})[0]) | get-random -Count 10) -join ''
+			If ( $UserPassword -in ("$('*'*15)",'') ) { $UserPassword = $RandomPasswordPlainText ; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBoxUSERUserPassword.Text = $UserPassword } ) }
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarUser.Value = $I } )
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxUser.AddText(" Connecting to $ServerIpAddress `n") } )
 	        $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ("$ServerIpAddress\$AdminUserName", $(ConvertTo-SecureString -String $AdminPassword -AsPlainText -Force))
