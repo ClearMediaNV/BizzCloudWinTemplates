@@ -3,6 +3,8 @@ If ( -Not (Test-Path -Path 'HKLM:\Software\ClearMedia') ) { New-Item -Path  'HKL
 If ( -Not (Test-Path -Path 'HKLM:\Software\ClearMedia\PushTheButton') ) { New-Item -Path  'HKLM:\Software\ClearMedia\PushTheButton' }
 
 # Check History
+Try { $DeployDcStart = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DeployFirebox' }
+    Catch { $DeployFirebox = 'Visible' }
 Try { $DeployDcStart = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DeployDcStart' }
     Catch { $DeployDcStart = 'Visible' }
 Try { $DeployOuStart = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DeployOuStart' }
@@ -75,7 +77,7 @@ $SyncHash.Host = $Host
                     <TextBlock Name="TextBlockOutBoxFirebox" Text="" Foreground="WHITE" Background="#FF22206F" />
                     </ScrollViewer>
 
-                    <Border Name="BorderFireboxStart" CornerRadius="220" Padding="20,20,20,20" Width="220" Height="220" VerticalAlignment="Top" HorizontalAlignment="Left"  Margin="1000,28,0,0" ToolTip="Push It real Good" ToolTipService.ShowDuration="1000">
+                    <Border Name="BorderFireboxStart" CornerRadius="220" Padding="20,20,20,20" Width="220" Height="220" VerticalAlignment="Top" HorizontalAlignment="Left"  Margin="1000,28,0,0" Visibility="$DeployFirebox" ToolTip="Push It real Good" ToolTipService.ShowDuration="1000">
                     <Border.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                     <GradientStop Color="DarkGreen" Offset="0.4" />
@@ -528,10 +530,10 @@ $SyncHash.Host = $Host
             [INT]$Step = 8
 	        $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ("$FireboxAdminUserName", $(ConvertTo-SecureString -String $FireboxAdminPassword -AsPlainText -Force))
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarFirebox.Value = $I } )
-            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxFirebox.AddText(" Installing PowerShell Module sshsessions `n") } )
-            Install-PackageProvider -Name Nuget -MinimumVersion '2.8.5.201' -Force -ErrorAction Stop
-            Install-Module -Name 'sshsessions' -Force -ErrorAction Stop
-            $I += $Step ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarFirebox.Value = $I } )
+            # $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxFirebox.AddText(" Installing PowerShell Module sshsessions `n") } )
+            # Install-PackageProvider -Name Nuget -MinimumVersion '2.8.5.201' -Force -ErrorAction Stop
+            # Install-Module -Name 'sshsessions' -Force -ErrorAction Stop
+            # $I += $Step ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarFirebox.Value = $I } )
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxFirebox.AddText(" Importing PowerShell Module sshsessions `n") } )
             Import-Module -Name 'sshsessions' -ErrorAction Stop
             $I += $Step ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarFirebox.Value = $I } )
@@ -570,7 +572,8 @@ $SyncHash.Host = $Host
             Remove-SshSession ; Start-Sleep -Seconds 3
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarFirebox.Visibility = "Hidden" } )
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatusFirebox.Visibility = "Hidden" } )
-            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ButtonFireboxStart.IsEnabled = $True } )
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployFirebox.Visibility = "Hidden" } )
+			New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DeployFirebox' -PropertyType 'String' -Value 'Hidden' -Force
 			}
         $PSinstance = [powershell]::Create().AddScript($Code)
         $PSinstance.Runspace = $Runspace
@@ -883,7 +886,7 @@ $SyncHash.Host = $Host
 			# Create and Assemble User GPOs
 			# Link User GPOs to OU Users
 			$StandardUserPolicy = (
-				'HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer,NoDrives,Dword,4',
+				'HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer,NoDrives,Dword,15',
 				'HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer,NoHardwareTab,Dword,1',
 				'HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer,NoInplaceSharing,Dword,1',
 				'HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\WindowsUpdate,DisableWindowsUpdateAccess,Dword,1',
@@ -924,9 +927,9 @@ $SyncHash.Host = $Host
 				)
 			$StandardOutlookUserPolicy = (
 				'HKCU\Software\policies\microsoft\office\16.0\outlook\cached mode,cachedexchangemode,Dword,2',
-				'HKCU\Software\policies\microsoft\office\16.0\outlook\cached mode,syncwindowsetting,Dword,0',
-				'HKCU\Software\policies\microsoft\office\16.0\outlook\cached mode,syncwindowsettingdays,Dword,180',
 				'HKCU\Software\policies\microsoft\office\16.0\outlook\cached mode,enable,Dword,1',
+				'HKCU\Software\policies\microsoft\office\16.0\outlook\cached mode,syncwindowsetting,Dword,12',
+				'HKCU\Software\policies\microsoft\office\16.0\outlook\cached mode,syncwindowsettingdays,Dword,0',
 				"HKCU\Software\policies\microsoft\office\16.0\outlook,forceostpath,ExpandString,$OstPath",
 				"HKCU\Software\policies\microsoft\office\16.0\outlook,forcepstpath,ExpandString,$OstPath"
 				)
@@ -1842,7 +1845,7 @@ Shutdown.exe /r /t 5 /f /c 'Scheduled Windows Updates with Reboot' /d p:0:0
 
 # Init ( WPF - Windows Presentation Framework ) Actions
     $syncHash.ButtonFireboxStart.Add_Click({
-        $syncHash.ButtonFireboxStart.IsEnabled = $False
+        $syncHash.BorderFireboxStart.IsEnabled = $False
         $syncHash.LabelStatusFirebox.Visibility = "Visible"
         $syncHash.ProgressBarFirebox.Visibility = "Visible"
 	    DeployFireboxStart -syncHash $syncHash -FireboxIpAddress $syncHash.TextBoxFireboxIpAddress.Text -FireboxAdminUserName $SyncHash.TextBoxFireboxAdminUserName.Text -FireboxAdminPassword $SyncHash.TextBoxFireboxAdminPassword.Text -FireboxIpSubnet $SyncHash.TextBoxFireboxIpSubnet.Text -FireboxIpGateway $SyncHash.TextBoxFireboxIpGateway.Text
