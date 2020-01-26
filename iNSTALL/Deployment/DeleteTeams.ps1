@@ -1,3 +1,4 @@
+# Please Run in User Context
 $TeamsPath = "$Env:LOCALAPPDATA\Microsoft\Teams"
 $TeamsUpdateExePath = "$($TeamsPath)\Update.exe"
 try {
