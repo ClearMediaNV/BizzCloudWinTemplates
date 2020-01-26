@@ -14,6 +14,8 @@ Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\NlaSvc\Parameter
 # Get Public IP @
 Set-Item -Path 'ENV:\IpAddressPublic' -Value '0.0.0.0'
 Set-Item -Path 'ENV:\IpAddressPublic' -Value (Invoke-WebRequest -Uri 'https://api.ipify.org' -UseBasicParsing).content
+# Restart NLA Service
+Restart-Service -Name NlaSvc -Force
 # Get NLA state
 Set-Item -Path 'ENV:\NetworkCategory' -value (Get-NetConnectionProfile).NetworkCategory
 Set-Item -Path 'ENV:\IPv4Connectivity' -Value (Get-NetConnectionProfile).IPv4Connectivity
