@@ -3,7 +3,7 @@ If ( -Not (Test-Path -Path 'HKLM:\Software\ClearMedia') ) { New-Item -Path  'HKL
 If ( -Not (Test-Path -Path 'HKLM:\Software\ClearMedia\PushTheButton') ) { New-Item -Path  'HKLM:\Software\ClearMedia\PushTheButton' }
 
 # Check History
-Try { $DeployDcStart = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DeployFirebox' }
+Try { $DeployFirebox = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DeployFirebox' }
     Catch { $DeployFirebox = 'Visible' }
 Try { $DeployDcStart = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DeployDcStart' }
     Catch { $DeployDcStart = 'Visible' }
