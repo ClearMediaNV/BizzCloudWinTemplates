@@ -71,8 +71,8 @@ $SyncHash.Host = $Host
                     <TextBox Name="TextBoxFireboxIpAddress"  HorizontalAlignment="Left" Height="22" Margin="200,32,0,0" Text="192.168.13.254" VerticalAlignment="Top" Width="180"/>
                     <TextBox Name="TextBoxFireboxAdminUserName" HorizontalAlignment="Left" Height="22" Margin="200,65,0,0" Text="admin" VerticalAlignment="Top" Width="180"/>
                     <TextBox Name="TextBoxFireboxAdminPassword" HorizontalAlignment="Left" Height="22" Margin="200,98,0,0" Text="readwrite" VerticalAlignment="Top" Width="180"/>
-                    <TextBox Name="TextBoxFireboxIpSubnet" HorizontalAlignment="Left" Height="22" Margin="810,32,0,0" Text="172.16.aa.bbb/c" VerticalAlignment="Top" Width="120"/>
-                    <TextBox Name="TextBoxFireboxIpGateway" HorizontalAlignment="Left" Height="22" Margin="810,65,0,0" Text="172.16.aa.d" VerticalAlignment="Top" Width="120"/>
+                    <TextBox Name="TextBoxFireboxIpSubnet" HorizontalAlignment="Left" Height="22" Margin="810,32,0,0" Text="172.16.25.100/24" VerticalAlignment="Top" Width="120"/>
+                    <TextBox Name="TextBoxFireboxIpGateway" HorizontalAlignment="Left" Height="22" Margin="810,65,0,0" Text="172.16.25.1" VerticalAlignment="Top" Width="120"/>
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
                     <TextBlock Name="TextBlockOutBoxFirebox" Text="" Foreground="WHITE" Background="#FF22206F" />
                     </ScrollViewer>
