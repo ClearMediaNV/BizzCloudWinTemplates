@@ -342,8 +342,6 @@ $SyncHash.Host = $Host
                     <TextBox Name="TextBoxO365AdminPassword" HorizontalAlignment="Left" Height="22" Margin="180,98,0,0" Text="$('*'*15)" VerticalAlignment="Top" Width="180" ToolTip="Fill in the Password"/>
                     <RadioButton Name="RadioButtonO365ProPlusRetail32Bit" Content="O365ProPlusRetail 32 Bit" HorizontalAlignment="Left" Height="22" Margin="550,28,0,0" VerticalAlignment="Top" ClickMode="Press" IsChecked="True"/>
                     <RadioButton Name="RadioButtonO365ProPlusRetail64Bit" Content="O365ProPlusRetail 64 Bit" HorizontalAlignment="Left" Height="22" Margin="550,61,0,0" VerticalAlignment="Top" ClickMode="Press" IsChecked="False"/>
-                    <RadioButton Name="RadioButtonO365BusinessRetail32Bit" Content="O365BusinessRetail 32 Bit" HorizontalAlignment="Left" Height="22" Margin="550,94,0,0" VerticalAlignment="Top" ClickMode="Press" IsChecked="False"/>
-                    <RadioButton Name="RadioButtonO365BusinessRetail64Bit" Content="O365BusinessRetail 64 Bit" HorizontalAlignment="Left" Height="22" Margin="550,127,0,0" VerticalAlignment="Top" ClickMode="Press" IsChecked="False"/>
 					<CheckBox Name="CheckBoxExcludeApp" Content="Exclude Teams App" HorizontalAlignment="Left" Height="22" Margin="750,28,0,0" VerticalAlignment="Top" IsChecked="False"/>
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
                     <TextBlock Name="TextBlockOutBoxO365" Text="" Foreground="WHITE" Background="#FF22206F" />
@@ -1506,7 +1504,7 @@ $SyncHash.Host = $Host
         $job = $PSinstance.BeginInvoke()        
 		}
 	Function DeployO365Start {
-		Param($syncHash,$ServerIpAddressList,$AdminUserName,$AdminPassword,$RadioButtonO365ProPlusRetail32Bit,$RadioButtonO365ProPlusRetail64Bit,$RadioButtonO365BusinessRetail32Bit,$RadioButtonO365BusinessRetail64Bit,$CheckBoxExcludeApp)
+		Param($syncHash,$ServerIpAddressList,$AdminUserName,$AdminPassword,$RadioButtonO365ProPlusRetail32Bit,$RadioButtonO365ProPlusRetail64Bit,$CheckBoxExcludeApp)
         $Runspace = [runspacefactory]::CreateRunspace()
         $Runspace.ApartmentState = "STA"
         $Runspace.ThreadOptions = "ReuseThread"
@@ -1517,8 +1515,6 @@ $SyncHash.Host = $Host
 		$Runspace.SessionStateProxy.SetVariable("AdminPassword",$AdminPassword)
 		$Runspace.SessionStateProxy.SetVariable("RadioButtonO365ProPlusRetail32Bit",$RadioButtonO365ProPlusRetail32Bit)
 		$Runspace.SessionStateProxy.SetVariable("RadioButtonO365ProPlusRetail64Bit",$RadioButtonO365ProPlusRetail64Bit)
-		$Runspace.SessionStateProxy.SetVariable("RadioButtonO365BusinessRetail32Bit",$RadioButtonO365BusinessRetail32Bit)
-		$Runspace.SessionStateProxy.SetVariable("RadioButtonO365BusinessRetail64Bit",$RadioButtonO365BusinessRetail64Bit)
 		$Runspace.SessionStateProxy.SetVariable("CheckBoxExcludeApp",$CheckBoxExcludeApp)
         $code = {
             [INT]$I = 0
@@ -1537,8 +1533,6 @@ $SyncHash.Host = $Host
                     }
                 If ( $RadioButtonO365ProPlusRetail32Bit ) { $ProductId = 'O365ProPlusRetail' ; $O365version = '32' }
                 If ( $RadioButtonO365ProPlusRetail64Bit ) { $ProductId = 'O365ProPlusRetail' ; $O365version = '64'  }
-                If ( $RadioButtonO365BusinessRetail32Bit ) { $ProductId = 'O365BusinessRetail' ; $O365version = '32'  }
-                If ( $RadioButtonO365BusinessRetail64Bit ) { $ProductId = 'O365BusinessRetail' ; $O365version = '64'  }
                 If ( $CheckBoxExcludeApp ) { $ExcludeApp = 'Teams' } Else  { $ExcludeApp = '' }
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxO365.AddText(" Downloading and Extracting Office Deployment Tool `n") } )
 			    $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Download and Extract Office Deployment Tool' -ScriptBlock {
@@ -1929,7 +1923,7 @@ Shutdown.exe /r /t 5 /f /c 'Scheduled Windows Updates with Reboot' /d p:0:0
         $syncHash.LabelStatusO365.Content = "In Progress ...."
         $syncHash.LabelStatusO365.Visibility = "Visible"
         $syncHash.ProgressBarO365.Visibility = "Visible"
-	    DeployO365Start -syncHash $syncHash -ServerIpAddressList $syncHash.TextBoxO365ServerIpAddress.Text -AdminUserName $syncHash.TextBoxO365AdminUserName.Text -AdminPassword $syncHash.TextBoxO365AdminPassword.Text -CheckBoxExcludeApp $SyncHash.CheckBoxExcludeApp.IsChecked -RadioButtonO365ProPlusRetail32Bit $SyncHash.RadioButtonO365ProPlusRetail32Bit.IsChecked -RadioButtonO365ProPlusRetail64Bit $SyncHash.RadioButtonO365ProPlusRetail64Bit.IsChecked -RadioButtonO365BusinessRetail32Bit $SyncHash.RadioButtonO365BusinessRetail32Bit.IsChecked -RadioButtonO365BusinessRetail64Bit $SyncHash.RadioButtonO365BusinessRetail64Bit.IsChecked
+	    DeployO365Start -syncHash $syncHash -ServerIpAddressList $syncHash.TextBoxO365ServerIpAddress.Text -AdminUserName $syncHash.TextBoxO365AdminUserName.Text -AdminPassword $syncHash.TextBoxO365AdminPassword.Text -CheckBoxExcludeApp $SyncHash.CheckBoxExcludeApp.IsChecked -RadioButtonO365ProPlusRetail32Bit $SyncHash.RadioButtonO365ProPlusRetail32Bit.IsChecked -RadioButtonO365ProPlusRetail64Bit $SyncHash.RadioButtonO365ProPlusRetail64Bit.IsChecked
         })
     $syncHash.ButtonDeployWUStart.Add_Click({
         $syncHash.BorderDeployRdsStart.IsEnabled = $False		
