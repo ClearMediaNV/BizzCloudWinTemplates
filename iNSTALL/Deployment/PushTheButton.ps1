@@ -1748,11 +1748,6 @@ Shutdown.exe /r /t 5 /f /c 'Scheduled Windows Updates with Reboot' /d p:0:0
 		$Runspace.SessionStateProxy.SetVariable("DomainNetbiosName",$DomainNetbiosName)
         $code = {
             [INT]$I = 0
-			[STRING]$RandomPasswordPlainText = ((([char[]](65..90) | sort {get-random})[0..2] + ([char[]](33,35,36,37,42,43,45) | sort {get-random})[0] + ([char[]](97..122) | sort {get-random})[0..4] + ([char[]](48..57) | sort {get-random})[0]) | get-random -Count 10) -join ''
-			If ( $UserPassword -eq "$('*'*15)" ) { $UserPassword = $RandomPasswordPlainText ; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBoxClearmediaAdminPassword.Text = $ClearmediaAdminPassword } ) }
-			[STRING]$OuPath = "OU=$(('Full Users','Light Users')[$UserType]),$OuPath"
-			[STRING]$RandomPasswordPlainText = ((([char[]](65..90) | sort {get-random})[0..2] + ([char[]](33,35,36,37,42,43,45) | sort {get-random})[0] + ([char[]](97..122) | sort {get-random})[0..4] + ([char[]](48..57) | sort {get-random})[0]) | get-random -Count 10) -join ''
-			If ( $UserPassword -in ("$('*'*15)",'') ) { $UserPassword = $RandomPasswordPlainText ; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBoxUSERUserPassword.Text = $UserPassword } ) }
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarUser.Value = $I } )
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxUser.AddText(" Connecting to $ServerIpAddress `n") } )
 	        $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ("$ServerIpAddress\$AdminUserName", $(ConvertTo-SecureString -String $AdminPassword -AsPlainText -Force))
@@ -1765,12 +1760,13 @@ Shutdown.exe /r /t 5 /f /c 'Scheduled Windows Updates with Reboot' /d p:0:0
                     $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployUserStart.Visibility = "Visible"  } )
                     Return
                     }
-            [STRING]$RandomPasswordPlainText = ((([char[]](65..90) | sort {get-random})[0..2] + ([char[]](33,35,36,37,42,43,45) | sort {get-random})[0] + ([char[]](97..122) | sort {get-random})[0..4] + ([char[]](48..57) | sort {get-random})[0]) | get-random -Count 10) -join ''
-            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBoxUserPassword.Text = $RandomPasswordPlainText } )
+			[STRING]$RandomPasswordPlainText = ((([char[]](65..90) | sort {get-random})[0..2] + ([char[]](33,35,36,37,42,43,45) | sort {get-random})[0] + ([char[]](97..122) | sort {get-random})[0..4] + ([char[]](48..57) | sort {get-random})[0]) | get-random -Count 10) -join ''
+			If ( $UserPassword -in ("$('*'*15)",'') ) { $UserPassword = $RandomPasswordPlainText ; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBoxUSERUserPassword.Text = $UserPassword } ) }
+			[STRING]$OuPath = "OU=$(('Full Users','Light Users')[$UserType]),$OuPath"
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxUser.AddText(" Creating User $PrincipalName in $OuPath `n") } )
-            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxUser.AddText(" With Password $RandomPasswordPlainText `n") } )
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxUser.AddText(" With Password $UserPassword `n") } )
             $Job = Start-Job -Name 'Active Directory Add User' -ScriptBlock {
-                    Param ($DataFolderRootPath,$PrincipalName,$UserGivenName,$UserSurname,$OuPath,$DomainDnsName,$RandomPasswordPlainText)
+                    Param ($DataFolderRootPath,$PrincipalName,$UserGivenName,$UserSurname,$OuPath,$DomainDnsName,$UserPassword)
                     $NewUserParams = @{
                     	    'UserPrincipalName' = "$($PrincipalName)@$($DomainDnsName)"
 		                    'DisplayName' = $PrincipalName
@@ -1781,13 +1777,13 @@ Shutdown.exe /r /t 5 /f /c 'Scheduled Windows Updates with Reboot' /d p:0:0
             		        'Description' = $ClearmediaAdminUserName
                         	'Enabled' = $TRUE
 	                        'ChangePasswordAtLogon' = $FALSE
-		                    'AccountPassword' =  ConvertTo-SecureString $RandomPasswordPlainText -AsPlainText -Force
+		                    'AccountPassword' =  ConvertTo-SecureString $UserPassword -AsPlainText -Force
 	                        'Path' = $OuPath
 				            'HomeDirectory' = "$DataFolderRootPath\$PrincipalName"
 							'Country' = 'Be'
                             }
                     New-ADUser @NewUserParams -ErrorAction Stop
-                    } -ArgumentList ($DataFolderRootPath,$PrincipalName,$UserGivenName,$UserSurname,$OuPath,$DomainDnsName,$RandomPasswordPlainText)
+                    } -ArgumentList ($DataFolderRootPath,$PrincipalName,$UserGivenName,$UserSurname,$OuPath,$DomainDnsName,$UserPassword)
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarUser.Value = $I } ) }
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxUser.AddText(" Creating User OST Folder `n") } )
 	        $Job = Invoke-Command -Session $PsSession -AsJob -JobName  'Create User OST Folder' -ScriptBlock {
