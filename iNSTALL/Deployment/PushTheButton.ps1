@@ -1727,7 +1727,7 @@ Shutdown.exe /r /t 5 /f /c 'Scheduled Windows Updates with Reboot' /d p:0:0
         $job = $PSinstance.BeginInvoke()
 		}
 	Function DeployUserStart {
-		Param($syncHash,$ServerIpAddress,$AdminUserName,$AdminPassword,$UserType,$OstFolderRootPath,$DataFolderRootPath,$PrincipalName,$UserGivenName,$UserSurname,$OuPath,$DomainDnsName,$DomainNetbiosName)
+		Param($syncHash,$ServerIpAddress,$AdminUserName,$AdminPassword,$UserType,$OstFolderRootPath,$DataFolderRootPath,$PrincipalName,$UserGivenName,$UserSurname,$UserPassword,$OuPath,$DomainDnsName,$DomainNetbiosName)
         $Runspace = [runspacefactory]::CreateRunspace()
         $Runspace.ApartmentState = "STA"
         $Runspace.ThreadOptions = "ReuseThread"
@@ -1742,11 +1742,14 @@ Shutdown.exe /r /t 5 /f /c 'Scheduled Windows Updates with Reboot' /d p:0:0
 		$Runspace.SessionStateProxy.SetVariable("PrincipalName",$PrincipalName)
 		$Runspace.SessionStateProxy.SetVariable("UserGivenName",$UserGivenName)
 		$Runspace.SessionStateProxy.SetVariable("UserSurname",$UserSurname)
+		$Runspace.SessionStateProxy.SetVariable("UserPassword",$UserPassword)
 		$Runspace.SessionStateProxy.SetVariable("OuPath",$OuPath)
 		$Runspace.SessionStateProxy.SetVariable("DomainDnsName",$DomainDnsName)
 		$Runspace.SessionStateProxy.SetVariable("DomainNetbiosName",$DomainNetbiosName)
         $code = {
             [INT]$I = 0
+			[STRING]$RandomPasswordPlainText = ((([char[]](65..90) | sort {get-random})[0..2] + ([char[]](33,35,36,37,42,43,45) | sort {get-random})[0] + ([char[]](97..122) | sort {get-random})[0..4] + ([char[]](48..57) | sort {get-random})[0]) | get-random -Count 10) -join ''
+			If ( $UserPassword -eq "$('*'*15)" ) { $UserPassword = $RandomPasswordPlainText ; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBoxClearmediaAdminPassword.Text = $ClearmediaAdminPassword } ) }
 			[STRING]$OuPath = "OU=$(('Full Users','Light Users')[$UserType]),$OuPath"
 			[STRING]$RandomPasswordPlainText = ((([char[]](65..90) | sort {get-random})[0..2] + ([char[]](33,35,36,37,42,43,45) | sort {get-random})[0] + ([char[]](97..122) | sort {get-random})[0..4] + ([char[]](48..57) | sort {get-random})[0]) | get-random -Count 10) -join ''
 			If ( $UserPassword -in ("$('*'*15)",'') ) { $UserPassword = $RandomPasswordPlainText ; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBoxUSERUserPassword.Text = $UserPassword } ) }
@@ -1781,7 +1784,8 @@ Shutdown.exe /r /t 5 /f /c 'Scheduled Windows Updates with Reboot' /d p:0:0
 		                    'AccountPassword' =  ConvertTo-SecureString $RandomPasswordPlainText -AsPlainText -Force
 	                        'Path' = $OuPath
 				            'HomeDirectory' = "$DataFolderRootPath\$PrincipalName"
-                             }
+							'Country' = 'Be'
+                            }
                     New-ADUser @NewUserParams -ErrorAction Stop
                     } -ArgumentList ($DataFolderRootPath,$PrincipalName,$UserGivenName,$UserSurname,$OuPath,$DomainDnsName,$RandomPasswordPlainText)
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarUser.Value = $I } ) }
@@ -1943,7 +1947,7 @@ Shutdown.exe /r /t 5 /f /c 'Scheduled Windows Updates with Reboot' /d p:0:0
         $syncHash.LabelStatusUser.Content = "In Progress ...."
         $syncHash.LabelStatusUser.Visibility = "Visible"
         $syncHash.ProgressBarUser.Visibility = "Visible"
-	    DeployUserStart -syncHash $syncHash -ServerIpAddress $syncHash.TextBoxUSERServerIpAddress.Text -AdminUserName $syncHash.TextBoxUSERAdminUserName.Text -AdminPassword $syncHash.TextBoxUSERAdminPassword.Text -UserType $syncHash.ComboBoxUSERUserType.SelectedIndex -OstFolderRootPath $syncHash.TextBoxUSEROstFolderRootPath.Text -DataFolderRootPath $syncHash.TextBoxUSERDataFolderRootPath.Text -PrincipalName $syncHash.TextBoxUSERUserAccountName.Text -UserGivenName $syncHash.TextBoxUserGivenName.Text -UserSurname $syncHash.TextBoxUserSurname.Text -OuPath $syncHash.TextBoxUsersOuPath.Text -DomainDnsName $SyncHash.TextBoxDomainDnsName.Text -DomainNetbiosName $SyncHash.TextBoxDomainNetbiosName.Text
+	    DeployUserStart -syncHash $syncHash -ServerIpAddress $syncHash.TextBoxUSERServerIpAddress.Text -AdminUserName $syncHash.TextBoxUSERAdminUserName.Text -AdminPassword $syncHash.TextBoxUSERAdminPassword.Text -UserType $syncHash.ComboBoxUSERUserType.SelectedIndex -OstFolderRootPath $syncHash.TextBoxUSEROstFolderRootPath.Text -DataFolderRootPath $syncHash.TextBoxUSERDataFolderRootPath.Text -PrincipalName $syncHash.TextBoxUSERUserAccountName.Text -UserGivenName $syncHash.TextBoxUSERUserGivenName.Text -UserSurname $syncHash.TextBoxUSERUserSurname.Text -UserPassword $syncHash.TextBoxUSERUserPassword.Text -OuPath $syncHash.TextBoxUsersOuPath.Text -DomainDnsName $SyncHash.TextBoxDomainDnsName.Text -DomainNetbiosName $SyncHash.TextBoxDomainNetbiosName.Text
         #$SyncHash.host.ui.WriteVerboseLine($SyncHash.CheckBoxStandardRdsServerPolicy.IsChecked)
         })
 
