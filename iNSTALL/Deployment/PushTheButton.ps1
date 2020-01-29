@@ -507,8 +507,7 @@ $SyncHash.Host = $Host
 "@
 
 # Init ( WPF - Windows Presentation Framework )
-    $reader=(New-Object System.Xml.XmlNodeReader $xaml)
-    $syncHash.Window=[Windows.Markup.XamlReader]::Load( $reader )
+    $syncHash.Window=[Windows.Markup.XamlReader]::Load( [System.Xml.XmlNodeReader]::new($XAML) )
 
 # Init ( WPF - Windows Presentation Framework ) Functions
 	Function DeployFireboxStart {
