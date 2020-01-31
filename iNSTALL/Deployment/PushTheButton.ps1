@@ -698,7 +698,7 @@ $SyncHash.Host = $Host
                 'RAS-AdobeReader-Users' = "OU=Groups,OU=$ManagedOU,$ADRootDSE"
 	            'FTP-Users' = "OU=Groups,OU=$ManagedOU,$ADRootDSE"
 	            'RDP-Users' = "OU=Groups,OU=$ManagedOU,$ADRootDSE"
-	            'SSLVPN-Users' = "OU=Groups,OU=$ManagedOU,$ADRootDSE"
+	            'VPN-Users' = "OU=Groups,OU=$ManagedOU,$ADRootDSE"
 			    }
             ForEach ($Group in $Groups.keys) {
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxOU.AddText(" Adding Group $Group in $($Groups.$Group) `n") } ) 
