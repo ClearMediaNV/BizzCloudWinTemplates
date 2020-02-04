@@ -280,7 +280,7 @@ $SyncHash.Host = $Host
                     <TextBox Name="TextBoxRDSServerIpAddress"  HorizontalAlignment="Left" Height="22" Margin="180,32,0,0" Text="192.168.13.101" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target - Server IpAddress or Server Name"/>
                     <TextBox Name="TextBoxRDSAdminUserName" HorizontalAlignment="Left" Height="22" Margin="180,65,0,0" Text="Administrator" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Local Administrator Name"/>
                     <TextBox Name="TextBoxRDSAdminPassword" HorizontalAlignment="Left" Height="22" Margin="180,98,0,0" Text="$('*'*15)" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Local Administrator Password"/>
-                    <TextBox Name="TextBoxRDSServerName" HorizontalAlignment="Left" Height="22" Margin="713,28,0,0" Text="RDS" VerticalAlignment="Top" Width="180"/>
+                    <TextBox Name="TextBoxRDSServerName" HorizontalAlignment="Left" Height="22" Margin="713,28,0,0" Text="RDS" VerticalAlignment="Top" Width="180" ToolTip="Fill in RDS Server Name"/>
                     <TextBox Name="TextBoxRDSOstFolderRootPath" Margin="713,61,0,0" Text='D:\Users' Height="22" HorizontalAlignment="Left" VerticalAlignment="Top" Width="180"/>
                     <TextBox Name="TextBoxRDSDataFolderRootPath" Margin="713,94,0,0" Text='E:\Users' Height="22" HorizontalAlignment="Left" VerticalAlignment="Top" Width="180"/>
                     <CheckBox Name="CheckBoxRDSRas" Content="Deploy Parallels RAS" HorizontalAlignment="Left" Margin="554,140,0,0" VerticalAlignment="Top" IsChecked="False"/>
