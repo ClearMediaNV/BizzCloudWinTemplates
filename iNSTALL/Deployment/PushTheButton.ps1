@@ -101,12 +101,12 @@ $SyncHash.Host = $Host
             </TabItem>
             <TabItem Name="TabItemDeployDC" Header="   Deploy DC   ">
                 <Grid Background="#FFE5E5E5">
-                    <Label Name="LabelDomainNetbiosName" Content="Domain NetbiosName" HorizontalAlignment="Left" Height="28" Margin="30,28,0,0" VerticalAlignment="Top" Width="165"/>
-                    <Label Name="LabelDomainName" Content="Domain Name" HorizontalAlignment="Left" Height="28" Margin="30,61,0,0" VerticalAlignment="Top" Width="165" RenderTransformOrigin="0.452,2.089"/>
+                    <Label Name="LabelDomainNetbiosName" Content="Domain NetbiosName" HorizontalAlignment="Left" Height="28" Margin="30,28,0,0" VerticalAlignment="Top" Width="165" ToolTip="Fill in Domain NetbiosName - Please limit to 15 Characters"/>
+                    <Label Name="LabelDomainName" Content="Domain Name" HorizontalAlignment="Left" Height="28" Margin="30,61,0,0" VerticalAlignment="Top" Width="165"/>
                     <Label Name="LabelDnsServerForwarders" Content="Dns Server Forwarders" HorizontalAlignment="Left" Height="28" Margin="30,94,0,0" VerticalAlignment="Top" Width="165"/>
-                    <Label Name="LabelSafeModeAdministratorPassword" Content="AD Restore Mode Password" HorizontalAlignment="Left" Height="28" Margin="30,127,0,0" VerticalAlignment="Top" Width="165"/>
-                    <TextBox Name="TextBoxDomainNetbiosName"  HorizontalAlignment="Left" Height="22" Margin="200,28,0,0" Text="$DomainNetbiosName" VerticalAlignment="Top" Width="180" TabIndex="1" IsTabStop="False" RenderTransformOrigin="0.673,0.523"/>
-                    <TextBox Name="TextBoxDomainDnsName" HorizontalAlignment="Left" Height="22" Margin="200,61,0,0" Text="$DomainDNSName" VerticalAlignment="Top" Width="180" RenderTransformOrigin="0.462,0.455"/>
+                    <Label Name="LabelSafeModeAdministratorPassword" Content="AD Restore Mode Password" HorizontalAlignment="Left" Height="28" Margin="30,127,0,0" VerticalAlignment="Top" Width="165" ToolTip="Fill in Password - Please Use Complex Password"/>
+                    <TextBox Name="TextBoxDomainNetbiosName"  HorizontalAlignment="Left" Height="22" Margin="200,28,0,0" Text="$DomainNetbiosName" VerticalAlignment="Top" Width="180" TabIndex="1" IsTabStop="False"/>
+                    <TextBox Name="TextBoxDomainDnsName" HorizontalAlignment="Left" Height="22" Margin="200,61,0,0" Text="$DomainDNSName" VerticalAlignment="Top" Width="180"/>
                     <TextBox Name="TextBoxDnsServerForwarders" HorizontalAlignment="Left" Height="22" Margin="200,94,0,0" Text="195.238.2.21,195.238.2.22,8.8.8.8" VerticalAlignment="Top" Width="180"/>
                     <TextBox Name="TextBoxSafeModeAdministratorPassword" HorizontalAlignment="Left" Height="22" Margin="200,127,0,0" Text="$('*'*34)" VerticalAlignment="Top" Width="180"/>
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
@@ -158,7 +158,7 @@ $SyncHash.Host = $Host
                     <Label Name="LabelClearmediaAdminPassword" Content="ClearmediaAdmin Password" HorizontalAlignment="Left" Height="28" Margin="30,94,0,0" VerticalAlignment="Top" Width="165"/>
                     <TextBox Name="TextBoxManagedOuName"  HorizontalAlignment="Left" Height="22" Margin="200,28,0,0" Text="$ManagedOuName" VerticalAlignment="Top" Width="180" TabIndex="1" IsTabStop="False" RenderTransformOrigin="0.673,0.523"/>
                     <TextBox Name="TextBoxClearmediaAdminUserName" HorizontalAlignment="Left" Height="22" Margin="200,61,0,0" Text="ClearmediaAdmin" VerticalAlignment="Top" Width="180" RenderTransformOrigin="0.462,0.455"/>
-                    <TextBox Name="TextBoxClearmediaAdminPassword" HorizontalAlignment="Left" Height="22" Margin="200,94,0,0" Text="$('*'*34)" VerticalAlignment="Top" Width="180"/>
+                    <TextBox Name="TextBoxClearmediaAdminPassword" HorizontalAlignment="Left" Height="22" Margin="200,94,0,0" Text="$('*'*34)" VerticalAlignment="Top" Width="180" ToolTip="Fill in Password - Please Use Complex Password"/>
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
                     <TextBlock Name="TextBlockOutBoxOU" Text="" Foreground="WHITE" Background="#FF22206F" />
                     </ScrollViewer>
@@ -274,21 +274,21 @@ $SyncHash.Host = $Host
                     <Label Name="LabelRDSServerIpAddress" Content="Server IpAddress" HorizontalAlignment="Left" Height="28" Margin="30,28,0,0" VerticalAlignment="Top" Width="165"/>
                     <Label Name="LabelRDSAdminUserName" Content="Administrator Name" HorizontalAlignment="Left" Height="28" Margin="30,61,0,0" VerticalAlignment="Top" Width="165"/>
                     <Label Name="LabelRDSAdminPassword" Content="Administrator Password" HorizontalAlignment="Left" Height="28" Margin="30,94,0,0" VerticalAlignment="Top" Width="165"/>
-                    <Label Name="LabelRDSServerName" Content="Server Name" HorizontalAlignment="Left" Height="28" Margin="550,28,0,0" VerticalAlignment="Top" Width="165" RenderTransformOrigin="0.452,2.089"/>
+                    <Label Name="LabelRDSServerName" Content="Server Name" HorizontalAlignment="Left" Height="28" Margin="550,28,0,0" VerticalAlignment="Top" Width="165"/>
 					<Label Name="LabelRDSOstFolderRootPath" Content="User OST Root Path" HorizontalAlignment="Left" Margin="550,61,0,0" VerticalAlignment="Top"/>
 					<Label Name="LabelRDSDataFolderRootPath" Content="User Data Root Path" HorizontalAlignment="Left" Margin="550,94,0,0" VerticalAlignment="Top"/>
-                    <TextBox Name="TextBoxRDSServerIpAddress"  HorizontalAlignment="Left" Height="22" Margin="180,32,0,0" Text="192.168.13.101" VerticalAlignment="Top" Width="180" TabIndex="1" IsTabStop="False" RenderTransformOrigin="0.673,0.523"/>
-                    <TextBox Name="TextBoxRDSAdminUserName" HorizontalAlignment="Left" Height="22" Margin="180,65,0,0" Text="Administrator" VerticalAlignment="Top" Width="180"/>
-                    <TextBox Name="TextBoxRDSAdminPassword" HorizontalAlignment="Left" Height="22" Margin="180,98,0,0" Text="$('*'*15)" VerticalAlignment="Top" Width="180"/>
-                    <TextBox Name="TextBoxRDSServerName" HorizontalAlignment="Left" Height="22" Margin="713,28,0,0" Text="RDS" VerticalAlignment="Top" Width="180" RenderTransformOrigin="0.462,0.455"/>
+                    <TextBox Name="TextBoxRDSServerIpAddress"  HorizontalAlignment="Left" Height="22" Margin="180,32,0,0" Text="192.168.13.101" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target - Server IpAddress or Server Name"/>
+                    <TextBox Name="TextBoxRDSAdminUserName" HorizontalAlignment="Left" Height="22" Margin="180,65,0,0" Text="Administrator" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Local Administrator Name"/>
+                    <TextBox Name="TextBoxRDSAdminPassword" HorizontalAlignment="Left" Height="22" Margin="180,98,0,0" Text="$('*'*15)" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Local Administrator Password"/>
+                    <TextBox Name="TextBoxRDSServerName" HorizontalAlignment="Left" Height="22" Margin="713,28,0,0" Text="RDS" VerticalAlignment="Top" Width="180"/>
                     <TextBox Name="TextBoxRDSOstFolderRootPath" Margin="713,61,0,0" Text='D:\Users' Height="22" HorizontalAlignment="Left" VerticalAlignment="Top" Width="180"/>
                     <TextBox Name="TextBoxRDSDataFolderRootPath" Margin="713,94,0,0" Text='E:\Users' Height="22" HorizontalAlignment="Left" VerticalAlignment="Top" Width="180"/>
                     <CheckBox Name="CheckBoxRDSRas" Content="Deploy Parallels RAS" HorizontalAlignment="Left" Margin="554,140,0,0" VerticalAlignment="Top" IsChecked="False"/>
                     <Label Name="LabelRDSRasLicenseEmail" Content="Parallels RAS Email" HorizontalAlignment="Left" Height="28" Margin="570,160,0,0" VerticalAlignment="Top" Width="165"/>
-                    <Label Name="LabelRDSRasLicensePassword" Content="Parallels RAS Password" HorizontalAlignment="Left" Height="28" Margin="570,190,0,0" VerticalAlignment="Top" Width="165" RenderTransformOrigin="0.452,2.089"/>
-                    <TextBox Name="TextBoxRDSRasLicenseEmail"  HorizontalAlignment="Left" Height="22" Margin="713,164,0,0" Text="Support@ClearMedia.be" VerticalAlignment="Top" Width="180" TabIndex="1" IsTabStop="False" RenderTransformOrigin="0.673,0.523"/>
-                    <TextBox Name="TextBoxRDSRasLicensePassword" HorizontalAlignment="Left" Height="22" Margin="713,194,0,0" Text="$('*'*15)" VerticalAlignment="Top" Width="180" RenderTransformOrigin="0.462,0.455"/>
-                    <Label Name="LabelRDSRasKey" Content="Parallels RAS Key" HorizontalAlignment="Left" Height="28" Margin="570,220,0,0" VerticalAlignment="Top" Width="165" RenderTransformOrigin="0.452,2.089"/>
+                    <Label Name="LabelRDSRasLicensePassword" Content="Parallels RAS Password" HorizontalAlignment="Left" Height="28" Margin="570,190,0,0" VerticalAlignment="Top" Width="165"/>
+                    <TextBox Name="TextBoxRDSRasLicenseEmail"  HorizontalAlignment="Left" Height="22" Margin="713,164,0,0" Text="Support@ClearMedia.be" VerticalAlignment="Top" Width="180" TabIndex="1" IsTabStop="False"/>
+                    <TextBox Name="TextBoxRDSRasLicensePassword" HorizontalAlignment="Left" Height="22" Margin="713,194,0,0" Text="$('*'*15)" VerticalAlignment="Top" Width="180"/>
+                    <Label Name="LabelRDSRasKey" Content="Parallels RAS Key" HorizontalAlignment="Left" Height="28" Margin="570,220,0,0" VerticalAlignment="Top" Width="165"/>
                     <TextBox Name="TextRDSBoxRasKey" Margin="713,224,0,0" Text="TRIAL" Height="22" HorizontalAlignment="Left" VerticalAlignment="Top" Width="180"/>
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
                     <TextBlock Name="TextBlockOutBoxRDS" Text="" Foreground="WHITE" Background="#FF22206F" />
@@ -335,11 +335,11 @@ $SyncHash.Host = $Host
             <TabItem Name="TabItemDeployO365" Header="   Deploy O365   ">
                 <Grid Background="#FFE5E5E5">
                     <Label Name="LabelO365ServerIpAddress" Content="Server IpAddress(es)" HorizontalAlignment="Left" Height="28" Margin="30,28,0,0" VerticalAlignment="Top" Width="165"/>
-                    <Label Name="LabelO365AdminUserName" Content="Administrator Name" HorizontalAlignment="Left" Height="28" Margin="30,61,0,0" VerticalAlignment="Top" Width="165" RenderTransformOrigin="0.452,2.089"/>
+                    <Label Name="LabelO365AdminUserName" Content="Administrator Name" HorizontalAlignment="Left" Height="28" Margin="30,61,0,0" VerticalAlignment="Top" Width="165"/>
                     <Label Name="LabelO365AdminPassword" Content="Administrator Password" HorizontalAlignment="Left" Height="28" Margin="30,94,0,0" VerticalAlignment="Top" Width="165"/>
-                    <TextBox Name="TextBoxO365ServerIpAddress"  HorizontalAlignment="Left" Height="22" Margin="180,32,0,0" Text="192.168.13.101" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target - Server IpAddress - Server Name"/>
-                    <TextBox Name="TextBoxO365AdminUserName" HorizontalAlignment="Left" Height="22" Margin="180,65,0,0" Text="Administrator" VerticalAlignment="Top" Width="180" RenderTransformOrigin="0.462,0.455"/>
-                    <TextBox Name="TextBoxO365AdminPassword" HorizontalAlignment="Left" Height="22" Margin="180,98,0,0" Text="$('*'*15)" VerticalAlignment="Top" Width="180" ToolTip="Fill in the Password"/>
+                    <TextBox Name="TextBoxO365ServerIpAddress"  HorizontalAlignment="Left" Height="22" Margin="180,32,0,0" Text="192.168.13.101" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target - Server IpAddress or Server Name - Multiple Servers seperated by Comma"/>
+                    <TextBox Name="TextBoxO365AdminUserName" HorizontalAlignment="Left" Height="22" Margin="180,65,0,0" Text="Administrator" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Local Administrator Name"/>
+                    <TextBox Name="TextBoxO365AdminPassword" HorizontalAlignment="Left" Height="22" Margin="180,98,0,0" Text="$('*'*15)" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Local Administrator Password"/>
                     <RadioButton Name="RadioButtonO365ProPlusRetail32Bit" Content="O365ProPlusRetail 32 Bit" HorizontalAlignment="Left" Height="22" Margin="550,28,0,0" VerticalAlignment="Top" ClickMode="Press" IsChecked="True"/>
                     <RadioButton Name="RadioButtonO365ProPlusRetail64Bit" Content="O365ProPlusRetail 64 Bit" HorizontalAlignment="Left" Height="22" Margin="550,61,0,0" VerticalAlignment="Top" ClickMode="Press" IsChecked="False"/>
 					<CheckBox Name="CheckBoxExcludeApp" Content="Exclude Teams App" HorizontalAlignment="Left" Height="22" Margin="750,28,0,0" VerticalAlignment="Top" IsChecked="False"/>
@@ -420,9 +420,9 @@ $SyncHash.Host = $Host
                         <ComboBoxItem Content="40"/>
                         <ComboBoxItem Content="50"/>
                     </ComboBox>
-                    <TextBox Name="TextBoxWuServerIpAddress"  HorizontalAlignment="Left" Height="22" Margin="180,32,0,0" Text="192.168.13.101" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target - Server IpAddress - Server Name"/>
-                    <TextBox Name="TextBoxWuAdminUserName" HorizontalAlignment="Left" Height="22" Margin="180,65,0,0" Text="Administrator" VerticalAlignment="Top" Width="180" RenderTransformOrigin="0.462,0.455"/>
-                    <TextBox Name="TextBoxWuAdminPassword" HorizontalAlignment="Left" Height="22" Margin="180,98,0,0" Text="$('*'*15)" VerticalAlignment="Top" Width="180" ToolTip="Fill in the Password"/>
+                    <TextBox Name="TextBoxWuServerIpAddress"  HorizontalAlignment="Left" Height="22" Margin="180,32,0,0" Text="192.168.13.101" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target - Server IpAddress or Server Name - Multiple Servers seperated by Comma"/>
+                    <TextBox Name="TextBoxWuAdminUserName" HorizontalAlignment="Left" Height="22" Margin="180,65,0,0" Text="Administrator" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Local Administrator Name"/>
+                    <TextBox Name="TextBoxWuAdminPassword" HorizontalAlignment="Left" Height="22" Margin="180,98,0,0" Text="$('*'*15)" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Local Administrator Password"/>
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
                     <TextBlock Name="TextBlockOutBoxWU" Text="" Foreground="WHITE" Background="#FF22206F" />
                     </ScrollViewer>
@@ -465,9 +465,9 @@ $SyncHash.Host = $Host
                         <ComboBoxItem Content="Full User" IsSelected="True"/>
                         <ComboBoxItem Content="Light User"/>
                     </ComboBox>
-                    <TextBox Name="TextBoxUSERServerIpAddress" Text="192.168.13.101" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Margin="180,32,0,0" Width="180" ToolTip="Fill in Target - Server IpAddress - Server Name"/>
-                    <TextBox Name="TextBoxUSERAdminUserName" Text="Administrator" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Margin="180,65,0,0" Width="180"/>
-                    <TextBox Name="TextBoxUSERAdminPassword" Text="$('*'*15)" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Margin="180,98,0,0" Width="180" ToolTip="Fill in the Password"/>
+                    <TextBox Name="TextBoxUSERServerIpAddress" Text="192.168.13.101" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Margin="180,32,0,0" Width="180" ToolTip="Fill in Target - Server IpAddress or Server Name"/>
+                    <TextBox Name="TextBoxUSERAdminUserName" Text="Administrator" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Margin="180,65,0,0" Width="180" ToolTip="Fill in Target Local Administrator Name"/>
+                    <TextBox Name="TextBoxUSERAdminPassword" Text="$('*'*15)" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Margin="180,98,0,0" Width="180" ToolTip="Fill in Target Local Administrator Password"/>
                     <TextBox Name="TextBoxUSERUserType" Margin="713,32,0,0" Height="22" Width="180"/>
                     <TextBox Name="TextBoxUSEROstFolderRootPath" Text='D:\Users' HorizontalAlignment="Left" VerticalAlignment="Top" Height="22"  Margin="713,65,0,0" Width="180"/>
                     <TextBox Name="TextBoxUSERDataFolderRootPath" Text='E:\Users' HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Margin="713,98,0,0" Width="180"/>
@@ -616,9 +616,9 @@ $SyncHash.Host = $Host
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxDC.AddText(" Creating AD Forest for $DomainDnsName `n") } )
             $Job = Start-Job -Name 'Install-ADDSForest' -ScriptBlock { Param($DomainDnsName,$DomainNetbiosName,$SafeModeAdministratorPassword) ; Install-ADDSForest -DomainName $DomainDnsName -DomainNetbiosName $DomainNetbiosName -SafeModeAdministratorPassword $SafeModeAdministratorPassword -NoRebootOnCompletion -ErrorAction Stop -Force} -ArgumentList ($DomainDnsName,$DomainNetbiosName,$SafeModeAdministratorPassword) 
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarDc.Value = $I } )  }
-			$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxDC.AddText(" Tweaking Network Location Awareness Service `n") } )
-            $Job = Start-Job -Name 'Tweaking NlaSvc' -ScriptBlock { Set-ItemProperty  -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\NlaSvc' -Name 'DependOnService' -Value ('NSI','RpcSs','TcpIp','Dhcp','Eventlog','DNS','NTDS') -Force }
-            While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarDc.Value = $I } )  }
+			# $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxDC.AddText(" Tweaking Network Location Awareness Service `n") } )
+            # $Job = Start-Job -Name 'Tweaking NlaSvc' -ScriptBlock { Set-ItemProperty  -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\NlaSvc' -Name 'DependOnService' -Value ('NSI','RpcSs','TcpIp','Dhcp','Eventlog','DNS','NTDS') -Force }
+            # While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarDc.Value = $I } )  }
             Get-Job | Select-Object -Property Name, State, Command, @{Name='Error';Expression={ $_.ChildJobs[0].JobStateInfo.Reason }} | Export-Csv -Path "$env:windir\Logs\PushTheButtonJobs.csv" -NoTypeInformation -Force
             [Boolean]$JobError = Get-Job | Where-Object { $_.State -eq 'Failed' } | ForEach-Object { $_.count -gt 0 }
             If ( $JobError ) 
