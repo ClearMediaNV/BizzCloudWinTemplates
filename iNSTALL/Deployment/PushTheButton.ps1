@@ -474,7 +474,7 @@ $SyncHash.Host = $Host
                     <TextBox Name="TextBoxUSERUserAccountName" Text="" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Margin="713,131,0,0" Width="180"/>
                     <TextBox Name="TextBoxUSERUserGivenName" Text="" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Margin="713,164,0,0" Width="180"/>
                     <TextBox Name="TextBoxUSERUserSurname" Text="" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Margin="713,197,0,0" Width="180"/>
-                    <TextBox Name="TextBoxUSERUserPassword" Text="" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Margin="713,230,0,0" Width="180 "ToolTip="Fill in Password - Please Use Complex Password"/>
+                    <TextBox Name="TextBoxUSERUserPassword" Text="" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Margin="713,230,0,0" Width="180" ToolTip="Fill in Password - Please Use Complex Password"/>
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
                     <TextBlock Name="TextBlockOutBoxUser" Text="" Foreground="WHITE" Background="#FF22206F" />
                     </ScrollViewer>
