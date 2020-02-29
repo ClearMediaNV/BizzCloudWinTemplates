@@ -3,5 +3,4 @@
 Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1')
 # Install vmware-tools version 11.0.5.15389592
 Invoke-Expression -Command '& C:\ProgramData\chocolatey\choco install vmware-tools --version 11.0.5.15389592 -y'
-$ExitCode = $LASTEXITCODE
-If ( $ExitCode -eq 3010 ) { Restart-Computer }
+If ( $LASTEXITCODE -eq 3010 ) { Restart-Computer }
