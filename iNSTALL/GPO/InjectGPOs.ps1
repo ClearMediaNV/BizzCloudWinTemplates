@@ -15,10 +15,10 @@ If ( (Get-WmiObject -Class win32_computersystem).PartOfDomain ) {
     Copy-Item -Path 'C:\Windows\PolicyDefinitions\*' -Destination "\\$PdcName\SYSVOL\$DomainName\Policies\PolicyDefinitions" -Force
     Copy-Item -Path 'C:\Windows\PolicyDefinitions\en-US\*' -Destination "\\$PdcName\SYSVOL\$DomainName\Policies\PolicyDefinitions\en-US"  -Force
     Copy-Item -Path 'C:\Windows\PolicyDefinitions\fr-FR\*' -Destination "\\$PdcName\SYSVOL\$DomainName\Policies\PolicyDefinitions\fr-FR" -Force
-    # Inject User GPOs for Users
     # Browse User CSV Files
     # Create and Assemble User GPOs
     # Link User GPOs to OU Users
+    # Inject User GPOs for Users
     Get-ChildItem -Name '*User*.csv' | ForEach-Object {
         $GpoName = $_.Replace('.csv', '')
         New-GPO -Name $GpoName -ErrorAction Ignore
@@ -28,10 +28,10 @@ If ( (Get-WmiObject -Class win32_computersystem).PartOfDomain ) {
             Set-GPRegistryValue -Name "$GpoName" -Key $_.Key -Type $_.Type -ValueName $_.ValueName -Value $Value  -ErrorAction Ignore
             }
         }
-    # Inject Computer GPOs for RDS
     # Browse Computer CSV Files
     # Create and Assemble Computer GPOs
     # Link Computer GPOs to OU RDS
+    # Inject Computer GPOs for RDS
     Get-ChildItem -Name '*Server*.csv' | ForEach-Object {
         $GpoName = $_.Replace('.csv', '')
         New-GPO -Name $GpoName -ErrorAction Ignore
