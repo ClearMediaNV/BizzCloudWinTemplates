@@ -1773,7 +1773,6 @@ Shutdown.exe /r /t 5 /f /c 'Scheduled Windows Updates with Reboot' /d p:0:0
 		                    'SamAccountName' = $PrincipalName
                         	'GivenName' = $UserGivenName
                         	'Surname' = $UserSurname
-            		        'Description' = $ClearmediaAdminUserName
                         	'Enabled' = $TRUE
 	                        'ChangePasswordAtLogon' = $FALSE
 		                    'AccountPassword' =  ConvertTo-SecureString $UserPassword -AsPlainText -Force
