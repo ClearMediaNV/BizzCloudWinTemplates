@@ -525,7 +525,7 @@ $SyncHash.Host = $Host
         $code = {
 			[INT]$I = 0
             [INT]$Step = 8
-	        $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ("$FireboxAdminUserName", $(ConvertTo-SecureString -String $FireboxAdminPassword -AsPlainText -Force))
+
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarFirebox.Value = $I } )
             # $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxFirebox.AddText(" Installing PowerShell Module sshsessions `n") } )
             # Install-PackageProvider -Name Nuget -MinimumVersion '2.8.5.201' -Force -ErrorAction Stop
