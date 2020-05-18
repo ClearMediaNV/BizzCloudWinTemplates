@@ -1422,7 +1422,7 @@ $SyncHash.Host = $Host
             If ( $CheckBoxRas ) {
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxRDS.AddText(" Downloading and Installing Parallels RAS 17.0.21475 `n") } )
 			    $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Download and Install Parallels RAS 17.0.21475' -ScriptBlock {
-                    [STRING]$UrlDownload =  'https://download.parallels.com/ras/v17/17.0.1.21475/RASInstaller-17.0.21475.msi'
+                    [STRING]$UrlDownload =  'https://download.parallels.com/ras/v17/17.1.1.21785/RASInstaller-17.1.21785.msi'
                     [STRING]$FileDownload = "$ENV:TEMP\$($UrlDownload.Split('/')[-1])"
                     Invoke-WebRequest -Uri $UrlDownload -UseBasicParsing  -OutFile $FileDownload -PassThru | Out-Null
                     Start-Sleep -Seconds 5
