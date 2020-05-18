@@ -5,8 +5,8 @@ $SavedSecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol
 Try {
     $Branch = 'master'
     $UrlDownload = "https://github.com/ClearMediaNV/BizzCloudWinTemplates/archive/$Branch.zip"
-    $FileDownload = "$ENV:TEMP\$Branch.zip"
-    $FolderDownload = "$ENV:TEMP\$Branch"
+    $FileDownload = "$ENV:APPDATA\$Branch.zip"
+    $FolderDownload = "$ENV:APPDATA\$Branch"
     # Download Archive
     (New-Object System.Net.WebClient).downloadFile($UrlDownload,$FileDownload)
     # Unzip Archive to Temp Folder
