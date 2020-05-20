@@ -1421,7 +1421,7 @@ $SyncHash.Host = $Host
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarRDS.Value = $I } ) }
             If ( $CheckBoxRas ) {
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxRDS.AddText(" Downloading and Installing Parallels RAS 17.0.21475 `n") } )
-			    $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Download and Install Parallels RAS 17.0.21475' -ScriptBlock {
+			    $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Download and Install Parallels RAS 17.1.1.21785' -ScriptBlock {
                     [STRING]$UrlDownload =  'https://download.parallels.com/ras/v17/17.1.1.21785/RASInstaller-17.1.21785.msi'
                     [STRING]$FileDownload = "$ENV:TEMP\$($UrlDownload.Split('/')[-1])"
                     Invoke-WebRequest -Uri $UrlDownload -UseBasicParsing  -OutFile $FileDownload -PassThru | Out-Null
