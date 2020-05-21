@@ -1423,7 +1423,7 @@ $SyncHash.Host = $Host
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxRDS.AddText(" Downloading and Installing Parallels RAS 17.0.21475 `n") } )
 			    $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Download and Install Parallels RAS 17.1.1.21785' -ScriptBlock {
                     [STRING]$UrlDownload =  'https://download.parallels.com/ras/v17/17.1.1.21785/RASInstaller-17.1.21785.msi'
-                    [STRING]$FileDownload = "$ENV:TEMP\$($UrlDownload.Split('/')[-1])"
+                    [STRING]$FileDownload = "$ENV:LOCALAPPDATA\$($UrlDownload.Split('/')[-1])"
                     Invoke-WebRequest -Uri $UrlDownload -UseBasicParsing  -OutFile $FileDownload -PassThru | Out-Null
                     Start-Sleep -Seconds 5
                     Invoke-Expression -Command "CMD.exe /C 'MsiExec.exe /i $FileDownload /qn /norestart'"
@@ -1537,7 +1537,7 @@ $SyncHash.Host = $Host
                     Param($O365version,$ProductId,$ExcludeApp)
                     $Url = 'https://www.microsoft.com/en-us/download/confirmation.aspx?id=49117'
                     $UrlDownload =  (Invoke-WebRequest -Uri $url  -UseBasicParsing | ForEach-Object { $_.links } | Where-Object { $_.href -like '*officedeploymenttool*' }).href[0]
-                    $FileDownload = "$Env:TEMP\ODT.exe"
+                    $FileDownload = "$Env:LOCALAPPDATA\ODT.exe"
                     (New-Object System.Net.WebClient).DownloadFile($UrlDownload, $FileDownload)
                     Do { Start-Sleep -Seconds 2 } Until ( Test-Path -Path $FileDownload ) 
                     Invoke-Expression -Command "CMD.EXE /C '$FileDownload /quiet /extract:$FileDownload\..'"
@@ -1588,14 +1588,14 @@ $SyncHash.Host = $Host
 	    </Property>
     </Configuration>
 "@
-                    $Config | Out-File -FilePath "$Env:TEMP\configuration.xml"               
+                    $Config | Out-File -FilePath "$Env:LOCALAPPDATA\configuration.xml"               
                     } -ArgumentList ($O365version,$ProductId,$ExcludeApp) 
                 While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarO365.Value = $I } ) }
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxO365.AddText(" Downloading $ProductId $O365version bit `n") } )
-			    $Job = Invoke-Command -Session $PsSession -AsJob -JobName "Download $ProductId $O365version bit" -ScriptBlock { Invoke-Expression -Command "$Env:TEMP\setup.exe /download  $Env:TEMP\configuration.xml" }
+			    $Job = Invoke-Command -Session $PsSession -AsJob -JobName "Download $ProductId $O365version bit" -ScriptBlock { Invoke-Expression -Command "$Env:LOCALAPPDATA\setup.exe /download  $Env:LOCALAPPDATA\configuration.xml" }
                 While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarO365.Value = $I } ) }
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxO365.AddText(" Installing $ProductId $O365version bit `n") } )
-			    $Job = Invoke-Command -Session $PsSession -AsJob -JobName "Install $ProductId $O365version bit" -ScriptBlock { Invoke-Expression -Command "$Env:TEMP\setup.exe /configure  $Env:TEMP\configuration.xml" }
+			    $Job = Invoke-Command -Session $PsSession -AsJob -JobName "Install $ProductId $O365version bit" -ScriptBlock { Invoke-Expression -Command "$Env:LOCALAPPDATA\setup.exe /configure  $Env:LOCALAPPDATA\configuration.xml" }
                 While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarO365.Value = $I } ) }
             }   
             Get-Job | Select-Object -Property Name, State, Command, @{Name='Error';Expression={ $_.ChildJobs[0].JobStateInfo.Reason }} | Export-Csv -Path "$env:windir\Logs\PushTheButtonJobs.csv" -NoTypeInformation -Force
