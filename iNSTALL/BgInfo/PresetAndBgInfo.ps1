@@ -1,4 +1,7 @@
-﻿Push-Location %0\..\
+# Push Current Directory
+Push-Location %0\..\
+# Set Full Screen HD 800 x 1280
+Set-DisplayResolution -Height 800 -Width 1280 -Force
 # Copy Shortcut to current Desktop
 Copy-Item -Path '.\PresetBginfo.lnk' -Destination "$Env:USERPROFILE\Desktop" -Force
 # Set Registry after SysPrep Reset - Windows Annoyances
