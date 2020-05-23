@@ -16,7 +16,7 @@ If ( (Get-WmiObject -Class win32_computersystem).PartOfDomain ) {
     Copy-Item -Path 'C:\Windows\PolicyDefinitions\en-US\*' -Destination "\\$PdcName\SYSVOL\$DomainName\Policies\PolicyDefinitions\en-US"  -Force
     Copy-Item -Path 'C:\Windows\PolicyDefinitions\fr-FR\*' -Destination "\\$PdcName\SYSVOL\$DomainName\Policies\PolicyDefinitions\fr-FR" -Force
     # Browse User CSV Files
-    # Create and Assemble User GPOs
+    # Create User GPOs
     # Link User GPOs to OU Users
     # Inject User GPOs for Users
     Get-ChildItem -Name '*User*.csv' | ForEach-Object {
@@ -29,7 +29,7 @@ If ( (Get-WmiObject -Class win32_computersystem).PartOfDomain ) {
             }
         }
     # Browse Computer CSV Files
-    # Create and Assemble Computer GPOs
+    # Create Computer GPOs
     # Link Computer GPOs to OU RDS
     # Inject Computer GPOs for RDS
     Get-ChildItem -Name '*Server*.csv' | ForEach-Object {
@@ -49,17 +49,17 @@ If ( (Get-WmiObject -Class win32_computersystem).PartOfDomain ) {
     Install-PackageProvider -Name 'NuGet' -Force
     Install-Module -Name 'PolicyFileEditor' -Force
     Import-Module -Name 'PolicyFileEditor' -Force
-    # Inject User Policies for Local Users
     # Browse User CSV Files
-    # Create and Assemble User Registry.Pol
+    # Create User Registry.Pol
+    # Inject Policies for Local Users
     Get-ChildItem -Name '*User*.csv' | ForEach-Object {
         Import-Csv -Path $_ | ForEach-Object {
             Set-PolicyFileEntry -Path "$($env:SystemRoot)\System32\GroupPolicy\User\Registry.pol" -Key $_.Key.Replace('HKCU\','') -ValueName $_.ValueName -Data $_.Value -Type $_.Type -ErrorAction Ignore
             }
         }
-    # Inject Computer Policies for Local Machine
     # Browse Server CSV Files
-    # Create and Assemble Machine Registry.Pol
+    # Create Machine Registry.Pol
+    # Inject Policies for Local Machine
     Get-ChildItem -Name '*Server*.csv' | ForEach-Object {
         Import-Csv -Path $_ | ForEach-Object {
             Set-PolicyFileEntry -Path "$($env:SystemRoot)\System32\GroupPolicy\Machine\Registry.pol" -Key $_.Key.Replace('HKLM\','') -ValueName $_.ValueName -Data $_.Value -Type $_.Type -ErrorAction Ignore
