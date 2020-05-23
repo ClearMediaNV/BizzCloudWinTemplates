@@ -54,7 +54,7 @@ If ( (Get-WmiObject -Class win32_computersystem).PartOfDomain ) {
     # Inject User Policies
     Get-ChildItem -Name '*User*.csv' | ForEach-Object {
         Import-Csv -Path $_ | ForEach-Object {
-            Set-PolicyFileEntry -Path "$($env:SystemRoot)\System32\GroupPolicy\User\Registry.pol" -Key $_.Key.Replace('HKCU\','') -ValueName $_.ValueName -Data $_.Value -Type $_.Type -ErrorAction Ignore
+            Set-PolicyFileEntry -Path "C:\Windows\System32\GroupPolicy\User\Registry.pol" -Key $_.Key.Replace('HKCU\','') -ValueName $_.ValueName -Data $_.Value -Type $_.Type -ErrorAction Ignore
             }
         }
     # Browse Server CSV Files
@@ -62,7 +62,7 @@ If ( (Get-WmiObject -Class win32_computersystem).PartOfDomain ) {
     # Inject Machine Policies
     Get-ChildItem -Name '*Server*.csv' | ForEach-Object {
         Import-Csv -Path $_ | ForEach-Object {
-            Set-PolicyFileEntry -Path "$($env:SystemRoot)\System32\GroupPolicy\Machine\Registry.pol" -Key $_.Key.Replace('HKLM\','') -ValueName $_.ValueName -Data $_.Value -Type $_.Type -ErrorAction Ignore
+            Set-PolicyFileEntry -Path "C:\Windows\System32\GroupPolicy\Machine\Registry.pol" -Key $_.Key.Replace('HKLM\','') -ValueName $_.ValueName -Data $_.Value -Type $_.Type -ErrorAction Ignore
             }
         }
     }
