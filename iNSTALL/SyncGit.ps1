@@ -9,13 +9,13 @@ Try {
     $FolderDownload = "$ENV:LOCALAPPDATA\$Branch"
     # Download Archive
     (New-Object System.Net.WebClient).downloadFile($UrlDownload,$FileDownload)
-    # Unzip Archive to Temp Folder
+    # Unzip Archive to Folder Download
     [VOID][System.Reflection.Assembly]::LoadWithPartialName("System.IO.Compression.FileSystem")
     [System.IO.Compression.ZipFile]::ExtractToDirectory($FileDownload, "$FolderDownload") 
     # Cleanup and Copy iNSTALL Folder
     Remove-Item -Path 'c:\install\*'  -Recurse -Force
     Copy-Item -Path "$FolderDownload\BizzCloudWinTemplates-$Branch\iNSTALL\*" -Destination 'c:\iNSTALL' -Recurse -Force
-    # Cleanup Download File & Folder
+    # Cleanup File & Folder Download
     Remove-Item -Path "$FileDownload" -Force
     Remove-Item -Path "$FolderDownload" -Recurse -Force
     }
