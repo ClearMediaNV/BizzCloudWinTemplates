@@ -18,7 +18,7 @@ If ( (Get-WmiObject -Class win32_computersystem).PartOfDomain ) {
     # Browse User CSV Files
     # Create User GPOs
     # Link User GPOs to OU Users
-    # Inject User GPOs for Users
+    # Inject User GPOs
     Get-ChildItem -Name '*User*.csv' | ForEach-Object {
         $GpoName = $_.Replace('.csv', '')
         New-GPO -Name $GpoName -ErrorAction Ignore
@@ -31,7 +31,7 @@ If ( (Get-WmiObject -Class win32_computersystem).PartOfDomain ) {
     # Browse Computer CSV Files
     # Create Computer GPOs
     # Link Computer GPOs to OU RDS
-    # Inject Computer GPOs for RDS
+    # Inject Computer GPOs
     Get-ChildItem -Name '*Server*.csv' | ForEach-Object {
         $GpoName = $_.Replace('.csv', '')
         New-GPO -Name $GpoName -ErrorAction Ignore
@@ -51,7 +51,7 @@ If ( (Get-WmiObject -Class win32_computersystem).PartOfDomain ) {
     Import-Module -Name 'PolicyFileEditor' -Force
     # Browse User CSV Files
     # Create User Registry.Pol
-    # Inject Policies for Local Users
+    # Inject User Policies
     Get-ChildItem -Name '*User*.csv' | ForEach-Object {
         Import-Csv -Path $_ | ForEach-Object {
             Set-PolicyFileEntry -Path "$($env:SystemRoot)\System32\GroupPolicy\User\Registry.pol" -Key $_.Key.Replace('HKCU\','') -ValueName $_.ValueName -Data $_.Value -Type $_.Type -ErrorAction Ignore
@@ -59,7 +59,7 @@ If ( (Get-WmiObject -Class win32_computersystem).PartOfDomain ) {
         }
     # Browse Server CSV Files
     # Create Machine Registry.Pol
-    # Inject Policies for Local Machine
+    # Inject Machine Policies
     Get-ChildItem -Name '*Server*.csv' | ForEach-Object {
         Import-Csv -Path $_ | ForEach-Object {
             Set-PolicyFileEntry -Path "$($env:SystemRoot)\System32\GroupPolicy\Machine\Registry.pol" -Key $_.Key.Replace('HKLM\','') -ValueName $_.ValueName -Data $_.Value -Type $_.Type -ErrorAction Ignore
