@@ -66,13 +66,13 @@ $SyncHash.Host = $Host
                     <Label Name="LabelFireboxIpAddress" Content="Firebox Intenal IP Address" HorizontalAlignment="Left" Height="28" Margin="30,28,0,0" VerticalAlignment="Top" Width="165"/>
                     <Label Name="LabelFireboxAdminUserName" Content="Firebox Admin Name" HorizontalAlignment="Left" Height="28" Margin="30,61,0,0" VerticalAlignment="Top" Width="165"/>
                     <Label Name="LabelFireboxAdminPassword" Content="Firebox Admin Password" HorizontalAlignment="Left" Height="28" Margin="30,94,0,0" VerticalAlignment="Top" Width="165"/>
-                    <Label Name="LabelFireboxIp" Content="Firebox External IP Address" HorizontalAlignment="Left" Height="28" Margin="550,28,0,0" VerticalAlignment="Top" Width="250"/>
-                    <Label Name="LabelFireboxIpGatewayCIDR" Content="Firebox External Network CIDR" HorizontalAlignment="Left" Height="28" Margin="550,61,0,0" VerticalAlignment="Top" Width="250"/>
+                    <Label Name="LabelFireboxExternalIp" Content="Firebox External IP Address" HorizontalAlignment="Left" Height="28" Margin="550,28,0,0" VerticalAlignment="Top" Width="250"/>
+                    <Label Name="LabelFireboxExternalIpGatewayCIDR" Content="Firebox External Network CIDR" HorizontalAlignment="Left" Height="28" Margin="550,61,0,0" VerticalAlignment="Top" Width="250"/>
                     <TextBox Name="TextBoxFireboxIpAddress"  HorizontalAlignment="Left" Height="22" Margin="200,32,0,0" Text="192.168.13.254" VerticalAlignment="Top" Width="180"/>
                     <TextBox Name="TextBoxFireboxAdminUserName" HorizontalAlignment="Left" Height="22" Margin="200,65,0,0" Text="admin" VerticalAlignment="Top" Width="180"/>
                     <TextBox Name="TextBoxFireboxAdminPassword" HorizontalAlignment="Left" Height="22" Margin="200,98,0,0" Text="readwrite" VerticalAlignment="Top" Width="180"/>
-                    <TextBox Name="TextBoxFireboxIp" HorizontalAlignment="Left" Height="22" Margin="760,32,0,0" Text="172.16.25.100" VerticalAlignment="Top" Width="180"/>
-                    <TextBox Name="TextBoxFireboxIpGatewayCIDR" HorizontalAlignment="Left" Height="22" Margin="760,65,0,0" Text="172.16.25.1/24" VerticalAlignment="Top" Width="180"/>
+                    <TextBox Name="TextBoxFireboxExternalIp" HorizontalAlignment="Left" Height="22" Margin="760,32,0,0" Text="172.16.25.100" VerticalAlignment="Top" Width="180"/>
+                    <TextBox Name="TextBoxFireboxExternalIpGatewayCIDR" HorizontalAlignment="Left" Height="22" Margin="760,65,0,0" Text="172.16.25.1/24" VerticalAlignment="Top" Width="180"/>
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
                     <TextBlock Name="TextBlockOutBoxFirebox" Text="" Foreground="WHITE" Background="#FF22206F" />
                     </ScrollViewer>
@@ -511,7 +511,7 @@ $SyncHash.Host = $Host
 
 # Init ( WPF - Windows Presentation Framework ) Functions
 	Function DeployFireboxStart {
-		Param($syncHash,$FireboxIpAddress,$FireboxAdminUserName,$FireboxAdminPassword,$FireboxIpSubnet,$FireboxIpGateway)
+		Param($syncHash,$FireboxIpAddress,$FireboxAdminUserName,$FireboxAdminPassword,$FireboxExternalIpCIDR,$FireboxExternalIpGateway)
         $Runspace = [runspacefactory]::CreateRunspace()
         $Runspace.ApartmentState = "STA"
         $Runspace.ThreadOptions = "ReuseThread"
@@ -1840,7 +1840,7 @@ Shutdown.exe /r /t 5 /f /c 'Scheduled Windows Updates with Reboot' /d p:0:0
         $syncHash.BorderFireboxStart.IsEnabled = $False
         $syncHash.LabelStatusFirebox.Visibility = "Visible"
         $syncHash.ProgressBarFirebox.Visibility = "Visible"
-	    DeployFireboxStart -syncHash $syncHash -FireboxIpAddress $syncHash.TextBoxFireboxIpAddress.Text -FireboxAdminUserName $SyncHash.TextBoxFireboxAdminUserName.Text -FireboxAdminPassword $SyncHash.TextBoxFireboxAdminPassword.Text -FireboxExternalIpCIDR "$($SyncHash.TextBoxFireboxIp.Text)/$($SyncHash.TextBoxFireboxIpGatewayCIDR.Text).Split('/')[1]" -FireboxExternalIpGateway "$($SyncHash.TextBoxFireboxIpGatewayCIDR.Text).Split('/')[0]"
+	    DeployFireboxStart -syncHash $syncHash -FireboxIpAddress $syncHash.TextBoxFireboxIpAddress.Text -FireboxAdminUserName $SyncHash.TextBoxFireboxAdminUserName.Text -FireboxAdminPassword $SyncHash.TextBoxFireboxAdminPassword.Text -FireboxExternalIpCIDR "$($SyncHash.TextBoxFireboxExternalIp.Text)/$($SyncHash.TextBoxFireboxExternalIpGatewayCIDR.Text.Split('/')[1])" -FireboxExternalIpGateway "$($SyncHash.TextBoxFireboxExternalIpGatewayCIDR.Text.Split('/')[0])"
         # $SyncHash.host.ui.WriteVerboseLine($SyncHash.TextBoxDomainNetbiosName.Text)
         })
     $syncHash.ButtonDeployDcStart.Add_Click({
