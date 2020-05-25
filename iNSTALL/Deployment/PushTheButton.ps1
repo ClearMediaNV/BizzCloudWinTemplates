@@ -279,7 +279,7 @@ $SyncHash.Host = $Host
 					<Label Name="LabelRDSDataFolderRootPath" Content="User Data Root Path" HorizontalAlignment="Left" Margin="550,94,0,0" VerticalAlignment="Top"/>
                     <TextBox Name="TextBoxRDSServerIpAddress"  HorizontalAlignment="Left" Height="22" Margin="180,32,0,0" Text="192.168.13.101" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target - Server IpAddress or Server Name"/>
                     <TextBox Name="TextBoxRDSAdminUserName" HorizontalAlignment="Left" Height="22" Margin="180,65,0,0" Text="Administrator" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Local Administrator Name"/>
-                    <TextBox Name="TextBoxRDSAdminPassword" HorizontalAlignment="Left" Height="22" Margin="180,98,0,0" Text="$('*'*15)" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Local Administrator Password"/>
+                    <TextBox Name="TextBoxRDSAdminPassword" HorizontalAlignment="Left" Height="22" Margin="180,98,0,0" Text="$('*'*35)" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Local Administrator Password"/>
                     <TextBox Name="TextBoxRDSServerName" HorizontalAlignment="Left" Height="22" Margin="713,28,0,0" Text="RDS" VerticalAlignment="Top" Width="180" ToolTip="Fill in RDS Server Name"/>
                     <TextBox Name="TextBoxRDSOstFolderRootPath" Margin="713,61,0,0" Text='D:\Users' Height="22" HorizontalAlignment="Left" VerticalAlignment="Top" Width="180"/>
                     <TextBox Name="TextBoxRDSDataFolderRootPath" Margin="713,94,0,0" Text='E:\Users' Height="22" HorizontalAlignment="Left" VerticalAlignment="Top" Width="180"/>
@@ -339,7 +339,7 @@ $SyncHash.Host = $Host
                     <Label Name="LabelO365AdminPassword" Content="Administrator Password" HorizontalAlignment="Left" Height="28" Margin="30,94,0,0" VerticalAlignment="Top" Width="165"/>
                     <TextBox Name="TextBoxO365ServerIpAddress"  HorizontalAlignment="Left" Height="22" Margin="180,32,0,0" Text="192.168.13.101" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target - Server IpAddress or Server Name - Multiple Servers seperated by Comma"/>
                     <TextBox Name="TextBoxO365AdminUserName" HorizontalAlignment="Left" Height="22" Margin="180,65,0,0" Text="Administrator" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Local Administrator Name"/>
-                    <TextBox Name="TextBoxO365AdminPassword" HorizontalAlignment="Left" Height="22" Margin="180,98,0,0" Text="$('*'*15)" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Local Administrator Password"/>
+                    <TextBox Name="TextBoxO365AdminPassword" HorizontalAlignment="Left" Height="22" Margin="180,98,0,0" Text="$('*'*35)" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Local Administrator Password"/>
                     <RadioButton Name="RadioButtonO365ProPlusRetail32Bit" Content="O365ProPlusRetail 32 Bit" HorizontalAlignment="Left" Height="22" Margin="550,28,0,0" VerticalAlignment="Top" ClickMode="Press" IsChecked="True"/>
                     <RadioButton Name="RadioButtonO365ProPlusRetail64Bit" Content="O365ProPlusRetail 64 Bit" HorizontalAlignment="Left" Height="22" Margin="550,61,0,0" VerticalAlignment="Top" ClickMode="Press" IsChecked="False"/>
 					<CheckBox Name="CheckBoxExcludeApp" Content="Exclude Teams App" HorizontalAlignment="Left" Height="22" Margin="750,28,0,0" VerticalAlignment="Top" IsChecked="False"/>
@@ -422,7 +422,7 @@ $SyncHash.Host = $Host
                     </ComboBox>
                     <TextBox Name="TextBoxWuServerIpAddress"  HorizontalAlignment="Left" Height="22" Margin="180,32,0,0" Text="192.168.13.101" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target - Server IpAddress or Server Name - Multiple Servers seperated by Comma"/>
                     <TextBox Name="TextBoxWuAdminUserName" HorizontalAlignment="Left" Height="22" Margin="180,65,0,0" Text="Administrator" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Local Administrator Name"/>
-                    <TextBox Name="TextBoxWuAdminPassword" HorizontalAlignment="Left" Height="22" Margin="180,98,0,0" Text="$('*'*15)" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Local Administrator Password"/>
+                    <TextBox Name="TextBoxWuAdminPassword" HorizontalAlignment="Left" Height="22" Margin="180,98,0,0" Text="$('*'*35)" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Local Administrator Password"/>
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
                     <TextBlock Name="TextBlockOutBoxWU" Text="" Foreground="WHITE" Background="#FF22206F" />
                     </ScrollViewer>
@@ -467,7 +467,7 @@ $SyncHash.Host = $Host
                     </ComboBox>
                     <TextBox Name="TextBoxUSERServerIpAddress" Text="192.168.13.101" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Margin="180,32,0,0" Width="180" ToolTip="Fill in Target - Server IpAddress or Server Name"/>
                     <TextBox Name="TextBoxUSERAdminUserName" Text="Administrator" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Margin="180,65,0,0" Width="180" ToolTip="Fill in Target Local Administrator Name"/>
-                    <TextBox Name="TextBoxUSERAdminPassword" Text="$('*'*15)" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Margin="180,98,0,0" Width="180" ToolTip="Fill in Target Local Administrator Password"/>
+                    <TextBox Name="TextBoxUSERAdminPassword" Text="$('*'*35)" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Margin="180,98,0,0" Width="180" ToolTip="Fill in Target Local Administrator Password"/>
                     <TextBox Name="TextBoxUSERUserType" Margin="713,32,0,0" Height="22" Width="180"/>
                     <TextBox Name="TextBoxUSEROstFolderRootPath" Text='D:\Users' HorizontalAlignment="Left" VerticalAlignment="Top" Height="22"  Margin="713,65,0,0" Width="180"/>
                     <TextBox Name="TextBoxUSERDataFolderRootPath" Text='E:\Users' HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Margin="713,98,0,0" Width="180"/>
