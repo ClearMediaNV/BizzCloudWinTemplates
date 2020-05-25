@@ -287,7 +287,7 @@ $SyncHash.Host = $Host
                     <Label Name="LabelRDSRasLicenseEmail" Content="Parallels RAS Email" HorizontalAlignment="Left" Height="28" Margin="570,160,0,0" VerticalAlignment="Top" Width="165"/>
                     <Label Name="LabelRDSRasLicensePassword" Content="Parallels RAS Password" HorizontalAlignment="Left" Height="28" Margin="570,190,0,0" VerticalAlignment="Top" Width="165"/>
                     <TextBox Name="TextBoxRDSRasLicenseEmail"  HorizontalAlignment="Left" Height="22" Margin="713,164,0,0" Text="Support@ClearMedia.be" VerticalAlignment="Top" Width="180" TabIndex="1" IsTabStop="False"/>
-                    <TextBox Name="TextBoxRDSRasLicensePassword" HorizontalAlignment="Left" Height="22" Margin="713,194,0,0" Text="$('*'*15)" VerticalAlignment="Top" Width="180"/>
+                    <TextBox Name="TextBoxRDSRasLicensePassword" HorizontalAlignment="Left" Height="22" Margin="713,194,0,0" Text="$('*'*35)" VerticalAlignment="Top" Width="180"/>
                     <Label Name="LabelRDSRasKey" Content="Parallels RAS Key" HorizontalAlignment="Left" Height="28" Margin="570,220,0,0" VerticalAlignment="Top" Width="165"/>
                     <TextBox Name="TextRDSBoxRasKey" Margin="713,224,0,0" Text="TRIAL" Height="22" HorizontalAlignment="Left" VerticalAlignment="Top" Width="180"/>
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
