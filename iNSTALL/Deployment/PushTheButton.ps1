@@ -568,7 +568,7 @@ $SyncHash.Host = $Host
             Remove-SshSession ; Start-Sleep -Seconds 3
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarFirebox.Visibility = "Hidden" } )
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatusFirebox.Visibility = "Hidden" } )
-            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployFirebox.Visibility = "Hidden" } )
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderFireboxStart.Visibility = "Hidden" } )
 			New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DeployFirebox' -PropertyType 'String' -Value 'Hidden' -Force
 			}
         $PSinstance = [powershell]::Create().AddScript($Code)
