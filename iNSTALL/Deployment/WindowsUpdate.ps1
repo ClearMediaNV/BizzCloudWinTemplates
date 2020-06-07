@@ -12,6 +12,7 @@ Start-Service -Name 'wuauserv'
 $WindowsUpdateSearch = New-Object -ComObject 'Microsoft.Update.Searcher'
 $WindowsUpdateDownload = New-Object -ComObject 'Microsoft.Update.Downloader'
 $WindowsUpdateInstall = New-Object -ComObject 'Microsoft.Update.Installer'
+
 # Search-Download-Install Windows Updates
 Try	{ $WindowsUpdateList = $WindowsUpdateSearch.Search($Null).Updates }
 	Catch 
@@ -33,6 +34,7 @@ If	( $WindowsUpdateList.Count -eq 0 )
 		$WindowsUpdateInstall.Updates = $WindowsUpdateList
 		$WindowsUpdateInstall.Install()
 		}
+
 # Report Windows Updates to CSV File 'c:\windows\logs\WindowsUpdate.csv'
 [PSCustomObject[]]$Table = $Null
 Foreach	( $Update in $WindowsUpdateList ) 
@@ -46,9 +48,10 @@ Foreach	( $Update in $WindowsUpdateList )
                         'KBArticleIDs' = [STRING]$Update.KBArticleIDs
 			}
 		}
-
 $Table | Select-Object -Property DateTime,Title,CategoriesName,BundledUpdatesTitle,BundledUpdatesLastDeploymentChangeTime,BundledUpdatesMinDownloadSize,KBArticleIDs | Export-Csv -Path 'c:\windows\logs\WindowsUpdate.csv' -Append -Force -NoTypeInformation
-# Change WindowsUpdate Service to Disabled
+
+# Disable WindowsUpdateService
 Set-Service -Name 'wuauserv' -StartupType 'Disabled'
+
 # Restart Computer for applying Windows Updates
 Restart-Computer -Force
