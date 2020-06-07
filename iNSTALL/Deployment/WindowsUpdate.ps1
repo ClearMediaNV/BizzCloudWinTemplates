@@ -1,6 +1,8 @@
 # Copy-Item -Path '.\WindowsUpdate.ps1' -Destination "$Env:Windir\WindowsUpdate.ps1" -Force
 # schtasks.exe /CREATE /RU SYSTEM /SC Weekly /MO 1 /D MON /ST 04:00 /TN CMscripts\WindowsUpdate /TR "Powershell.exe -File '$Env:Windir\WindowsUpdate.ps1'"
-# WindowsUpdate Service Disabled By Default
+# WindowsUpdateService Disabled By Default
+
+# Enable & Start WindowsUpdateService
 Set-Service -Name 'wuauserv' -StartupType 'Manual'
 Start-Service -Name 'wuauserv'
 
