@@ -1,0 +1,1 @@
+https://packages.vmware.com/tools/releases/11.0.6/windows/x86/VMware-tools-11.0.6-15940789-i386.exe
