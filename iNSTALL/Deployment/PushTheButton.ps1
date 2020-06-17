@@ -1,3 +1,9 @@
+# Push Current Directory
+Push-Location %0\..\
+# Copy Shortcut to current Desktop
+Copy-Item -Path '.\PushButton.lnk' -Destination "$Env:USERPROFILE\Desktop" -Force
+
+
 # Init History
 If ( -Not (Test-Path -Path 'HKLM:\Software\ClearMedia') ) { New-Item -Path  'HKLM:\Software\ClearMedia' }
 If ( -Not (Test-Path -Path 'HKLM:\Software\ClearMedia\PushTheButton') ) { New-Item -Path  'HKLM:\Software\ClearMedia\PushTheButton' }
