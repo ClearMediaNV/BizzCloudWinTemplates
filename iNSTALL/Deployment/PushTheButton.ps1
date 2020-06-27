@@ -37,7 +37,7 @@ Set-DisplayResolution -Height 800 -Width 1280 -Force
 # Load Assembly ( WPF - Windows Presentation Framework )
 Add-Type -AssemblyName PresentationFramework
 
-# Init Synchronised HashTable for RunSpaces Aka MultiThreading
+# Init Synchronized HashTable for RunSpaces Aka MultiThreading
 $SyncHash = [hashtable]::Synchronized(@{})
 $SyncHash.Host = $Host
 
