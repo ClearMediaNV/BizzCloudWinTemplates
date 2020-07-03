@@ -31,8 +31,8 @@ Try { $RdsOuPath = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedia\PushTh
 Try { $UsersOuPath = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'UsersOuPath' }
     Catch { $UsersOuPath = "OU=Users,OU=$ManagedOuName,$ADRootDSE" }
 
-# Set Full Screen HD 800 x 1280
-Set-DisplayResolution -Height 800 -Width 1280 -Force
+# Set Full Screen WXGA 1280 x 800
+Set-DisplayResolution -Width 1280 -Height 800 -Force
 
 # Load Assembly ( WPF - Windows Presentation Framework )
 Add-Type -AssemblyName PresentationFramework
