@@ -3,8 +3,7 @@
 # WindowsUpdateService Disabled By Default
 
 # Enable & Start WindowsUpdateService
-Set-Service -Name 'wuauserv' -StartupType 'Manual'
-Start-Service -Name 'wuauserv'
+Set-Service -Name 'wuauserv' -StartupType 'Manual' ; Start-Service -Name 'wuauserv'
 
 # Create Objects Microsoft.Update.* to Search-Download-Install Windows Updates
 # $WindowsUpdateServiceManager = New-Object -ComObject 'Microsoft.Update.ServiceManager'
