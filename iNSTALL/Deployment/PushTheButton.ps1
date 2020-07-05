@@ -533,7 +533,7 @@ $SyncHash.Host = $Host
             [INT]$Step = 8
 			$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarFirebox.Value = $I } )
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxFirebox.AddText(" Importing PowerShell Module Posh-SSH `n") } )
-            Import-Module -FullyQualifiedName 'C:\iNSTALL\Deployment\Posh-SSH' -Force -ErrorAction Stop
+            Import-Module -FullyQualifiedName 'C:\iNSTALL\Deployment\Posh-SSH' -Force
             $I += $Step ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarFirebox.Value = $I } )
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxFirebox.AddText(" Creating SSH Session `n") } )
             $Credentials = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ("$FireboxAdminUserName", $(ConvertTo-SecureString -String $FireboxAdminPassword -AsPlainText -Force))
@@ -576,7 +576,7 @@ $SyncHash.Host = $Host
 				}
 				    Catch {
                     $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarFirebox.Visibility = "Hidden" } )
-                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatusFirebox.Content = "Connection Failure $(' .'*130)$(' '*30)Please check Server - Username - Password" } )
+                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatusFirebox.Content = "Connection Failure $(' .'*130)$(' '*30)Please check FireboxV" } )
                     $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployFireboxStart.IsEnabled = $True } )
                     $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployFireboxStart.Visibility = "Visible"  } )
                     Return
