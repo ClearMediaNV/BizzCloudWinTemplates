@@ -389,7 +389,7 @@ $SyncHash.Host = $Host
                         <ComboBoxItem Content="Wednesday"/>
                         <ComboBoxItem Content="Thursday"/>
                         <ComboBoxItem Content="Friday"/>
-                        <ComboBoxItem Content="Saterday"/>
+                        <ComboBoxItem Content="Saturday"/>
                         <ComboBoxItem Content="Sunday"/>
                     </ComboBox>
                     <ComboBox Name="ComboBoxWuTimeHour" HorizontalAlignment="Left" Height="26" Margin="713,61,0,0" VerticalAlignment="Top" Width="80" ToolTip="Select Hour from List">
