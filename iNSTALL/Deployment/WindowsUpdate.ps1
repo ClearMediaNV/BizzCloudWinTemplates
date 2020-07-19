@@ -2,7 +2,7 @@
 # schtasks.exe /CREATE /RU SYSTEM /SC Weekly /MO 1 /D MON /ST 04:00 /TN CMscripts\WindowsUpdate /TR "Powershell.exe -File '$Env:Windir\WindowsUpdate.ps1'"
 # WindowsUpdateService Disabled By Default
 
-# Enable & Start WindowsUpdateService
+# EnableStart WindowsUpdateService
 Set-Service -Name 'wuauserv' -StartupType 'Manual' ; Start-Service -Name 'wuauserv'
 
 # Create Objects Microsoft.Update.* to Search-Download-Install Windows Updates
