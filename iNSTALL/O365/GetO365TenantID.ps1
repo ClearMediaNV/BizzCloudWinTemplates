@@ -1,4 +1,4 @@
-﻿Add-Type -AssemblyName System.Windows.Forms
+Add-Type -AssemblyName System.Windows.Forms
 
 # Create Form
 $Form = New-Object System.Windows.Forms.Form 
@@ -10,10 +10,9 @@ $Form.Height = 245
 $Form.Width = 540
 $Form.StartPosition = 'CenterScreen'
 $Form.FormBorderStyle = 'fixedsingle'
-$Form.Topmost = $false
+$Form.Topmost = $False
 
-# Create ScriptBlock
-$ScriptBlock = 
+$ScriptBlockOK = 
     {
     try
         {
@@ -29,25 +28,48 @@ $ScriptBlock =
         $TextBoxTenantID.Refresh()
         }
     }
+
+$ScriptBlockCspDelegation = 
+    {
+    $Url = 'https://portal.office.com/partner/partnersignup.aspx?type=ResellerRelationship&id=f59f16d4-ed58-42e1-92c1-af863f919035&csp=1&msppid=0'
+    Start-Process $Url
+    }
+
 	
 # Add OK Button
 # On Click or Enter launch ScriptBlock
 $OKButton = New-Object System.Windows.Forms.Button
-$OKButton.Left = 100
-$OKButton.Top = 160
+$OKButton.Left = 40
+$OKButton.Top = 150
 $OKButton.Width = 75
-$OKButton.Height = 23
+$OKButton.Height = 40
+$OKButton.BackColor = 'White'
 $OKButton.Text = 'OK'
-$OKButton.Add_Click($ScriptBlock)
+$OKButton.Add_Click($ScriptBlockOK)
 $Form.AcceptButton = $OKButton
 $Form.Controls.Add($OKButton)
 
+# Add CspDelegation Button
+$CspDelegationButton = New-Object System.Windows.Forms.Button
+$CspDelegationButton.Left = 120
+$CspDelegationButton.Top = 150
+$CspDelegationButton.Width = 290
+$CspDelegationButton.Height = 40
+$CspDelegationButton.BackColor = 'LightYellow'
+$CspDelegationButton.ForeColor = 'Red'
+$CspDelegationButton.Font = new-object System.Drawing.Font('',8,[System.Drawing.FontStyle]::Bold)
+$CspDelegationButton.Text = 'Start CSP Delegation to ClearMedia NV'
+$CspDelegationButton.Add_Click($ScriptBlockCspDelegation)
+$Form.Controls.Add($CspDelegationButton)
+
+
 # Add Cancel Button
 $CancelButton = New-Object System.Windows.Forms.Button
-$CancelButton.Left = 350
-$CancelButton.Top = 160
+$CancelButton.Left = 415
+$CancelButton.Top = 150
 $CancelButton.Width = 75
-$CancelButton.Height = 23
+$CancelButton.Height = 40
+$CancelButton.BackColor = 'White'
 $CancelButton.Text = 'CANCEL'
 $Form.CancelButton = $CancelButton
 $Form.Controls.Add($CancelButton)
@@ -90,4 +112,3 @@ $TextBoxTenantID.Text = ''
 $Form.Controls.Add($TextBoxTenantID)
 
 $Form.ShowDialog()
-
