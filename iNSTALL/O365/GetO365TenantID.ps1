@@ -7,7 +7,7 @@ $Form.showIcon = $false
 $Form.MinimizeBox = $false
 $Form.MaximizeBox = $false
 $Form.Height = 245
-$Form.Width = 540
+$Form.Width = 580
 $Form.StartPosition = 'CenterScreen'
 $Form.FormBorderStyle = 'fixedsingle'
 $Form.Topmost = $False
@@ -35,7 +35,26 @@ $ScriptBlockCspDelegation =
     Start-Process $Url
     }
 
-	
+$CopyToClipboardDomain=
+    {
+    try
+        {
+        Set-Clipboard -Value $TextBoxDomain.Text
+        }
+    catch
+        {
+        }
+    }
+$CopyToClipboardTenantID=
+    {
+    try
+        {
+        Set-Clipboard -Value $TextBoxTenantID.Text
+        }
+    catch
+        {
+        }
+    }
 # Add OK Button
 # On Click or Enter launch ScriptBlock
 $OKButton = New-Object System.Windows.Forms.Button
@@ -110,5 +129,28 @@ $TextBoxTenantID.Font = 'Candara , 14pt, style=Bold'
 $TextBoxTenantID.TextAlign = 'Center'
 $TextBoxTenantID.Text = ''
 $Form.Controls.Add($TextBoxTenantID)
+
+#copy to clipboard domain
+$CopyDomainButton = New-Object System.Windows.Forms.Button
+$CopyDomainButton.Left = 500
+$CopyDomainButton.Top = 65
+$CopyDomainButton.Width = 50
+$CopyDomainButton.Height = 30
+$CopyDomainButton.BackColor = 'White'
+$CopyDomainButton.Text = 'Copy'
+$CopyDomainButton.Add_Click($CopyToClipboardDomain)
+$Form.Controls.Add($CopyDomainButton)
+
+
+#copy to clipboard tenantid
+$CopyTenantIDButton = New-Object System.Windows.Forms.Button
+$CopyTenantIDButton.Left = 500
+$CopyTenantIDButton.Top = 95
+$CopyTenantIDButton.Width = 50
+$CopyTenantIDButton.Height = 30
+$CopyTenantIDButton.BackColor = 'White'
+$CopyTenantIDButton.Text = 'Copy'
+$CopyTenantIDButton.Add_Click($CopyToClipboardTenantID)
+$Form.Controls.Add($CopyTenantIDButton)
 
 $Form.ShowDialog()
