@@ -12,49 +12,27 @@ $Form.StartPosition = 'CenterScreen'
 $Form.FormBorderStyle = 'fixedsingle'
 $Form.Topmost = $False
 
-$ScriptBlockOK = 
-    {
-    try
-        {
+# Add Action ScriptBlocks
+$ScriptBlockOK = {
+    try {
         [STRING]$Domainname = $TextBoxDomain.Text
         $TextBoxTenantID.Text = (Invoke-RestMethod -Uri "https://login.windows.net/$Domainname/.well-known/openid-configuration").token_endpoint.Split('/')[3]
         $TextBoxTenantID.BackColor = 'LightGreen'
         $TextBoxTenantID.Refresh()
         }
-    catch
-        {
+    catch {
         $TextBoxTenantID.Text = "$DomainName not found"
         $TextBoxTenantID.BackColor = 'Red'
         $TextBoxTenantID.Refresh()
         }
     }
-
-$ScriptBlockCspDelegation = 
-    {
+$ScriptBlockCspDelegation = {
     $Url = 'https://portal.office.com/partner/partnersignup.aspx?type=ResellerRelationship&id=f59f16d4-ed58-42e1-92c1-af863f919035&csp=1&msppid=0'
     Start-Process $Url
     }
+$CopyToClipboardDomain = { Set-Clipboard -Value $TextBoxDomain.Text }
+$CopyToClipboardTenantID = { Set-Clipboard -Value $TextBoxTenantID.Text }
 
-$CopyToClipboardDomain=
-    {
-    try
-        {
-        Set-Clipboard -Value $TextBoxDomain.Text
-        }
-    catch
-        {
-        }
-    }
-$CopyToClipboardTenantID=
-    {
-    try
-        {
-        Set-Clipboard -Value $TextBoxTenantID.Text
-        }
-    catch
-        {
-        }
-    }
 # Add OK Button
 # On Click or Enter launch ScriptBlock
 $OKButton = New-Object System.Windows.Forms.Button
