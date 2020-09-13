@@ -6,6 +6,7 @@
     	.NOTES
 		Applies to Office 2016
 		OST Must Be Enabled
+		Please Run in User Context
     	.EXAMPLE
         	PatchOstPath.ps1 -OstPath "D:\Users\$Env:UserName\$Env:UserName.ost" -MapiProfile 'Outlook'
 	#>
