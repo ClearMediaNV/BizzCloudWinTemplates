@@ -17,7 +17,7 @@ Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\NlaSvc\Parameter
 # Get Public IP @
 Set-Item -Path 'ENV:\IpAddressPublic' -Value '0.0.0.0'
 Set-Item -Path 'ENV:\IpAddressPublic' -Value (Invoke-WebRequest -Uri 'https://api.ipify.org' -UseBasicParsing).content
-# Restart NLA Service for DomainController
+# Restart NLA Service for DomainController in order to gain extra Reboot in initial Deployment of ADS
 Get-CimInstance -NameSpace root/CIMV2 -ClassName win32_ComputerSystem | ForEach-Object { if ( $PSItem.DomainRole -in ( 4 , 5 ) ) { Restart-Service -Name 'NlaSvc' -Force } }
 # Get NLA state
 Set-Item -Path 'ENV:\NetworkCategory' -value (Get-NetConnectionProfile).NetworkCategory
