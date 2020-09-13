@@ -1445,9 +1445,13 @@ $SyncHash.Host = $Host
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxRDS.AddText(" Adding Local Administrators to 'FSLogix ODFC Exclude List' Group `n") } ) 
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxRDS.AddText(" Adding Local Administrators to 'FSLogix Profile Exclude List' Group `n") } ) 
             $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'PurgeFsLogixGroups' -ScriptBlock {
+				Param($DomainDnsName)
+				$DomainNetbiosName = $DomainDnsName.Split('.')[0]
 				Add-LocalGroupMember -Name 'FSLogix ODFC Exclude List' -Member 'Administrator'
+				Add-LocalGroupMember -Name 'FSLogix ODFC Exclude List' -Member "$($DomainNetbiosName)\Administrator"
 				Add-LocalGroupMember -Name 'FSLogix Profile Exclude List' -Member 'Administrator'
-				}
+				Add-LocalGroupMember -Name 'FSLogix Profile Exclude List' -Member "$($DomainNetbiosName)\Administrator"
+				} -ArgumentList ($DomainDnsName)
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarRDS.Value = $I } ) }
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxRDS.AddText(" Enabling FsLogix O365 File Container `n") } ) 
 			$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxRDS.AddText(" Setting O365 File Container Root to $FSLogixFolderRootPath `n") } )
@@ -1490,13 +1494,13 @@ $SyncHash.Host = $Host
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxRDS.AddText(" Renaming NetBiosName to $ServerName `n") } )
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxRDS.AddText(" Disabling Fair Share on CPU, Disk, Network `n") } )
 			$Job = Invoke-Command -Session $PsSession -AsJob -JobName 'RenameJoinRDS' -ScriptBlock {
-                    Param($ServerIpAddress,$ServerName,$DomainAdminUserName,$DomainAdminPassword,$OuPath,$DomainDnsName,$DomainDnsServerIpAddress,$DomainNetbiosName,$DomainDcServerName) ; 
+                    Param($ServerIpAddress,$ServerName,$DomainAdminUserName,$DomainAdminPassword,$OuPath,$DomainDnsName,$DomainDnsServerIpAddress,$DomainDcServerName) ; 
                     Get-NetIPConfiguration | Set-DnsClientServerAddress -ServerAddresses $DomainDnsServerIpAddress
                     $DomainCredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ("$($DomainAdminUserName)@$($DomainDnsName)", $(ConvertTo-SecureString -String $DomainAdminPassword -AsPlainText -Force))
                     Add-Computer -Server $DomainDcServerName -DomainName $DomainDnsName -OUPath $OuPath -Credential $DomainCredential -Force
                     Rename-Computer -NewName $ServerName -DomainCredential $DomainCredential -Force
                     Get-CimInstance -Namespace 'root/cimv2/TerminalServices' -ClassName Win32_TerminalServiceSetting | Set-CimInstance -argument  @{EnableDFSS=0;EnableDiskFSS=0;EnableNetworkFSS=0}
-                    } -ArgumentList ($ServerIpAddress,$ServerName,$DomainAdminUserName,$DomainAdminPassword,$OuPath,$DomainDnsName,$DomainDnsServerIpAddress,$DomainNetbiosName,$DomainDcServerName) 
+                    } -ArgumentList ($ServerIpAddress,$ServerName,$DomainAdminUserName,$DomainAdminPassword,$OuPath,$DomainDnsName,$DomainDnsServerIpAddress,$DomainDcServerName) 
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarRDS.Value = $I } ) }
             If ( $CheckBoxRas ) {
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxRDS.AddText(" Downloading and Installing Parallels RAS 17.1.21785 `n") } )
