@@ -1361,8 +1361,10 @@ $SyncHash.Host = $Host
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBoxO365AdminPassword.Text = $LocalAdminPassword } )
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBoxWuAdminUserName.Text = $LocalAdminUserName } )
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBoxWuAdminPassword.Text = $LocalAdminPassword } )
-                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBoxUserAdminUserName.Text = $LocalAdminUserName } ) 
-                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBoxUserAdminPassword.Text = $LocalAdminPassword } ) 
+                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBoxUSERLocalAdminUserName.Text = $LocalAdminUserName } )
+                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBoxUSERLocalAdminPassword.Text = $LocalAdminPassword } )
+                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBoxUSERDomainAdminUserName.Text = $DomainAdminUserName } ) 
+                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBoxUSERDomainAdminPassword.Text = $DomainAdminPassword } ) 
                 }
                 Catch {
                     $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarRDS.Visibility = "Hidden" } )
