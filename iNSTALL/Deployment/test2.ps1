@@ -1389,7 +1389,7 @@ $SyncHash.Host = $Host
                         Set-Acl -Path "$($DriveLetter):\" -AclObject $ACL
                         }
                     # Create User Folder
-                    # $OdfcFolderRootPath = 'D:\ODFC'
+                    # $FSLogixFolderRootPath = 'D:\ODFC'
                     New-Item -Path $FSLogixFolderRootPath -type directory -Force
 					}
                 } -ArgumentList ($FSLogixFolderRootPath) 
@@ -1450,7 +1450,7 @@ $SyncHash.Host = $Host
 				}
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarRDS.Value = $I } ) }
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxRDS.AddText(" Enabling FsLogix O365 File Container `n") } ) 
-			$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxRDS.AddText(" Setting O365 File Container Root to $OdfcFolderRootPath `n") } )
+			$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxRDS.AddText(" Setting O365 File Container Root to $FSLogixFolderRootPath `n") } )
             $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'EnableFsLogixOdfc' -ScriptBlock {
 				Param($FSLogixFolderRootPath)
 				If ( -Not (Test-Path -Path 'HKLM:\Software\Policies\FsLogix') ) { New-Item -Path  'HKLM:\Software\Policies\FsLogix' }
