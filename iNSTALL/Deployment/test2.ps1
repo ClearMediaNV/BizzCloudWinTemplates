@@ -1350,6 +1350,14 @@ $SyncHash.Host = $Host
 		$Runspace.SessionStateProxy.SetVariable("CheckBoxRasKey",$CheckBoxRasKey)
 		$Runspace.SessionStateProxy.SetVariable("RasKey",$RasKey)
         $code = {
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxRDS.AddText(" Testing Internet Connection `n") } )
+            If ( -Not ( Test-Connection -ComputerName 'www.google.com' -Count 1 -Quiet ) ) {
+                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarRDS.Visibility = "Hidden" } )
+                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatusRDS.Content = "Connection Failure $(' .'*130)$(' '*30)Please check Internet Connection" } )
+                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployRdsStart.IsEnabled = $True } )
+                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployRdsStart.Visibility = "Visible"  } )
+                    Return
+                    }
             [INT]$I = 0
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarRDS.Value = $I } )
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxRDS.AddText(" Connecting to $ServerIpAddress `n") } )
@@ -1429,6 +1437,7 @@ $SyncHash.Host = $Host
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxRDS.AddText(" Installing FsLogix with Chocolatey `n") } )   
             $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'FsLogix' -ScriptBlock {
 				[System.Net.ServicePointManager]::SecurityProtocol = 'Tls,Tls11,Tls12'
+                # Install Chocolatey as Package Provider
 				Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1')
 				# Install vmware-tools version 11.0.6.15940789
 				Invoke-Expression -Command '& C:\ProgramData\chocolatey\choco install fslogix -y -f'
@@ -1442,17 +1451,6 @@ $SyncHash.Host = $Host
 			#	Get-LocalGroupMember -Name 'FSLogix Profile Include List' | Remove-LocalGroupMember -Name 'FSLogix Profile Include List'
 			#	}
             # While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarRDS.Value = $I } ) }
-            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxRDS.AddText(" Adding Local Administrators to 'FSLogix ODFC Exclude List' Group `n") } ) 
-            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxRDS.AddText(" Adding Local Administrators to 'FSLogix Profile Exclude List' Group `n") } ) 
-            $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'PurgeFsLogixGroups' -ScriptBlock {
-				Param($DomainDnsName)
-				$DomainNetbiosName = $DomainDnsName.Split('.')[0]
-				Add-LocalGroupMember -Name 'FSLogix ODFC Exclude List' -Member 'Administrator'
-				Add-LocalGroupMember -Name 'FSLogix ODFC Exclude List' -Member "$($DomainNetbiosName)\Administrator"
-				Add-LocalGroupMember -Name 'FSLogix Profile Exclude List' -Member 'Administrator'
-				Add-LocalGroupMember -Name 'FSLogix Profile Exclude List' -Member "$($DomainNetbiosName)\Administrator"
-				} -ArgumentList ($DomainDnsName)
-            While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarRDS.Value = $I } ) }
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxRDS.AddText(" Enabling FsLogix O365 File Container `n") } ) 
 			$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxRDS.AddText(" Setting O365 File Container Root to $FSLogixFolderRootPath `n") } )
             $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'EnableFsLogixOdfc' -ScriptBlock {
@@ -1502,10 +1500,24 @@ $SyncHash.Host = $Host
                     Get-CimInstance -Namespace 'root/cimv2/TerminalServices' -ClassName Win32_TerminalServiceSetting | Set-CimInstance -argument  @{EnableDFSS=0;EnableDiskFSS=0;EnableNetworkFSS=0}
                     } -ArgumentList ($ServerIpAddress,$ServerName,$DomainAdminUserName,$DomainAdminPassword,$OuPath,$DomainDnsName,$DomainDnsServerIpAddress,$DomainDcServerName) 
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarRDS.Value = $I } ) }
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxRDS.AddText(" Adding Local Administrators to 'FSLogix Profile Exclude List' Group `n") } ) 
+            $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'PurgeFsLogixGroups' -ScriptBlock {
+				Param($DomainDnsName)
+				$DomainNetbiosName = $DomainDnsName.Split('.')[0]
+				Add-LocalGroupMember -Name 'FSLogix ODFC Exclude List' -Member 'Administrator'
+				Add-LocalGroupMember -Name 'FSLogix ODFC Exclude List' -Member "$($DomainNetbiosName)\Domain Admins"
+				Add-LocalGroupMember -Name 'FSLogix Profile Exclude List' -Member 'Administrator'
+				Add-LocalGroupMember -Name 'FSLogix Profile Exclude List' -Member "$($DomainNetbiosName)\Domain Admins"
+				Add-LocalGroupMember -Name 'Remote Desktop Users' -Member "$($DomainNetbiosName)\RDP-Users"
+
+				} -ArgumentList ($DomainDnsName)
+            While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarRDS.Value = $I } ) }
+
+
             If ( $CheckBoxRas ) {
-                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxRDS.AddText(" Downloading and Installing Parallels RAS 17.1.21785 `n") } )
-				$Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Download and Install Parallels RAS 17.1.21785' -ScriptBlock {
-                    [STRING]$UrlDownload =  'https://download.parallels.com/ras/v17/17.1.1.21785/RASInstaller-17.1.21785.msi'
+                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxRDS.AddText(" Downloading and Installing Parallels RAS 17.2.21873 `n") } )
+				$Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Download and Install Parallels RAS 17.2.21873' -ScriptBlock {
+                    [STRING]$UrlDownload =  'https://download.parallels.com/ras/v17/17.1.2.21873/RASInstaller-17.1.21873.msi'
                     [STRING]$FileDownload = "$ENV:LOCALAPPDATA\$($UrlDownload.Split('/')[-1])"
                     Invoke-WebRequest -Uri $UrlDownload -UseBasicParsing  -OutFile $FileDownload -PassThru | Out-Null
                     Start-Sleep -Seconds 5
@@ -1598,6 +1610,14 @@ $SyncHash.Host = $Host
   $Runspace.SessionStateProxy.SetVariable("RadioButtonO365ProPlusRetail64Bit",$RadioButtonO365ProPlusRetail64Bit)
   $Runspace.SessionStateProxy.SetVariable("CheckBoxExcludeApp",$CheckBoxExcludeApp)
         $code = {
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxO365.AddText(" Testing Internet Connection `n") } )
+            If ( -Not ( Test-Connection -ComputerName 'www.google.com' -Count 1 -Quiet ) ) {
+                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarO365.Visibility = "Hidden" } )
+                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatusO365.Content = "Connection Failure $(' .'*130)$(' '*30)Please check Internet Connection" } )
+                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployO365Start.IsEnabled = $True } )
+                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployO365Start.Visibility = "Visible"  } )
+                    Return
+                    }
             [INT]$I = 0
             ForEach ( $ServerIpAddress in $ServerIpAddressList.Split(',') ) {
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarO365.Value = $I } )
