@@ -1350,14 +1350,6 @@ $SyncHash.Host = $Host
 		$Runspace.SessionStateProxy.SetVariable("CheckBoxRasKey",$CheckBoxRasKey)
 		$Runspace.SessionStateProxy.SetVariable("RasKey",$RasKey)
         $code = {
-            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxRDS.AddText(" Testing Internet Connection `n") } )
-            If ( -Not ( Test-Connection -ComputerName 'www.google.com' -Count 1 -Quiet ) ) {
-                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarRDS.Visibility = "Hidden" } )
-                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatusRDS.Content = "Connection Failure $(' .'*130)$(' '*30)Please check Internet Connection" } )
-                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployRdsStart.IsEnabled = $True } )
-                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployRdsStart.Visibility = "Visible"  } )
-                    Return
-                    }
             [INT]$I = 0
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarRDS.Value = $I } )
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxRDS.AddText(" Connecting to $ServerIpAddress `n") } )
@@ -1377,6 +1369,14 @@ $SyncHash.Host = $Host
                 Catch {
                     $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarRDS.Visibility = "Hidden" } )
                     $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatusRDS.Content = "Connection Failure $(' .'*130)$(' '*30)Please check Server - Username - Password" } )
+                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployRdsStart.IsEnabled = $True } )
+                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployRdsStart.Visibility = "Visible"  } )
+                    Return
+                    }
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxRDS.AddText(" Testing Internet Connection `n") } )
+            If ( -Not ( Test-Connection -Source $ServerIpAddress -Credential $Credential -ComputerName 'www.google.com' -Count 1 -Quiet ) ) {
+                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarRDS.Visibility = "Hidden" } )
+                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatusRDS.Content = "Connection Failure $(' .'*130)$(' '*30)Please check Internet Connection" } )
                     $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployRdsStart.IsEnabled = $True } )
                     $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployRdsStart.Visibility = "Visible"  } )
                     Return
@@ -1439,9 +1439,8 @@ $SyncHash.Host = $Host
 				[System.Net.ServicePointManager]::SecurityProtocol = 'Tls,Tls11,Tls12'
                 # Install Chocolatey as Package Provider
 				Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1')
-				# Install vmware-tools version 11.0.6.15940789
+				# Install FsLogix
 				Invoke-Expression -Command '& C:\ProgramData\chocolatey\choco install fslogix -y -f'
-				# If ( $LASTEXITCODE -ne 0 ) { Exit }
 				}
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarRDS.Value = $I } ) }
             # $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxRDS.AddText(" Purging 'FSLogix ODFC Include List' Group `n") } ) 
@@ -1891,6 +1890,14 @@ Shutdown.exe /r /t 5 /f /c 'Scheduled Windows Updates with Reboot' /d p:0:0
                     New-ADUser @NewUserParams -ErrorAction Stop
                     } -ArgumentList ($DomainAdminUserName,$DomainAdminPassword,$DomainDcServerName,$DataFolderRootPath,$PrincipalName,$UserGivenName,$UserSurname,$OuPath,$DomainDnsName,$UserPassword)
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarUser.Value = $I } ) }
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxUser.AddText(" Adding $PrincipalName to 'RDP-Users' Group `n") } )
+            $Job = Start-Job -Name 'Active Directory Add User' -ScriptBlock {
+                    Param ($DomainAdminUserName,$DomainAdminPassword,$DomainDcServerName,$DataFolderRootPath,$PrincipalName,$UserGivenName,$UserSurname,$OuPath,$DomainDnsName,$UserPassword)
+					$DomainCredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ("$($DomainAdminUserName)@$($DomainDnsName)", $(ConvertTo-SecureString -String $DomainAdminPassword -AsPlainText -Force))
+                    Add-ADGroupMember -Identity 'RDP-Users' -Members $PrincipalName -Server DomainDcServerName -ErrorAction Stop
+                    } -ArgumentList ($DomainAdminUserName,$DomainAdminPassword,$DomainDcServerName,$DataFolderRootPath,$PrincipalName,$UserGivenName,$UserSurname,$OuPath,$DomainDnsName,$UserPassword)
+            While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarUser.Value = $I } ) }
+
         #    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxUser.AddText(" Creating User OST Folder `n") } )
         # $Job = Invoke-Command -Session $PsSession -AsJob -JobName  'Create User OST Folder' -ScriptBlock {
         #            Param ($OstFolderRootPath,$PrincipalName,$DomainNetbiosName)
