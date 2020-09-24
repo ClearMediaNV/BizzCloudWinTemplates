@@ -1374,14 +1374,15 @@ $SyncHash.Host = $Host
                     Return
                     }
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxRDS.AddText(" Testing Internet Connection `n") } )
-            If ( -Not ( Test-Connection -Source $ServerIpAddress -Credential $Credential -ComputerName 'www.google.com' -Count 1 -Quiet ) ) {
+            $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'TestConnectionGoogle' -ScriptBlock { Test-Connection -ComputerName 'www.google.com' -Count 1 }
+			While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarRDS.Value = $I } ) }
+            if ( $Job.ChildJobs[0].Error ) {
                     $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarRDS.Visibility = "Hidden" } )
                     $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatusRDS.Content = "Connection Failure $(' .'*130)$(' '*30)Please check Internet Connection" } )
                     $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployRdsStart.IsEnabled = $True } )
                     $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployRdsStart.Visibility = "Visible"  } )
                     Return
                     }
-			While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarRDS.Value = $I } ) }
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxRDS.AddText(" Configuring Disk 'FSLOGIX' `n") } )
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxRDS.AddText(" Creating $FSLogixFolderRootPath and Setting NTFS Security `n") } )
             $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'DiskFSLogix' -ScriptBlock {
@@ -1609,14 +1610,6 @@ $SyncHash.Host = $Host
   $Runspace.SessionStateProxy.SetVariable("RadioButtonO365ProPlusRetail64Bit",$RadioButtonO365ProPlusRetail64Bit)
   $Runspace.SessionStateProxy.SetVariable("CheckBoxExcludeApp",$CheckBoxExcludeApp)
         $code = {
-            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxO365.AddText(" Testing Internet Connection `n") } )
-            If ( -Not ( Test-Connection -ComputerName 'www.google.com' -Count 1 -Quiet ) ) {
-                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarO365.Visibility = "Hidden" } )
-                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatusO365.Content = "Connection Failure $(' .'*130)$(' '*30)Please check Internet Connection" } )
-                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployO365Start.IsEnabled = $True } )
-                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployO365Start.Visibility = "Visible"  } )
-                    Return
-                    }
             [INT]$I = 0
             ForEach ( $ServerIpAddress in $ServerIpAddressList.Split(',') ) {
                 $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarO365.Value = $I } )
@@ -1627,6 +1620,16 @@ $SyncHash.Host = $Host
                     Catch {
                     $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarO365.Visibility = "Hidden" } )
                     $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatusO365.Content = "Connection Failure $(' .'*130)$(' '*30)Please check Server - Username - Password" } )
+                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployO365Start.IsEnabled = $True } )
+                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployO365Start.Visibility = "Visible"  } )
+                    Return
+                    }
+            $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxO365.AddText(" Testing Internet Connection `n") } )
+            $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'TestConnectionGoogle' -ScriptBlock { Test-Connection -ComputerName 'www.google.com' -Count 1 }
+			While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarRDS.Value = $I } ) }
+            if ( $Job.ChildJobs[0].Error ) {
+                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarO365.Visibility = "Hidden" } )
+                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatusO365.Content = "Connection Failure $(' .'*130)$(' '*30)Please check Internet Connection" } )
                     $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployO365Start.IsEnabled = $True } )
                     $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployO365Start.Visibility = "Visible"  } )
                     Return
@@ -1891,26 +1894,11 @@ Shutdown.exe /r /t 5 /f /c 'Scheduled Windows Updates with Reboot' /d p:0:0
                     } -ArgumentList ($DomainAdminUserName,$DomainAdminPassword,$DomainDcServerName,$DataFolderRootPath,$PrincipalName,$UserGivenName,$UserSurname,$OuPath,$DomainDnsName,$UserPassword)
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarUser.Value = $I } ) }
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxUser.AddText(" Adding $PrincipalName to 'RDP-Users' Group `n") } )
-            $Job = Start-Job -Name 'Active Directory Add User' -ScriptBlock {
-                    Param ($DomainAdminUserName,$DomainAdminPassword,$DomainDcServerName,$DataFolderRootPath,$PrincipalName,$UserGivenName,$UserSurname,$OuPath,$DomainDnsName,$UserPassword)
-					$DomainCredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ("$($DomainAdminUserName)@$($DomainDnsName)", $(ConvertTo-SecureString -String $DomainAdminPassword -AsPlainText -Force))
-                    Add-ADGroupMember -Identity 'RDP-Users' -Members $PrincipalName -Server DomainDcServerName -ErrorAction Stop
-                    } -ArgumentList ($DomainAdminUserName,$DomainAdminPassword,$DomainDcServerName,$DataFolderRootPath,$PrincipalName,$UserGivenName,$UserSurname,$OuPath,$DomainDnsName,$UserPassword)
+            $Job = Start-Job -Name 'Active Directory Add User To Group' -ScriptBlock {
+                    Param ($PrincipalName,$DomainDcServerName)
+                    Add-ADGroupMember -Server "$DomainDcServerName" -Identity 'RDP-Users' -Members $PrincipalName -ErrorAction Stop
+                    } -ArgumentList ($PrincipalName,$DomainDcServerName)
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarUser.Value = $I } ) }
-
-        #    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxUser.AddText(" Creating User OST Folder `n") } )
-        # $Job = Invoke-Command -Session $PsSession -AsJob -JobName  'Create User OST Folder' -ScriptBlock {
-        #            Param ($OstFolderRootPath,$PrincipalName,$DomainNetbiosName)
-        #            # [STRING]$FolderPath = "D:\Users\$PrincipalName"
-        #            [STRING]$FolderPath = "$OstFolderRootPath\$PrincipalName"
-        #            New-Item -Path $FolderPath -type directory -Force
-        #            $ACL = Get-Acl  -Path  $FolderPath
-        #            $ACL.SetAccessRuleProtection($true,$true)
-        #            $AccessRule = New-Object system.security.AccessControl.FileSystemAccessRule("$DomainNetbiosName\$PrincipalName", 'Modify', 'ObjectInherit,ContainerInherit', 'None', 'Allow')
-        #            $ACL.AddAccessRule($AccessRule)
-        #            Set-Acl  -Path $FolderPath -AclObject $ACL
-        #            } -ArgumentList ($OstFolderRootPath,$PrincipalName,$DomainNetbiosName)
-        #    While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarUser.Value = $I } ) }
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxUser.AddText(" Creating User DATA Folder `n") } )
          $Job = Invoke-Command -Session $PsSession -AsJob -JobName  'Create User Data Folder' -ScriptBlock {
                     Param ($DataFolderRootPath,$PrincipalName,$DomainNetbiosName)
