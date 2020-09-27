@@ -16,7 +16,8 @@ $Form.Topmost = $False
 $ScriptBlockOK = {
     try {
         [STRING]$Domainname = $TextBoxDomainName.Text
-        $TextBoxTenantID.Text = (Invoke-RestMethod -Uri "https://login.windows.net/$Domainname/.well-known/openid-configuration").token_endpoint.Split('/')[3]
+        $Url = "https://login.windows.net/$Domainname/.well-known/openid-configuration"
+        $TextBoxTenantID.Text = ( Invoke-RestMethod -Uri $Url ).token_endpoint.Split('/')[3]
         $TextBoxTenantID.BackColor = 'LightGreen'
         $TextBoxTenantID.Refresh()
         }
@@ -55,7 +56,7 @@ $ButtonCspDelegation.Height = 40
 $ButtonCspDelegation.BackColor = 'LightYellow'
 $ButtonCspDelegation.ForeColor = 'Red'
 $ButtonCspDelegation.Font = new-object System.Drawing.Font('',8,[System.Drawing.FontStyle]::Bold)
-$ButtonCspDelegation.Text = 'Start CSP Delegation to ClearMedia NV'
+$ButtonCspDelegation.Text = 'Start CSP Partner Relationship to ClearMedia NV'
 $ButtonCspDelegation.Add_Click($ScriptBlockCspDelegation)
 $Form.Controls.Add($ButtonCspDelegation)
 
