@@ -1391,10 +1391,14 @@ $SyncHash.Host = $Host
 					Initialize-Disk -Number 1
 					[STRING]$DriveLetter = $FSLogixFolderRootPath.Split(':')[0]
                     New-Partition -DiskNumber 1 -DriveLetter $DriveLetter -UseMaximumSize | Format-Volume -FileSystem ReFS -NewFileSystemLabel 'FSLOGIX'
-                    # Remove All but System & Administrators & 'CREATOR OWNER' & Users from ACL on Root
+                    # Remove All but System & Administrators from ACL on Root
                     Get-Acl -Path "$($DriveLetter):\" | ForEach-Object {
                         $ACL = $_
-                        $ACL.Access | Where-Object { $_.IdentityReference -inotin ('NT AUTHORITY\SYSTEM','BUILTIN\Administrators','CREATOR OWNER','BUILTIN\Users') } | ForEach-Object { $ACL.RemoveAccessRule($_) }
+                        $ACL.Access | Where-Object { $_.IdentityReference -inotin ( 'NT AUTHORITY\SYSTEM','BUILTIN\Administrators' ) } | ForEach-Object { $ACL.RemoveAccessRule($_) }
+						$AccessRule = New-Object system.security.AccessControl.FileSystemAccessRule( 'NT AUTHORITY\Creator Owner' , 'FullControl' , 'ObjectInherit , ContainerInherit', 'None', 'None', 'Allow')
+						$ACL.AddAccessRule($AccessRule)
+						$AccessRule = New-Object system.security.AccessControl.FileSystemAccessRule( 'BUILTIN\Users' , 'ReadData , AppendData , ExecuteFile , ReadAttributes , Synchronize' , 'None', 'None', 'Allow')
+						$ACL.AddAccessRule($AccessRule)
                         Set-Acl -Path "$($DriveLetter):\" -AclObject $ACL
                         }
                     # Create User Folder
@@ -1436,7 +1440,7 @@ $SyncHash.Host = $Host
                 } -ArgumentList ($DataFolderRootPath)
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarRDS.Value = $I } ) }
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxRDS.AddText(" Installing FsLogix with Chocolatey `n") } )   
-            $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'FsLogix' -ScriptBlock {
+            $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Install FsLogix' -ScriptBlock {
 				[System.Net.ServicePointManager]::SecurityProtocol = 'Tls,Tls11,Tls12'
                 # Install Chocolatey as Package Provider
 				Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1')
@@ -1444,21 +1448,16 @@ $SyncHash.Host = $Host
 				Invoke-Expression -Command '& C:\ProgramData\chocolatey\choco install fslogix -y -f'
 				}
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarRDS.Value = $I } ) }
-            # $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxRDS.AddText(" Purging 'FSLogix ODFC Include List' Group `n") } ) 
-            # $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxRDS.AddText(" Purging 'FSLogix Profile Include List' Group `n") } ) 
-            # $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'PurgeFsLogixGroups' -ScriptBlock {
-			#	Get-LocalGroupMember -Name 'FSLogix ODFC Include List' | Remove-LocalGroupMember -Name 'FSLogix ODFC Include List'
-			#	Get-LocalGroupMember -Name 'FSLogix Profile Include List' | Remove-LocalGroupMember -Name 'FSLogix Profile Include List'
-			#	}
-            # While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarRDS.Value = $I } ) }
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxRDS.AddText(" Enabling FsLogix O365 File Container `n") } ) 
 			$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxRDS.AddText(" Setting O365 File Container Root to $FSLogixFolderRootPath `n") } )
-            $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'EnableFsLogixOdfc' -ScriptBlock {
+            $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Enable FsLogixOdfc' -ScriptBlock {
 				Param($FSLogixFolderRootPath)
 				If ( -Not (Test-Path -Path 'HKLM:\Software\Policies\FsLogix') ) { New-Item -Path  'HKLM:\Software\Policies\FsLogix' }
 				If ( -Not (Test-Path -Path 'HKLM:\Software\Policies\FsLogix\ODFC') ) { New-Item -Path  'HKLM:\Software\Policies\FsLogix\ODFC' }
 				New-ItemProperty -Path 'HKLM:\Software\Policies\FsLogix\ODFC' -Name 'Enabled' -PropertyType 'Dword' -Value 1 -Force
 				New-ItemProperty -Path 'HKLM:\Software\Policies\FsLogix\ODFC' -Name 'VHDLocations' -PropertyType 'String' -Value $FSLogixFolderRootPath -Force
+				New-ItemProperty -Path 'HKLM:\Software\Policies\FsLogix\ODFC' -Name 'VolumeType' -PropertyType 'String' -Value 'VHDX' -Force
+				New-ItemProperty -Path 'HKLM:\Software\Policies\FsLogix\ODFC' -Name 'SizeInMBs' -PropertyType 'Dword' -Value 50000 -Force
 				} -ArgumentList ($FSLogixFolderRootPath)
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarRDS.Value = $I } ) }
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxRDS.AddText(" Setting Smart Card Service to AutoStart `n") } )   
