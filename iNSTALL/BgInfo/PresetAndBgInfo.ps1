@@ -23,4 +23,4 @@ Get-CimInstance -NameSpace root/CIMV2 -ClassName win32_ComputerSystem | ForEach-
 Set-Item -Path 'ENV:\NetworkCategory' -value (Get-NetConnectionProfile).NetworkCategory
 Set-Item -Path 'ENV:\IPv4Connectivity' -Value (Get-NetConnectionProfile).IPv4Connectivity
 # Launch BgInfo
-Invoke-Expression -Command ".\bginfo.exe windows.bgi /timer:0 /nolicprompt"
+Invoke-Expression -Command "& .\bginfo.exe windows.bgi /timer:0 /nolicprompt"
