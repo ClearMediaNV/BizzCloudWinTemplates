@@ -1802,7 +1802,7 @@ Shutdown.exe /r /t 5 /f /c 'Scheduled Windows Updates with Reboot' /d p:0:0
                 Else {
 					$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarWU.Visibility = "Hidden" } )
 					$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatusWU.Content = "Deployment Finished $(' .'*135)$(' '*30)" } )
-					$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployO365Start.IsEnabled = $True } 
+					$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployO365Start.IsEnabled = $True } )
 					$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployWUStart.IsEnabled = $True } )
 					$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployUserStart.IsEnabled = $True } )                    
 					}
@@ -1864,7 +1864,8 @@ Shutdown.exe /r /t 5 /f /c 'Scheduled Windows Updates with Reboot' /d p:0:0
 					'Name' = $PrincipalName
 					'SamAccountName' = $PrincipalName
 					'GivenName' = $UserGivenName
-					'Surname' = $UserSurname'Enabled' = $TRUE
+					'Surname' = $UserSurname
+					'Enabled' = $TRUE
 					'ChangePasswordAtLogon' = $FALSE
 					'AccountPassword' =  ConvertTo-SecureString $UserPassword -AsPlainText -Force
 					'Path' = $OuPath
@@ -1900,7 +1901,7 @@ Shutdown.exe /r /t 5 /f /c 'Scheduled Windows Updates with Reboot' /d p:0:0
 				$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatusUser.Content = "User Added with ERRORS $(' .'*115)$(' '*30)Please consult PushTheButtonJobs.csv" } )
 				}
                 Else {
-					$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarUser.Visibility = "Hidden" }
+					$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarUser.Visibility = "Hidden" } )
 					$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatusUser.Content = "User Added $(' .'*135)$(' '*30)" } )
 					$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBoxUSERUserPassword.Text = "" } )
 					$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployO365Start.IsEnabled = $True } )
