@@ -124,7 +124,7 @@ $SyncHash.Host = $Host
                     <TextBox Name="TextBoxDomainNetbiosName"  HorizontalAlignment="Left" Height="22" Margin="220,28,0,0" Text="$DomainNetbiosName" VerticalAlignment="Top" Width="180" ToolTip="Fill in Domain NetbiosName - Please limit to 15 Characters"/>
                     <TextBox Name="TextBoxDomainDnsName" HorizontalAlignment="Left" Height="22" Margin="220,61,0,0" Text="$DomainDNSName" VerticalAlignment="Top" Width="180"/>
                     <TextBox Name="TextBoxDnsServerForwarders" HorizontalAlignment="Left" Height="22" Margin="220,94,0,0" Text="$DnsServerForwarders" VerticalAlignment="Top" Width="180"/>
-                    <TextBox Name="TextBoxSafeModeAdministratorPassword" HorizontalAlignment="Left" Height="22" Margin="220,127,0,0" Text="$('*'*35)" VerticalAlignment="Top" Width="180" ToolTip="If You don't Fill In Password will be Generated otherwise Fill In Password - Please Use Complex Password"/>
+                    <TextBox Name="TextBoxSafeModeAdministratorPassword" HorizontalAlignment="Left" Height="22" Margin="220,127,0,0" Text="$('*'*35)" VerticalAlignment="Top" Width="180" ToolTip="If You don't Fill In the Password it will be Generated. Otherwise Fill In the Password - Please Use Complex Password"/>
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
                     <TextBlock Name="TextBlockOutBoxDC" Text="" Foreground="WHITE" Background="#FF22206F" />
                     </ScrollViewer>
@@ -174,7 +174,7 @@ $SyncHash.Host = $Host
                     <Label Name="LabelClearmediaAdminPassword" Content="ClearmediaAdmin Password" HorizontalAlignment="Left" Height="28" Margin="30,94,0,0" VerticalAlignment="Top" Width="165"/>
                     <TextBox Name="TextBoxManagedOuName"  HorizontalAlignment="Left" Height="22" Margin="220,28,0,0" Text="$ManagedOuName" VerticalAlignment="Top" Width="180" TabIndex="1" IsTabStop="False" RenderTransformOrigin="0.673,0.523"/>
                     <TextBox Name="TextBoxClearmediaAdminUserName" HorizontalAlignment="Left" Height="22" Margin="220,61,0,0" Text="ClearmediaAdmin" VerticalAlignment="Top" Width="180" RenderTransformOrigin="0.462,0.455"/>
-                    <TextBox Name="TextBoxClearmediaAdminPassword" HorizontalAlignment="Left" Height="22" Margin="220,94,0,0" Text="$('*'*35)" VerticalAlignment="Top" Width="180" ToolTip="If You don't Fill In Password will be Generated otherwise Fill In Password - Please Use Complex Password"/>
+                    <TextBox Name="TextBoxClearmediaAdminPassword" HorizontalAlignment="Left" Height="22" Margin="220,94,0,0" Text="$('*'*35)" VerticalAlignment="Top" Width="180" ToolTip="If You don't Fill In the Password it will be Generated. Otherwise Fill In the Password - Please Use Complex Password"/>
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
                     <TextBlock Name="TextBlockOutBoxOU" Text="" Foreground="WHITE" Background="#FF22206F" />
                     </ScrollViewer>
@@ -500,7 +500,7 @@ $SyncHash.Host = $Host
                     <TextBox Name="TextBoxUSERUserAccountName" Text="" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Margin="713,98,0,0" Width="180" ToolTip="Fill in User Account Name"/>
                     <TextBox Name="TextBoxUSERUserGivenName" Text="" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Margin="713,131,0,0" Width="180" ToolTip="Fill in User First Name"/>
                     <TextBox Name="TextBoxUSERUserSurname" Text="" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Margin="713,164,0,0" Width="180" ToolTip="Fill in User Last Name"/>
-                    <TextBox Name="TextBoxUSERUserPassword" Text="" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Margin="713,197,0,0" Width="180" ToolTip="If You don't Fill In Password will be Generated otherwise Fill In Password - Please Use Complex Password"/>
+                    <TextBox Name="TextBoxUSERUserPassword" Text="" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Margin="713,197,0,0" Width="180" ToolTip="If You don't Fill In the Password it will be Generated. Otherwise Fill In the Password - Please Use Complex Password"/>
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
                     <TextBlock Name="TextBlockOutBoxUser" Text="" Foreground="WHITE" Background="#FF22206F" />
                     </ScrollViewer>
