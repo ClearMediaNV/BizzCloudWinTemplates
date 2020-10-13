@@ -1,8 +1,9 @@
 # Copy-Item -Path '.\WindowsUpdate.ps1' -Destination "$Env:Windir\WindowsUpdate.ps1" -Force
-# schtasks.exe /CREATE /RU SYSTEM /SC Weekly /MO 4 /D MON /ST 04:00 /TN CMscripts\WindowsUpdate /TR "Powershell.exe -File '$Env:Windir\WindowsUpdate.ps1'"
-# WindowsUpdate Service Disabled By Default
-Set-Service -Name 'wuauserv' -StartupType 'Manual'
-Start-Service -Name 'wuauserv'
+# schtasks.exe /CREATE /RU SYSTEM /SC Weekly /MO 1 /D MON /ST 04:00 /TN CMscripts\WindowsUpdate /TR "Powershell.exe -File '$Env:Windir\WindowsUpdate.ps1'"
+# WindowsUpdateService Disabled By Default
+
+# EnableStart WindowsUpdateService
+Set-Service -Name 'wuauserv' -StartupType 'Manual' ; Start-Service -Name 'wuauserv'
 
 # Create Objects Microsoft.Update.* to Search-Download-Install Windows Updates
 # $WindowsUpdateServiceManager = New-Object -ComObject 'Microsoft.Update.ServiceManager'
@@ -10,6 +11,7 @@ Start-Service -Name 'wuauserv'
 $WindowsUpdateSearch = New-Object -ComObject 'Microsoft.Update.Searcher'
 $WindowsUpdateDownload = New-Object -ComObject 'Microsoft.Update.Downloader'
 $WindowsUpdateInstall = New-Object -ComObject 'Microsoft.Update.Installer'
+
 # Search-Download-Install Windows Updates
 Try	{ $WindowsUpdateList = $WindowsUpdateSearch.Search($Null).Updates }
 	Catch 
@@ -31,6 +33,7 @@ If	( $WindowsUpdateList.Count -eq 0 )
 		$WindowsUpdateInstall.Updates = $WindowsUpdateList
 		$WindowsUpdateInstall.Install()
 		}
+
 # Report Windows Updates to CSV File 'c:\windows\logs\WindowsUpdate.csv'
 [PSCustomObject[]]$Table = $Null
 Foreach	( $Update in $WindowsUpdateList ) 
@@ -44,9 +47,10 @@ Foreach	( $Update in $WindowsUpdateList )
                         'KBArticleIDs' = [STRING]$Update.KBArticleIDs
 			}
 		}
-
 $Table | Select-Object -Property DateTime,Title,CategoriesName,BundledUpdatesTitle,BundledUpdatesLastDeploymentChangeTime,BundledUpdatesMinDownloadSize,KBArticleIDs | Export-Csv -Path 'c:\windows\logs\WindowsUpdate.csv' -Append -Force -NoTypeInformation
-# Change WindowsUpdate Service to Disabled
+
+# Disable WindowsUpdateService
 Set-Service -Name 'wuauserv' -StartupType 'Disabled'
+
 # Restart Computer for applying Windows Updates
 Restart-Computer -Force

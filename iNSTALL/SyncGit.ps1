@@ -3,23 +3,26 @@
 $SavedSecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol
 [System.Net.ServicePointManager]::SecurityProtocol = 'Tls,Tls11,Tls12'
 Try {
-    [STRING]$UrlDownload =  'https://github.com/ClearMediaNV/BizzCloudWinTemplates/archive/master.zip'
-    [STRING]$Output = "$ENV:TEMP\$($UrlDownload.Split('/')[$_.count-1])"
+    $Branch = 'master'
+    $UrlDownload = "https://github.com/ClearMediaNV/BizzCloudWinTemplates/archive/$Branch.zip"
+    $FileDownload = "$ENV:LOCALAPPDATA\$Branch.zip"
+    $FolderDownload = "$ENV:LOCALAPPDATA\$Branch"
     # Download Archive
-    (New-Object System.Net.WebClient).downloadFile($UrlDownload,$Output)
-    # Unzip Archive to Temp
-    Expand-Archive -Path $Output -DestinationPath "$ENV:TEMP\Template" -Force
+    (New-Object System.Net.WebClient).downloadFile($UrlDownload,$FileDownload)
+    # Unzip Archive to Folder Download
+    [VOID][System.Reflection.Assembly]::LoadWithPartialName("System.IO.Compression.FileSystem")
+    [System.IO.Compression.ZipFile]::ExtractToDirectory($FileDownload, "$FolderDownload") 
     # Cleanup and Copy iNSTALL Folder
     Remove-Item -Path 'c:\install\*'  -Recurse -Force
-    Copy-Item -Path "$ENV:TEMP\Template\BizzCloudWinTemplates-master\iNSTALL\*" -Destination 'c:\iNSTALL' -Recurse -Force
-    # Cleanup Temp Folder
-    Remove-Item -Path "$Output" -Force
-    Remove-Item -Path "$ENV:TEMP\Template" -Recurse -Force
+    Copy-Item -Path "$FolderDownload\BizzCloudWinTemplates-$Branch\iNSTALL\*" -Destination 'c:\iNSTALL' -Recurse -Force
+    # Cleanup File & Folder Download
+    Remove-Item -Path "$FileDownload" -Force
+    Remove-Item -Path "$FolderDownload" -Recurse -Force
     }
-Catch   {
-        Write-Output 'No Internet Connection. Please Check DNS & Gateway Config'
-        Start-Sleep -Seconds 5
-        }
+   Catch {
+         Write-Output 'GitHub Connection Error. Please Check DNS & Gateway Config. Please Check https://github.com/ClearMediaNV'
+         Start-Sleep -Seconds 5
+         }
 # Restore Saved SecurityProtocol
 [System.Net.ServicePointManager]::SecurityProtocol = $SavedSecurityProtocol
 # The End

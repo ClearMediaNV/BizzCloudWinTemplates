@@ -13,6 +13,9 @@
 			<Language
 			ID="fr-fr">
 			</Language>
+			<ExcludeApp
+			ID="Teams">
+			</ExcludeApp>
         	</Product>
     	</Add>
 

@@ -1,0 +1,7 @@
+Key,ValueName,Type,Value
+HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders,Personal,ExpandString,"E:\USERS\%USERNAME%\Documents"
+HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders,My Music,ExpandString,"E:\USERS\%USERNAME%\Music"
+HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders,My Pictures,ExpandString,"E:\USERS\%USERNAME%\Pictures"
+HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders,My Video,ExpandString,"E:\USERS\%USERNAME%\Videos"
+HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders,Desktop,ExpandString,"E:\USERS\%USERNAME%\Desktop"
+HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders,{374DE290-123F-4565-9164-39C4925E467B},ExpandString,"E:\USERS\%USERNAME%\Downloads"

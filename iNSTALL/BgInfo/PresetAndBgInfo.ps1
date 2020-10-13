@@ -1,4 +1,7 @@
-﻿Push-Location %0\..\
+# Push Current Directory
+Push-Location %0\..\
+# Set Full Screen WXGA 1280 x 800
+Set-DisplayResolution -Width 1280 -Height 800 -Force
 # Copy Shortcut to current Desktop
 Copy-Item -Path '.\PresetBginfo.lnk' -Destination "$Env:USERPROFILE\Desktop" -Force
 # Set Registry after SysPrep Reset - Windows Annoyances
@@ -14,8 +17,10 @@ Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\NlaSvc\Parameter
 # Get Public IP @
 Set-Item -Path 'ENV:\IpAddressPublic' -Value '0.0.0.0'
 Set-Item -Path 'ENV:\IpAddressPublic' -Value (Invoke-WebRequest -Uri 'https://api.ipify.org' -UseBasicParsing).content
+# Restart NLA Service for DomainController in order to gain extra Reboot in initial Deployment of ADS
+Get-CimInstance -NameSpace root/CIMV2 -ClassName win32_ComputerSystem | ForEach-Object { if ( $PSItem.DomainRole -in ( 4 , 5 ) ) { Restart-Service -Name 'NlaSvc' -Force } }
 # Get NLA state
 Set-Item -Path 'ENV:\NetworkCategory' -value (Get-NetConnectionProfile).NetworkCategory
 Set-Item -Path 'ENV:\IPv4Connectivity' -Value (Get-NetConnectionProfile).IPv4Connectivity
 # Launch BgInfo
-Invoke-Expression -Command ".\bginfo.exe windows.bgi /timer:0 /nolicprompt"
+Invoke-Expression -Command "& .\bginfo.exe windows.bgi /timer:0 /nolicprompt"
