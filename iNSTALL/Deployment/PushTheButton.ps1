@@ -1634,49 +1634,20 @@ $SyncHash.Host = $Host
 				Invoke-Expression -Command "CMD.EXE /C '$FileDownload /quiet /extract:$FileDownload\..'"
 				[STRING]$Config = @"
 					<Configuration>
-					<Add 
-					SourcePath="c:\install\O365"
-					OfficeClientEdition="$O365version"
-					Channel="Broad">
-					<Product ID="$ProductId">
-					<Language
-					ID="en-us">
-					</Language>
-					<Language
-					ID="nl-nl">
-					</Language>
-					<Language
-					ID="fr-fr">
-					</Language>
-					<ExcludeApp
-					ID="$ExcludeApp">
-					</ExcludeApp>
-					</Product>
-					</Add>
-					<Updates
-					Channel="Broad"
-					Enabled="TRUE">
-					</Updates>
-					<Display
-					Level="Full"
-					AcceptEULA="TRUE">
-					</Display>
-					<Logging
-					Level="Standard"
-					Path="c:\windows\logs\O365">
-					</Logging>
-					<Property
-					Name="FORCEAPPSHUTDOWN"
-					Value="TRUE">
-					</Property>
-					<Property
-					Name="SharedComputerLicensing"
-					Value="1">
-					</Property>
-					<Property
-					Name="PinIconsToTaskbar"
-					Value="FALSE">
-					</Property>
+						<Add SourcePath="c:\install\O365" OfficeClientEdition="$O365version" Channel="SemiAnnual">
+							<Product ID="$ProductId">
+								<Language ID="en-us"/>
+								<Language ID="nl-nl"/>
+								<Language ID="fr-fr"/>
+								<ExcludeApp ID="$ExcludeApp"/>
+							</Product>
+						</Add>
+						<Updates Channel="SemiAnnual" Enabled="TRUE"/>
+						<Display Level="Full" AcceptEULA="TRUE"/>
+						<Logging Level="Standard" Path="c:\windows\logs\O365"/>
+						<Property Name="FORCEAPPSHUTDOWN" Value="TRUE"/>
+						<Property Name="SharedComputerLicensing" Value="1"/>
+						<Property Name="PinIconsToTaskbar" Value="FALSE"/>
 					</Configuration>
 "@
 				$Config | Out-File -FilePath "$Env:LOCALAPPDATA\configuration.xml"               
