@@ -2,7 +2,7 @@
 	<Add 
 	SourcePath="c:\install\O365"
 	OfficeClientEdition="64"
-	Channel="SemiAnnual">
+	Channel="Current">
         	<Product ID="O365ProPlusRetail">
 			<Language
 			ID="en-us">
@@ -20,7 +20,7 @@
     	</Add>
 
 	<Updates
-	Channel="SemiAnnual"
+	Channel="Current"
 	Enabled="TRUE">
 	</Updates>
 	
