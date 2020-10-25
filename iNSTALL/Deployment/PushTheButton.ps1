@@ -1634,7 +1634,7 @@ $SyncHash.Host = $Host
 				Invoke-Expression -Command "CMD.EXE /C '$FileDownload /quiet /extract:$FileDownload\..'"
 				[STRING]$Config = @"
 					<Configuration>
-						<Add SourcePath="c:\install\O365" OfficeClientEdition="$O365version" Channel="SemiAnnual">
+						<Add SourcePath="c:\install\O365" OfficeClientEdition="$O365version" Channel="Current">
 							<Product ID="$ProductId">
 								<Language ID="en-us"/>
 								<Language ID="nl-nl"/>
@@ -1642,7 +1642,7 @@ $SyncHash.Host = $Host
 								<ExcludeApp ID="$ExcludeApp"/>
 							</Product>
 						</Add>
-						<Updates Channel="SemiAnnual" Enabled="TRUE"/>
+						<Updates Channel="Current" Enabled="TRUE"/>
 						<Display Level="Full" AcceptEULA="TRUE"/>
 						<Logging Level="Standard" Path="c:\windows\logs\O365"/>
 						<Property Name="FORCEAPPSHUTDOWN" Value="TRUE"/>
