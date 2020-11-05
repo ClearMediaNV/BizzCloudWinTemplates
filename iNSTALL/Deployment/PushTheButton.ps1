@@ -430,7 +430,7 @@ $SyncHash.Host = $Host
                         <ComboBoxItem Content="18"/>
                         <ComboBoxItem Content="19"/>
                         <ComboBoxItem Content="20"/>
-                        <ComboBoxItem Content="24"/>
+                        <ComboBoxItem Content="21"/>
                         <ComboBoxItem Content="22"/>
                         <ComboBoxItem Content="23"/>
                     </ComboBox>
