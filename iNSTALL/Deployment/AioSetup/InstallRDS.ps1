@@ -1,5 +1,5 @@
 # Installation of RDS Session Host will restart the System
-# Set RDS related Servives to Automatic Start
+# Set RDS related Services to Automatic Start
 Set-Service -Name 'WSearch' -StartupType 'Auto'
 Set-Service -Name 'SCardSvr' -StartupType 'Auto'
 Set-Service -Name 'Audiosrv' -StartupType 'Auto'
