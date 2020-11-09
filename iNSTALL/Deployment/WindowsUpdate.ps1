@@ -7,7 +7,7 @@ Set-Service -Name 'wuauserv' -StartupType 'Manual' ; Start-Service -Name 'wuause
 
 # Create Objects Microsoft.Update.* to Search-Download-Install Windows Updates
 # $WindowsUpdateServiceManager = New-Object -ComObject 'Microsoft.Update.ServiceManager'
-# Default Service = 'Windows Server Update Service' (Cfr GPO)
+# Default Service = 'Windows Server Update Service' - CFR Local GPO
 $WindowsUpdateSearch = New-Object -ComObject 'Microsoft.Update.Searcher'
 $WindowsUpdateDownload = New-Object -ComObject 'Microsoft.Update.Downloader'
 $WindowsUpdateInstall = New-Object -ComObject 'Microsoft.Update.Installer'

@@ -1,3 +1,10 @@
+Version 2.1
+-------------
+Refactored BgInfo - Update Bginfo.exe to Version 4.28
+Refactored O365 - Update configurationxx.xml | Changed O365 Branch to Current
+Refactored Deployement - Update PushTheButton.ps1 | Changed O365 Branch to Current , Corrected Hour Items in Scheduled Time
+
+
 Version 2.0
 -------------
 Refactored BgInfo - Restart NLA Service for DomainController
