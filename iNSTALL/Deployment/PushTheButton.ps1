@@ -82,8 +82,8 @@ $SyncHash.Host = $Host
                     <Label Name="LabelFireboxIpAddress" Content="Firebox Intenal IP Address" HorizontalAlignment="Left" Height="28" Margin="30,28,0,0" VerticalAlignment="Top" Width="165"/>
                     <Label Name="LabelFireboxAdminUserName" Content="Firebox Admin Name" HorizontalAlignment="Left" Height="28" Margin="30,61,0,0" VerticalAlignment="Top" Width="165"/>
                     <Label Name="LabelFireboxAdminPassword" Content="Firebox Admin Password" HorizontalAlignment="Left" Height="28" Margin="30,94,0,0" VerticalAlignment="Top" Width="165"/>
-                    <Label Name="LabelFireboxExternalIp" Content="Firebox External IP Address" HorizontalAlignment="Left" Height="28" Margin="550,28,0,0" VerticalAlignment="Top" Width="250"/>
-                    <Label Name="LabelFireboxExternalIpGatewayCIDR" Content="Firebox External Network CIDR" HorizontalAlignment="Left" Height="28" Margin="550,61,0,0" VerticalAlignment="Top" Width="250"/>
+                    <Label Name="LabelFireboxExternalIp" Content="Firebox External NAT IP" HorizontalAlignment="Left" Height="28" Margin="550,28,0,0" VerticalAlignment="Top" Width="250"/>
+                    <Label Name="LabelFireboxExternalIpGatewayCIDR" Content="Firebox Default Gateway IP CIDR" HorizontalAlignment="Left" Height="28" Margin="550,61,0,0" VerticalAlignment="Top" Width="250"/>
                     <TextBox Name="TextBoxFireboxIpAddress"  HorizontalAlignment="Left" Height="22" Margin="220,32,0,0" Text="192.168.13.254" VerticalAlignment="Top" Width="180"/>
                     <TextBox Name="TextBoxFireboxAdminUserName" HorizontalAlignment="Left" Height="22" Margin="220,65,0,0" Text="admin" VerticalAlignment="Top" Width="180"/>
                     <TextBox Name="TextBoxFireboxAdminPassword" HorizontalAlignment="Left" Height="22" Margin="220,98,0,0" Text="readwrite" VerticalAlignment="Top" Width="180"/>
