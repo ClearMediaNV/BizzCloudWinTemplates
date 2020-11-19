@@ -1654,10 +1654,10 @@ $SyncHash.Host = $Host
 				} -ArgumentList ($O365version,$ProductId,$ExcludeApp) 
 				While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarO365.Value = $I } ) }
 				$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxO365.AddText(" Downloading $ProductId $O365version bit `n") } )
-				$Job = Invoke-Command -Session $PsSession -AsJob -JobName "Download $ProductId $O365version bit" -ScriptBlock { Invoke-Expression -Command "$Env:LOCALAPPDATA\setup.exe /download  $Env:LOCALAPPDATA\configuration.xml" }
+				$Job = Invoke-Command -Session $PsSession -AsJob -JobName "Download $ProductId $O365version bit" -ScriptBlock { Invoke-Expression -Command "$Env:LOCALAPPDATA\setupodt.exe /download  $Env:LOCALAPPDATA\configuration.xml" }
 				While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarO365.Value = $I } ) }
 				$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxO365.AddText(" Installing $ProductId $O365version bit `n") } )
-				$Job = Invoke-Command -Session $PsSession -AsJob -JobName "Install $ProductId $O365version bit" -ScriptBlock { Invoke-Expression -Command "$Env:LOCALAPPDATA\setup.exe /configure  $Env:LOCALAPPDATA\configuration.xml" }
+				$Job = Invoke-Command -Session $PsSession -AsJob -JobName "Install $ProductId $O365version bit" -ScriptBlock { Invoke-Expression -Command "$Env:LOCALAPPDATA\setupodt.exe /configure  $Env:LOCALAPPDATA\configuration.xml" }
 				While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarO365.Value = $I } ) }
 				}   
             Get-Job | Select-Object -Property Name, State, Command, @{Name='Error';Expression={ $_.ChildJobs[0].JobStateInfo.Reason }} | Export-Csv -Path "$env:windir\Logs\PushTheButtonJobs.csv" -NoTypeInformation -Force
