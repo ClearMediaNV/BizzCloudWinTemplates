@@ -1,14 +1,13 @@
 Version 2.2
 -------------
 Refactored O365 - Update InstallO365ProPlus.ps1 | Changed setup.exe to setupodt.exe
-Refactored Deployement - Update PushTheButton.ps1 | Changed Labels LabelFireboxExternalIp & LabelFireboxExternalIpGatewayCIDR in DeployFirebox - Forced version 2.9.7349.30108 for installation FsLogix in DeployRds - Changed setup.exe to setupodt.exe in DeployO365
+Refactored Deployement - Update PushTheButton.ps1 | Changed Labels LabelFireboxExternalIp & LabelFireboxExternalIpGatewayCIDR in DeployFirebox - Forced version 2.9.7349.30108 for installation FsLogix in DeployRDS - Changed setup.exe to setupodt.exe in DeployO365
 
 Version 2.1
 -------------
 Refactored BgInfo - Update Bginfo.exe to Version 4.28
 Refactored O365 - Update configurationxx.xml | Changed O365 Branch to Current
 Refactored Deployement - Update PushTheButton.ps1 | Changed O365 Branch to Current , Corrected Hour Items in Scheduled Time
-
 
 Version 2.0
 -------------
