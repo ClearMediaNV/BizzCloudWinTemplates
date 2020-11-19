@@ -97,8 +97,8 @@ Invoke-Expression -Command "& .\$Output /quiet /extract:."
 # Download 'O365 Pro Plus BIT Selection'
 switch ( $O365version )
     {
-    'O365 Pro Plus 32 bit' {$Job = Start-Job -Name "Download $O365version" -ScriptBlock { Invoke-Expression -Command '& c:\install\o365\setup.exe /download  c:\install\o365\configuration32.xml' } }
-    'O365 Pro Plus 64 bit' {$Job = Start-Job -Name "Download $O365version" -ScriptBlock { Invoke-Expression -Command '& c:\install\o365\setup.exe /download  c:\install\o365\configuration64.xml' } }
+    'O365 Pro Plus 32 bit' {$Job = Start-Job -Name "Download $O365version" -ScriptBlock { Invoke-Expression -Command '& c:\install\o365\setupodt.exe /download  c:\install\o365\configuration32.xml' } }
+    'O365 Pro Plus 64 bit' {$Job = Start-Job -Name "Download $O365version" -ScriptBlock { Invoke-Expression -Command '& c:\install\o365\setupodt.exe /download  c:\install\o365\configuration64.xml' } }
     Default {exit}
     }
 
@@ -118,7 +118,7 @@ $Form2.Close()
 # Install 'O365 Pro Plus BIT Selection'
 switch ( $O365version )
     {
-    'O365 Pro Plus 32 bit' {Invoke-Expression -Command '& c:\install\o365\setup.exe /configure  c:\install\o365\configuration32.xml'}
-    'O365 Pro Plus 64 bit' {Invoke-Expression -Command '& c:\install\o365\setup.exe /configure  c:\install\o365\configuration64.xml'}
+    'O365 Pro Plus 32 bit' {Invoke-Expression -Command '& c:\install\o365\setupodt.exe /configure  c:\install\o365\configuration32.xml'}
+    'O365 Pro Plus 64 bit' {Invoke-Expression -Command '& c:\install\o365\setupodt.exe /configure  c:\install\o365\configuration64.xml'}
     Default {exit}
     }
