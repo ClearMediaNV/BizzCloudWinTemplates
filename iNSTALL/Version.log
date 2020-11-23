@@ -1,17 +1,18 @@
 Version 2.2
 -------------
 Refactored O365 - Update InstallO365ProPlus.ps1 | Changed setup.exe to setupodt.exe
-Refactored Deployement - Update PushTheButton.ps1 | Changed Labels LabelFireboxExternalIp & LabelFireboxExternalIpGatewayCIDR in DeployFirebox - Forced version 2.9.7349.30108 for installation FsLogix in DeployRDS - Changed setup.exe to setupodt.exe in DeployO365
+Refactored Deployment - Update PushTheButton.ps1 | Changed Labels LabelFireboxExternalIp & LabelFireboxExternalIpGatewayCIDR in DeployFirebox - Forced Version 2.9.7349.30108 for installation FsLogix in DeployRDS - Changed setup.exe to setupodt.exe in DeployO365
 
 Version 2.1
 -------------
-Refactored BgInfo - Update Bginfo.exe to Version 4.28
+Refactored BgInfo - Update Bginfo.exe | Updated to Version 4.28
 Refactored O365 - Update configurationxx.xml | Changed O365 Branch to Current
-Refactored Deployement - Update PushTheButton.ps1 | Changed O365 Branch to Current , Corrected Hour Items in Scheduled Time
+Refactored Deployment - Update PushTheButton.ps1 | Changed O365 Branch to Current in DeployO365 - Corrected Hour Items in Scheduled Time in DeployWU
 
 Version 2.0
 -------------
-Refactored BgInfo - Restart NLA Service for DomainController
-Refactored O365 - Exclude Teams App - Add CSP delegation
-Refactored Deployement - Install VmWareTools - Push The Button production release
+Refactored BgInfo - Update PresetAndBgInfo.ps1 | Added Restart NLA Service for DomainController
+Refactored O365 - Update configurationxx.xml | Excluded Teams App
+Refactored O365 - Update GetO365TenantID.ps1 | Added CSP delegation
+Refactored Deployment - InstallVmWareTools.ps1 - PushTheButton.ps1
 
