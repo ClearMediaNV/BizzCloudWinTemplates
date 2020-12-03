@@ -1,3 +1,8 @@
+Version 2.3
+-------------
+Refactored BgInfo - Update windows.bgi.exe - Update PresetAndBgInfo.ps1 | Extended Inventory
+Refactored Deployment - Update InstallVmWareTools.ps1 | Fixed VmWare Tools to version 11.1.5
+
 Version 2.2
 -------------
 Refactored O365 - Update InstallO365ProPlus.ps1 | Changed setup.exe to setupodt.exe
