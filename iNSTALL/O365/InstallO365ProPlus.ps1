@@ -11,7 +11,7 @@ $Form1.MaximizeBox = $false
 $Form1.AutoSize = $true
 $Form1.StartPosition = 'CenterScreen'
 $Form1.FormBorderStyle = 'fixedsingle'
-$Form1.Topmost = $True
+$Form1.Topmost = $False
 
 # Add Button 'OK'
 $OKButton = New-Object System.Windows.Forms.Button
@@ -66,6 +66,7 @@ $Form2.MaximizeBox = $false
 $Form2.AutoSize = $true
 $Form2.StartPosition = 'CenterScreen'
 $Form2.FormBorderStyle = 'fixedsingle'
+$Form2.Topmost = $False
 
 $Label = New-Object System.Windows.Forms.Label
 $Label.Text = 'Starting. Please wait ... '
@@ -88,17 +89,18 @@ $Form2.Controls.Add($PB)
 $Form2.Show() 
 
 # Download and Extract Office Deployment Tool
-$Url = 'https://www.microsoft.com/en-us/download/confirmation.aspx?id=49117'
-$UrlDownload =  (Invoke-WebRequest -Uri $url  -UseBasicParsing | ForEach-Object { $_.links } | Where-Object { $_.href -like '*officedeploymenttool*' }).href[0]
-$Output = $UrlDownload.Split('/')[$_.count-1]
+# $Url = 'https://www.microsoft.com/en-us/download/confirmation.aspx?id=49117'
+# DownloadInstall OfficeDeploymentTool Version 16.0.13426.20308
+$UrlDownload = 'https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_13426-20308.exe'
+$Output = 'c:\install\o365\officedeploymenttool_13426-20308.exe'
 (New-Object System.Net.WebClient).DownloadFile($UrlDownload, $Output)
-Invoke-Expression -Command "& .\$Output /quiet /extract:."
+Invoke-Expression -Command "& $Output /quiet /extract:."
  
 # Download 'O365 Pro Plus BIT Selection'
 switch ( $O365version )
     {
-    'O365 Pro Plus 32 bit' {$Job = Start-Job -Name "Download $O365version" -ScriptBlock { Invoke-Expression -Command '& c:\install\o365\setupodt.exe /download  c:\install\o365\configuration32.xml' } }
-    'O365 Pro Plus 64 bit' {$Job = Start-Job -Name "Download $O365version" -ScriptBlock { Invoke-Expression -Command '& c:\install\o365\setupodt.exe /download  c:\install\o365\configuration64.xml' } }
+    'O365 Pro Plus 32 bit' {$Job = Start-Job -Name "Download $O365version" -ScriptBlock { Invoke-Expression -Command '& c:\install\o365\setup.exe /download  c:\install\o365\configuration32.xml' } }
+    'O365 Pro Plus 64 bit' {$Job = Start-Job -Name "Download $O365version" -ScriptBlock { Invoke-Expression -Command '& c:\install\o365\setup.exe /download  c:\install\o365\configuration64.xml' } }
     Default {exit}
     }
 
@@ -118,7 +120,7 @@ $Form2.Close()
 # Install 'O365 Pro Plus BIT Selection'
 switch ( $O365version )
     {
-    'O365 Pro Plus 32 bit' {Invoke-Expression -Command '& c:\install\o365\setupodt.exe /configure  c:\install\o365\configuration32.xml'}
-    'O365 Pro Plus 64 bit' {Invoke-Expression -Command '& c:\install\o365\setupodt.exe /configure  c:\install\o365\configuration64.xml'}
+    'O365 Pro Plus 32 bit' {Invoke-Expression -Command '& c:\install\o365\setup.exe /configure  c:\install\o365\configuration32.xml'}
+    'O365 Pro Plus 64 bit' {Invoke-Expression -Command '& c:\install\o365\setup.exe /configure  c:\install\o365\configuration64.xml'}
     Default {exit}
     }
