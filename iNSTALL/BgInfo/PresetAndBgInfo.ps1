@@ -23,7 +23,7 @@ Get-CimInstance -NameSpace root/CIMV2 -ClassName win32_ComputerSystem | ForEach-
 Set-Item -Path 'ENV:\NetworkCategory' -value (Get-NetConnectionProfile).NetworkCategory
 Set-Item -Path 'ENV:\IPv4Connectivity' -Value (Get-NetConnectionProfile).IPv4Connectivity
 # Get Last Installed HotFix
-$HotFixList = Get-HotFix | Select-Object -Property HotFixID,InstalledOn
+$HotFixList = Get-HotFix | Select-Object -Property HotFixID,InstalledOn | Sort-Object -Property InstalledOn
 $LastHotFix = "$(($HotFixList | Where-Object { $PSItem.InstalledOn -eq $HotFixList[-1].InstalledOn }).HotFixID -Join ',') $($HotFixList[-1].InstalledOn.tostring('dd-MM-yyyy'))"
 Set-Item -Path 'ENV:\LastHotFix' -value $LastHotFix
 # Launch BgInfo
