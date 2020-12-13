@@ -1626,15 +1626,16 @@ $SyncHash.Host = $Host
 			$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxO365.AddText(" Downloading and Extracting Office Deployment Tool `n") } )
 			$Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Download and Extract Office Deployment Tool' -ScriptBlock {
 				Param($O365version,$ProductId,$ExcludeApp)
-				$Url = 'https://www.microsoft.com/en-us/download/confirmation.aspx?id=49117'
-				$UrlDownload =  (Invoke-WebRequest -Uri $url  -UseBasicParsing | ForEach-Object { $_.links } | Where-Object { $_.href -like '*officedeploymenttool*' }).href[0]
-				$FileDownload = "$Env:LOCALAPPDATA\ODT.exe"
+				# $Url = 'https://www.microsoft.com/en-us/download/confirmation.aspx?id=49117'
+				# DownloadInstall OfficeDeploymentTool Version 16.0.13426.20308
+				$UrlDownload = 'https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_13426-20308.exe'
+				$FileDownload = "$Env:LOCALAPPDATA\officedeploymenttool_13426-20308.exe"
 				(New-Object System.Net.WebClient).DownloadFile($UrlDownload, $FileDownload)
 				Do { Start-Sleep -Seconds 2 } Until ( Test-Path -Path $FileDownload ) 
 				Invoke-Expression -Command "CMD.EXE /C '$FileDownload /quiet /extract:$FileDownload\..'"
 				[STRING]$Config = @"
 					<Configuration>
-						<Add SourcePath="c:\install\O365" OfficeClientEdition="$O365version" Channel="Current">
+						<Add SourcePath="c:\install\O365" OfficeClientEdition="$O365version" Channel="SemiAnnual">
 							<Product ID="$ProductId">
 								<Language ID="en-us"/>
 								<Language ID="nl-nl"/>
@@ -1642,7 +1643,7 @@ $SyncHash.Host = $Host
 								<ExcludeApp ID="$ExcludeApp"/>
 							</Product>
 						</Add>
-						<Updates Channel="Current" Enabled="TRUE"/>
+						<Updates Channel="SemiAnnual" Enabled="TRUE"/>
 						<Display Level="Full" AcceptEULA="TRUE"/>
 						<Logging Level="Standard" Path="c:\windows\logs\O365"/>
 						<Property Name="FORCEAPPSHUTDOWN" Value="TRUE"/>
@@ -1654,10 +1655,10 @@ $SyncHash.Host = $Host
 				} -ArgumentList ($O365version,$ProductId,$ExcludeApp) 
 				While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarO365.Value = $I } ) }
 				$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxO365.AddText(" Downloading $ProductId $O365version bit `n") } )
-				$Job = Invoke-Command -Session $PsSession -AsJob -JobName "Download $ProductId $O365version bit" -ScriptBlock { Invoke-Expression -Command "$Env:LOCALAPPDATA\setupodt.exe /download  $Env:LOCALAPPDATA\configuration.xml" }
+				$Job = Invoke-Command -Session $PsSession -AsJob -JobName "Download $ProductId $O365version bit" -ScriptBlock { Invoke-Expression -Command "$Env:LOCALAPPDATA\setup.exe /download  $Env:LOCALAPPDATA\configuration.xml" }
 				While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarO365.Value = $I } ) }
 				$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxO365.AddText(" Installing $ProductId $O365version bit `n") } )
-				$Job = Invoke-Command -Session $PsSession -AsJob -JobName "Install $ProductId $O365version bit" -ScriptBlock { Invoke-Expression -Command "$Env:LOCALAPPDATA\setupodt.exe /configure  $Env:LOCALAPPDATA\configuration.xml" }
+				$Job = Invoke-Command -Session $PsSession -AsJob -JobName "Install $ProductId $O365version bit" -ScriptBlock { Invoke-Expression -Command "$Env:LOCALAPPDATA\setup.exe /configure  $Env:LOCALAPPDATA\configuration.xml" }
 				While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarO365.Value = $I } ) }
 				}   
             Get-Job | Select-Object -Property Name, State, Command, @{Name='Error';Expression={ $_.ChildJobs[0].JobStateInfo.Reason }} | Export-Csv -Path "$env:windir\Logs\PushTheButtonJobs.csv" -NoTypeInformation -Force
