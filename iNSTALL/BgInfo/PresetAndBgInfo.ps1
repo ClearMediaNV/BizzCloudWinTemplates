@@ -9,7 +9,7 @@ Get-CimInstance -Namespace 'root\cimv2' -ClassName 'Win32_Volume' -Filter 'Drive
 Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\Disk' -Name 'TimeOutValue' -Value 600
 Set-ItemProperty -Path 'HKCU:\Software\Microsoft\ServerManager' -Name 'DoNotOpenServerManagerAtLogon' -Value 1
 Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Internet Explorer\Main\' -Name 'start page' -Value 'about:blank'
-Get-LocalUser | Where-Object { $_.SID -like '*-500'} | Set-LocalUser -PasswordNeverExpires $TRUE
+Get-LocalUser | Where-Object { $PSItem.SID -like '*-500'} | Set-LocalUser -PasswordNeverExpires $TRUE
 # Restore Tcpip6 & NLA to Default Settings
 Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters' -Name 'DisabledComponents' -Value 0
 Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\NlaSvc\Parameters\Internet' -Name 'EnableActiveProbing' -Value 1
@@ -22,5 +22,9 @@ Get-CimInstance -NameSpace root/CIMV2 -ClassName win32_ComputerSystem | ForEach-
 # Get NLA state
 Set-Item -Path 'ENV:\NetworkCategory' -value (Get-NetConnectionProfile).NetworkCategory
 Set-Item -Path 'ENV:\IPv4Connectivity' -Value (Get-NetConnectionProfile).IPv4Connectivity
+# Get Last Installed HotFix
+$HotFixList = Get-HotFix | Select-Object -Property HotFixID,InstalledOn | Sort-Object -Property InstalledOn
+$LastHotFix = "$(($HotFixList | Where-Object { $PSItem.InstalledOn -eq $HotFixList[-1].InstalledOn }).HotFixID -Join ',') $($HotFixList[-1].InstalledOn.tostring('dd-MM-yyyy'))"
+Set-Item -Path 'ENV:\LastHotFix' -value $LastHotFix
 # Launch BgInfo
 Invoke-Expression -Command "& .\bginfo.exe windows.bgi /timer:0 /nolicprompt"

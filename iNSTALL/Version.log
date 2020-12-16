@@ -1,17 +1,27 @@
+Version 2.3
+-------------
+Refactored BgInfo - Update windows.bgi | Add Extended Inventory
+Refactored BgInfo - Update PresetAndBgInfo.ps1 | Get Last Installed HotFix - LastHotFix will be added to BgInfo Inventory
+Refactored O365 - Update InstallO365ProPlus.ps1 | Fix OfficeDeploymentTool to version 16.0.13426.20308
+Refactored O365 - Update configuration32.xml | Readability - Branch = SemiAnnual
+Refactored O365 - Update configuration64.xml | Readability - Branch = SemiAnnual
+Refactored Deployment - Update InstallVmWareTools.ps1 | Fix VmWareTools to version 11.1.5
+Refactored Deployment - Create InstallMicrosoftEdge.ps1 | Install Microsoft Edge for business version 87.0.664.60
+Refactored Deployment - Update PushTheButton.ps1 | Update DeployO365Start - Fix OfficeDeploymentTool to version 16.0.13426.20308 - Set Channel="SemiAnnual"
+
 Version 2.2
 -------------
-Refactored O365 - Update InstallO365ProPlus.ps1 | Changed setup.exe to setupodt.exe
-Refactored Deployement - Update PushTheButton.ps1 | Changed Labels LabelFireboxExternalIp & LabelFireboxExternalIpGatewayCIDR in DeployFirebox - Forced version 2.9.7349.30108 for installation FsLogix in DeployRDS - Changed setup.exe to setupodt.exe in DeployO365
+Refactored Deployment - Update PushTheButton.ps1 | Update DeployFirebox - Change LabelFireboxExternalIp - Change LabelFireboxExternalIpGatewayCIDR
+Refactored Deployment - Update PushTheButton.ps1 | Update DeployRdsStart - Fix FsLogix to version 2.9.7349.30108
 
 Version 2.1
 -------------
-Refactored BgInfo - Update Bginfo.exe to Version 4.28
-Refactored O365 - Update configurationxx.xml | Changed O365 Branch to Current
-Refactored Deployement - Update PushTheButton.ps1 | Changed O365 Branch to Current , Corrected Hour Items in Scheduled Time
+Refactored BgInfo - Update Bginfo.exe | Update to Version 4.28
+Refactored Deployment - Update PushTheButton.ps1 | Update DeployWU - Correct Hour Items in Scheduled Time
 
 Version 2.0
 -------------
-Refactored BgInfo - Restart NLA Service for DomainController
-Refactored O365 - Exclude Teams App - Add CSP delegation
-Refactored Deployement - Install VmWareTools - Push The Button production release
-
+Refactored BgInfo - Update PresetAndBgInfo.ps1 | Add Restart NLA Service for DomainController
+Refactored O365 - Update configurationxx.xml | Exclude Teams App
+Refactored O365 - Update GetO365TenantID.ps1 | Add CSP delegation
+Refactored Deployment - InstallVmWareTools.ps1 - PushTheButton.ps1

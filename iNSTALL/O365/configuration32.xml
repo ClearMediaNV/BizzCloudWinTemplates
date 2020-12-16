@@ -1,51 +1,16 @@
 <Configuration>
-	<Add 
-	SourcePath="c:\install\O365"
-	OfficeClientEdition="32"
-	Channel="Current">
-        	<Product ID="O365ProPlusRetail">
-			<Language
-			ID="en-us">
-			</Language>
-			<Language
-			ID="nl-nl">
-			</Language>
-			<Language
-			ID="fr-fr">
-			</Language>
-			<ExcludeApp
-			ID="Teams">
-			</ExcludeApp>
+	<Add Channel="SemiAnnual" OfficeClientEdition="32" SourcePath="c:\install\O365" >
+        	<Product ID="O365ProPlusRetail" >
+			<Language ID="en-us" />
+			<Language ID="fr-fr" />
+			<Language ID="nl-nl" />
+			<ExcludeApp ID="Teams" />
         	</Product>
     	</Add>
-
-	<Updates
-	Channel="Current"
-	Enabled="TRUE">
-	</Updates>
-	
-	<Display
-	Level="Full"
-	AcceptEULA="TRUE">
-	</Display>
-	
-	<Logging
-	Level="Standard"
-	Path="c:\windows\logs\O365">
-	</Logging>
-	
-	<Property
-	Name="FORCEAPPSHUTDOWN"
-	Value="TRUE">
-	</Property>
-	
-	<Property
-	Name="SharedComputerLicensing"
-	Value="1">
-	</Property>
-
-	<Property
-	Name="PinIconsToTaskbar"
-	Value="FALSE">
-	</Property>
+	<Updates Channel="SemiAnnual" Enabled="TRUE" />	
+	<Display Level="Full" AcceptEULA="TRUE" />
+	<Logging Level="Standard" Path="c:\windows\logs\O365" />
+	<Property Name="FORCEAPPSHUTDOWN" Value="TRUE" />
+	<Property Name="SharedComputerLicensing" Value="1" />
+	<Property Name="PinIconsToTaskbar" Value="FALSE" />
 </Configuration>
