@@ -558,7 +558,8 @@ $SyncHash.Host = $Host
 		[INT]$Step = 8
 		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarFirebox.Value = $I } )
 		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxFirebox.AddText(" Importing PowerShell Module Posh-SSH `n") } )
-		Import-Module -FullyQualifiedName 'C:\iNSTALL\Deployment\Posh-SSH' -Force
+		# Force Posh-SSH Version to 2.3.0
+		Import-Module -FullyQualifiedName 'C:\iNSTALL\Deployment\Posh-SSH\2.3.0\Posh-SSH.psd1' -Force
 		$I += $Step ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarFirebox.Value = $I } )
 		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxFirebox.AddText(" Creating SSH Session `n") } )
 		$Credentials = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ("$FireboxAdminUserName", $(ConvertTo-SecureString -String $FireboxAdminPassword -AsPlainText -Force))
