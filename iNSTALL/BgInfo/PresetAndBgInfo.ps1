@@ -9,7 +9,6 @@ Get-CimInstance -Namespace 'root\cimv2' -ClassName 'Win32_Volume' -Filter 'Drive
 Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\Disk' -Name 'TimeOutValue' -Value 600
 Set-ItemProperty -Path 'HKCU:\Software\Microsoft\ServerManager' -Name 'DoNotOpenServerManagerAtLogon' -Value 1
 Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Internet Explorer\Main\' -Name 'start page' -Value 'about:blank'
-Get-LocalUser | Where-Object { $PSItem.SID -like '*-500'} | Set-LocalUser -PasswordNeverExpires $TRUE
 # Restore Tcpip6 & NLA to Default Settings
 Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters' -Name 'DisabledComponents' -Value 0
 Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\NlaSvc\Parameters\Internet' -Name 'EnableActiveProbing' -Value 1
