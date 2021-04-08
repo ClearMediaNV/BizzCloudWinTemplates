@@ -1013,6 +1013,15 @@ $SyncHash.Host = $Host
                     $ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
                     $Error.Clear()
                     }
+				$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxGPO.AddText(" Linking StandardServerWindowsUpdate Policy to OU=Domain Controllers,$ADRootDSE `n") } ) 
+				$I += 4 ; If ( $I -ge 100 ) { $I = 1 } ; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarGPO.Value = $I } )
+				New-GPLink -Server $env:COMPUTERNAME -Name "$GpoName" -Target "OU=Domain Controllers,$ADRootDSE" -ErrorAction Continue
+				If ( $error ) {
+                    $ErrorList += "New-GPLink -Name $GpoName -Target OU=Domain Controllers,$ADRootDSE -ErrorAction Stop"
+                    $ErrorList += $error[0].Exception.Message.ToString()
+                    $ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
+                    $Error.Clear()
+                    }
 				$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxGPO.AddText(" Injecting StandardServerWindowsUpdate Policy Keys `n") } ) 
 				$I += 4 ; If ( $I -ge 100 ) { $I = 1 } ; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarGPO.Value = $I } )
 				$StandardServerWindowsUpdate | ForEach-Object {
