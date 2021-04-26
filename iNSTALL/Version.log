@@ -1,3 +1,13 @@
+Version 2.4
+-------------
+Refactored BgInfo - Update windows.bgi | Add Inventory Items: UserName 
+Refactored BgInfo - Update PresetAndBgInfo.ps1 | Remove Password Never Expires for Administrator Account
+Refactored Docs - Clean Up and Update with HTML5 UI
+Refactored Deployment - Create DisableTeamsGpuAcceleration.ps1
+Refactored Deployment - Update PushTheButton.ps1 | Update DeployRdsReboot  | ReEnable DeployRdsStart Button after RdsReboot
+Refactored Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Deploy RAS Version 18.0.22497
+Refactored Deployment - Update PushTheButton.ps1 | Update DeployStandardGpoStart | StandardServerWindowsUpdate | Add OU=Domain Controllers
+
 Version 2.3
 -------------
 Refactored BgInfo - Update windows.bgi | Add Extended Inventory

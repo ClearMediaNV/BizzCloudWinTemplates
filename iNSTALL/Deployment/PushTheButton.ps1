@@ -558,7 +558,8 @@ $SyncHash.Host = $Host
 		[INT]$Step = 8
 		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarFirebox.Value = $I } )
 		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxFirebox.AddText(" Importing PowerShell Module Posh-SSH `n") } )
-		Import-Module -FullyQualifiedName 'C:\iNSTALL\Deployment\Posh-SSH' -Force
+		# Force Posh-SSH Version to 2.3.0
+		Import-Module -FullyQualifiedName 'C:\iNSTALL\Deployment\Posh-SSH\2.3.0\Posh-SSH.psd1' -Force
 		$I += $Step ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarFirebox.Value = $I } )
 		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxFirebox.AddText(" Creating SSH Session `n") } )
 		$Credentials = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ("$FireboxAdminUserName", $(ConvertTo-SecureString -String $FireboxAdminPassword -AsPlainText -Force))
@@ -1008,6 +1009,15 @@ $SyncHash.Host = $Host
 				New-GPLink -Server $env:COMPUTERNAME -Name "$GpoName" -Target "$RdsOuPath" -ErrorAction Continue
 				If ( $error ) {
                     $ErrorList += "New-GPLink -Name $GpoName -Target $RdsOuPath -ErrorAction Stop"
+                    $ErrorList += $error[0].Exception.Message.ToString()
+                    $ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
+                    $Error.Clear()
+                    }
+				$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxGPO.AddText(" Linking StandardServerWindowsUpdate Policy to OU=Domain Controllers,$ADRootDSE `n") } ) 
+				$I += 4 ; If ( $I -ge 100 ) { $I = 1 } ; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarGPO.Value = $I } )
+				New-GPLink -Server $env:COMPUTERNAME -Name "$GpoName" -Target "OU=Domain Controllers,$ADRootDSE" -ErrorAction Continue
+				If ( $error ) {
+                    $ErrorList += "New-GPLink -Name $GpoName -Target OU=Domain Controllers,$ADRootDSE -ErrorAction Stop"
                     $ErrorList += $error[0].Exception.Message.ToString()
                     $ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
                     $Error.Clear()
@@ -1505,9 +1515,9 @@ $SyncHash.Host = $Host
 				} -ArgumentList ($DomainDnsName)
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarRDS.Value = $I } ) }
             If ( $CheckBoxRas ) {
-                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxRDS.AddText(" Downloading and Installing Parallels RAS 17.2.21873 `n") } )
-				$Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Download and Install Parallels RAS 17.2.21873' -ScriptBlock {
-                    [STRING]$UrlDownload =  'https://download.parallels.com/ras/v17/17.1.2.21873/RASInstaller-17.1.21873.msi'
+                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxRDS.AddText(" Downloading and Installing Parallels RAS 18.0.22497 `n") } )
+				$Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Download and Install Parallels RAS 18.0.22497' -ScriptBlock {
+                    [STRING]$UrlDownload =  'https://download.parallels.com/ras/v18/18.0.1.22497/RASInstaller-18.0.22497.msi'
                     [STRING]$FileDownload = "$ENV:LOCALAPPDATA\$($UrlDownload.Split('/')[-1])"
                     Invoke-WebRequest -Uri $UrlDownload -UseBasicParsing  -OutFile $FileDownload -PassThru | Out-Null
                     Start-Sleep -Seconds 5
@@ -1573,6 +1583,8 @@ $SyncHash.Host = $Host
 					$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarRDS.Visibility = "Hidden" } )
 					$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.DeployRdsReboot.Visibility = "Hidden"  } )    
 					$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatusRDS.Content = "Reboot Initiated $(' .'*140)" } )
+					$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployRdsStart.IsEnabled = $True } )
+					$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployRdsStart.Visibility = "Visible" } )
 					$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployO365Start.IsEnabled = $True } )
 					$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployWUStart.IsEnabled = $True } )
 					$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployUserStart.IsEnabled = $True } )                    
