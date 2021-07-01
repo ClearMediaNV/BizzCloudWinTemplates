@@ -946,7 +946,8 @@ $SyncHash.Host = $Host
 				'HKCU\Software\Policies\Google\Chrome,HardwareAccelerationModeEnabled,Dword,0',
 				'HKCU\SOFTWARE\Microsoft\Internet Explorer\Main,UseSWRender,Dword,1',
 				'HKCU\Software\Adobe\Acrobat Reader\DC\3D,b3DAllowSelect,Dword,0',
-				'HKCU\Software\Microsoft\Office\16.0\Common\Graphics,DisableHardwareAcceleration,Dword,1'
+				'HKCU\Software\Microsoft\Office\16.0\Common\Graphics,DisableHardwareAcceleration,Dword,1',
+				'HKLM\Software\Policies\Microsoft\Edge,HardwareAccelerationModeEnabled,Dword,0'
 				)
 			$StandardO365UserPolicy = (
 				'HKCU\Software\policies\microsoft\office\16.0\common,qmenable,Dword,0',
