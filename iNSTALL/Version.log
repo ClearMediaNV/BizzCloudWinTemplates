@@ -1,37 +1,47 @@
+Version 2.5
+-------------
+Refactor Deployment - Update InstallVmWareTools.ps1 | Fix VmWareTools to version 11.2.5
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployFireboxStart | Add extended Error Handling - Remove Reboot
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployStandardGpoStart | Add Disable HardwareAcceleration for Microsoft Edge
+Refactor GPO - Add Files via Upload | Add FSLogix group policy definitions - Add Microsoft Edge group policy definitions
+Refactor BgInfo - Update PresetAndBgInfo.ps1 | Add WSUS Server - WSUS Server will be added to BgInfo Inventory
+Refactor BgInfo - Update windows.bgi | Add Inventory Item WSUS
+Refactor O365 - Update GetO365TenantID.ps1 | Change CSP Delegation to BITLY URL
+
 Version 2.4
 -------------
-Refactored BgInfo - Update windows.bgi | Add Inventory Items: UserName 
-Refactored BgInfo - Update PresetAndBgInfo.ps1 | Remove Password Never Expires for Administrator Account
-Refactored Docs - Clean Up and Update with HTML5 UI
-Refactored Deployment - Create DisableTeamsGpuAcceleration.ps1
-Refactored Deployment - Update PushTheButton.ps1 | Update DeployRdsReboot  | ReEnable DeployRdsStart Button after RdsReboot
-Refactored Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Deploy RAS Version 18.0.22497
-Refactored Deployment - Update PushTheButton.ps1 | Update DeployStandardGpoStart | StandardServerWindowsUpdate | Add OU=Domain Controllers
+Refactor BgInfo - Update windows.bgi | Add Inventory Item UserName 
+Refactor BgInfo - Update PresetAndBgInfo.ps1 | Remove Password Never Expires for Administrator Account
+Refactor Docs - Clean Up and Update with HTML5 UI
+Refactor Deployment - Create DisableTeamsGpuAcceleration.ps1
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsReboot  | ReEnable DeployRdsStart Button after RdsReboot
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Deploy RAS Version 18.0.22497
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployStandardGpoStart | StandardServerWindowsUpdate | Add OU=Domain Controllers
 
 Version 2.3
 -------------
-Refactored BgInfo - Update windows.bgi | Add Extended Inventory
-Refactored BgInfo - Update PresetAndBgInfo.ps1 | Get Last Installed HotFix - LastHotFix will be added to BgInfo Inventory
-Refactored O365 - Update InstallO365ProPlus.ps1 | Fix OfficeDeploymentTool to version 16.0.13426.20308
-Refactored O365 - Update configuration32.xml | Readability - Branch = SemiAnnual
-Refactored O365 - Update configuration64.xml | Readability - Branch = SemiAnnual
-Refactored Deployment - Update InstallVmWareTools.ps1 | Fix VmWareTools to version 11.1.5
-Refactored Deployment - Create InstallMicrosoftEdge.ps1 | Install Microsoft Edge for business version 87.0.664.60
-Refactored Deployment - Update PushTheButton.ps1 | Update DeployO365Start - Fix OfficeDeploymentTool to version 16.0.13426.20308 - Set Channel="SemiAnnual"
+Refactor BgInfo - Update windows.bgi | Add Extended Inventory
+Refactor BgInfo - Update PresetAndBgInfo.ps1 | Get Last Installed HotFix - LastHotFix will be added to BgInfo Inventory
+Refactor O365 - Update InstallO365ProPlus.ps1 | Fix OfficeDeploymentTool to version 16.0.13426.20308
+Refactor O365 - Update configuration32.xml | Readability - Branch = SemiAnnual
+Refactor O365 - Update configuration64.xml | Readability - Branch = SemiAnnual
+Refactor Deployment - Update InstallVmWareTools.ps1 | Fix VmWareTools to version 11.1.5
+Refactor Deployment - Create InstallMicrosoftEdge.ps1 | Install Microsoft Edge for business version 87.0.664.60
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployO365Start - Fix OfficeDeploymentTool to version 16.0.13426.20308 - Set Channel="SemiAnnual"
 
 Version 2.2
 -------------
-Refactored Deployment - Update PushTheButton.ps1 | Update DeployFirebox - Change LabelFireboxExternalIp - Change LabelFireboxExternalIpGatewayCIDR
-Refactored Deployment - Update PushTheButton.ps1 | Update DeployRdsStart - Fix FsLogix to version 2.9.7349.30108
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployFirebox - Change LabelFireboxExternalIp - Change LabelFireboxExternalIpGatewayCIDR
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart - Fix FsLogix to version 2.9.7349.30108
 
 Version 2.1
 -------------
-Refactored BgInfo - Update Bginfo.exe | Update to Version 4.28
-Refactored Deployment - Update PushTheButton.ps1 | Update DeployWU - Correct Hour Items in Scheduled Time
+Refactor BgInfo - Update Bginfo.exe | Update to Version 4.28
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployWU - Correct Hour Items in Scheduled Time
 
 Version 2.0
 -------------
-Refactored BgInfo - Update PresetAndBgInfo.ps1 | Add Restart NLA Service for DomainController
-Refactored O365 - Update configurationxx.xml | Exclude Teams App
-Refactored O365 - Update GetO365TenantID.ps1 | Add CSP delegation
-Refactored Deployment - InstallVmWareTools.ps1 - PushTheButton.ps1
+Refactor BgInfo - Update PresetAndBgInfo.ps1 | Add Restart NLA Service for DomainController
+Refactor O365 - Update configurationxx.xml | Exclude Teams App
+Refactor O365 - Update GetO365TenantID.ps1 | Add CSP delegation
+Refactor Deployment - InstallVmWareTools.ps1 - PushTheButton.ps1

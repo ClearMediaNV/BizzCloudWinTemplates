@@ -553,7 +553,7 @@ $SyncHash.Host = $Host
 	$Runspace.SessionStateProxy.SetVariable("FireboxExternalIpGatewayCIDR",$FireboxExternalIpGatewayCIDR)
 	$Runspace.SessionStateProxy.SetVariable("FireboxExternalIpCIDR",$FireboxExternalIpCIDR)
 	$Runspace.SessionStateProxy.SetVariable("FireboxExternalIpGateway",$FireboxExternalIpGateway)
-	$code = {
+		$code = {
 		[INT]$I = 0
 		[INT]$Step = 8
 		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarFirebox.Value = $I } )
@@ -590,17 +590,33 @@ $SyncHash.Host = $Host
 		do  { $Stream.WriteLine("exit") ; Start-Sleep -Seconds 2 ; $Return = $Stream.Read() } until ( $Return.Split([CHAR]10).Split([CHAR]13)[-1] -eq 'WG#' )
 		# $Return = $Stream.Read() ; $Return = $Stream.Read()
 		$I += $Step ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarFirebox.Value = $I } )
-		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxFirebox.AddText(" Sending reboot `n") } )
-		do  { $Stream.WriteLine("reboot") ; Start-Sleep -Seconds 2 ; $Return = $Stream.Read() } until ( $Return.Split([CHAR]10).Split([CHAR]13)[-1] -eq 'Reboot (yes or no)? ' )
-		$I += $Step ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarDc.Value = $I } )
-		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxFirebox.AddText(" Sending yes `n") } )
-		$Stream.WriteLine("yes") ; Start-Sleep -Seconds 2
-		$I += $Step ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarFirebox.Value = $I } )
+		# $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxFirebox.AddText(" Sending reboot `n") } )
+		# do  { $Stream.WriteLine("reboot") ; Start-Sleep -Seconds 2 ; $Return = $Stream.Read() } until ( $Return.Split([CHAR]10).Split([CHAR]13)[-1] -eq 'Reboot (yes or no)? ' )
+		# $I += $Step ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarDc.Value = $I } )
+		# $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxFirebox.AddText(" Sending yes `n") } )
+		# $Stream.WriteLine("yes") ; Start-Sleep -Seconds 2
+		# $I += $Step ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarFirebox.Value = $I } )
 		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxFirebox.AddText(" Closing SSH Stream `n") } )
 		Start-Sleep -Seconds 3 ; $Stream.Close() ; $Stream.Dispose()
 		$I += $Step ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarFirebox.Value = $I } )
 		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxFirebox.AddText(" Closing SSH Session `n") } )
 		Remove-SshSession ; Start-Sleep -Seconds 3
+        	$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxFirebox.AddText(" Testing Internet Connection `n") } )
+		[INT]$J = 1
+		Do {
+			$J++
+			$Job = Invoke-Command -ComputerName localhost -AsJob -JobName 'TestConnectionGoogle' -ScriptBlock { Test-Connection -ComputerName '8.8.4.4' -Count 1 -Delay 1 }
+			While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarFirebox.Value = $I } ) }
+			}
+		    While ( $Job.ChildJobs[0].Error -and ( $J -le 5 ) )
+		If ( $Job.ChildJobs[0].Error ) {
+                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarFirebox.Visibility = "Hidden" } )
+                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.LabelStatusFirebox.Content = "Connection Failure $(' .'*130)$(' '*30)Please check NAT IP & Gateway IP CIDR" } )
+                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployFireboxStart.IsEnabled = $True } )
+                    $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployFireboxStart.Visibility = "Visible"  } )
+                    Return
+                    }
+            Else { Start-Sleep -Milliseconds 2500 ; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxFirebox.AddText(" Public IP Address :  $((Invoke-WebRequest -Uri 'https://api.ipify.org' -UseBasicParsing).content) `n") } )}	 
 		New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'FireboxExternalIp' -PropertyType 'String' -Value $FireboxExternalIp -Force
 		New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'FireboxExternalIpGatewayCIDR' -PropertyType 'String' -Value $FireboxExternalIpGatewayCIDR -Force
 		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarFirebox.Visibility = "Hidden" } )
@@ -930,7 +946,8 @@ $SyncHash.Host = $Host
 				'HKCU\Software\Policies\Google\Chrome,HardwareAccelerationModeEnabled,Dword,0',
 				'HKCU\SOFTWARE\Microsoft\Internet Explorer\Main,UseSWRender,Dword,1',
 				'HKCU\Software\Adobe\Acrobat Reader\DC\3D,b3DAllowSelect,Dword,0',
-				'HKCU\Software\Microsoft\Office\16.0\Common\Graphics,DisableHardwareAcceleration,Dword,1'
+				'HKCU\Software\Microsoft\Office\16.0\Common\Graphics,DisableHardwareAcceleration,Dword,1',
+				'HKLM\Software\Policies\Microsoft\Edge,HardwareAccelerationModeEnabled,Dword,0'
 				)
 			$StandardO365UserPolicy = (
 				'HKCU\Software\policies\microsoft\office\16.0\common,qmenable,Dword,0',
@@ -1902,10 +1919,10 @@ Shutdown.exe /r /t 5 /f /c 'Scheduled Windows Updates with Reboot' /d p:0:0
 # Init ( WPF - Windows Presentation Framework ) Actions
     $syncHash.ButtonFireboxStart.Add_Click({
         $syncHash.BorderDeployFireboxStart.IsEnabled = $False
+	$syncHash.LabelStatusFirebox.Content = "In Progress ...."
         $syncHash.LabelStatusFirebox.Visibility = "Visible"
         $syncHash.ProgressBarFirebox.Visibility = "Visible"
-		DeployFireboxStart -syncHash $syncHash -FireboxIpAddress $syncHash.TextBoxFireboxIpAddress.Text -FireboxAdminUserName $SyncHash.TextBoxFireboxAdminUserName.Text -FireboxAdminPassword $SyncHash.TextBoxFireboxAdminPassword.Text -FireboxExternalIp $SyncHash.TextBoxFireboxExternalIp.Text -FireboxExternalIpGatewayCIDR $SyncHash.TextBoxFireboxExternalIpGatewayCIDR.Text -FireboxExternalIpCIDR "$($SyncHash.TextBoxFireboxExternalIp.Text)/$($SyncHash.TextBoxFireboxExternalIpGatewayCIDR.Text.Split('/')[1])" -FireboxExternalIpGateway "$($SyncHash.TextBoxFireboxExternalIpGatewayCIDR.Text.Split('/')[0])"
-        # $SyncHash.host.ui.WriteVerboseLine($SyncHash.TextBoxDomainNetbiosName.Text)
+	DeployFireboxStart -syncHash $syncHash -FireboxIpAddress $syncHash.TextBoxFireboxIpAddress.Text -FireboxAdminUserName $SyncHash.TextBoxFireboxAdminUserName.Text -FireboxAdminPassword $SyncHash.TextBoxFireboxAdminPassword.Text -FireboxExternalIp $SyncHash.TextBoxFireboxExternalIp.Text -FireboxExternalIpGatewayCIDR $SyncHash.TextBoxFireboxExternalIpGatewayCIDR.Text -FireboxExternalIpCIDR "$($SyncHash.TextBoxFireboxExternalIp.Text)/$($SyncHash.TextBoxFireboxExternalIpGatewayCIDR.Text.Split('/')[1])" -FireboxExternalIpGateway "$($SyncHash.TextBoxFireboxExternalIpGatewayCIDR.Text.Split('/')[0])"
         })
     $syncHash.ButtonDeployDcStart.Add_Click({
         $syncHash.BorderDeployDcStart.IsEnabled = $False

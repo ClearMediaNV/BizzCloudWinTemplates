@@ -28,7 +28,7 @@ $ScriptBlockOK = {
         }
     }
 $ScriptBlockCspDelegation = {
-    $Url = 'https://admin.microsoft.com/Adminportal/Home?invType=ResellerRelationship&partnerId=f59f16d4-ed58-42e1-92c1-af863f919035&msppId=0&DAP=true#/BillingAccounts/partner-invitation'
+    $Url = 'https://bit.ly/3pWul40'
     Start-Process $Url
     }
 $ScriptBlockCopyToClipboardDomain = { Set-Clipboard -Value $TextBoxDomainName.Text }

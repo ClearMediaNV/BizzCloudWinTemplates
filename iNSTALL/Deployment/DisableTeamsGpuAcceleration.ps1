@@ -1,3 +1,5 @@
+# Please Run in User Context
+
 # Kill Running Teams Instances
 $TeamsExePath = "$Env:LOCALAPPDATA\Microsoft\Teams\Current\Teams.exe"
 Get-Process -Name 'Teams' -ErrorAction SilentlyContinue | Where-Object { $PSItem.Path -eq $TeamsExePath }  | Stop-Process
