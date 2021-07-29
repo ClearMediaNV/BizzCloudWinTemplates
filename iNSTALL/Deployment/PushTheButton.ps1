@@ -1466,7 +1466,7 @@ $SyncHash.Host = $Host
                 # Install Chocolatey as Package Provider
 				Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1')
 				# Install FsLogix
-				Invoke-Expression -Command '& C:\ProgramData\chocolatey\choco install fslogix --version=2.9.7349.30108 -y -f'
+				Invoke-Expression -Command '& C:\ProgramData\chocolatey\choco install fslogix --version=2.9.7654.4615001 -y -f'
 				}
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarRDS.Value = $I } ) }
             $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxRDS.AddText(" Enabling FsLogix O365 File Container `n") } ) 
