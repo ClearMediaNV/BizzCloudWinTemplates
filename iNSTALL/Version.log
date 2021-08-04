@@ -1,3 +1,7 @@
+Version 2.6
+-------------
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Fix FsLogix to version 2.9.7654.4615001
+
 Version 2.5
 -------------
 Refactor Deployment - Update InstallVmWareTools.ps1 | Fix VmWareTools to version 11.2.5
@@ -14,8 +18,8 @@ Refactor BgInfo - Update windows.bgi | Add Inventory Item UserName
 Refactor BgInfo - Update PresetAndBgInfo.ps1 | Remove Password Never Expires for Administrator Account
 Refactor Docs - Clean Up and Update with HTML5 UI
 Refactor Deployment - Create DisableTeamsGpuAcceleration.ps1
-Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsReboot  | ReEnable DeployRdsStart Button after RdsReboot
-Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Deploy RAS Version 18.0.22497
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsReboot | ReEnable DeployRdsStart Button after RdsReboot
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Fix RAS to version 18.0.22497
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployStandardGpoStart | StandardServerWindowsUpdate | Add OU=Domain Controllers
 
 Version 2.3
