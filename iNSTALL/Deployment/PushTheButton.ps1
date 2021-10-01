@@ -924,7 +924,7 @@ $SyncHash.Host = $Host
 				'HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate,ActiveHoursEnd,Dword,6',
 				'HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate\AU,AUOptions,Dword,3',
 				'HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate\AU,UseWUServer,Dword,1',
-				'HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate\AU,NoAutoRebootWithLoggedOnUsers,Dword,1'
+				'HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate\AU,NoAutoRebootWithLoggedOnUsers,Dword,1',
 				'HKLM\Software\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Servicing,RepairContentServerSource,Dword,2'
 				)
 			# Create and Assemble User GPOs
