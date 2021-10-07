@@ -1490,6 +1490,7 @@ $SyncHash.Host = $Host
 					'Audiosrv' =  'Auto'
 					'SCardSvr' = 'Auto'
 					'WSearch'  = 'Auto'
+					'Spooler'  = 'Auto'
 					}
 				$Services.keys | ForEach-Object { Set-Service -Name $_ -StartupType $($Services.$_) }
 				}
