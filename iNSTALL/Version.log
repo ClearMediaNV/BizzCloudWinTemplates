@@ -1,5 +1,6 @@
 Version 2.7
 -------------
+Refactor BgInfo - Update PresetAndBgInfo.ps1 | Get WSUS Server | Make Code Compatible with OS Windows Server 2012R2
 Refactor GPO - Update StandardWindowsUpdateServerPolicy.csv | Bypass WSUS for Features on Demand
 Refactor Deployment/AioSetup - Update InstallRDS.ps1 | Enable Printer Spooler Service
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployStandardGpoStart | Bypass WSUS for Features on Demand
