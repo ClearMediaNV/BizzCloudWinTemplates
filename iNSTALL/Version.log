@@ -4,6 +4,7 @@ Refactor BgInfo - Update PresetAndBgInfo.ps1 | Get WSUS Server | Make Code Compa
 Refactor GPO - Update StandardWindowsUpdateServerPolicy.csv | Bypass WSUS for Features on Demand
 Refactor Deployment/AioSetup - Update InstallRDS.ps1 | Enable Printer Spooler Service
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployStandardGpoStart | Bypass WSUS for Features on Demand
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Fix RAS to version 18.1.22733
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Enable Printer Spooler Service
 Refactor Deployment - Update InstallMicrosoftEdge.ps1 | Fix Microsoft Edge for business to version 94.0.992.31
 Refactor Deployment - Update InstallVmWareTools.ps1 | Fix VmWareTools to version 11.3.5
