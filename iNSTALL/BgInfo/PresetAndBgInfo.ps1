@@ -26,7 +26,7 @@ $HotFixList = Get-HotFix | Select-Object -Property HotFixID,InstalledOn | Sort-O
 $LastHotFix = "$(($HotFixList | Where-Object { $PSItem.InstalledOn -eq $HotFixList[-1].InstalledOn }).HotFixID -Join ',') $($HotFixList[-1].InstalledOn.tostring('dd-MM-yyyy'))"
 Set-Item -Path 'ENV:\LastHotFix' -value $LastHotFix
 # Get WSUS Server
-Try { Set-Item -Path 'ENV:\WSUS' -Value ( Get-ItemPropertyValue -Path 'HKLM:\Software\Policies\Microsoft\Windows\WindowsUpdate' -Name 'WUServer' ) }
+Try { Set-Item -Path 'ENV:\WSUS' -Value ( Get-ItemProperty -Path 'HKLM:\Software\Policies\Microsoft\Windows\WindowsUpdate' ).WUServer }
     Catch { Set-Item -Path 'ENV:\WSUS' -Value '0.0.0.0' }
 # Launch BgInfo
 Invoke-Expression -Command "& .\bginfo.exe windows.bgi /timer:0 /nolicprompt"

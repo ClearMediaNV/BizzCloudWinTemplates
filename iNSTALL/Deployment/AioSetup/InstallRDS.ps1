@@ -3,6 +3,7 @@
 Set-Service -Name 'WSearch' -StartupType 'Auto'
 Set-Service -Name 'SCardSvr' -StartupType 'Auto'
 Set-Service -Name 'Audiosrv' -StartupType 'Auto'
+Set-Service -Name 'Spooler' -StartupType 'Auto'
 # Install Essential RDS Features & Roles
 Install-WindowsFeature -Name Windows-TIFF-IFilter
 Install-WindowsFeature -Name RDS-RD-Server

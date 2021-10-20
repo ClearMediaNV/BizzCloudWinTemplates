@@ -924,7 +924,8 @@ $SyncHash.Host = $Host
 				'HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate,ActiveHoursEnd,Dword,6',
 				'HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate\AU,AUOptions,Dword,3',
 				'HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate\AU,UseWUServer,Dword,1',
-				'HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate\AU,NoAutoRebootWithLoggedOnUsers,Dword,1'
+				'HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate\AU,NoAutoRebootWithLoggedOnUsers,Dword,1',
+				'HKLM\Software\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Servicing,RepairContentServerSource,Dword,2'
 				)
 			# Create and Assemble User GPOs
 			# Link User GPOs to OU Users
@@ -1489,6 +1490,7 @@ $SyncHash.Host = $Host
 					'Audiosrv' =  'Auto'
 					'SCardSvr' = 'Auto'
 					'WSearch'  = 'Auto'
+					'Spooler'  = 'Auto'
 					}
 				$Services.keys | ForEach-Object { Set-Service -Name $_ -StartupType $($Services.$_) }
 				}
@@ -1532,14 +1534,15 @@ $SyncHash.Host = $Host
 				} -ArgumentList ($DomainDnsName)
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarRDS.Value = $I } ) }
             If ( $CheckBoxRas ) {
-                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxRDS.AddText(" Downloading and Installing Parallels RAS 18.0.22497 `n") } )
-				$Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Download and Install Parallels RAS 18.0.22497' -ScriptBlock {
-                    [STRING]$UrlDownload =  'https://download.parallels.com/ras/v18/18.0.1.22497/RASInstaller-18.0.22497.msi'
-                    [STRING]$FileDownload = "$ENV:LOCALAPPDATA\$($UrlDownload.Split('/')[-1])"
-                    Invoke-WebRequest -Uri $UrlDownload -UseBasicParsing  -OutFile $FileDownload -PassThru | Out-Null
-                    Start-Sleep -Seconds 5
-                    Invoke-Expression -Command "CMD.exe /C 'MsiExec.exe /i $FileDownload /qn /norestart'"
-                    }
+                $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxRDS.AddText(" Downloading and Installing Parallels RAS 18.1.22733 `n") } )
+		$Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Download and Install Parallels RAS 18.1.22733' -ScriptBlock {
+		# https://www.parallels.com/products/ras/download/links/
+		[STRING]$UrlDownload =  'https://download.parallels.com/ras/v18/18.1.0.22733/RASInstaller-18.1.22733.msi'
+                [STRING]$FileDownload = "$ENV:LOCALAPPDATA\$($UrlDownload.Split('/')[-1])"
+                Invoke-WebRequest -Uri $UrlDownload -UseBasicParsing  -OutFile $FileDownload -PassThru | Out-Null
+                Start-Sleep -Seconds 5
+                Invoke-Expression -Command "CMD.exe /C 'MsiExec.exe /i $FileDownload /qn /norestart'"
+                }
                 While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarRDS.Value = $I } ) }
 				$Job = Invoke-Command -Session $PsSession -AsJob -JobName "Deploy Parallels RAS Farm" -ScriptBlock {
                     Param($RasLicenseEmail,$RasLicensePassword,$AdminUserName,$AdminPassword,$ServerIpAddress)
