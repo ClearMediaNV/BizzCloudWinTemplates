@@ -9,6 +9,7 @@ Get-CimInstance -Namespace 'root\cimv2' -ClassName 'Win32_Volume' -Filter 'Drive
 Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\Disk' -Name 'TimeOutValue' -Value 600
 Set-ItemProperty -Path 'HKCU:\Software\Microsoft\ServerManager' -Name 'DoNotOpenServerManagerAtLogon' -Value 1
 # Get Public IP @
+[System.Net.ServicePointManager]::SecurityProtocol = 'Tls12'
 Try { Set-Item -Path 'ENV:\IpAddressPublic' -Value (Invoke-WebRequest -Uri 'https://api.ipify.org' -UseBasicParsing).content }
     Catch { Set-Item -Path 'ENV:\IpAddressPublic' -Value '0.0.0.0' }
 # Restart NLA Service for DomainController in order to gain extra Reboot in initial Deployment of ADS
