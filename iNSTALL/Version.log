@@ -1,5 +1,6 @@
 Version 2.9
 -------------
+Refactor BgInfo - Update PresetAndBgInfo.ps1 | Force TLS12 for https://api.ipify.org
 Refactor Tools - Update InstallTools.ps1 | Add SetUserFTA
 Refactor GPO - Update StandardRdsServerPolicy.csv | Enable Long Paths
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployStandardGpoStart | Enable Long Paths
