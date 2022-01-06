@@ -1,7 +1,6 @@
 # Get GitHub Repository Archive
 # Change SecurityProtocol for downloading from GitHub
-$SavedSecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol
-[System.Net.ServicePointManager]::SecurityProtocol = 'Tls,Tls11,Tls12'
+[System.Net.ServicePointManager]::SecurityProtocol = 'Tls12'
 Try {
     $Branch = 'master'
     $UrlDownload = "https://github.com/ClearMediaNV/BizzCloudWinTemplates/archive/$Branch.zip"
@@ -23,6 +22,4 @@ Try {
          Write-Output 'GitHub Connection Error. Please Check DNS & Gateway Config. Please Check https://github.com/ClearMediaNV'
          Start-Sleep -Seconds 5
          }
-# Restore Saved SecurityProtocol
-[System.Net.ServicePointManager]::SecurityProtocol = $SavedSecurityProtocol
 # The End
