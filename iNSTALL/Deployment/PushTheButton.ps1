@@ -616,7 +616,7 @@ $SyncHash.Host = $Host
                     $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.BorderDeployFireboxStart.Visibility = "Visible"  } )
                     Return
                     }
-            Else { Start-Sleep -Milliseconds 2500 ; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxFirebox.AddText(" Public IP Address :  $((Invoke-WebRequest -Uri 'https://api.ipify.org' -UseBasicParsing).content) `n") } )}	 
+            Else { Start-Sleep -Milliseconds 2500 ; [System.Net.ServicePointManager]::SecurityProtocol = 'Tls12' ; $syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.TextBlockOutBoxFirebox.AddText(" Public IP Address :  $((Invoke-WebRequest -Uri 'https://api.ipify.org' -UseBasicParsing).content) `n") } )}	 
 		New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'FireboxExternalIp' -PropertyType 'String' -Value $FireboxExternalIp -Force
 		New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'FireboxExternalIpGatewayCIDR' -PropertyType 'String' -Value $FireboxExternalIpGatewayCIDR -Force
 		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarFirebox.Visibility = "Hidden" } )
