@@ -1,3 +1,7 @@
+Version 2.10
+-------------
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployFireboxStart | Force TLS12 for https://api.ipify.org
+
 Version 2.9
 -------------
 Refactor BgInfo - Update PresetAndBgInfo.ps1 | Force TLS12 for https://api.ipify.org
