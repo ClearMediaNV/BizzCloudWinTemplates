@@ -1,6 +1,7 @@
 Version 2.10
 -------------
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployFireboxStart | Force TLS12 for https://api.ipify.org
+Refactor Deployment/AioSetup - Update InstallRDS.ps1 | Add Warning RDS Windows Server 2019
 
 Version 2.9
 -------------
