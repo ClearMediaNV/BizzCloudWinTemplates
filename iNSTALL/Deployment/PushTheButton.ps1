@@ -1409,7 +1409,7 @@ $SyncHash.Host = $Host
                 if ( (get-disk -Number 1).AllocatedSize -eq 0 ) {
 					Initialize-Disk -Number 1
 					[STRING]$DriveLetter = $FSLogixFolderRootPath.Split(':')[0]
-                    New-Partition -DiskNumber 1 -DriveLetter $DriveLetter -UseMaximumSize | Format-Volume -FileSystem ReFS -NewFileSystemLabel 'FSLOGIX'
+                    New-Partition -DiskNumber 1 -DriveLetter $DriveLetter -UseMaximumSize | Format-Volume -FileSystem NTFS -NewFileSystemLabel 'FSLOGIX'
                     # Remove All but System & Administrators from ACL on Root
                     Get-Acl -Path "$($DriveLetter):\" | ForEach-Object {
                         $ACL = $_
