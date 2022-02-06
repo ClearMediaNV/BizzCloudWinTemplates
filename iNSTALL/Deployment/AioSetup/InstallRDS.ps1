@@ -1,8 +1,9 @@
+##########################################################
+#  Please DO NOT Deploy RDS on a Standalone Server 2019  #
+#           Please contact ClearMedia Support            #
+##########################################################
 # Installation of RDS Session Host will restart the System
 # Set RDS related Services to Automatic Start
-##########################################################
-#  Please DO NOT Deploy RDS on a Standalone Server 2019  #                                                      #
-##########################################################
 Set-Service -Name 'WSearch' -StartupType 'Auto'
 Set-Service -Name 'SCardSvr' -StartupType 'Auto'
 Set-Service -Name 'Audiosrv' -StartupType 'Auto'
