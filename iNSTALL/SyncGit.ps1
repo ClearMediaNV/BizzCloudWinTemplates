@@ -14,7 +14,7 @@ Try {
     # Cleanup and Copy iNSTALL Folder
     Remove-Item -Path 'c:\install\*'  -Recurse -Force
     Copy-Item -Path "$FolderDownload\BizzCloudWinTemplates-$Branch\iNSTALL\*" -Destination 'c:\iNSTALL' -Recurse -Force
-    # Cleanup File & Folder Download
+    # Cleanup File Download and Folder Download
     Remove-Item -Path "$FileDownload" -Force
     Remove-Item -Path "$FolderDownload" -Recurse -Force
     }

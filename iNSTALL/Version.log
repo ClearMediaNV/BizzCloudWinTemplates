@@ -1,3 +1,10 @@
+Version 2.10
+-------------
+Refactor Deployment - Update WindowsUpdate.ps1 | Assure WindowsUpdateService Disabled By Default
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Format FsLogix Drive to NTFS
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployFireboxStart | Force TLS12 for https://api.ipify.org
+Refactor Deployment/AioSetup - Update InstallRDS.ps1 | Add Warning RDS Windows Server 2019
+
 Version 2.9
 -------------
 Refactor BgInfo - Update PresetAndBgInfo.ps1 | Force TLS12 for https://api.ipify.org
