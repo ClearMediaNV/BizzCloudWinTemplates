@@ -553,7 +553,7 @@ $SyncHash.Host = $Host
 	$Runspace.SessionStateProxy.SetVariable("FireboxExternalIpGatewayCIDR",$FireboxExternalIpGatewayCIDR)
 	$Runspace.SessionStateProxy.SetVariable("FireboxExternalIpCIDR",$FireboxExternalIpCIDR)
 	$Runspace.SessionStateProxy.SetVariable("FireboxExternalIpGateway",$FireboxExternalIpGateway)
-		$code = {
+	$code = {
 		[INT]$I = 0
 		[INT]$Step = 8
 		$syncHash.Window.Dispatcher.invoke( [action]{ $syncHash.ProgressBarFirebox.Value = $I } )
