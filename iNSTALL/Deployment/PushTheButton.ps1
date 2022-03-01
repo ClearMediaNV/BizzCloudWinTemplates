@@ -5,8 +5,8 @@ Copy-Item -Path '.\PushButton.lnk' -Destination "$Env:USERPROFILE\Desktop" -Forc
 
 
 # Init History
-If ( -Not (Test-Path -Path 'HKLM:\Software\ClearMedia') ) { New-Item -Path  'HKLM:\Software\ClearMedia' }
-If ( -Not (Test-Path -Path 'HKLM:\Software\ClearMedia\PushTheButton') ) { New-Item -Path  'HKLM:\Software\ClearMedia\PushTheButton' }
+New-Item -Path  'HKLM:\Software\ClearMedia' -Force
+New-Item -Path  'HKLM:\Software\ClearMedia\PushTheButton' -Force
 
 # Check History
 Try { $DeployFirebox = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DeployFirebox' }
