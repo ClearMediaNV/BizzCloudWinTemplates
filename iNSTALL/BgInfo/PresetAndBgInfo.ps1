@@ -15,8 +15,8 @@ Try { Set-Item -Path 'ENV:\IpAddressPublic' -Value ( Invoke-WebRequest -Uri 'htt
 # Restart NLA Service for DomainController in order to gain extra Reboot in initial Deployment of ADS
 Get-CimInstance -NameSpace 'root\cimv2' -ClassName 'win32_ComputerSystem' | ForEach-Object { if ( $PSItem.DomainRole -in ( 4 , 5 ) ) { Restart-Service -Name 'NlaSvc' -Force } }
 # Get NLA state
-Set-Item -Path 'ENV:\NetworkCategory' -value (Get-NetConnectionProfile).NetworkCategory
-Set-Item -Path 'ENV:\IPv4Connectivity' -Value (Get-NetConnectionProfile).IPv4Connectivity
+Set-Item -Path 'ENV:\NetworkCategory' -value ( Get-NetConnectionProfile ).NetworkCategory
+Set-Item -Path 'ENV:\IPv4Connectivity' -Value ( Get-NetConnectionProfile ).IPv4Connectivity
 # Get Last Installed HotFix
 $HotFixList = Get-HotFix | Select-Object -Property HotFixID,InstalledOn | Sort-Object -Property InstalledOn
 $LastHotFix = "$( ( $HotFixList | Where-Object { $PSItem.InstalledOn -eq $HotFixList[-1].InstalledOn } ).HotFixID -Join ',' ) $( $HotFixList[-1].InstalledOn.tostring('dd-MM-yyyy') )"
