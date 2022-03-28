@@ -1,3 +1,18 @@
+Version 2.11
+-------------
+Refactor BgInfo - Update PresetAndBgInfo.ps1 | Do not interfere with existing Z: Drive
+Refactor GPO - Add StandardFSLogixServerPolicy.csv
+Refactor GPO - Update StandardServerRdsPolicy.csv | Extend Disable Fair Share
+Refactor Deployment - Add ResetExplorerView.ps1
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployOuStart | Add FSLogix-Users Group
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployStandardGpoStart | Add StandardServerFSLogixPolicy
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployFolderRedirectionStart | Add StandardUserFolderRedirectionAdm
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Enable FSLogix Profile Container
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Install Parallels RAS version 18.3.22908 - Deploy Basic RAS Farm
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Remove Server Name
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployUserStart | Add UserEmailAddress
+Refactor Deployment - Update InstallVmWareTools.ps1 | Install vmware-tools version 12.0.0.19345655
+
 Version 2.10
 -------------
 Refactor Deployment - Update WindowsUpdate.ps1 | Assure WindowsUpdateService Disabled By Default
