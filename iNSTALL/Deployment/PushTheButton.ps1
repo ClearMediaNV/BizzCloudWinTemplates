@@ -1435,129 +1435,319 @@ END CATEGORY
 	$PSinstance.Runspace = $Runspace
 	$job = $PSinstance.BeginInvoke()       
 	}
-Function DeployUserStart {
-	Param($SyncHash,$ServerIpAddress,$ServerName,$LocalAdminUserName,$LocalAdminPassword,$DomainAdminUserName,$DomainAdminPassword,$DomainDcServerName,$UserType,$DataFolderRootPath,$PrincipalName,$UserGivenName,$UserSurname,$UserEmailAddress,$UserPassword,$OuPath,$DomainDnsName,$DomainNetbiosName)
+Function DeployRdsStart {
+	Param( $SyncHash,$ServerIpAddress , $LocalAdminUserName , $LocalAdminPassword , $DomainAdminUserName , $DomainAdminPassword , $DomainDcServerName , $DomainDnsServerIpAddress , $FSLogixFolderRootPath , $DataFolderRootPath , $OuPath , $DomainDnsName , $CheckBoxRas , $RasLicenseEmail , $RasLicensePassword , $RasKey , $CheckBoxStandardServerFSLogixPolicy )
 	$Runspace = [runspacefactory]::CreateRunspace()
 	$Runspace.ApartmentState = "STA"
 	$Runspace.ThreadOptions = "ReuseThread"
 	$Runspace.Open()
 	$Runspace.SessionStateProxy.SetVariable("SyncHash",$SyncHash)
 	$Runspace.SessionStateProxy.SetVariable("ServerIpAddress",$ServerIpAddress)
-	$Runspace.SessionStateProxy.SetVariable("ServerName",$ServerName)
 	$Runspace.SessionStateProxy.SetVariable("LocalAdminUserName",$LocalAdminUserName)
 	$Runspace.SessionStateProxy.SetVariable("LocalAdminPassword",$LocalAdminPassword)
 	$Runspace.SessionStateProxy.SetVariable("DomainAdminUserName",$DomainAdminUserName)
 	$Runspace.SessionStateProxy.SetVariable("DomainAdminPassword",$DomainAdminPassword)
 	$Runspace.SessionStateProxy.SetVariable("DomainDcServerName",$DomainDcServerName)
-	$Runspace.SessionStateProxy.SetVariable("UserType",$UserType)
+	$Runspace.SessionStateProxy.SetVariable("DomainDnsServerIpAddress",$DomainDnsServerIpAddress)
+	$Runspace.SessionStateProxy.SetVariable("FSLogixFolderRootPath",$FSLogixFolderRootPath)
 	$Runspace.SessionStateProxy.SetVariable("DataFolderRootPath",$DataFolderRootPath)
-	$Runspace.SessionStateProxy.SetVariable("PrincipalName",$PrincipalName)
-	$Runspace.SessionStateProxy.SetVariable("UserGivenName",$UserGivenName)
-	$Runspace.SessionStateProxy.SetVariable("UserSurname",$UserSurname)
-	$Runspace.SessionStateProxy.SetVariable("UserEmailAddress",$UserEmailAddress)
-	$Runspace.SessionStateProxy.SetVariable("UserPassword",$UserPassword)
 	$Runspace.SessionStateProxy.SetVariable("OuPath",$OuPath)
 	$Runspace.SessionStateProxy.SetVariable("DomainDnsName",$DomainDnsName)
-	$Runspace.SessionStateProxy.SetVariable("DomainNetbiosName",$DomainNetbiosName)
+	$Runspace.SessionStateProxy.SetVariable("CheckBoxRas",$CheckBoxRas)
+	$Runspace.SessionStateProxy.SetVariable("RasLicenseEmail",$RasLicenseEmail)
+	$Runspace.SessionStateProxy.SetVariable("RasLicensePassword",$RasLicensePassword)
+	$Runspace.SessionStateProxy.SetVariable("RasKey",$RasKey)
+	$Runspace.SessionStateProxy.SetVariable("CheckBoxStandardServerFSLogixPolicy",$CheckBoxStandardServerFSLogixPolicy)
 	$code = {
-            [INT]$I = 0
-            $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarUser.Value = $I } )
-            $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxUser.AddText(" Connecting to $ServerIpAddress `n") } )
-	    $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ( "$ServerIpAddress\$LocalAdminUserName" , $(ConvertTo-SecureString -String $LocalAdminPassword -AsPlainText -Force ) )
+            $I = 0
+            $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarRDS.Value = $I } )
+            $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Connecting to $ServerIpAddress `n") } )
+            $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ( "$ServerIpAddress\$LocalAdminUserName", $( ConvertTo-SecureString -String $LocalAdminPassword -AsPlainText -Force ) )
             Set-Item WSMan:\localhost\Client\TrustedHosts -Value "$ServerIpAddress" -Force
-            Try { $PsSession = New-PSSession -ComputerName $ServerIpAddress -Credential $Credential -ErrorAction Stop }
-                    Catch {
-                    $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarUser.Visibility = "Hidden" } )
-                    $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.LabelStatusUser.Content = "Connection Failure $(' .'*130)$(' '*30)Please check Server - Username - Password" } )
-                    $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.BorderDeployUserStart.IsEnabled = $True } )
-                    $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.BorderDeployUserStart.Visibility = "Visible"  } )
+            Try { 
+                $PsSession = New-PSSession -ComputerName $ServerIpAddress -Credential $Credential -ErrorAction Stop
+                $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBoxO365AdminUserName.Text = $LocalAdminUserName } ) 
+                $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBoxO365AdminPassword.Text = $LocalAdminPassword } )
+                $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBoxWuAdminUserName.Text = $LocalAdminUserName } )
+                $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBoxWuAdminPassword.Text = $LocalAdminPassword } )
+                $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBoxUSERLocalAdminUserName.Text = $LocalAdminUserName } )
+                $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBoxUSERLocalAdminPassword.Text = $LocalAdminPassword } )
+                $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBoxUSERDomainAdminUserName.Text = $DomainAdminUserName } ) 
+                $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBoxUSERDomainAdminPassword.Text = $DomainAdminPassword } ) 
+                }
+                Catch {
+                    $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarRDS.Visibility = "Hidden" } )
+                    $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.LabelStatusRDS.Content = "Connection Failure $(' .'*130)$(' '*30)Please check Server - Username - Password" } )
+                    $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.BorderDeployRdsStart.IsEnabled = $True } )
+                    $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.BorderDeployRdsStart.Visibility = "Visible"  } )
                     Return
                     }
-	    [STRING]$RandomPasswordPlainText = ((([char[]](65..90) | sort {get-random})[0..2] + ([char[]](33,35,36,37,42,43,45) | sort {get-random})[0] + ([char[]](97..122) | sort {get-random})[0..4] + ([char[]](48..57) | sort {get-random})[0]) | get-random -Count 10) -join ''
-	    If ( $UserPassword -eq '' ) { $UserPassword = $RandomPasswordPlainText ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBoxUSERUserPassword.Text = $UserPassword } ) }
-	    [STRING]$OuPath = "OU=$(('Full Users','Light Users')[$UserType]),$OuPath"
-            $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxUser.AddText(" Creating User $PrincipalName in $OuPath `n") } )
-            $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxUser.AddText(" With Password $UserPassword `n") } )
-            $Job = Start-Job -Name 'Active Directory Add User' -ScriptBlock {
-				Param ($DomainAdminUserName,$DomainAdminPassword,$DomainDcServerName,$DataFolderRootPath,$PrincipalName,$UserGivenName,$UserSurname,$UserEmailAddress,$UserPassword,$OuPath,$DomainDnsName)
-				$DomainCredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ("$($DomainAdminUserName)@$($DomainDnsName)", $(ConvertTo-SecureString -String $DomainAdminPassword -AsPlainText -Force))
-				$NewUserParams = @{
-					'Server' = $DomainDcServerName
-					'Credential' = $DomainCredential
-					'UserPrincipalName' = "$($PrincipalName)@$($DomainDnsName)"
-					'DisplayName' = $PrincipalName
-					'Name' = $PrincipalName
-					'SamAccountName' = $PrincipalName
-					'GivenName' = $UserGivenName
-					'Surname' = $UserSurname
-					'Enabled' = $TRUE
-					'ChangePasswordAtLogon' = $FALSE
-					'AccountPassword' =  ConvertTo-SecureString $UserPassword -AsPlainText -Force
-					'Path' = $OuPath
-					'HomeDirectory' = "$DataFolderRootPath\$PrincipalName"
-                    			'EmailAddress' = $UserEmailAddress
-					'Country' = 'Be'
-					}
-				New-ADUser @NewUserParams -ErrorAction Stop
-				} -ArgumentList ($DomainAdminUserName,$DomainAdminPassword,$DomainDcServerName,$DataFolderRootPath,$PrincipalName,$UserGivenName,$UserSurname,$UserEmailAddress,$UserPassword,$OuPath,$DomainDnsName)
-            While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarUser.Value = $I } ) }
-            $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxUser.AddText(" Adding $PrincipalName to 'RDP-Users' Group `n") } )
-            $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxUser.AddText(" Adding $PrincipalName to 'FSLogix-Users' Group `n") } )
-            $Job = Start-Job -Name 'Active Directory Add User To Group' -ScriptBlock {
-                    Param ($PrincipalName,$DomainDcServerName)
-                    Add-ADGroupMember -Server "$DomainDcServerName" -Identity 'RDP-Users' -Members $PrincipalName -ErrorAction Stop
-                    Add-ADGroupMember -Server "$DomainDcServerName" -Identity 'FSLogix-Users' -Members $PrincipalName -ErrorAction Stop
-                    } -ArgumentList ($PrincipalName,$DomainDcServerName)
-            While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarUser.Value = $I } ) }
+            $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Connected to $( Invoke-Command -Session $PsSession -ScriptBlock { [System.Net.Dns]::GetHostByName($env:computerName).HostName } ) `n") } )
+            $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Testing Internet Connection `n") } )
+            $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'TestConnectionGoogle' -ScriptBlock { Test-Connection -ComputerName 'www.google.com' -Count 1 }
+			While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarRDS.Value = $I } ) }
+            If ( $Job.ChildJobs[0].Error ) {
+                    $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarRDS.Visibility = "Hidden" } )
+                    $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.LabelStatusRDS.Content = "Connection Failure $(' .'*130)$(' '*30)Please check Internet Connection" } )
+                    $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.BorderDeployRdsStart.IsEnabled = $True } )
+                    $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.BorderDeployRdsStart.Visibility = "Visible"  } )
+                    Return
+                    }
+            If ( $FSLogixFolderRootPath -like '?:\*' ) {
+                $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Configuring Disk 'FSLOGIX' `n") } )
+                $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Creating $FSLogixFolderRootPath and Setting NTFS Security `n") } )
+                $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'DiskFSLogix' -ScriptBlock {
+                    Param($FSLogixFolderRootPath)
+                    If ( (get-disk -Number 1).AllocatedSize -eq 0 ) {
+					    Initialize-Disk -Number 1
+					    [STRING]$DriveLetter = $FSLogixFolderRootPath.Split(':')[0]
+                        New-Partition -DiskNumber 1 -DriveLetter $DriveLetter -UseMaximumSize | Format-Volume -FileSystem NTFS -NewFileSystemLabel 'FSLOGIX'
+                        # Remove All but System & Administrators from ACL on Root
+						[STRING]$Folder = "$($DriveLetter):\"
+						$ACL = Get-Acl -Path  $Folder
+						$ACL.Access | Where-Object { $PSItem.IdentityReference -inotin ( 'NT AUTHORITY\SYSTEM','BUILTIN\Administrators' ) } | ForEach-Object { $ACL.RemoveAccessRule($PSItem) }
+						Set-Acl -Path $Folder -AclObject $ACL
+                        # Create User Folder
+					    # $FSLogixFolderRootPath = 'D:\Users'
+                        New-Item -Path $FSLogixFolderRootPath -type directory -Force
+					    $ACL = Get-Acl  -Path  $FSLogixFolderRootPath
+					    # Disable Inheritance
+					    $ACL.SetAccessRuleProtection($true,$false)
+					    # Add FSLogix Permissions on $FSLogixFolderRootPath
+						$AccessRule = New-Object system.security.AccessControl.FileSystemAccessRule( 'NT AUTHORITY\SYSTEM' , 'FullControl' , 'ObjectInherit , ContainerInherit' , 'None' , 'Allow')
+						$ACL.AddAccessRule($AccessRule)
+						$AccessRule = New-Object system.security.AccessControl.FileSystemAccessRule( 'BUILTIN\Administrators' , 'FullControl' , 'ObjectInherit , ContainerInherit' , 'None' , 'Allow')
+						$ACL.AddAccessRule($AccessRule)
+						$AccessRule = New-Object system.security.AccessControl.FileSystemAccessRule( 'NT AUTHORITY\Creator Owner' , 'FullControl' , 'ObjectInherit , ContainerInherit' , 'None' , 'Allow')
+						$ACL.AddAccessRule($AccessRule)
+						$AccessRule = New-Object system.security.AccessControl.FileSystemAccessRule( 'BUILTIN\Users' , 'ReadData , AppendData , ExecuteFile , ReadAttributes' , 'None', 'None' , 'Allow')
+						$ACL.AddAccessRule($AccessRule)
+						Set-Acl -Path $FSLogixFolderRootPath -AclObject $ACL
+					    }
+                    } -ArgumentList ($FSLogixFolderRootPath) 
+                While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarRDS.Value = $I } ) }
+                }
+            If ( $FSLogixFolderRootPath -like '\\*' ) {
+                $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Configuring Share 'FSLOGIX' `n") } )
+                $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Creating $FSLogixFolderRootPath and Setting NTFS Security `n") } )
+                $Job = Invoke-Command -ComputerName 'localhost' -AsJob -JobName 'ShareFSLogix' -ScriptBlock {
+                    Param( $FSLogixFolderRootPath )
+					# Remove All but System & Administrators from ACL on Root
+                    [STRING]$Folder = "\\$( $FSLogixFolderRootPath.split( '\' )[2,3] -join '\' )"
+                    $ACL = Get-Acl -Path  $Folder
+                    $ACL.Access | Where-Object { $PSItem.IdentityReference -inotin ( 'NT AUTHORITY\SYSTEM','BUILTIN\Administrators' ) } | ForEach-Object { $ACL.RemoveAccessRule($PSItem) }
+                    Set-Acl -Path $Folder -AclObject $ACL
+					# Create User Folder
+                    New-Item -Path $FSLogixFolderRootPath -type directory -Force
+                    $ACL = Get-Acl -Path  $FSLogixFolderRootPath
+                    $ACL.SetAccessRuleProtection($true,$false)
+					# Add FSLogix Permissions on $FSLogixFolderRootPath
+                    $AccessRule = New-Object system.security.AccessControl.FileSystemAccessRule( 'NT AUTHORITY\SYSTEM' , 'FullControl' , 'ObjectInherit , ContainerInherit' , 'None' , 'Allow')
+                    $ACL.AddAccessRule($AccessRule)
+                    $AccessRule = New-Object system.security.AccessControl.FileSystemAccessRule( 'BUILTIN\Administrators' , 'FullControl' , 'ObjectInherit , ContainerInherit' , 'None' , 'Allow')
+                    $ACL.AddAccessRule($AccessRule)
+                    $AccessRule = New-Object system.security.AccessControl.FileSystemAccessRule( 'NT AUTHORITY\Creator Owner' , 'FullControl' , 'ObjectInherit , ContainerInherit' , 'None' , 'Allow')
+                    $ACL.AddAccessRule($AccessRule)
+                    $AccessRule = New-Object system.security.AccessControl.FileSystemAccessRule( 'BUILTIN\Users' , 'ReadData , AppendData , ExecuteFile , ReadAttributes' , 'None', 'None' , 'Allow')
+                    $ACL.AddAccessRule($AccessRule)
+                    Set-Acl -Path $FSLogixFolderRootPath -AclObject $ACL
+                    $GpoName = 'StandardServerFSLogixPolicy'
+                    } -ArgumentList ( $FSLogixFolderRootPath ) 
+                While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarRDS.Value = $I } ) }
+                }
             If ( $DataFolderRootPath -like '?:\*' ) {
-                $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxUser.AddText(" Creating User DATA Folder `n") } )
-                $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'DataFolder' -ScriptBlock {
-				    Param ($DataFolderRootPath,$PrincipalName,$DomainNetbiosName)
-				    [STRING]$FolderPath = "$DataFolderRootPath\$PrincipalName"
-				    New-Item -Path $FolderPath -type directory -Force
-				    $ACL = Get-Acl  -Path  $FolderPath
-				    $ACL.SetAccessRuleProtection($true,$true)
-				    $AccessRule = New-Object system.security.AccessControl.FileSystemAccessRule("$DomainNetbiosName\$PrincipalName", 'Modify', 'ObjectInherit,ContainerInherit', 'None', 'Allow')
-				    $ACL.AddAccessRule($AccessRule)
-				    Set-Acl  -Path $FolderPath -AclObject $ACL
-				    New-Item -Path "$FolderPath\Documents" -type directory -Force
-				    } -ArgumentList ($DataFolderRootPath,$PrincipalName,$DomainNetbiosName)
-                While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarUser.Value = $I } ) }
+                $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Configuring Disk 'DATA' `n") } )
+                $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Creating $DataFolderRootPath and Setting NTFS Security `n") } )
+			    $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'DiskData' -ScriptBlock {
+                    Param($DataFolderRootPath)
+                    If ( (get-disk -Number 2).AllocatedSize -eq 0 ) {
+					    Initialize-Disk -Number 2
+					    [STRING]$DriveLetter = $DataFolderRootPath.Split(':')[0]
+					    New-Partition -DiskNumber 2 -DriveLetter $DriveLetter -UseMaximumSize | Format-Volume -FileSystem NTFS -NewFileSystemLabel 'DATA'
+					    # Remove All but System & Administrators from ACL on Root
+						[STRING]$Folder = "$($DriveLetter):\"
+						$ACL = Get-Acl -Path  $Folder
+						$ACL.Access | Where-Object { $PSItem.IdentityReference -inotin ( 'NT AUTHORITY\SYSTEM','BUILTIN\Administrators' ) } | ForEach-Object { $ACL.RemoveAccessRule($PSItem) }
+						Set-Acl -Path $Folder -AclObject $ACL
+					    # Add Users with Folder List Only to ACL on Root
+					    $AccessRule = New-Object system.security.AccessControl.FileSystemAccessRule('BUILTIN\Users', 'ReadData, ReadAttributes, Traverse', 'None', 'None', 'Allow')
+					    $ACL.AddAccessRule($AccessRule)
+					    Set-Acl -Path $Folder -AclObject $ACL
+					    # Create User Folder
+					    # $DataFolderRootPath = 'E:\Users'
+					    New-Item -Path $DataFolderRootPath -type directory -Force
+					    $ACL = Get-Acl  -Path  $DataFolderRootPath
+					    # Disable Inheritance
+					    $ACL.SetAccessRuleProtection($true,$true)
+					    # Add Users with Folder List Only to ACL on $DataFolderRootPath
+					    $AccessRule = New-Object system.security.AccessControl.FileSystemAccessRule('BUILTIN\Users', 'ReadData, ReadAttributes, Traverse', 'None', 'None', 'Allow')
+					    $ACL.AddAccessRule($AccessRule)
+					    Set-Acl -Path $DataFolderRootPath -AclObject $ACL
+					    }
+                    } -ArgumentList ($DataFolderRootPath)
+                While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarRDS.Value = $I } ) }
+                $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Installing FsLogix with Chocolatey `n") } )   
                 }
             If ( $DataFolderRootPath -like '\\*' ) {
-                $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxUser.AddText(" Creating User DATA Share Folder `n") } )
+                $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Configuring Share 'DataFolder' `n") } )
+                $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Creating $DataFolderRootPath and Setting NTFS Security `n") } )
                 $Job = Invoke-Command -ComputerName 'localhost' -AsJob -JobName 'DataFolder' -ScriptBlock {
-				    Param ($DataFolderRootPath,$PrincipalName,$DomainNetbiosName)
-				    [STRING]$FolderPath = "$DataFolderRootPath\$PrincipalName"
-				    New-Item -Path $FolderPath -type directory -Force
-				    $ACL = Get-Acl  -Path  $FolderPath
-				    $ACL.SetAccessRuleProtection($true,$true)
-				    $AccessRule = New-Object system.security.AccessControl.FileSystemAccessRule("$DomainNetbiosName\$PrincipalName", 'Modify', 'ObjectInherit,ContainerInherit', 'None', 'Allow')
-				    $ACL.AddAccessRule($AccessRule)
-				    Set-Acl  -Path $FolderPath -AclObject $ACL
-				    New-Item -Path "$FolderPath\Documents" -type directory -Force
-				    } -ArgumentList ($DataFolderRootPath,$PrincipalName,$DomainNetbiosName)
-                While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarUser.Value = $I } ) }
+                    Param( $DataFolderRootPath )
+                    [STRING]$Folder = "\\$( $DataFolderRootPath.split( '\' )[2,3] -join '\' )"
+					$ACL = Get-Acl -Path  $Folder
+					$ACL.Access | Where-Object { $PSItem.IdentityReference -inotin ( 'NT AUTHORITY\SYSTEM','BUILTIN\Administrators' ) } | ForEach-Object { $ACL.RemoveAccessRule($PSItem) }
+					Set-Acl -Path $Folder -AclObject $ACL
+					# Add Users with Folder List Only to ACL on Root
+					$AccessRule = New-Object system.security.AccessControl.FileSystemAccessRule('BUILTIN\Users', 'ReadData, ReadAttributes, Traverse', 'None', 'None', 'Allow')
+					$ACL.AddAccessRule($AccessRule)
+					Set-Acl -Path $Folder -AclObject $ACL
+					# Create User Folder
+					# $DataFolderRootPath = 'E:\Users'
+					New-Item -Path $DataFolderRootPath -type directory -Force
+					$ACL = Get-Acl  -Path  $DataFolderRootPath
+					# Disable Inheritance
+					$ACL.SetAccessRuleProtection($true,$true)
+					# Add Users with Folder List Only to ACL on $DataFolderRootPath
+					$AccessRule = New-Object system.security.AccessControl.FileSystemAccessRule('BUILTIN\Users', 'ReadData, ReadAttributes, Traverse', 'None', 'None', 'Allow')
+					$ACL.AddAccessRule($AccessRule)
+					Set-Acl -Path $DataFolderRootPath -AclObject $ACL
+                    } -ArgumentList ( $DataFolderRootPath ) 
+                While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarRDS.Value = $I } ) }
+                }
+            $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Downloading and Installing FSLogix `n") } )
+            $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Install FsLogix' -ScriptBlock {
+				[System.Net.ServicePointManager]::SecurityProtocol = 'Tls12'
+                		# Install Chocolatey as Package Manager
+				Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1')
+				# Install FsLogix
+				Invoke-Expression -Command '& C:\ProgramData\chocolatey\choco install fslogix -y -f'
+				}
+            While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarRDS.Value = $I } ) }
+            $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Enabling FsLogix Profile Container `n") } ) 
+			$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Setting FsLogix Profile Root to $FSLogixFolderRootPath `n") } )
+            $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Enable FsLogix Profile Container' -ScriptBlock {
+				Param($FSLogixFolderRootPath)
+				New-ItemProperty -Path 'HKLM\Software\FSLogix\Profiles' -Name 'Enabled' -PropertyType 'Dword' -Value 1 -Force
+				New-ItemProperty -Path 'HKLM\Software\FSLogix\Profiles' -Name 'ProfileType' -PropertyType 'Dword' -Value 0 -Force
+				New-ItemProperty -Path 'HKLM\Software\FSLogix\Profiles' -Name 'SizeInMBs' -PropertyType 'Dword' -Value 51200 -Force
+				New-ItemProperty -Path 'HKLM\Software\FSLogix\Profiles' -Name 'VHDLocations' -PropertyType 'String' -Value $FSLogixFolderRootPath -Force
+				New-ItemProperty -Path 'HKLM\Software\FSLogix\Profiles' -Name 'VolumeType' -PropertyType 'String' -Value 'VHDX' -Force
+				} -ArgumentList ($FSLogixFolderRootPath)
+            While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarRDS.Value = $I } ) }
+            $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Setting Smart Card Service to AutoStart `n") } )   
+            $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Setting Windows Audio Service to AutoStart `n") } )   
+            $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Setting Windows Search Service to AutoStart `n") } )
+			$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Setting Printer Spooler Service to AutoStart `n") } )			
+            $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'RdsServices' -ScriptBlock {
+				$Services = @{
+					'Audiosrv' = 'Auto'
+					'SCardSvr' = 'Auto'
+					'WSearch'  = 'Auto'
+					'Spooler'  = 'Auto'
+					}
+				$Services.keys | ForEach-Object { Set-Service -Name $_ -StartupType $($Services.$_) }
+				}
+            While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarRDS.Value = $I } ) }
+            $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Installing Windows TIFF IFilter `n") } )
+            $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Installing Remote Desktop Services `n") } )
+            $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Installing Group Policy Management `n") } )
+            $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Installing Remote Server Administration Tools `n") } )
+			$Job = Invoke-Command -Session $PsSession  -AsJob -JobName 'RdsRoles' -ScriptBlock {
+				$Roles = [ordered]@{
+					'Windows TIFF IFilter'    = 'Windows-TIFF-IFilter'
+					'Remote Desktop Services' = 'RDS-RD-Server'
+					'Group Policy Management' = 'GPMC'
+					'Remote Server Administration Tools' = ('RSAT-AD-Tools','RSAT-DNS-Server','RSAT-RDS-Licensing-Diagnosis-UI','RDS-Licensing-UI')
+					}
+				$Roles.Values | ForEach-Object { Install-WindowsFeature -Name $_ }
+				}
+			While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarRDS.Value = $I } ) }
+            $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Configuring IPv4 DNS IP $DomainDnsServerIpAddress `n") } )
+            $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Joining to Domain $DomainDnsName @ $DomainDcServerName in $OuPath `n") } )
+            $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Renaming NetBiosName to $ServerName `n") } )
+            $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Disabling Fair Share on CPU, Disk, Network `n") } )
+			$Job = Invoke-Command -Session $PsSession -AsJob -JobName 'RenameJoinRDS' -ScriptBlock {
+				Param($ServerIpAddress,$ServerName,$DomainAdminUserName,$DomainAdminPassword,$OuPath,$DomainDnsName,$DomainDnsServerIpAddress,$DomainDcServerName) ; 
+				Get-NetIPConfiguration | Set-DnsClientServerAddress -ServerAddresses $DomainDnsServerIpAddress
+				$DomainCredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ("$($DomainAdminUserName)@$($DomainDnsName)", $(ConvertTo-SecureString -String $DomainAdminPassword -AsPlainText -Force))
+				Add-Computer -Server $DomainDcServerName -DomainName $DomainDnsName -OUPath $OuPath -Credential $DomainCredential -Force
+				Rename-Computer -NewName $ServerName -DomainCredential $DomainCredential -Force
+				Get-CimInstance -Namespace 'root/cimv2/TerminalServices' -ClassName Win32_TerminalServiceSetting | Set-CimInstance -argument  @{EnableDFSS=0;EnableDiskFSS=0;EnableNetworkFSS=0}
+				} -ArgumentList ($ServerIpAddress,$ServerName,$DomainAdminUserName,$DomainAdminPassword,$OuPath,$DomainDnsName,$DomainDnsServerIpAddress,$DomainDcServerName) 
+            While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarRDS.Value = $I } ) }
+            $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Adding Administrators to 'FSLogix Profile Exclude List' Group `n") } ) 
+            $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'PurgeFsLogixGroups' -ScriptBlock {
+				Param($DomainDnsName)
+				$DomainNetbiosName = $DomainDnsName.Split('.')[0]
+				Add-LocalGroupMember -Name 'FSLogix ODFC Exclude List' -Member 'Administrator'
+				Add-LocalGroupMember -Name 'FSLogix ODFC Exclude List' -Member "$($DomainNetbiosName)\Domain Admins"
+				Add-LocalGroupMember -Name 'FSLogix Profile Exclude List' -Member 'Administrator'
+				Add-LocalGroupMember -Name 'FSLogix Profile Exclude List' -Member "$($DomainNetbiosName)\Domain Admins"
+				Add-LocalGroupMember -Name 'Remote Desktop Users' -Member "$($DomainNetbiosName)\RDP-Users"
+				} -ArgumentList ($DomainDnsName)
+            While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarRDS.Value = $I } ) }
+            If ( $CheckBoxRas ) {
+                $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Downloading and Installing Parallels RAS version 18.3.22908 `n") } )
+				$Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Download and Install Parallels RAS version 18.3.22908' -ScriptBlock {
+					# https://www.parallels.com/products/ras/download/links/
+					[STRING]$UrlDownload =  'https://download.parallels.com/ras/v18/18.3.1.22908/RASInstaller-18.3.22908.msi'
+					[STRING]$FileDownload = "$ENV:LOCALAPPDATA\$($UrlDownload.Split('/')[-1])"
+					Invoke-WebRequest -Uri $UrlDownload -UseBasicParsing  -OutFile $FileDownload -PassThru | Out-Null
+					Invoke-Expression -Command "CMD.exe /C 'MsiExec.exe /i $FileDownload /qn /norestart'"
+					}
+                While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarRDS.Value = $I } ) }
+                $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Deploying Parallels RDS Farm `n") } )
+				$Job = Invoke-Command -Session $PsSession -AsJob -JobName "Deploy Parallels RAS Farm" -ScriptBlock {
+                    Param( $LocalAdminUserName , $LocalAdminPassword , $RasLicenseEmail , $RasLicensePassword , $RasKey )
+                    If (-Not (Test-Path -Path 'C:\Program Files (x86)\Parallels\ApplicationServer\Modules\RASAdmin\RASAdmin.psd1')) { Start-Sleep -Seconds 5 }
+                    Import-Module 'C:\Program Files (x86)\Parallels\ApplicationServer\Modules\RASAdmin\RASAdmin.psd1'
+                    Set-ItemProperty -Path REGISTRY::HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Parallels\Setup\ApplicationServer -Name ProductDir -Value "C:\Program Files (x86)\Parallels\ApplicationServer\"
+                    New-RASSession -Username $LocalAdminUserName -Password $(ConvertTo-SecureString $LocalAdminPassword -AsPlainText -Force) -Server 'localhost'
+                    Invoke-RASLicenseActivate -Email $RasLicenseEmail -Password $(ConvertTo-SecureString $RasLicensePassword -AsPlainText -Force) -Key $RasKey
+                    # New-RASGW -Server "$env:COMPUTERNAME"
+                    New-RASRDS -Server "$env:COMPUTERNAME" -NoRestart -NoTerminalServices 
+                    New-RASPubRDSDesktop -Name "Desktop"
+                    Invoke-RASApply
+                    } -ArgumentList ( $LocalAdminUserName , $LocalAdminPassword , $RasLicenseEmail , $RasLicensePassword , $RasKey ) 
+                While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarRDS.Value = $I } ) }
                 }
             Get-Job | Select-Object -Property Name, State, Command, @{Name='Error';Expression={ $_.ChildJobs[0].JobStateInfo.Reason }} | Export-Csv -Path "$env:windir\Logs\PushTheButtonJobs.csv" -NoTypeInformation -Force
             If ((Get-Job).Where({$_.State -eq 'Failed'}).count -ne 0 ) {
-				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarUser.Visibility = "Hidden" } )
-				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.LabelStatusUser.Content = "User Added with ERRORS $(' .'*115)$(' '*30)Please consult PushTheButtonJobs.csv" } )
-				}
+                $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarRDS.Visibility = "Hidden" } )
+                $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.LabelStatusRDS.Content = "Deployment Finished with ERRORS $(' .'*115)$(' '*30)Please consult PushTheButtonJobs.csv" } )
+                $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.BorderDeployRdsStart.IsEnabled = $True } )
+                $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.BorderDeployRdsStart.Visibility = "Visible" } )
+                }
                 Else {
-					$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarUser.Visibility = "Hidden" } )
-					$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.LabelStatusUser.Content = "User Added $(' .'*135)$(' '*30)" } )
-					$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBoxUSERUserPassword.Text = "" } )
-                    $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.BorderDeployRdsStart.IsEnabled = $True } )
-					$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.BorderDeployO365Start.IsEnabled = $True } )
-					$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.BorderDeployWUStart.IsEnabled = $True } )
-					$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.BorderDeployUserStart.IsEnabled = $True } )                                            
+				    New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'FSLogixFolderRootPath' -PropertyType 'String' -Value $FSLogixFolderRootPath -Force
+				    New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DataFolderRootPath' -PropertyType 'String' -Value $DataFolderRootPath -Force
+                    $GpoName = 'StandardServerFSLogixPolicy'
+                    If ( ( Get-GPRegistryValue -Server $env:COMPUTERNAME -Name $GpoName -Key 'HKLM\Software\FSLogix\Profiles' -ValueName 'VHDLocations' -ErrorAction SilentlyContinue ) ) {
+                        Set-GPRegistryValue -Server $env:COMPUTERNAME -Name $GpoName -Key 'HKLM\Software\FSLogix\Profiles' -ValueName 'VHDLocations' -Type 'String' -Value $FSLogixFolderRootPath -ErrorAction Continue
+                        }
+                    $GpoName = 'StandardUserFolderRedirectionPolicy'
+                    If ( ( Get-GPRegistryValue -Server $env:COMPUTERNAME -Name $GpoName -Key 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' -ValueName 'Personal' -ErrorAction SilentlyContinue ) ) {
+                        Set-GPRegistryValue -Server $env:COMPUTERNAME -Name $GpoName -Key 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' -ValueName 'Personal' -Type 'ExpandString' -Value "$DataFolderRootPath\%USERNAME%\Documents" -ErrorAction Continue
+                        }
+                    If ( ( Get-GPRegistryValue -Server $env:COMPUTERNAME -Name $GpoName -Key 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' -ValueName 'My Music' -ErrorAction SilentlyContinue ) ) {
+                        Set-GPRegistryValue -Server $env:COMPUTERNAME -Name $GpoName -Key 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' -ValueName 'My Music' -Type 'ExpandString' -Value "$DataFolderRootPath\%USERNAME%\Music" -ErrorAction Continue
+                        }
+                    If ( ( Get-GPRegistryValue -Server $env:COMPUTERNAME -Name $GpoName -Key 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' -ValueName 'My Pictures' -ErrorAction SilentlyContinue ) ) {
+                        Set-GPRegistryValue -Server $env:COMPUTERNAME -Name $GpoName -Key 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' -ValueName 'My Pictures' -Type 'ExpandString' -Value "$DataFolderRootPath\%USERNAME%\Pictures" -ErrorAction Continue
+                        }
+                    If ( ( Get-GPRegistryValue -Server $env:COMPUTERNAME -Name $GpoName -Key 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' -ValueName 'My Video' -ErrorAction SilentlyContinue ) ) {
+                        Set-GPRegistryValue -Server $env:COMPUTERNAME -Name $GpoName -Key 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' -ValueName 'My Video' -Type 'ExpandString' -Value "$DataFolderRootPath\%USERNAME%\Videos" -ErrorAction Continue
+                        }
+					$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBoxUSERDataFolderRootPath.Text = $DataFolderRootPath } )
+					$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarRDS.Visibility = "Hidden" } )
+					$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.LabelStatusRDS.Content = "Deployment Finished $(' .'*135)$(' '*30) Please  REBOOT" } )
+					$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.BorderDeployRdsStart.Visibility = "Hidden" } )
+					$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.BorderDeployRdsReboot.Visibility = "Visible"  } )
 					}
-			$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.BorderDeployUserStart.Visibility = "Visible"  } ) 
             }
 	$PSinstance = [powershell]::Create().AddScript($Code)
 	$PSinstance.Runspace = $Runspace
-	$job = $PSinstance.BeginInvoke()   
+	$job = $PSinstance.BeginInvoke()
     }
 Function DeployRdsReboot {
 	Param($SyncHash,$ServerIpAddress,$LocalAdminUserName,$LocalAdminPassword)
