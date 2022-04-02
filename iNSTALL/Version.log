@@ -1,7 +1,7 @@
 Version 2.11
 -------------
 Refactor BgInfo - Update PresetAndBgInfo.ps1 | Do not interfere with existing Z: Drive
-Refactor GPO - Add StandardFSLogixServerPolicy.csv
+Refactor GPO - Add StandardServerFSLogixPolicy.csv
 Refactor GPO - Update StandardServerRdsPolicy.csv | Extend Disable Fair Share
 Refactor Deployment - Add ResetExplorerView.ps1
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployOuStart | Add FSLogix-Users Group
