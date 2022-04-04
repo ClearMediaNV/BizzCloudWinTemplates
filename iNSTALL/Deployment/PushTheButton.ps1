@@ -570,8 +570,6 @@ Function DeployFireboxStart {
 		$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxFirebox.AddText(" Sending CTRL-D `n") } )
 		$SshStream.Write([CHAR]4) ; Start-Sleep -Seconds 2 ; $Return = $SshStream.Read()
 		$I += $Step ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarFirebox.Value = $I } )
-
-
 		$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxFirebox.AddText(" Sending conf `n") } )
 		Do { $SshStream.WriteLine("conf") ; Start-Sleep -Seconds 2 ; $Return = $SshStream.Read() } Until ( $Return.Split([CHAR]10).Split([CHAR]13)[-1] -eq 'WG(config)#' )
 		$I += $Step ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarFirebox.Value = $I } )
@@ -1678,7 +1676,6 @@ Function DeployRdsStart {
 			While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarRDS.Value = $I } ) }
             $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Configuring IPv4 DNS IP $DomainDnsServerIpAddress `n") } )
             $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Joining to Domain $DomainDnsName @ $DomainDcServerName in $OuPath `n") } )
-            $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Renaming NetBiosName to $ServerName `n") } )
             $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Disabling Fair Share on CPU, Disk, Network `n") } )
 			$Job = Invoke-Command -Session $PsSession -AsJob -JobName 'RenameJoinRDS' -ScriptBlock {
 				Param($ServerIpAddress,$ServerName,$DomainAdminUserName,$DomainAdminPassword,$OuPath,$DomainDnsName,$DomainDnsServerIpAddress,$DomainDcServerName) ; 
