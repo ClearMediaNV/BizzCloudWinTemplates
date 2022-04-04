@@ -87,13 +87,13 @@ $SyncHash.Host = $Host
                     <Label Name="LabelFireboxAdminPassword" Content="Firebox Admin Password" HorizontalAlignment="Left" Height="28" Margin="30,94,0,0" VerticalAlignment="Top" Width="165"/>
                     <Label Name="LabelFireboxExternalIp" Content="Firebox External NAT IP" HorizontalAlignment="Left" Height="28" Margin="550,28,0,0" VerticalAlignment="Top" Width="250"/>
                     <Label Name="LabelFireboxExternalIpGatewayCIDR" Content="Firebox Default Gateway IP CIDR" HorizontalAlignment="Left" Height="28" Margin="550,61,0,0" VerticalAlignment="Top" Width="250"/>
-                    <Label Name="LabelFireboxFeatureKey" Content="Firebox Feature Key" HorizontalAlignment="Left" Height="28" Margin="550,94,0,0" VerticalAlignment="Top" Width="250"/>
+                    <Label Name="LabelFireboxFeatureKey" Content="Firebox Feature Key" HorizontalAlignment="Left" Height="28" Margin="550,94,0,0" VerticalAlignment="Top" Width="250" Visibility="$DeployFirebox"/>
                     <TextBox Name="TextBoxFireboxIpAddress"  HorizontalAlignment="Left" Height="22" Margin="220,32,0,0" Text="192.168.13.254" VerticalAlignment="Top" Width="180"/>
                     <TextBox Name="TextBoxFireboxAdminUserName" HorizontalAlignment="Left" Height="22" Margin="220,65,0,0" Text="admin" VerticalAlignment="Top" Width="180"/>
                     <TextBox Name="TextBoxFireboxAdminPassword" HorizontalAlignment="Left" Height="22" Margin="220,98,0,0" Text="readwrite" VerticalAlignment="Top" Width="180"/>
                     <TextBox Name="TextBoxFireboxExternalIp" HorizontalAlignment="Left" Height="22" Margin="760,32,0,0" Text="$FireboxExternalIp" VerticalAlignment="Top" Width="180" ToolTip="Please Fill in IP Address for NIC 0 - You will find Info in the Virtual Machines Section of the vApp under My Cloud"/>
                     <TextBox Name="TextBoxFireboxExternalIpGatewayCIDR" HorizontalAlignment="Left" Height="22" Margin="760,65,0,0" Text="$FireboxExternalIpGatewayCIDR" VerticalAlignment="Top" Width="180" ToolTip="Please Fill in Network CIDR - You will find Info in the Org VDC Networks Section of the VDC under Administration"/>
-                    <TextBox Name="TextBoxkFireboxFeatureKey" HorizontalAlignment="Left" Height="143" Margin="760,98,0,0" Text="" VerticalAlignment="Top" Width="180" ToolTip="Please Paste The Feature Key" AcceptsReturn="True"/>
+                    <TextBox Name="TextBoxkFireboxFeatureKey" HorizontalAlignment="Left" Height="143" Margin="760,98,0,0" Text="" VerticalAlignment="Top" Width="180" ToolTip="Please Paste The Feature Key" AcceptsReturn="True" Visibility="$DeployFirebox"/>
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
 						<TextBlock Name="TextBlockOutBoxFirebox" Text="" Foreground="WHITE" Background="#FF22206F" />
                     </ScrollViewer>
