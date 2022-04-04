@@ -4,6 +4,7 @@ Refactor BgInfo - Update PresetAndBgInfo.ps1 | Do not interfere with existing Z:
 Refactor GPO - Add StandardServerFSLogixPolicy.csv
 Refactor GPO - Update StandardServerRdsPolicy.csv | Extend Disable Fair Share
 Refactor Deployment - Add ResetExplorerView.ps1
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployFireboxStart | Add Import Feature Key
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployOuStart | Add FSLogix-Users Group
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployStandardGpoStart | Add StandardServerFSLogixPolicy
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployFolderRedirectionStart | Add StandardUserFolderRedirectionAdm
