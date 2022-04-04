@@ -50,8 +50,8 @@ $Form1.Controls.Add($listBox)
 $result = $Form1.ShowDialog()
 
 # On 'O365 Pro Plus BIT Selection' Proceed else Quit
-[STRING]$O365version = ''
-if ($result -eq [System.Windows.Forms.DialogResult]::OK) { $O365version = $listBox.SelectedItem } else { exit }
+$O365version = ''
+If ($result -eq [System.Windows.Forms.DialogResult]::OK) { $O365version = $listBox.SelectedItem } Else { Exit }
 
 # Add ProgressBar
 $Form2 = New-Object System.Windows.Forms.Form
@@ -97,30 +97,30 @@ $Output = 'c:\install\o365\officedeploymenttool_13426-20308.exe'
 Invoke-Expression -Command "& $Output /quiet /extract:."
  
 # Download 'O365 Pro Plus BIT Selection'
-switch ( $O365version )
+Switch ( $O365version )
     {
     'O365 Pro Plus 32 bit' {$Job = Start-Job -Name "Download $O365version" -ScriptBlock { Invoke-Expression -Command '& c:\install\o365\setup.exe /download  c:\install\o365\configuration32.xml' } }
     'O365 Pro Plus 64 bit' {$Job = Start-Job -Name "Download $O365version" -ScriptBlock { Invoke-Expression -Command '& c:\install\o365\setup.exe /download  c:\install\o365\configuration64.xml' } }
-    Default {exit}
+    Default {Exit}
     }
 
 # Show ProgressBar Dynamics
-[INT]$Counter = 0
-do
+$Counter = 0
+Do
     {
     $PB.Value = $Counter
     $Label.Text = 'Please wait while downloading Setup Files'
     $Form2.Refresh()
     Start-Sleep -Seconds 7
-    If ( $Counter -eq 100) {$Counter = 0} else { $Counter++ }
+    If ( $Counter -eq 100) {$Counter = 0} Else { $Counter++ }
     }
-while ( $Job.State -ne 'Completed' )
+While ( $Job.State -ne 'Completed' )
 $Form2.Close()
 
 # Install 'O365 Pro Plus BIT Selection'
-switch ( $O365version )
+Switch ( $O365version )
     {
     'O365 Pro Plus 32 bit' {Invoke-Expression -Command '& c:\install\o365\setup.exe /configure  c:\install\o365\configuration32.xml'}
     'O365 Pro Plus 64 bit' {Invoke-Expression -Command '& c:\install\o365\setup.exe /configure  c:\install\o365\configuration64.xml'}
-    Default {exit}
+    Default {Exit}
     }
