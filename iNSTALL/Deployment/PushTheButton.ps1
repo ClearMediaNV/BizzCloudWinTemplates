@@ -599,12 +599,12 @@ Function DeployFireboxStart {
                     Return
                     }
             Else { Start-Sleep -Milliseconds 2500 ; [System.Net.ServicePointManager]::SecurityProtocol = 'Tls12' ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxFirebox.AddText(" Public IP Address :  $((Invoke-WebRequest -Uri 'https://api.ipify.org' -UseBasicParsing).content) `n") } )}	 
+		New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DeployFirebox' -PropertyType 'String' -Value 'Hidden' -Force
 		New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'FireboxExternalIp' -PropertyType 'String' -Value $FireboxExternalIp -Force
 		New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'FireboxExternalIpGatewayCIDR' -PropertyType 'String' -Value $FireboxExternalIpGatewayCIDR -Force
 		$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarFirebox.Visibility = "Hidden" } )
 		$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.LabelStatusFirebox.Visibility = "Hidden" } )
 		$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.BorderDeployFireboxStart.Visibility = "Hidden" } )
-		New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DeployFirebox' -PropertyType 'String' -Value 'Hidden' -Force
 		}
 	$PSinstance = [powershell]::Create().AddScript($Code)
 	$PSinstance.Runspace = $Runspace
