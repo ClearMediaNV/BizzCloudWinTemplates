@@ -15,7 +15,7 @@ $Form.Topmost = $False
 # Add Action ScriptBlocks
 $ScriptBlockOK = {
     try {
-        [STRING]$Domainname = $TextBoxDomainName.Text
+        $Domainname = $TextBoxDomainName.Text
         $Url = "https://login.windows.net/$Domainname/.well-known/openid-configuration"
         $TextBoxTenantID.Text = ( Invoke-RestMethod -Uri $Url ).token_endpoint.Split('/')[3]
         $TextBoxTenantID.BackColor = 'LightGreen'
