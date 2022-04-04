@@ -87,11 +87,13 @@ $SyncHash.Host = $Host
                     <Label Name="LabelFireboxAdminPassword" Content="Firebox Admin Password" HorizontalAlignment="Left" Height="28" Margin="30,94,0,0" VerticalAlignment="Top" Width="165"/>
                     <Label Name="LabelFireboxExternalIp" Content="Firebox External NAT IP" HorizontalAlignment="Left" Height="28" Margin="550,28,0,0" VerticalAlignment="Top" Width="250"/>
                     <Label Name="LabelFireboxExternalIpGatewayCIDR" Content="Firebox Default Gateway IP CIDR" HorizontalAlignment="Left" Height="28" Margin="550,61,0,0" VerticalAlignment="Top" Width="250"/>
+                    <Label Name="LabelFireboxFeatureKey" Content="Firebox Feature Key" HorizontalAlignment="Left" Height="28" Margin="550,94,0,0" VerticalAlignment="Top" Width="250"/>
                     <TextBox Name="TextBoxFireboxIpAddress"  HorizontalAlignment="Left" Height="22" Margin="220,32,0,0" Text="192.168.13.254" VerticalAlignment="Top" Width="180"/>
                     <TextBox Name="TextBoxFireboxAdminUserName" HorizontalAlignment="Left" Height="22" Margin="220,65,0,0" Text="admin" VerticalAlignment="Top" Width="180"/>
                     <TextBox Name="TextBoxFireboxAdminPassword" HorizontalAlignment="Left" Height="22" Margin="220,98,0,0" Text="readwrite" VerticalAlignment="Top" Width="180"/>
                     <TextBox Name="TextBoxFireboxExternalIp" HorizontalAlignment="Left" Height="22" Margin="760,32,0,0" Text="$FireboxExternalIp" VerticalAlignment="Top" Width="180" ToolTip="Please Fill in IP Address for NIC 0 - You will find Info in the Virtual Machines Section of the vApp under My Cloud"/>
                     <TextBox Name="TextBoxFireboxExternalIpGatewayCIDR" HorizontalAlignment="Left" Height="22" Margin="760,65,0,0" Text="$FireboxExternalIpGatewayCIDR" VerticalAlignment="Top" Width="180" ToolTip="Please Fill in Network CIDR - You will find Info in the Org VDC Networks Section of the VDC under Administration"/>
+                    <TextBox Name="TextBoxkFireboxFeatureKey" HorizontalAlignment="Left" Height="143" Margin="760,98,0,0" Text="" VerticalAlignment="Top" Width="180" ToolTip="Please The Feature Key" AcceptsReturn="True"/>
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
 						<TextBlock Name="TextBlockOutBoxFirebox" Text="" Foreground="WHITE" Background="#FF22206F" />
                     </ScrollViewer>
@@ -116,7 +118,7 @@ $SyncHash.Host = $Host
                     </StatusBar>
                 </Grid>
             </TabItem>
-            <TabItem Name="TabItemDeployDC" Header="   Deploy DC   ">
+			<TabItem Name="TabItemDeployDC" Header="   Deploy DC   ">
                 <Grid Background="#FFE5E5E5">
                     <Label Name="LabelDomainNetbiosName" Content="Domain NetbiosName" HorizontalAlignment="Left" Height="28" Margin="30,28,0,0" VerticalAlignment="Top" Width="165"/>
                     <Label Name="LabelDomainName" Content="Domain Name" HorizontalAlignment="Left" Height="28" Margin="30,61,0,0" VerticalAlignment="Top" Width="165"/>
@@ -523,7 +525,7 @@ $XAML.SelectNodes("//*[@Name]") | ForEach-Object { $SyncHash.Add($_.Name, $SyncH
 
 # Init ( WPF - Windows Presentation Framework ) Functions
 Function DeployFireboxStart {
- 	Param($SyncHash,$FireboxIpAddress,$FireboxAdminUserName,$FireboxAdminPassword,$FireboxExternalIp,$FireboxExternalIpGatewayCIDR,$FireboxExternalIpCIDR,$FireboxExternalIpGateway)
+ 	Param($SyncHash,$FireboxIpAddress,$FireboxAdminUserName,$FireboxAdminPassword,$FireboxExternalIp,$FireboxExternalIpGatewayCIDR,$FireboxExternalIpCIDR,$FireboxExternalIpGateway,$FireboxFeatureKey)
 	$Runspace = [runspacefactory]::CreateRunspace()
 	$Runspace.ApartmentState = "STA"
 	$Runspace.ThreadOptions = "ReuseThread"
@@ -536,6 +538,7 @@ Function DeployFireboxStart {
 	$Runspace.SessionStateProxy.SetVariable("FireboxExternalIpGatewayCIDR",$FireboxExternalIpGatewayCIDR)
 	$Runspace.SessionStateProxy.SetVariable("FireboxExternalIpCIDR",$FireboxExternalIpCIDR)
 	$Runspace.SessionStateProxy.SetVariable("FireboxExternalIpGateway",$FireboxExternalIpGateway)
+	$Runspace.SessionStateProxy.SetVariable("FireboxFeatureKey",$FireboxFeatureKey)
 	$code = {
 		$I = 0
 		$Step = 8
@@ -546,7 +549,7 @@ Function DeployFireboxStart {
 		$I += $Step ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarFirebox.Value = $I } )
 		$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxFirebox.AddText(" Creating SSH Session `n") } )
 		$Credentials = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ( $FireboxAdminUserName , $(ConvertTo-SecureString -String $FireboxAdminPassword -AsPlainText -Force) )
-		Try { New-SshSession -ComputerName $FireboxIpAddress -Port 4118 -Credential $Credentials -AcceptKey -ErrorAction Stop }
+		Try { $SshSession = New-SshSession -ComputerName $FireboxIpAddress -Port 4118 -Credential $Credentials -AcceptKey -Force -ErrorAction Stop }
 			Catch {
 				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarFirebox.Visibility = "Hidden" } )
 				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.LabelStatusFirebox.Content = "Connection Failure $(' .'*130)$(' '*30)Please check FireboxV - Username - Password" } )
@@ -556,24 +559,35 @@ Function DeployFireboxStart {
 				}
 		$I += $Step ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarFirebox.Value = $I } )
 		$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxFirebox.AddText(" Creating SSH Stream `n") } )
-		$Stream = $SshSessions[0].Session.CreateShellStream( "dumb" , 0 , 0 , 0 , 0 , 1024 )
+		$SshStream = New-SSHShellStream -SSHSession $SshSession
 		$I += $Step ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarFirebox.Value = $I } )
+		$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxFirebox.AddText(" Sending import feature-key from console `n") } )
+		$SshStream.WriteLine("import feature-key from console") ; Start-Sleep -Seconds 2 ; $Return = $SshStream.Read()
+		$I += $Step ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarFirebox.Value = $I } )
+		$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxFirebox.AddText(" Sending Feature Key `n") } )
+		$SshStream.WriteLine($FireboxFeatureKey) ; Start-Sleep -Seconds 2 ; $Return = $SshStream.Read()
+		$I += $Step ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarFirebox.Value = $I } )
+		$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxFirebox.AddText(" Sending CTRL-D `n") } )
+		$SshStream.Write([CHAR]4) ; Start-Sleep -Seconds 2 ; $Return = $SshStream.Read()
+		$I += $Step ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarFirebox.Value = $I } )
+
+
 		$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxFirebox.AddText(" Sending conf `n") } )
-		Do { $Stream.WriteLine("conf") ; Start-Sleep -Seconds 2 ; $Return = $Stream.Read() } Until ( $Return.Split([CHAR]10).Split([CHAR]13)[-1] -eq 'WG(config)#' )
+		Do { $SshStream.WriteLine("conf") ; Start-Sleep -Seconds 2 ; $Return = $SshStream.Read() } Until ( $Return.Split([CHAR]10).Split([CHAR]13)[-1] -eq 'WG(config)#' )
 		$I += $Step ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarFirebox.Value = $I } )
 		$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxFirebox.AddText(" Sending int f 0 `n") } )
 		$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxFirebox.AddText(" Sending ip a $FireboxExternalIpCIDR d $FireboxExternalIpGateway `n") } )
 		$I += $Step ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarFirebox.Value = $I } )
-		Do { $Stream.WriteLine("int f 0") ; Start-Sleep -Seconds 2 ; $Stream.WriteLine("ip a $FireboxExternalIpCIDR d $FireboxExternalIpGateway") ; $Return = $Stream.Read() } Until ( $Return.Split([CHAR]10).Split([CHAR]13)[-1] -eq 'WG(config/if-fe00)#' )
+		Do { $SshStream.WriteLine("int f 0") ; Start-Sleep -Seconds 2 ; $SshStream.WriteLine("ip a $FireboxExternalIpCIDR d $FireboxExternalIpGateway") ; $Return = $SshStream.Read() } Until ( $Return.Split([CHAR]10).Split([CHAR]13)[-1] -eq 'WG(config/if-fe00)#' )
 		$I += $Step ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarFirebox.Value = $I } )
 		$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxFirebox.AddText(" Sending exit `n") } )
-		Do { $Stream.WriteLine("exit") ; Start-Sleep -Seconds 2 ; $Return = $Stream.Read() } Until ( $Return.Split([CHAR]10).Split([CHAR]13)[-1] -eq 'WG#' )
+		Do { $SshStream.WriteLine("exit") ; Start-Sleep -Seconds 2 ; $Return = $SshStream.Read() } Until ( $Return.Split([CHAR]10).Split([CHAR]13)[-1] -eq 'WG#' )
 		$I += $Step ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarFirebox.Value = $I } )
 		$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxFirebox.AddText(" Closing SSH Stream `n") } )
-		Start-Sleep -Seconds 3 ; $Stream.Close() ; $Stream.Dispose()
+		Start-Sleep -Seconds 2 ; $SshStream.Close() ; $SshStream.Dispose()
 		$I += $Step ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarFirebox.Value = $I } )
 		$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxFirebox.AddText(" Closing SSH Session `n") } )
-		Remove-SshSession ; Start-Sleep -Seconds 3
+		Remove-SshSession -SSHSession $SshSession
         $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxFirebox.AddText(" Testing Internet Connection `n") } )
 		$J = 1
 		Do {
@@ -2127,6 +2141,7 @@ $SyncHash.ButtonFireboxStart.Add_Click({
         'FireboxExternalIpGatewayCIDR' = $SyncHash.TextBoxFireboxExternalIpGatewayCIDR.Text
         'FireboxExternalIpCIDR' = "$( $SyncHash.TextBoxFireboxExternalIp.Text )/$( $SyncHash.TextBoxFireboxExternalIpGatewayCIDR.Text.Split( '/' )[1] )"
         'FireboxExternalIpGateway' = "$( $SyncHash.TextBoxFireboxExternalIpGatewayCIDR.Text.Split( '/' )[0] )"
+        'FireboxFeatureKey' = $SyncHash.TextBoxkFireboxFeatureKey.Text
         }
 	DeployFireboxStart @DeployFireboxStart
 	})
