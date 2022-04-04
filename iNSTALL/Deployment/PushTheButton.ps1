@@ -93,7 +93,7 @@ $SyncHash.Host = $Host
                     <TextBox Name="TextBoxFireboxAdminPassword" HorizontalAlignment="Left" Height="22" Margin="220,98,0,0" Text="readwrite" VerticalAlignment="Top" Width="180"/>
                     <TextBox Name="TextBoxFireboxExternalIp" HorizontalAlignment="Left" Height="22" Margin="760,32,0,0" Text="$FireboxExternalIp" VerticalAlignment="Top" Width="180" ToolTip="Please Fill in IP Address for NIC 0 - You will find Info in the Virtual Machines Section of the vApp under My Cloud"/>
                     <TextBox Name="TextBoxFireboxExternalIpGatewayCIDR" HorizontalAlignment="Left" Height="22" Margin="760,65,0,0" Text="$FireboxExternalIpGatewayCIDR" VerticalAlignment="Top" Width="180" ToolTip="Please Fill in Network CIDR - You will find Info in the Org VDC Networks Section of the VDC under Administration"/>
-                    <TextBox Name="TextBoxkFireboxFeatureKey" HorizontalAlignment="Left" Height="143" Margin="760,98,0,0" Text="" VerticalAlignment="Top" Width="180" ToolTip="Please The Feature Key" AcceptsReturn="True"/>
+                    <TextBox Name="TextBoxkFireboxFeatureKey" HorizontalAlignment="Left" Height="143" Margin="760,98,0,0" Text="" VerticalAlignment="Top" Width="180" ToolTip="Please Paste The Feature Key" AcceptsReturn="True"/>
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
 						<TextBlock Name="TextBlockOutBoxFirebox" Text="" Foreground="WHITE" Background="#FF22206F" />
                     </ScrollViewer>
