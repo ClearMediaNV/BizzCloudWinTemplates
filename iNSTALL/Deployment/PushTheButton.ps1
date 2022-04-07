@@ -1506,7 +1506,7 @@ Function DeployRdsStart {
                 $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Configuring Disk 'FSLOGIX' `n") } )
                 $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Creating $FSLogixFolderRootPath and Setting NTFS Security `n") } )
                 $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'DiskFSLogix' -ScriptBlock {
-                    Param($FSLogixFolderRootPath)
+                    Param( $FSLogixFolderRootPath )
                     If ( (get-disk -Number 1).AllocatedSize -eq 0 ) {
 					    Initialize-Disk -Number 1
 					    [STRING]$DriveLetter = $FSLogixFolderRootPath.Split(':')[0]
@@ -1533,7 +1533,7 @@ Function DeployRdsStart {
 						$ACL.AddAccessRule($AccessRule)
 						Set-Acl -Path $FSLogixFolderRootPath -AclObject $ACL
 					    }
-                    } -ArgumentList ($FSLogixFolderRootPath) 
+                    } -ArgumentList ( $FSLogixFolderRootPath ) 
                 While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarRDS.Value = $I } ) }
                 }
             If ( $FSLogixFolderRootPath -like '\\*' ) {
@@ -1568,7 +1568,7 @@ Function DeployRdsStart {
                 $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Configuring Disk 'DATA' `n") } )
                 $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Creating $DataFolderRootPath and Setting NTFS Security `n") } )
 			    $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'DiskData' -ScriptBlock {
-                    Param($DataFolderRootPath)
+                    Param( $DataFolderRootPath )
                     If ( (get-disk -Number 2).AllocatedSize -eq 0 ) {
 					    Initialize-Disk -Number 2
 					    [STRING]$DriveLetter = $DataFolderRootPath.Split(':')[0]
@@ -1593,7 +1593,7 @@ Function DeployRdsStart {
 					    $ACL.AddAccessRule($AccessRule)
 					    Set-Acl -Path $DataFolderRootPath -AclObject $ACL
 					    }
-                    } -ArgumentList ($DataFolderRootPath)
+                    } -ArgumentList ( $DataFolderRootPath )
                 While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarRDS.Value = $I } ) }
                 $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Installing FsLogix with Chocolatey `n") } )   
                 }
@@ -1635,13 +1635,13 @@ Function DeployRdsStart {
             $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Enabling FsLogix Profile Container `n") } ) 
 			$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Setting FsLogix Profile Root to $FSLogixFolderRootPath `n") } )
             $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Enable FsLogix Profile Container' -ScriptBlock {
-				Param($FSLogixFolderRootPath)
+				Param( $FSLogixFolderRootPath )
 				New-ItemProperty -Path 'HKLM\Software\FSLogix\Profiles' -Name 'Enabled' -PropertyType 'Dword' -Value 1 -Force
 				New-ItemProperty -Path 'HKLM\Software\FSLogix\Profiles' -Name 'ProfileType' -PropertyType 'Dword' -Value 0 -Force
 				New-ItemProperty -Path 'HKLM\Software\FSLogix\Profiles' -Name 'SizeInMBs' -PropertyType 'Dword' -Value 51200 -Force
 				New-ItemProperty -Path 'HKLM\Software\FSLogix\Profiles' -Name 'VHDLocations' -PropertyType 'String' -Value $FSLogixFolderRootPath -Force
 				New-ItemProperty -Path 'HKLM\Software\FSLogix\Profiles' -Name 'VolumeType' -PropertyType 'String' -Value 'VHDX' -Force
-				} -ArgumentList ($FSLogixFolderRootPath)
+				} -ArgumentList ( $FSLogixFolderRootPath )
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarRDS.Value = $I } ) }
             $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Setting Smart Card Service to AutoStart `n") } )   
             $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Setting Windows Audio Service to AutoStart `n") } )   
@@ -1674,25 +1674,23 @@ Function DeployRdsStart {
             $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Configuring IPv4 DNS IP $DomainDnsServerIpAddress `n") } )
             $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Joining to Domain $DomainDnsName @ $DomainDcServerName in $OuPath `n") } )
             $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Disabling Fair Share on CPU, Disk, Network `n") } )
-			$Job = Invoke-Command -Session $PsSession -AsJob -JobName 'RenameJoinRDS' -ScriptBlock {
-				Param($ServerIpAddress,$ServerName,$DomainAdminUserName,$DomainAdminPassword,$OuPath,$DomainDnsName,$DomainDnsServerIpAddress,$DomainDcServerName) ; 
+			$Job = Invoke-Command -Session $PsSession -AsJob -JobName 'JoinRDS' -ScriptBlock {
+				Param( $ServerIpAddress , $ServerName , $DomainAdminUserName , $DomainAdminPassword , $OuPath , $DomainDnsName , $DomainDnsServerIpAddress , $DomainDcServerName ) ; 
 				Get-NetIPConfiguration | Set-DnsClientServerAddress -ServerAddresses $DomainDnsServerIpAddress
 				$DomainCredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ("$($DomainAdminUserName)@$($DomainDnsName)", $(ConvertTo-SecureString -String $DomainAdminPassword -AsPlainText -Force))
 				Add-Computer -Server $DomainDcServerName -DomainName $DomainDnsName -OUPath $OuPath -Credential $DomainCredential -Force
-				Rename-Computer -NewName $ServerName -DomainCredential $DomainCredential -Force
 				Get-CimInstance -Namespace 'root/cimv2/TerminalServices' -ClassName Win32_TerminalServiceSetting | Set-CimInstance -argument  @{EnableDFSS=0;EnableDiskFSS=0;EnableNetworkFSS=0}
-				} -ArgumentList ($ServerIpAddress,$ServerName,$DomainAdminUserName,$DomainAdminPassword,$OuPath,$DomainDnsName,$DomainDnsServerIpAddress,$DomainDcServerName) 
+				} -ArgumentList ( $ServerIpAddress , $ServerName , $DomainAdminUserName , $DomainAdminPassword , $OuPath , $DomainDnsName , $DomainDnsServerIpAddress , $DomainDcServerName ) 
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarRDS.Value = $I } ) }
             $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Adding Administrators to 'FSLogix Profile Exclude List' Group `n") } ) 
             $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'PurgeFsLogixGroups' -ScriptBlock {
-				Param($DomainDnsName)
-				$DomainNetbiosName = $DomainDnsName.Split('.')[0]
+				Param( $DomainDnsName )
 				Add-LocalGroupMember -Name 'FSLogix ODFC Exclude List' -Member 'Administrator'
-				Add-LocalGroupMember -Name 'FSLogix ODFC Exclude List' -Member "$($DomainNetbiosName)\Domain Admins"
+				Add-LocalGroupMember -Name 'FSLogix ODFC Exclude List' -Member "Domain Admins@$($DomainDnsName)"
 				Add-LocalGroupMember -Name 'FSLogix Profile Exclude List' -Member 'Administrator'
-				Add-LocalGroupMember -Name 'FSLogix Profile Exclude List' -Member "$($DomainNetbiosName)\Domain Admins"
-				Add-LocalGroupMember -Name 'Remote Desktop Users' -Member "$($DomainNetbiosName)\RDP-Users"
-				} -ArgumentList ($DomainDnsName)
+				Add-LocalGroupMember -Name 'FSLogix Profile Exclude List' -Member "Domain Admins@$($DomainDnsName)"
+				Add-LocalGroupMember -Name 'Remote Desktop Users' -Member "RDP-Users@$($DomainDnsName)"
+				} -ArgumentList ( $DomainDnsName )
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarRDS.Value = $I } ) }
             If ( $CheckBoxRas ) {
                 $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Downloading and Installing Parallels RAS version 18.3.22908 `n") } )
