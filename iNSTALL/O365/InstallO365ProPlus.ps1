@@ -1,4 +1,4 @@
-﻿Add-Type -AssemblyName System.Windows.Forms
+Add-Type -AssemblyName System.Windows.Forms
 
 # Create Form 'Select O365 Pro Plus Version'
 $Form1 = New-Object System.Windows.Forms.Form 
@@ -22,7 +22,7 @@ $OKButton.Height = 23
 $OKButton.Text = 'OK'
 $OKButton.DialogResult = [System.Windows.Forms.DialogResult]::OK
 $Form1.AcceptButton = $OKButton
-$Form1.Controls.Add($OKButton)
+$Form1.Controls.Add( $OKButton )
 
 # Add Button 'Cancel'
 $CancelButton = New-Object System.Windows.Forms.Button
@@ -33,7 +33,7 @@ $CancelButton.Height = 23
 $CancelButton.Text = 'CANCEL'
 $CancelButton.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
 $Form1.CancelButton = $CancelButton
-$Form1.Controls.Add($CancelButton)
+$Form1.Controls.Add( $CancelButton )
 
 # Add ListBox 'O365 Pro Plus BIT Selection'
 # Default 32 BIT
@@ -42,16 +42,16 @@ $listBox.Left = 95
 $listBox.Top = 40
 $listBox.Width = 205
 $listBox.Height = 40
-[void] $listBox.Items.Add('O365 Pro Plus 32 bit')
-[void] $listBox.Items.Add('O365 Pro Plus 64 bit')
+[VOID] $listBox.Items.Add( 'O365 Pro Plus 32 bit' )
+[VOID] $listBox.Items.Add( 'O365 Pro Plus 64 bit' )
 $listBox.SelectedIndex = 0
-$Form1.Controls.Add($listBox)
+$Form1.Controls.Add( $listBox )
 
 $result = $Form1.ShowDialog()
 
 # On 'O365 Pro Plus BIT Selection' Proceed else Quit
-[STRING]$O365version = ''
-if ($result -eq [System.Windows.Forms.DialogResult]::OK) { $O365version = $listBox.SelectedItem } else { exit }
+$O365version = ''
+If ( $result -eq [System.Windows.Forms.DialogResult]::OK ) { $O365version = $listBox.SelectedItem } Else { Exit }
 
 # Add ProgressBar
 $Form2 = New-Object System.Windows.Forms.Form
@@ -74,7 +74,7 @@ $Label.Left = 150
 $Label.Top = 10
 $Label.Width = 500 -150
 $Label.Height = 20
-$Form2.Controls.Add($Label)
+$Form2.Controls.Add( $Label )
 
 $PB = New-Object System.Windows.Forms.ProgressBar
 $PB.Name = 'PowerShellProgressBar'
@@ -84,7 +84,7 @@ $PB.Left = 5
 $PB.Top = 40
 $PB.Width = 500 - 10
 $PB.Height = 20
-$Form2.Controls.Add($PB)
+$Form2.Controls.Add( $PB )
 
 $Form2.Show() 
 
@@ -93,34 +93,34 @@ $Form2.Show()
 # DownloadInstall OfficeDeploymentTool Version 16.0.13426.20308
 $UrlDownload = 'https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_13426-20308.exe'
 $Output = 'c:\install\o365\officedeploymenttool_13426-20308.exe'
-(New-Object System.Net.WebClient).DownloadFile($UrlDownload, $Output)
+( New-Object System.Net.WebClient ).DownloadFile( $UrlDownload , $Output )
 Invoke-Expression -Command "& $Output /quiet /extract:."
  
 # Download 'O365 Pro Plus BIT Selection'
-switch ( $O365version )
+Switch ( $O365version )
     {
-    'O365 Pro Plus 32 bit' {$Job = Start-Job -Name "Download $O365version" -ScriptBlock { Invoke-Expression -Command '& c:\install\o365\setup.exe /download  c:\install\o365\configuration32.xml' } }
-    'O365 Pro Plus 64 bit' {$Job = Start-Job -Name "Download $O365version" -ScriptBlock { Invoke-Expression -Command '& c:\install\o365\setup.exe /download  c:\install\o365\configuration64.xml' } }
-    Default {exit}
+    'O365 Pro Plus 32 bit' { $Job = Start-Job -Name "Download $O365version" -ScriptBlock { Invoke-Expression -Command '& c:\install\o365\setup.exe /download  c:\install\o365\configuration32.xml' } }
+    'O365 Pro Plus 64 bit' { $Job = Start-Job -Name "Download $O365version" -ScriptBlock { Invoke-Expression -Command '& c:\install\o365\setup.exe /download  c:\install\o365\configuration64.xml' } }
+    Default { Exit }
     }
 
 # Show ProgressBar Dynamics
-[INT]$Counter = 0
-do
+$Counter = 0
+Do
     {
     $PB.Value = $Counter
     $Label.Text = 'Please wait while downloading Setup Files'
     $Form2.Refresh()
     Start-Sleep -Seconds 7
-    If ( $Counter -eq 100) {$Counter = 0} else { $Counter++ }
+    If ( $Counter -eq 100 ) { $Counter = 0 } Else { $Counter++ }
     }
-while ( $Job.State -ne 'Completed' )
+While ( $Job.State -ne 'Completed' )
 $Form2.Close()
 
 # Install 'O365 Pro Plus BIT Selection'
-switch ( $O365version )
+Switch ( $O365version )
     {
-    'O365 Pro Plus 32 bit' {Invoke-Expression -Command '& c:\install\o365\setup.exe /configure  c:\install\o365\configuration32.xml'}
-    'O365 Pro Plus 64 bit' {Invoke-Expression -Command '& c:\install\o365\setup.exe /configure  c:\install\o365\configuration64.xml'}
-    Default {exit}
+    'O365 Pro Plus 32 bit' { Invoke-Expression -Command '& c:\install\o365\setup.exe /configure  c:\install\o365\configuration32.xml' }
+    'O365 Pro Plus 64 bit' { Invoke-Expression -Command '& c:\install\o365\setup.exe /configure  c:\install\o365\configuration64.xml' }
+    Default { Exit }
     }
