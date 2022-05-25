@@ -520,7 +520,7 @@ $SyncHash.Host = $Host
 # Init ( WPF - Windows Presentation Framework )
 $SyncHash.Window=[Windows.Markup.XamlReader]::Load( [System.Xml.XmlNodeReader]::new($XAML) )
 
-# AutoFind ( WPF - Windows Presentation Framework ) Controls
+# AutoFind ( WPF - Windows Presentation Framework ) Vars
 $XAML.SelectNodes("//*[@Name]") | ForEach-Object { $SyncHash.Add($_.Name, $SyncHash.Window.Findname($_.Name)) }
 
 # Init ( WPF - Windows Presentation Framework ) Functions
