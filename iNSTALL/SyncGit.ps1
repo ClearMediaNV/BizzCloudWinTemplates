@@ -12,14 +12,11 @@ Try {
     [VOID][System.Reflection.Assembly]::LoadWithPartialName( "System.IO.Compression.ZipFile" )
     [System.IO.Compression.ZipFile]::ExtractToDirectory( $FileDownload , $FolderDownload ) 
     # Cleanup and Copy iNSTALL Folder
-    Remove-Item -Path 'c:\install\*'  -Recurse -Force
+    Remove-Item -Path 'c:\install\*' -Recurse -Force
     Copy-Item -Path "$FolderDownload\BizzCloudWinTemplates-$Branch\iNSTALL\*" -Destination 'c:\iNSTALL' -Recurse -Force
     # Cleanup File Download and Folder Download
     Remove-Item -Path "$FileDownload" -Force
     Remove-Item -Path "$FolderDownload" -Recurse -Force
     }
-   Catch {
-         Write-Output 'GitHub Connection Error. Please Check DNS & Gateway Config. Please Check https://github.com/ClearMediaNV'
-         Start-Sleep -Seconds 5
-         }
+   Catch { Write-Output 'GitHub Connection Error. Please Check DNS & Gateway Config. Please Check https://github.com/ClearMediaNV' }
 # The End
