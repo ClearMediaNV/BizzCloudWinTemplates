@@ -25,4 +25,4 @@ Set-Item -Path 'ENV:\LastHotFix' -value $LastHotFix
 Try { Set-Item -Path 'ENV:\WSUS' -Value ( Get-ItemProperty -Path 'HKLM:\Software\Policies\Microsoft\Windows\WindowsUpdate' ).WUServer }
     Catch { Set-Item -Path 'ENV:\WSUS' -Value '0.0.0.0' }
 # Launch BgInfo
-Invoke-Expression -Command "& .\bginfo.exe windows.bgi /timer:0 /nolicprompt"
+Invoke-Expression -Command '& .\bginfo.exe windows.bgi /timer:0 /nolicprompt'
