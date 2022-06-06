@@ -14,5 +14,5 @@ Install-WindowsFeature -Name RDS-RD-Server
 Install-WindowsFeature -Name RDS-Licensing
 Install-WindowsFeature -Name RDS-Licensing-UI, RSAT-RDS-Licensing-Diagnosis-UI
 # Disable RDS Fair Share on Cpu,Disk,Network Aka Handbrake
-Get-CimInstance -Namespace 'root/cimv2/TerminalServices' -ClassName 'Win32_TerminalServiceSetting' | Set-CimInstance -Argument  @{EnableDFSS=0;EnableDiskFSS=0;EnableNetworkFSS=0}
+Get-CimInstance -Namespace 'root/cimv2/TerminalServices' -ClassName 'Win32_TerminalServiceSetting' | Set-CimInstance -Argument  @{ EnableDFSS = 0 ; EnableDiskFSS = 0 ; EnableNetworkFSS = 0 }
 Restart-Computer
