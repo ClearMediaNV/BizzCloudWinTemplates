@@ -92,9 +92,9 @@ $Form2.Show()
 # $Url = 'https://www.microsoft.com/en-us/download/confirmation.aspx?id=49117'
 # DownloadInstall OfficeDeploymentTool Version 16.0.13426.20308
 $UrlDownload = 'https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_13426-20308.exe'
-$Output = 'c:\install\o365\officedeploymenttool_13426-20308.exe'
-( New-Object System.Net.WebClient ).DownloadFile( $UrlDownload , $Output )
-Invoke-Expression -Command "& $Output /quiet /extract:."
+$FileDownload = 'c:\install\o365\officedeploymenttool_13426-20308.exe'
+( New-Object System.Net.WebClient ).DownloadFile( $UrlDownload , $FileDownload )
+Invoke-Expression -Command "& $FileDownload /quiet /extract:."
  
 # Download 'O365 Pro Plus BIT Selection'
 Switch ( $O365version )
