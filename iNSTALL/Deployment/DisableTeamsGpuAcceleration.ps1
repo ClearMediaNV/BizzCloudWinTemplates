@@ -6,7 +6,7 @@ Get-Process -Name 'Teams' -ErrorAction SilentlyContinue | Where-Object { $PSItem
 
 # Disable GPU Acceleration
 $TeamsConfigPath = "$env:APPDATA\Microsoft\Teams\desktop-config.json"
-if ( Test-Path -Path $TeamsConfigPath ) {
+If ( Test-Path -Path $TeamsConfigPath ) {
     $TeamsConfig = Get-Content -Path $TeamsConfigPath | ConvertFrom-Json
     Try { $TeamsConfig.appPreferenceSettings.disableGpu = $True }
         Catch { $TeamsConfig.appPreferenceSettings | Add-Member -Name "disableGpu" -MemberType NoteProperty -Value $True }
