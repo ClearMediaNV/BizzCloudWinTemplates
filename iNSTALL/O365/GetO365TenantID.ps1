@@ -12,30 +12,7 @@ $Form.StartPosition = 'CenterScreen'
 $Form.FormBorderStyle = 'fixedsingle'
 $Form.Topmost = $False
 
-# Add Action ScriptBlocks
-$ScriptBlockOK = {
-    Try {
-        $Domainname = $TextBoxDomainName.Text
-        $Url = "https://login.windows.net/$Domainname/.well-known/openid-configuration"
-        $TextBoxTenantID.Text = ( Invoke-RestMethod -Uri $Url ).token_endpoint.Split('/')[3]
-        $TextBoxTenantID.BackColor = 'LightGreen'
-        $TextBoxTenantID.Refresh()
-        }
-    Catch {
-        $TextBoxTenantID.Text = "$DomainName not found"
-        $TextBoxTenantID.BackColor = 'Red'
-        $TextBoxTenantID.Refresh()
-        }
-    }
-$ScriptBlockCspDelegation = {
-    $Url = 'https://bit.ly/3pWul40'
-    Start-Process $Url
-    }
-$ScriptBlockCopyToClipboardDomain = { Set-Clipboard -Value $TextBoxDomainName.Text }
-$ScriptBlockCopyToClipboardTenantID = { Set-Clipboard -Value $TextBoxTenantID.Text }
-
 # Add OK Button
-# On Click or Enter launch ScriptBlock
 $ButtonOK = New-Object System.Windows.Forms.Button
 $ButtonOK.Left = 40
 $ButtonOK.Top = 150
@@ -59,7 +36,6 @@ $ButtonCspDelegation.Font = new-object System.Drawing.Font( '' , 8 , [System.Dra
 $ButtonCspDelegation.Text = 'Start CSP Partner Relationship to ClearMedia NV'
 $ButtonCspDelegation.Add_Click( $ScriptBlockCspDelegation )
 $Form.Controls.Add( $ButtonCspDelegation )
-
 
 # Add Cancel Button
 $ButtonCancel = New-Object System.Windows.Forms.Button
@@ -131,4 +107,27 @@ $TextBoxTenantID.TextAlign = 'Center'
 $TextBoxTenantID.Text = ''
 $Form.Controls.Add( $TextBoxTenantID )
 
+# Add Action ScriptBlocks
+$ScriptBlockOK = {
+    Try {
+        $Domainname = $TextBoxDomainName.Text
+        $Url = "https://login.windows.net/$Domainname/.well-known/openid-configuration"
+        $TextBoxTenantID.Text = ( Invoke-RestMethod -Uri $Url ).token_endpoint.Split('/')[3]
+        $TextBoxTenantID.BackColor = 'LightGreen'
+        $TextBoxTenantID.Refresh()
+        }
+    Catch {
+        $TextBoxTenantID.Text = "$DomainName not found"
+        $TextBoxTenantID.BackColor = 'Red'
+        $TextBoxTenantID.Refresh()
+        }
+    }
+$ScriptBlockCspDelegation = {
+    $Url = 'https://bit.ly/3pWul40'
+    Start-Process $Url
+    }
+$ScriptBlockCopyToClipboardDomain = { Set-Clipboard -Value $TextBoxDomainName.Text }
+$ScriptBlockCopyToClipboardTenantID = { Set-Clipboard -Value $TextBoxTenantID.Text }
+
+# Show Form Aka Start Show
 $Form.ShowDialog()
