@@ -7,5 +7,5 @@ Invoke-Expression -Command '& C:\ProgramData\chocolatey\choco install sysinterna
 Invoke-Expression -Command '& C:\ProgramData\chocolatey\choco install spacesniffer -y -f'
 # Install SetUserFTA
 Invoke-Expression -Command '& C:\ProgramData\chocolatey\choco install setuserfta -y -f'
-# Install windirstat
+# Install WinDirStat
 Invoke-Expression -Command '& C:\ProgramData\chocolatey\choco install windirstat -y -f'
