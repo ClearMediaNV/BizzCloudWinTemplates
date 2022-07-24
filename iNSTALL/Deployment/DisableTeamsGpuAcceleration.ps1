@@ -1,11 +1,9 @@
 # Please Run in User Context
-
-# Kill Running Teams Instances
+# Kill Running User Teams Instance
 $TeamsExePath = "$Env:LOCALAPPDATA\Microsoft\Teams\Current\Teams.exe"
-Get-Process -Name 'Teams' -ErrorAction SilentlyContinue | Where-Object { $PSItem.Path -eq $TeamsExePath }  | Stop-Process
-
+Get-Process -Name 'Teams' -ErrorAction SilentlyContinue | Where-Object -FilterScript { $PSItem.Path -eq $TeamsExePath }  | Stop-Process
 # Disable GPU Acceleration
-$TeamsConfigPath = "$env:APPDATA\Microsoft\Teams\desktop-config.json"
+$TeamsConfigPath = "$Env:APPDATA\Microsoft\Teams\desktop-config.json"
 If ( Test-Path -Path $TeamsConfigPath ) {
     $TeamsConfig = Get-Content -Path $TeamsConfigPath | ConvertFrom-Json
     Try { $TeamsConfig.appPreferenceSettings.disableGpu = $True }
