@@ -21,18 +21,18 @@ Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Format 
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployFireboxStart | Force TLS12 for https://api.ipify.org
 Refactor Deployment/AioSetup - Update InstallRDS.ps1 | Add Warning RDS Windows Server 2019
 
-Version 2.9
+Version 2.09
 -------------
 Refactor BgInfo - Update PresetAndBgInfo.ps1 | Force TLS12 for https://api.ipify.org
 Refactor Tools - Update InstallTools.ps1 | Add SetUserFTA
 Refactor GPO - Update StandardRdsServerPolicy.csv | Enable Long Paths
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployStandardGpoStart | Enable Long Paths
 
-Version 2.8
+Version 2.08
 -------------
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart - Install FsLogix Latest version
 
-Version 2.7
+Version 2.07
 -------------
 Refactor BgInfo - Update PresetAndBgInfo.ps1 | Get WSUS Server | Make Code Compatible with OS Windows Server 2012R2
 Refactor GPO - Update StandardWindowsUpdateServerPolicy.csv | Bypass WSUS for Features on Demand
@@ -43,11 +43,11 @@ Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Enable 
 Refactor Deployment - Update InstallMicrosoftEdge.ps1 | Install 'Microsoft Edge for business' version 94.0.992.31
 Refactor Deployment - Update InstallVmWareTools.ps1 | Install vmware-tools version 11.3.5
 
-Version 2.6
+Version 2.06
 -------------
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Install FsLogix version 2.9.7654.4615001
 
-Version 2.5
+Version 2.05
 -------------
 Refactor Deployment - Update InstallVmWareTools.ps1 | Install vmware-tools version 11.2.5
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployFireboxStart | Add extended Error Handling - Remove Reboot
@@ -57,7 +57,7 @@ Refactor BgInfo - Update PresetAndBgInfo.ps1 | Add WSUS Server - WSUS Server wil
 Refactor BgInfo - Update windows.bgi | Add Inventory Item WSUS
 Refactor O365 - Update GetO365TenantID.ps1 | Change CSP Delegation to BITLY URL
 
-Version 2.4
+Version 2.04
 -------------
 Refactor BgInfo - Update windows.bgi | Add Inventory Item UserName 
 Refactor BgInfo - Update PresetAndBgInfo.ps1 | Remove Password Never Expires for Administrator Account
@@ -67,7 +67,7 @@ Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsReboot | ReEnab
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Install 'Parallels RAS' version 18.0.22497
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployStandardGpoStart | StandardServerWindowsUpdate | Add OU=Domain Controllers
 
-Version 2.3
+Version 2.03
 -------------
 Refactor BgInfo - Update windows.bgi | Add Extended Inventory
 Refactor BgInfo - Update PresetAndBgInfo.ps1 | Get Last Installed HotFix - LastHotFix will be added to BgInfo Inventory
@@ -78,17 +78,17 @@ Refactor Deployment - Update InstallVmWareTools.ps1 | Install vmware-tools versi
 Refactor Deployment - Create InstallMicrosoftEdge.ps1 | Install 'Microsoft Edge for business' version 87.0.664.60
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployO365Start - Install OfficeDeploymentTool version 16.0.13426.20308 - Set Channel="SemiAnnual"
 
-Version 2.2
+Version 2.02
 -------------
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployFirebox - Change LabelFireboxExternalIp - Change LabelFireboxExternalIpGatewayCIDR
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart - Install FsLogix version 2.9.7349.30108
 
-Version 2.1
+Version 2.01
 -------------
 Refactor BgInfo - Update Bginfo.exe | Update to Version 4.28
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployWU - Correct Hour Items in Scheduled Time
 
-Version 2.0
+Version 2.00
 -------------
 Refactor BgInfo - Update PresetAndBgInfo.ps1 | Add Restart NLA Service for DomainController
 Refactor O365 - Update configurationxx.xml | Exclude Teams App
