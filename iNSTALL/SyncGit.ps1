@@ -7,7 +7,7 @@ Try {
     $FileDownload = "$ENV:LOCALAPPDATA\$Branch.zip"
     $FolderDownload = "$ENV:LOCALAPPDATA\$Branch"
     # Download Archive
-    ( New-Object System.Net.WebClient ).DownLoadFile( $UrlDownload , $FileDownload )
+    [System.Net.WebClient]::New().DownLoadFile( $UrlDownload , $FileDownload )
     # Unzip Archive to Folder Download
     [VOID][System.Reflection.Assembly]::LoadWithPartialName( "System.IO.Compression.ZipFile" )
     [System.IO.Compression.ZipFile]::ExtractToDirectory( $FileDownload , $FolderDownload ) 
