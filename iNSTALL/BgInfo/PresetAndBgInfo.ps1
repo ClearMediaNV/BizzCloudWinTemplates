@@ -9,8 +9,7 @@ If ( 'Z' -notin ( Get-PSDrive ).Name ) { Get-CimInstance -Namespace 'root\cimv2'
 Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\Disk' -Name 'TimeOutValue' -Value 600
 Set-ItemProperty -Path 'HKCU:\Software\Microsoft\ServerManager' -Name 'DoNotOpenServerManagerAtLogon' -Value 1
 # Get Public IP @
-[System.Net.ServicePointManager]::SecurityProtocol = 'Tls12'
-Try { Set-Item -Path 'ENV:\IpAddressPublic' -Value ( Invoke-WebRequest -Uri 'https://api.ipify.org' -UseBasicParsing ).content }
+Try { [System.Net.ServicePointManager]::SecurityProtocol = 'Tls12' ; Set-Item -Path 'ENV:\IpAddressPublic' -Value ( Invoke-WebRequest -Uri 'https://api.ipify.org' -UseBasicParsing ).Content }
     Catch { Set-Item -Path 'ENV:\IpAddressPublic' -Value '0.0.0.0' }
 # Restart NLA Service for DomainController in order to gain extra Reboot in initial Deployment of ADS
 Get-CimInstance -NameSpace 'root\cimv2' -ClassName 'win32_ComputerSystem' -Filter 'DomainRole = 4 or DomainRole = 5' | Restart-Service -Name 'NlaSvc' -Force
