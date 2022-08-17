@@ -122,10 +122,7 @@ $ScriptBlockOK = {
         $TextBoxTenantID.Refresh()
         }
     }
-$ScriptBlockCspDelegation = {
-    $Url = 'https://bit.ly/3pWul40'
-    Start-Process $Url
-    }
+$ScriptBlockCspDelegation = { Start-Process 'https://bit.ly/3pWul40' }
 $ScriptBlockCopyToClipboardDomain = { Set-Clipboard -Value $TextBoxDomainName.Text }
 $ScriptBlockCopyToClipboardTenantID = { Set-Clipboard -Value $TextBoxTenantID.Text }
 
