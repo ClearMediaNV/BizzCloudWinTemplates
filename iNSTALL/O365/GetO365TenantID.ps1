@@ -111,6 +111,7 @@ $Form.Controls.Add( $TextBoxTenantID )
 $ScriptBlockOK = {
     Try {
         $Domainname = $TextBoxDomainName.Text
+        [System.Net.ServicePointManager]::SecurityProtocol = 'Tls12'
         $Url = "https://login.windows.net/$Domainname/.well-known/openid-configuration"
         $TextBoxTenantID.Text = ( Invoke-RestMethod -Uri $Url ).token_endpoint.Split('/')[3]
         $TextBoxTenantID.BackColor = 'LightGreen'
