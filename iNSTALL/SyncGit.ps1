@@ -9,7 +9,7 @@ Try {
     # Download Archive
     [System.Net.WebClient]::New().DownLoadFile( $UrlDownload , $FileDownload )
     # Unzip Archive to Folder Download
-    [VOID][System.Reflection.Assembly]::LoadWithPartialName( "System.IO.Compression.ZipFile" )
+    [VOID][System.Reflection.Assembly]::LoadWithPartialName( "System.IO.Compression.FileSystem" )
     [System.IO.Compression.ZipFile]::ExtractToDirectory( $FileDownload , $FolderDownload ) 
     # Cleanup and Copy iNSTALL Folder
     Remove-Item -Path 'c:\install\*' -Recurse -Force
