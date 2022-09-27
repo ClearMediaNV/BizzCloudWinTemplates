@@ -1,16 +1,15 @@
-# Get GitHub Repository Archive
-# Change SecurityProtocol for downloading from GitHub
-[System.Net.ServicePointManager]::SecurityProtocol = 'Tls12'
 Try {
+    # Get GitHub Repository Archive
+    # Change SecurityProtocol for downloading from GitHub
+    [System.Net.ServicePointManager]::SecurityProtocol = 'Tls12'
     $Branch = 'master'
     $UrlDownload = "https://github.com/ClearMediaNV/BizzCloudWinTemplates/archive/$Branch.zip"
     $FileDownload = "$ENV:LOCALAPPDATA\$Branch.zip"
     $FolderDownload = "$ENV:LOCALAPPDATA\$Branch"
-    # Download Archive
-    [System.Net.WebClient]::New().DownLoadFile( $UrlDownload , $FileDownload )
-    # Unzip Archive to Folder Download
-    [VOID][System.Reflection.Assembly]::LoadWithPartialName( "System.IO.Compression.FileSystem" )
-    [System.IO.Compression.ZipFile]::ExtractToDirectory( $FileDownload , $FolderDownload ) 
+    # Download UrlDownload to FileDownload
+    (New-Object System.Net.WebClient).downloadFile($UrlDownload,$FileDownload)
+    # Unzip FileDownload to FolderDownload
+    Expand-Archive -Path $FileDownload -DestinationPath $FolderDownload -Force
     # Cleanup and Copy iNSTALL Folder
     Remove-Item -Path 'c:\install\*' -Recurse -Force
     Copy-Item -Path "$FolderDownload\BizzCloudWinTemplates-$Branch\iNSTALL\*" -Destination 'c:\iNSTALL' -Recurse -Force
