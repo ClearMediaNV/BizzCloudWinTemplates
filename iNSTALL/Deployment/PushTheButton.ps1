@@ -1693,10 +1693,10 @@ Function DeployRdsStart {
 				} -ArgumentList ( $DomainDnsName )
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarRDS.Value = $I } ) }
             If ( $CheckBoxRas ) {
-                $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Downloading and Installing Parallels RAS version 18.3.22908 `n") } )
-				$Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Download and Install Parallels RAS version 18.3.22908' -ScriptBlock {
+                $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Downloading and Installing Parallels RAS version 19.0.23333 `n") } )
+				$Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Download and Install Parallels RAS version 19.0.23333' -ScriptBlock {
 					# https://www.parallels.com/products/ras/download/links/
-					[STRING]$UrlDownload =  'https://download.parallels.com/ras/v18/18.3.1.22908/RASInstaller-18.3.22908.msi'
+					[STRING]$UrlDownload =  'https://download.parallels.com/ras/v19/19.0.2.23333/RASInstaller-19.0.23333.msi'
 					[STRING]$FileDownload = "$ENV:LOCALAPPDATA\$($UrlDownload.Split('/')[-1])"
 					Invoke-WebRequest -Uri $UrlDownload -UseBasicParsing  -OutFile $FileDownload -PassThru | Out-Null
 					Invoke-Expression -Command "CMD.exe /C 'MsiExec.exe /i $FileDownload /qn /norestart'"
