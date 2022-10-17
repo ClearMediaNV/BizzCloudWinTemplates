@@ -1,3 +1,16 @@
+Version 2.12
+-------------
+Refactor Deployment/AioSetup - Update InstallRDS.ps1 | Add Local GPO for RDS Fair Share
+Refactor Deployment/AioSetup - Update InstallRDS.ps1 | Add Local GPO for RDS Licensing
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Install Parallels RAS version 19.0.23333
+Refactor Deployment - Update InstallVmWareTools.ps1 | Install vmware-tools version 12.1.0.20219665
+Refactor BgInfo - Update Bginfo.exe Version 4.32
+Refactor GPO - Add Microsoft Edge group policy definitions version 105.0.1343.53
+Refactor GPO - Add Google Chrome group policy definitions
+Refactor Tools - Update InstallTools.ps1 | Add WinDirStat
+Refactor Packages - Remove StickyNotes
+Refactor Docs - Update VMware Template 1.10.docx
+
 Version 2.11
 -------------
 Refactor BgInfo - Update PresetAndBgInfo.ps1 | Do not interfere with existing Z: Drive
@@ -85,7 +98,7 @@ Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart - Install
 
 Version 2.01
 -------------
-Refactor BgInfo - Update Bginfo.exe | Update to Version 4.28
+Refactor BgInfo - Update Bginfo.exe Version 4.28
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployWU - Correct Hour Items in Scheduled Time
 
 Version 2.00
