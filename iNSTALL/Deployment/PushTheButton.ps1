@@ -1838,8 +1838,8 @@ Function DeployO365Start {
 				Param($O365version,$ProductId,$ExcludeApp)
 				# $Url = 'https://www.microsoft.com/en-us/download/confirmation.aspx?id=49117'
 				# DownloadInstall OfficeDeploymentTool Version 16.0.13426.20308
-				$UrlDownload = 'https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_13426-20308.exe'
-				$FileDownload = "$Env:LOCALAPPDATA\officedeploymenttool_13426-20308.exe"
+				$UrlDownload = 'https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_15629-20208.exe'
+				$FileDownload = "$Env:LOCALAPPDATA\officedeploymenttool_15629-20208.exe"
 				(New-Object System.Net.WebClient).DownloadFile($UrlDownload, $FileDownload)
 				Do { Start-Sleep -Seconds 2 } Until ( Test-Path -Path $FileDownload ) 
 				Invoke-Expression -Command "CMD.EXE /C '$FileDownload /quiet /extract:$FileDownload\..'"
