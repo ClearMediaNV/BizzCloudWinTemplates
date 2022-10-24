@@ -295,7 +295,7 @@ $SyncHash.Host = $Host
                     <TextBox Name="TextBoxRDSDomainAdminPassword" HorizontalAlignment="Left" Height="22" Margin="220,164,0,0" Text="$('*'*35)" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Domain Administrator Password"/>
                     <TextBox Name="TextBoxRDSDomainDcServerName" HorizontalAlignment="Left" Height="22" Margin="220,197,0,0" Text="$DomainDcServerName" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Domain DC Server Name"/>
                     <TextBox Name="TextBoxRDSDomainDnsServerIpAddress" HorizontalAlignment="Left" Height="22" Margin="220,230,0,0" Text="$DomainDnsServerIpAddress" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Domain DNS IP Address"/>
-                    <TextBox Name="TextBoxRDSFSLogixFolderRootPath" Margin="713,28,0,0" Text='$FSLogixFolderRootPath' Height="22" HorizontalAlignment="Left" VerticalAlignment="Top" Width="180"/>
+                    <TextBox Name="TextBoxRDSFSLogixFolderRootPath" Margin="713,28,0,0" Text="$FSLogixFolderRootPath" Height="22" HorizontalAlignment="Left" VerticalAlignment="Top" Width="180"/>
                     <TextBox Name="TextBoxRDSDataFolderRootPath" Margin="713,61,0,0" Text="$DataFolderRootPath" Height="22" HorizontalAlignment="Left" VerticalAlignment="Top" Width="180"/>
                     <CheckBox Name="CheckBoxRDSRas" Content="Deploy Parallels RAS" HorizontalAlignment="Left" Margin="554,140,0,0" VerticalAlignment="Top" IsChecked="False"/>
                     <Label Name="LabelRDSRasLicenseEmail" Content="Parallels RAS Email" HorizontalAlignment="Left" Height="28" Margin="570,160,0,0" VerticalAlignment="Top" Width="165"/>
@@ -2260,7 +2260,6 @@ $SyncHash.ButtonDeployRdsStart.Add_Click({
         'CheckBoxDocuments' = $SyncHash.CheckBoxDocuments.IsChecked
         }
     DeployRdsStart @DeployRdsStart
-	# DeployRdsStart -SyncHash $SyncHash -ServerIpAddress  $SyncHash.TextBoxRDSServerIpAddress.Text -ServerName $SyncHash.TextBoxRDSServerName.Text -LocalAdminUserName $SyncHash.TextBoxRDSLocalAdminUserName.Text -LocalAdminPassword $SyncHash.TextBoxRDSLocalAdminPassword.Text -DomainAdminUserName $SyncHash.TextBoxRDSDomainAdminUserName.Text -DomainAdminPassword $SyncHash.TextBoxRDSDomainAdminPassword.Text -DomainDcServerName $SyncHash.TextBoxRDSDomainDcServerName.Text -DomainDnsServerIpAddress $SyncHash.TextBoxRDSDomainDnsServerIpAddress.Text -FSLogixFolderRootPath $SyncHash.TextBoxRDSFSLogixFolderRootPath.Text -DataFolderRootPath $SyncHash.TextBoxRDSDataFolderRootPath.Text -OuPath $SyncHash.TextBoxRDSOuPath.Text -DomainDnsName $SyncHash.TextBoxDomainDnsName.Text -CheckBoxRas $SyncHash.CheckBoxRDSRas.IsChecked  -RasLicenseEmail $SyncHash.TextBoxRDSRasLicenseEmail.Text -RasLicensePassword $SyncHash.TextBoxRDSRasLicensePassword.Text -CheckBoxRasKey $SyncHash.CheckBoxRDSRasKey.IsChecked -RasKey $SyncHash.TextBoxRDSRasKey.Text
     })
 $SyncHash.ButtonDeployRdsReboot.Add_Click({
     $SyncHash.BorderDeployRdsReboot.Visibility = "Hidden"
