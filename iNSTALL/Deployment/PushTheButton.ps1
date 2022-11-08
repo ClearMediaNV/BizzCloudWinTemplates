@@ -1849,10 +1849,13 @@ Function DeployO365Start {
 					<Configuration>
 						<Add SourcePath="c:\install\O365" OfficeClientEdition="$O365version" Channel="SemiAnnual">
 							<Product ID="$ProductId">
-								<Language ID="en-us"/>
-								<Language ID="nl-nl"/>
-								<Language ID="fr-fr"/>
-								<ExcludeApp ID="$ExcludeApp"/>
+								<Language ID="en-us" />
+								<Language ID="nl-nl" />
+								<Language ID="fr-fr" />
+                                <ExcludeApp ID="Groove" />
+                                <ExcludeApp ID="OneDrive" />
+                                <ExcludeApp ID="Bing" />
+								<ExcludeApp ID="$ExcludeApp" />
 							</Product>
 						</Add>
 						<Updates Channel="SemiAnnual" Enabled="TRUE"/>
