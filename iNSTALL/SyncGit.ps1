@@ -10,9 +10,9 @@ Try {
     (New-Object System.Net.WebClient).downloadFile($UrlDownload,$FileDownload)
     # Unzip FileDownload to FolderDownload
     Expand-Archive -Path $FileDownload -DestinationPath $FolderDownload -Force
-    # Cleanup and Copy iNSTALL Folder
-    Remove-Item -Path 'c:\install\*' -Recurse -Force
-    Copy-Item -Path "$FolderDownload\BizzCloudWinTemplates-$Branch\iNSTALL\*" -Destination 'c:\iNSTALL' -Recurse -Force
+    # Cleanup and Copy Install Folder
+    Remove-Item -Path 'C:\Install\*' -Recurse -Force
+    Copy-Item -Path "$FolderDownload\BizzCloudWinTemplates-$Branch\Install\*" -Destination 'C:\Install' -Recurse -Force
     # Cleanup FileDownload and FolderDownload
     Remove-Item -Path "$FileDownload" -Force
     Remove-Item -Path "$FolderDownload" -Recurse -Force
