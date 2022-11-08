@@ -1508,9 +1508,10 @@ Function DeployRdsStart {
                 $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'DiskFSLogix' -ScriptBlock {
                     Param( $FSLogixFolderRootPath )
                     If ( (get-disk -Number 1).AllocatedSize -eq 0 ) {
-					    Initialize-Disk -Number 1 -PartitionStyle MBR
-					    [STRING]$DriveLetter = $FSLogixFolderRootPath.Split(':')[0]
-                        New-Partition -DiskNumber 1 -DriveLetter $DriveLetter -UseMaximumSize | Format-Volume -FileSystem NTFS -NewFileSystemLabel 'FSLOGIX'
+						[STRING]$DriveLetter = $FSLogixFolderRootPath.Split(':')[0]
+					    New-Volume -DiskNumber 1 -FriendlyName 'FSLOGIX' -FileSystem NTFS  -DriveLetter $DriveLetter
+						# Initialize-Disk -Number 1 -PartitionStyle MBR
+                        # New-Partition -DiskNumber 1 -DriveLetter $DriveLetter -UseMaximumSize | Format-Volume -FileSystem NTFS -NewFileSystemLabel 'FSLOGIX'
                         # Remove All but System & Administrators from ACL on Root
 						[STRING]$Folder = "$($DriveLetter):\"
 						$ACL = Get-Acl -Path  $Folder
@@ -1570,9 +1571,10 @@ Function DeployRdsStart {
 			    $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'DiskData' -ScriptBlock {
                     Param( $DataFolderRootPath )
                     If ( (get-disk -Number 2).AllocatedSize -eq 0 ) {
-					    Initialize-Disk -Number 2 -PartitionStyle MBR
-					    [STRING]$DriveLetter = $DataFolderRootPath.Split(':')[0]
-					    New-Partition -DiskNumber 2 -DriveLetter $DriveLetter -UseMaximumSize | Format-Volume -FileSystem NTFS -NewFileSystemLabel 'DATA'
+						[STRING]$DriveLetter = $DataFolderRootPath.Split(':')[0]
+						New-Volume -DiskNumber 2 -FriendlyName 'DATA' -FileSystem NTFS  -DriveLetter $DriveLetter
+					    # Initialize-Disk -Number 2 -PartitionStyle MBR
+					    # New-Partition -DiskNumber 2 -DriveLetter $DriveLetter -UseMaximumSize | Format-Volume -FileSystem NTFS -NewFileSystemLabel 'DATA'
 					    # Remove All but System & Administrators from ACL on Root
 						[STRING]$Folder = "$($DriveLetter):\"
 						$ACL = Get-Acl -Path  $Folder
