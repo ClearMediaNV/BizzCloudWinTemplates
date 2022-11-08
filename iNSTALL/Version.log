@@ -2,12 +2,16 @@ Version 2.12
 -------------
 Refactor Deployment/AioSetup - Update InstallRDS.ps1 | Add Local GPO for RDS Fair Share
 Refactor Deployment/AioSetup - Update InstallRDS.ps1 | Add Local GPO for RDS Licensing
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Enable GPT Volumes
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Install Parallels RAS version 19.0.23333
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployO365Start | Exclude Teams , OneDrive , Bing
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployO365Start | Deploy ODT Version 16.0.15629.20208
 Refactor Deployment - Update InstallVmWareTools.ps1 | Install vmware-tools version 12.1.0.20219665
 Refactor Deployment - Update InstallMicrosoftEdge.ps1 | Install Microsoft Edge for business version 105.0.1343.53
 Refactor GPO - Add Microsoft Edge group policy definitions version 105.0.1343.53
 Refactor GPO - Add Google Chrome group policy definitions
+Refactor O365 - Update configuration32.xml | Exclude Teams , OneDrive , Bing
+Refactor O365 - Update configuration64.xml | Exclude Teams , OneDrive , Bing
 Refactor O365 - Update InstallO365ProPlus.ps1 | Deploy ODT Version 16.0.15629.20208
 Refactor BgInfo - Update Bginfo.exe Version 4.32
 Refactor Tools - Update InstallTools.ps1 | Add WinDirStat
