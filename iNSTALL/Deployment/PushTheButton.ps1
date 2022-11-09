@@ -1509,6 +1509,7 @@ Function DeployRdsStart {
                     Param( $FSLogixFolderRootPath )
                     If ( (get-disk -Number 1).AllocatedSize -eq 0 ) {
 						[STRING]$DriveLetter = $FSLogixFolderRootPath.Split(':')[0]
+						Get-CimInstance -Namespace 'root\cimv2' -ClassName 'Win32_Volume' -Filter 'DriveType = 5' | Set-CimInstance -argument  @{DriveLetter='Z:'}
 					    New-Volume -DiskNumber 1 -FriendlyName 'FSLOGIX' -FileSystem NTFS  -DriveLetter $DriveLetter
 						# Initialize-Disk -Number 1 -PartitionStyle MBR
                         # New-Partition -DiskNumber 1 -DriveLetter $DriveLetter -UseMaximumSize | Format-Volume -FileSystem NTFS -NewFileSystemLabel 'FSLOGIX'
