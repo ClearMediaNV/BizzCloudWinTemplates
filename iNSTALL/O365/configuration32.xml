@@ -1,10 +1,13 @@
 <Configuration>
 	<Add Channel="SemiAnnual" OfficeClientEdition="32" SourcePath="c:\install\O365" >
         	<Product ID="O365ProPlusRetail" >
-			<Language ID="en-us" />
-			<Language ID="fr-fr" />
-			<Language ID="nl-nl" />
-			<ExcludeApp ID="Teams" />
+				<Language ID="en-us" />
+				<Language ID="fr-fr" />
+				<Language ID="nl-nl" />
+				<ExcludeApp ID="Teams" />
+				<ExcludeApp ID="Groove" />
+				<ExcludeApp ID="OneDrive" />
+				<ExcludeApp ID="Bing" />
         	</Product>
     	</Add>
 	<Updates Channel="SemiAnnual" Enabled="TRUE" />	

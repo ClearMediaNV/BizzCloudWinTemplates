@@ -295,7 +295,7 @@ $SyncHash.Host = $Host
                     <TextBox Name="TextBoxRDSDomainAdminPassword" HorizontalAlignment="Left" Height="22" Margin="220,164,0,0" Text="$('*'*35)" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Domain Administrator Password"/>
                     <TextBox Name="TextBoxRDSDomainDcServerName" HorizontalAlignment="Left" Height="22" Margin="220,197,0,0" Text="$DomainDcServerName" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Domain DC Server Name"/>
                     <TextBox Name="TextBoxRDSDomainDnsServerIpAddress" HorizontalAlignment="Left" Height="22" Margin="220,230,0,0" Text="$DomainDnsServerIpAddress" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Domain DNS IP Address"/>
-                    <TextBox Name="TextBoxRDSFSLogixFolderRootPath" Margin="713,28,0,0" Text='$FSLogixFolderRootPath' Height="22" HorizontalAlignment="Left" VerticalAlignment="Top" Width="180"/>
+                    <TextBox Name="TextBoxRDSFSLogixFolderRootPath" Margin="713,28,0,0" Text="$FSLogixFolderRootPath" Height="22" HorizontalAlignment="Left" VerticalAlignment="Top" Width="180"/>
                     <TextBox Name="TextBoxRDSDataFolderRootPath" Margin="713,61,0,0" Text="$DataFolderRootPath" Height="22" HorizontalAlignment="Left" VerticalAlignment="Top" Width="180"/>
                     <CheckBox Name="CheckBoxRDSRas" Content="Deploy Parallels RAS" HorizontalAlignment="Left" Margin="554,140,0,0" VerticalAlignment="Top" IsChecked="False"/>
                     <Label Name="LabelRDSRasLicenseEmail" Content="Parallels RAS Email" HorizontalAlignment="Left" Height="28" Margin="570,160,0,0" VerticalAlignment="Top" Width="165"/>
@@ -520,7 +520,7 @@ $SyncHash.Host = $Host
 # Init ( WPF - Windows Presentation Framework )
 $SyncHash.Window=[Windows.Markup.XamlReader]::Load( [System.Xml.XmlNodeReader]::new($XAML) )
 
-# AutoFind ( WPF - Windows Presentation Framework ) Controls
+# AutoFind ( WPF - Windows Presentation Framework ) Name - Add Name to Synchronized HashTable
 $XAML.SelectNodes("//*[@Name]") | ForEach-Object { $SyncHash.Add($_.Name, $SyncHash.Window.Findname($_.Name)) }
 
 # Init ( WPF - Windows Presentation Framework ) Functions
@@ -1508,9 +1508,11 @@ Function DeployRdsStart {
                 $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'DiskFSLogix' -ScriptBlock {
                     Param( $FSLogixFolderRootPath )
                     If ( (get-disk -Number 1).AllocatedSize -eq 0 ) {
-					    Initialize-Disk -Number 1
-					    [STRING]$DriveLetter = $FSLogixFolderRootPath.Split(':')[0]
-                        New-Partition -DiskNumber 1 -DriveLetter $DriveLetter -UseMaximumSize | Format-Volume -FileSystem NTFS -NewFileSystemLabel 'FSLOGIX'
+						[STRING]$DriveLetter = $FSLogixFolderRootPath.Split(':')[0]
+						Get-CimInstance -Namespace 'root\cimv2' -ClassName 'Win32_Volume' -Filter 'DriveType = 5' | Set-CimInstance -argument  @{DriveLetter='Z:'}
+					    New-Volume -DiskNumber 1 -FriendlyName 'FSLOGIX' -FileSystem NTFS  -DriveLetter $DriveLetter
+						# Initialize-Disk -Number 1 -PartitionStyle MBR
+                        # New-Partition -DiskNumber 1 -DriveLetter $DriveLetter -UseMaximumSize | Format-Volume -FileSystem NTFS -NewFileSystemLabel 'FSLOGIX'
                         # Remove All but System & Administrators from ACL on Root
 						[STRING]$Folder = "$($DriveLetter):\"
 						$ACL = Get-Acl -Path  $Folder
@@ -1570,9 +1572,10 @@ Function DeployRdsStart {
 			    $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'DiskData' -ScriptBlock {
                     Param( $DataFolderRootPath )
                     If ( (get-disk -Number 2).AllocatedSize -eq 0 ) {
-					    Initialize-Disk -Number 2
-					    [STRING]$DriveLetter = $DataFolderRootPath.Split(':')[0]
-					    New-Partition -DiskNumber 2 -DriveLetter $DriveLetter -UseMaximumSize | Format-Volume -FileSystem NTFS -NewFileSystemLabel 'DATA'
+						[STRING]$DriveLetter = $DataFolderRootPath.Split(':')[0]
+						New-Volume -DiskNumber 2 -FriendlyName 'DATA' -FileSystem NTFS  -DriveLetter $DriveLetter
+					    # Initialize-Disk -Number 2 -PartitionStyle MBR
+					    # New-Partition -DiskNumber 2 -DriveLetter $DriveLetter -UseMaximumSize | Format-Volume -FileSystem NTFS -NewFileSystemLabel 'DATA'
 					    # Remove All but System & Administrators from ACL on Root
 						[STRING]$Folder = "$($DriveLetter):\"
 						$ACL = Get-Acl -Path  $Folder
@@ -1693,10 +1696,10 @@ Function DeployRdsStart {
 				} -ArgumentList ( $DomainDnsName )
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarRDS.Value = $I } ) }
             If ( $CheckBoxRas ) {
-                $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Downloading and Installing Parallels RAS version 18.3.22908 `n") } )
-				$Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Download and Install Parallels RAS version 18.3.22908' -ScriptBlock {
+                $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Downloading and Installing Parallels RAS version 19.0.23333 `n") } )
+				$Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Download and Install Parallels RAS version 19.0.23333' -ScriptBlock {
 					# https://www.parallels.com/products/ras/download/links/
-					[STRING]$UrlDownload =  'https://download.parallels.com/ras/v18/18.3.1.22908/RASInstaller-18.3.22908.msi'
+					[STRING]$UrlDownload =  'https://download.parallels.com/ras/v19/19.0.2.23333/RASInstaller-19.0.23333.msi'
 					[STRING]$FileDownload = "$ENV:LOCALAPPDATA\$($UrlDownload.Split('/')[-1])"
 					Invoke-WebRequest -Uri $UrlDownload -UseBasicParsing  -OutFile $FileDownload -PassThru | Out-Null
 					Invoke-Expression -Command "CMD.exe /C 'MsiExec.exe /i $FileDownload /qn /norestart'"
@@ -1838,8 +1841,8 @@ Function DeployO365Start {
 				Param($O365version,$ProductId,$ExcludeApp)
 				# $Url = 'https://www.microsoft.com/en-us/download/confirmation.aspx?id=49117'
 				# DownloadInstall OfficeDeploymentTool Version 16.0.13426.20308
-				$UrlDownload = 'https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_13426-20308.exe'
-				$FileDownload = "$Env:LOCALAPPDATA\officedeploymenttool_13426-20308.exe"
+				$UrlDownload = 'https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_15629-20208.exe'
+				$FileDownload = "$Env:LOCALAPPDATA\officedeploymenttool_15629-20208.exe"
 				(New-Object System.Net.WebClient).DownloadFile($UrlDownload, $FileDownload)
 				Do { Start-Sleep -Seconds 2 } Until ( Test-Path -Path $FileDownload ) 
 				Invoke-Expression -Command "CMD.EXE /C '$FileDownload /quiet /extract:$FileDownload\..'"
@@ -1847,10 +1850,13 @@ Function DeployO365Start {
 					<Configuration>
 						<Add SourcePath="c:\install\O365" OfficeClientEdition="$O365version" Channel="SemiAnnual">
 							<Product ID="$ProductId">
-								<Language ID="en-us"/>
-								<Language ID="nl-nl"/>
-								<Language ID="fr-fr"/>
-								<ExcludeApp ID="$ExcludeApp"/>
+								<Language ID="en-us" />
+								<Language ID="nl-nl" />
+								<Language ID="fr-fr" />
+                                <ExcludeApp ID="Groove" />
+                                <ExcludeApp ID="OneDrive" />
+                                <ExcludeApp ID="Bing" />
+								<ExcludeApp ID="$ExcludeApp" />
 							</Product>
 						</Add>
 						<Updates Channel="SemiAnnual" Enabled="TRUE"/>
@@ -2260,7 +2266,6 @@ $SyncHash.ButtonDeployRdsStart.Add_Click({
         'CheckBoxDocuments' = $SyncHash.CheckBoxDocuments.IsChecked
         }
     DeployRdsStart @DeployRdsStart
-	# DeployRdsStart -SyncHash $SyncHash -ServerIpAddress  $SyncHash.TextBoxRDSServerIpAddress.Text -ServerName $SyncHash.TextBoxRDSServerName.Text -LocalAdminUserName $SyncHash.TextBoxRDSLocalAdminUserName.Text -LocalAdminPassword $SyncHash.TextBoxRDSLocalAdminPassword.Text -DomainAdminUserName $SyncHash.TextBoxRDSDomainAdminUserName.Text -DomainAdminPassword $SyncHash.TextBoxRDSDomainAdminPassword.Text -DomainDcServerName $SyncHash.TextBoxRDSDomainDcServerName.Text -DomainDnsServerIpAddress $SyncHash.TextBoxRDSDomainDnsServerIpAddress.Text -FSLogixFolderRootPath $SyncHash.TextBoxRDSFSLogixFolderRootPath.Text -DataFolderRootPath $SyncHash.TextBoxRDSDataFolderRootPath.Text -OuPath $SyncHash.TextBoxRDSOuPath.Text -DomainDnsName $SyncHash.TextBoxDomainDnsName.Text -CheckBoxRas $SyncHash.CheckBoxRDSRas.IsChecked  -RasLicenseEmail $SyncHash.TextBoxRDSRasLicenseEmail.Text -RasLicensePassword $SyncHash.TextBoxRDSRasLicensePassword.Text -CheckBoxRasKey $SyncHash.CheckBoxRDSRasKey.IsChecked -RasKey $SyncHash.TextBoxRDSRasKey.Text
     })
 $SyncHash.ButtonDeployRdsReboot.Add_Click({
     $SyncHash.BorderDeployRdsReboot.Visibility = "Hidden"

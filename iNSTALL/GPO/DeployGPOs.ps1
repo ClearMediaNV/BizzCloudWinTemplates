@@ -1,6 +1,6 @@
 Push-Location -Path 'c:\install\gpo'
 
-# Copy ADM(X) Files to Local ADM(X) Store
+# Copy ADM(X) Files to Local ADM(X) Folder
 Copy-Item -Path '.\Templates\admx\*' -Destination 'C:\Windows\PolicyDefinitions' -Force
 Copy-Item -Path '.\Templates\admx\en-US\*' -Destination 'C:\Windows\PolicyDefinitions\en-US' -Force
 Copy-Item -Path '.\Templates\admx\fr-FR\*' -Destination 'C:\Windows\PolicyDefinitions\fr-FR' -Force
@@ -8,9 +8,9 @@ Copy-Item -Path '.\Templates\admx\fr-FR\*' -Destination 'C:\Windows\PolicyDefini
 If ( (Get-WmiObject -Class win32_computersystem).PartOfDomain ) {
     # Lets Prep some AD Group Policies
     # Create Central ADM(X) Store
-    # Copy ADM(X) files to Central ADM(X) Store
-    [STRING]$PdcName = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().PdcRoleOwner.Name
-    [STRING]$DomainName = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().Name
+    # Copy ADM(X) Files to Central ADM(X) Folder
+    $PdcName = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().PdcRoleOwner.Name
+    $DomainName = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().Name
     New-Item -Path "\\$PdcName\SYSVOL\$DomainName\Policies\PolicyDefinitions" -ItemType Directory -Force
     Copy-Item -Path 'C:\Windows\PolicyDefinitions\*' -Destination "\\$PdcName\SYSVOL\$DomainName\Policies\PolicyDefinitions" -Force
     Copy-Item -Path 'C:\Windows\PolicyDefinitions\en-US\*' -Destination "\\$PdcName\SYSVOL\$DomainName\Policies\PolicyDefinitions\en-US"  -Force
