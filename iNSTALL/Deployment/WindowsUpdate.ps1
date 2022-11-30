@@ -36,12 +36,12 @@ If	( $WindowsUpdateList.Count -eq 0 )
 Foreach	( $Update in $WindowsUpdateList ) 
 		{ $Table += [PSCustomObject] @{
     			'DateTime' = (Get-Date).tostring('dd-MM-yyyy HH:mm:ss')
-                        'Title' = [STRING]$Update.Title
-                        'CategoriesName' = [STRING]$Update.Categories._NewEnum.Name
-                        'BundledUpdatesTitle' = [STRING]$Update.BundledUpdates._NewEnum.Title
-                        'BundledUpdatesLastDeploymentChangeTime' = [STRING]$Update.BundledUpdates._NewEnum.LastDeploymentChangeTime
-                        'BundledUpdatesMinDownloadSize' = [STRING]$Update.BundledUpdates._NewEnum.MinDownloadSize
-                        'KBArticleIDs' = [STRING]$Update.KBArticleIDs
+                        'Title' = $Update.Title
+                        'CategoriesName' = $Update.Categories._NewEnum.Name
+                        'BundledUpdatesTitle' = $Update.BundledUpdates._NewEnum.Title
+                        'BundledUpdatesLastDeploymentChangeTime' = $Update.BundledUpdates._NewEnum.LastDeploymentChangeTime
+                        'BundledUpdatesMinDownloadSize' = $Update.BundledUpdates._NewEnum.MinDownloadSize
+                        'KBArticleIDs' = $Update.KBArticleIDs
 			}
 		}
 $Table | Select-Object -Property DateTime,Title,CategoriesName,BundledUpdatesTitle,BundledUpdatesLastDeploymentChangeTime,BundledUpdatesMinDownloadSize,KBArticleIDs | Export-Csv -Path 'c:\windows\logs\WindowsUpdate.csv' -Append -Force -NoTypeInformation
