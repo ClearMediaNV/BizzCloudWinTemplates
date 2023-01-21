@@ -1839,10 +1839,11 @@ Function DeployO365Start {
 			$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxO365.AddText(" Downloading and Extracting Office Deployment Tool `n") } )
 			$Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Download and Extract Office Deployment Tool' -ScriptBlock {
 				Param($O365version,$ProductId,$ExcludeApp)
-				# $Url = 'https://www.microsoft.com/en-us/download/confirmation.aspx?id=49117'
-				# DownloadInstall OfficeDeploymentTool Version 16.0.15726.20202
-				$UrlDownload = 'https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_15726-20202.exe'
-				$FileDownload = "$Env:LOCALAPPDATA\officedeploymenttool_15726-20202.exe"
+				# $UrlOfficeDeploymentTool = 'https://www.microsoft.com/en-us/download/confirmation.aspx?id=49117'
+				# DownloadInstall OfficeDeploymentTool Version Recent
+				$UrlOfficeDeploymentTool = 'https://www.microsoft.com/en-us/download/confirmation.aspx?id=49117'
+				$UrlDownload = ( ( Invoke-WebRequest -Uri "$UrlOfficeDeploymentTool" -UseBasicParsing ).links | Where-Object -FilterScript { $PsItem.href -match '/officedeploymenttool_\d{5}-\d{5}\.exe$' } ).href[0]
+				$FileDownload = "$Env:LOCALAPPDATA\ODT.exe"
 				(New-Object System.Net.WebClient).DownloadFile($UrlDownload, $FileDownload)
 				Do { Start-Sleep -Seconds 2 } Until ( Test-Path -Path $FileDownload ) 
 				Invoke-Expression -Command "CMD.EXE /C '$FileDownload /quiet /extract:$FileDownload\..'"
