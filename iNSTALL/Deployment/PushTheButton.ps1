@@ -1628,11 +1628,16 @@ Function DeployRdsStart {
                 }
             $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Downloading and Installing FSLogix `n") } )
             $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Install FsLogix' -ScriptBlock {
-				[System.Net.ServicePointManager]::SecurityProtocol = 'Tls12'
-                		# Install Chocolatey as Package Manager
-				Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1')
-				# Install FsLogix
-				Invoke-Expression -Command '& C:\ProgramData\chocolatey\choco install fslogix -y -f'
+				# DownloadInstall FsLogix Latest Version
+				$UrlFsLogixDownloadLatest = 'https://aka.ms/fslogix-latest'
+				$Href = ( ( Invoke-WebRequest -Uri $UrlFsLogixDownloadLatest -UseBasicParsing ).links | Where-Object -FilterScript { $PsItem.class -match 'mscom-link download-button dl' } ).href
+				$UrlDownload = ( ( Invoke-WebRequest -Uri "https://www.microsoft.com/en-us/download/$Href" -UseBasicParsing ).links.href | Where-Object -FilterScript { $PsItem -match  "FSLogix_Apps_\d{1}.\d{1}.\d{4}.\d{5}.zip" } )[0]
+				$FileDownload = "$Env:LOCALAPPDATA\FSLogixAppsSetup.zip"
+				$FolderDownload = "$Env:LOCALAPPDATA\FSLogixAppsSetup"
+				(New-Object System.Net.WebClient).DownloadFile( $UrlDownload , $FileDownload )
+				Expand-Archive -Path $FileDownload -DestinationPath $FolderDownload -Force
+				Push-Location -Path "$FolderDownload\x64\Release"
+				Invoke-Expression -Command "CMD.EXE /C FSLogixAppsSetup.exe /install /quiet /norestart"
 				}
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarRDS.Value = $I } ) }
             $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Enabling FsLogix Profile Container `n") } ) 
@@ -1698,12 +1703,18 @@ Function DeployRdsStart {
             If ( $CheckBoxRas ) {
                 $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Downloading and Installing Parallels RAS version 19.0.23333 `n") } )
 				$Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Download and Install Parallels RAS version 19.0.23333' -ScriptBlock {
-					# https://www.parallels.com/products/ras/download/links/
-					[STRING]$UrlDownload =  'https://download.parallels.com/ras/v19/19.0.2.23333/RASInstaller-19.0.23333.msi'
-					[STRING]$FileDownload = "$ENV:LOCALAPPDATA\$($UrlDownload.Split('/')[-1])"
-					Invoke-WebRequest -Uri $UrlDownload -UseBasicParsing  -OutFile $FileDownload -PassThru | Out-Null
-					Invoke-Expression -Command "CMD.exe /C 'MsiExec.exe /i $FileDownload /qn /norestart'"
-					}
+				# Knowledge Base for Parallels Remote Application Server v19 Release Notes
+				$UrlKB129018 = 'https://kb.parallels.com/en/129018'
+				$RasCoreVersion = ( ( Invoke-WebRequest -Uri $UrlKB129018 -UseBasicParsing ).content.Split( '´n' ) | Where-Object -FilterScript { $PsItem -match 'RAS Core v19.\d{1}.\d{1}-\d{5}' } )[0].Split( '>' )[-1].Split( '<' )[0]
+				$RasCoreVersionMajor = '19'
+				$RasCoreVersionMinor = $RasCoreVersion.Split( '.' )[1]
+				$RasCoreVersionBuild = $RasCoreVersion.Split( '.' )[2].Split( '-' )[0]
+				$RasCoreVersionRevision = $RasCoreVersion.Split( '.' )[2].Split( '-' )[1]
+				$UrlDownLoad = "https://download.parallels.com/ras/v$RasCoreVersionMajor/$RasCoreVersionMajor.$RasCoreVersionMinor.$RasCoreVersionBuild.$RasCoreVersionRevision/RASInstaller-$RasCoreVersionMajor.$RasCoreVersionMinor.$RasCoreVersionRevision.msi"
+				$FileDownload = "$ENV:LOCALAPPDATA\$($UrlDownload.Split('/')[-1])"
+				(New-Object System.Net.WebClient).DownloadFile( $UrlDownload , $FileDownload )
+				Invoke-Expression -Command "CMD.EXE /C 'MsiExec.exe /i $FileDownload /qn /norestart'"
+				}
                 While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarRDS.Value = $I } ) }
                 $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Deploying Parallels RDS Farm `n") } )
 				$Job = Invoke-Command -Session $PsSession -AsJob -JobName "Deploy Parallels RAS Farm" -ScriptBlock {
@@ -1839,10 +1850,11 @@ Function DeployO365Start {
 			$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxO365.AddText(" Downloading and Extracting Office Deployment Tool `n") } )
 			$Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Download and Extract Office Deployment Tool' -ScriptBlock {
 				Param($O365version,$ProductId,$ExcludeApp)
-				# $Url = 'https://www.microsoft.com/en-us/download/confirmation.aspx?id=49117'
-				# DownloadInstall OfficeDeploymentTool Version 16.0.15726.20202
-				$UrlDownload = 'https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_15726-20202.exe'
-				$FileDownload = "$Env:LOCALAPPDATA\officedeploymenttool_15726-20202.exe"
+				# $UrlOfficeDeploymentTool = 'https://www.microsoft.com/en-us/download/confirmation.aspx?id=49117'
+				# DownloadInstall OfficeDeploymentTool Version Recent
+				$UrlOfficeDeploymentTool = 'https://www.microsoft.com/en-us/download/confirmation.aspx?id=49117'
+				$UrlDownload = ( ( Invoke-WebRequest -Uri "$UrlOfficeDeploymentTool" -UseBasicParsing ).links | Where-Object -FilterScript { $PsItem.href -match '/officedeploymenttool_\d{5}-\d{5}\.exe$' } ).href[0]
+				$FileDownload = "$Env:LOCALAPPDATA\ODT.exe"
 				(New-Object System.Net.WebClient).DownloadFile($UrlDownload, $FileDownload)
 				Do { Start-Sleep -Seconds 2 } Until ( Test-Path -Path $FileDownload ) 
 				Invoke-Expression -Command "CMD.EXE /C '$FileDownload /quiet /extract:$FileDownload\..'"
