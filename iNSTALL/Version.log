@@ -1,13 +1,23 @@
+Version 2.13
+-------------
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Deploy Parallels RAS Latest Version
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Deploy FsLogix Latest Version
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployO365Start | Deploy ODT Latest Version
+Refactor O365 - Update InstallO365ProPlus.ps1 | Deploy ODT Latest Version
+Refactor GPO - Add Files via Upload | Update FSLogix group policy definitions
+Refactor Docs - Update VMware Template.docx
+Refactor Docs - Add vCloud SAML authentication using Azure AD.docx
+
 Version 2.12
 -------------
 Refactor Deployment/AioSetup - Update InstallRDS.ps1 | Add Local GPO for RDS Fair Share
 Refactor Deployment/AioSetup - Update InstallRDS.ps1 | Add Local GPO for RDS Licensing
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Enable GPT Volumes
-Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Install Parallels RAS version 19.0.23333
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Deploy Parallels RAS version 19.0.23333
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployO365Start | Exclude Teams , OneDrive , Bing
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployO365Start | Deploy ODT Recent Version
-Refactor Deployment - Update InstallVmWareTools.ps1 | Install vmware-tools version 12.1.0.20219665
-Refactor Deployment - Update InstallMicrosoftEdge.ps1 | Install Microsoft Edge for business version 105.0.1343.53
+Refactor Deployment - Update InstallVmWareTools.ps1 | Deploy vmware-tools version 12.1.0.20219665
+Refactor Deployment - Update InstallMicrosoftEdge.ps1 | Deploy Microsoft Edge for business version 105.0.1343.53
 Refactor GPO - Add Microsoft Edge group policy definitions version 105.0.1343.53
 Refactor GPO - Add Google Chrome group policy definitions
 Refactor O365 - Update configuration32.xml | Exclude Teams , OneDrive , Bing
@@ -29,10 +39,10 @@ Refactor Deployment - Update PushTheButton.ps1 | Update DeployOuStart | Add FSLo
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployStandardGpoStart | Add StandardServerFSLogixPolicy
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployFolderRedirectionStart | Add StandardUserFolderRedirectionAdm
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Enable FSLogix Profile Container
-Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Install 'Parallels RAS' version 18.3.22908 - Deploy Basic RAS Farm
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Deploy 'Parallels RAS' version 18.3.22908 - Deploy Basic RAS Farm
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Remove Server Name
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployUserStart | Add UserEmailAddress
-Refactor Deployment - Update InstallVmWareTools.ps1 | Install vmware-tools version 12.0.0.19345655
+Refactor Deployment - Update InstallVmWareTools.ps1 | Deploy vmware-tools version 12.0.0.19345655
 
 Version 2.10
 -------------
@@ -50,7 +60,7 @@ Refactor Deployment - Update PushTheButton.ps1 | Update DeployStandardGpoStart |
 
 Version 2.08
 -------------
-Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart - Install FsLogix Latest version
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart - Deploy FsLogix Latest version
 
 Version 2.07
 -------------
@@ -58,18 +68,18 @@ Refactor BgInfo - Update PresetAndBgInfo.ps1 | Get WSUS Server | Make Code Compa
 Refactor GPO - Update StandardWindowsUpdateServerPolicy.csv | Bypass WSUS for Features on Demand
 Refactor Deployment/AioSetup - Update InstallRDS.ps1 | Enable Printer Spooler Service
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployStandardGpoStart | Bypass WSUS for Features on Demand
-Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Install 'Parallels RAS' version 18.1.22733
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Deploy 'Parallels RAS' version 18.1.22733
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Enable Printer Spooler Service
-Refactor Deployment - Update InstallMicrosoftEdge.ps1 | Install 'Microsoft Edge for business' version 94.0.992.31
-Refactor Deployment - Update InstallVmWareTools.ps1 | Install vmware-tools version 11.3.5
+Refactor Deployment - Update InstallMicrosoftEdge.ps1 | Deploy 'Microsoft Edge for business' version 94.0.992.31
+Refactor Deployment - Update InstallVmWareTools.ps1 | Deploy vmware-tools version 11.3.5
 
 Version 2.06
 -------------
-Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Install FsLogix version 2.9.7654.4615001
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Deploy FsLogix version 2.9.7654.4615001
 
 Version 2.05
 -------------
-Refactor Deployment - Update InstallVmWareTools.ps1 | Install vmware-tools version 11.2.5
+Refactor Deployment - Update InstallVmWareTools.ps1 | Deploy vmware-tools version 11.2.5
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployFireboxStart | Add extended Error Handling - Remove Reboot
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployStandardGpoStart | Add Disable HardwareAcceleration for Microsoft Edge
 Refactor GPO - Add Files via Upload | Add FSLogix group policy definitions - Add Microsoft Edge group policy definitions
@@ -84,24 +94,24 @@ Refactor BgInfo - Update PresetAndBgInfo.ps1 | Remove Password Never Expires for
 Refactor Docs - Clean Up and Update with HTML5 UI
 Refactor Deployment - Create DisableTeamsGpuAcceleration.ps1
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsReboot | ReEnable DeployRdsStart Button after RdsReboot
-Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Install 'Parallels RAS' version 18.0.22497
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Deploy 'Parallels RAS' version 18.0.22497
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployStandardGpoStart | StandardServerWindowsUpdate | Add OU=Domain Controllers
 
 Version 2.03
 -------------
 Refactor BgInfo - Update windows.bgi | Add Extended Inventory
 Refactor BgInfo - Update PresetAndBgInfo.ps1 | Get Last Installed HotFix - LastHotFix will be added to BgInfo Inventory
-Refactor O365 - Update InstallO365ProPlus.ps1 | Install OfficeDeploymentTool version 16.0.13426.20308
+Refactor O365 - Update InstallO365ProPlus.ps1 | Deploy OfficeDeploymentTool version 16.0.13426.20308
 Refactor O365 - Update configuration32.xml | Readability - Branch = SemiAnnual
 Refactor O365 - Update configuration64.xml | Readability - Branch = SemiAnnual
-Refactor Deployment - Update InstallVmWareTools.ps1 | Install vmware-tools version 11.1.5
-Refactor Deployment - Create InstallMicrosoftEdge.ps1 | Install 'Microsoft Edge for business' version 87.0.664.60
-Refactor Deployment - Update PushTheButton.ps1 | Update DeployO365Start - Install OfficeDeploymentTool version 16.0.13426.20308 - Set Channel="SemiAnnual"
+Refactor Deployment - Update InstallVmWareTools.ps1 | Deploy vmware-tools version 11.1.5
+Refactor Deployment - Create InstallMicrosoftEdge.ps1 | Deploy 'Microsoft Edge for business' version 87.0.664.60
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployO365Start - Deploy OfficeDeploymentTool version 16.0.13426.20308 - Set Channel="SemiAnnual"
 
 Version 2.02
 -------------
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployFirebox - Change LabelFireboxExternalIp - Change LabelFireboxExternalIpGatewayCIDR
-Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart - Install FsLogix version 2.9.7349.30108
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart - Deploy FsLogix version 2.9.7349.30108
 
 Version 2.01
 -------------
