@@ -11,8 +11,6 @@ Set-ItemProperty -Path 'HKCU:\Software\Microsoft\ServerManager' -Name 'DoNotOpen
 # Get Public IP @
 Try { [System.Net.ServicePointManager]::SecurityProtocol = 'Tls12' ; Set-Item -Path 'ENV:\IpAddressPublic' -Value ( Invoke-WebRequest -Uri 'https://api.ipify.org' -UseBasicParsing ).Content }
     Catch { Set-Item -Path 'ENV:\IpAddressPublic' -Value '0.0.0.0' }
-# Restart NLA Service for DomainController in order to gain extra Reboot in initial Deployment of ADS
-Get-CimInstance -NameSpace 'root\cimv2' -ClassName 'win32_ComputerSystem' -Filter 'DomainRole = 4 or DomainRole = 5' | Restart-Service -Name 'NlaSvc' -Force
 # Get NLA state
 Set-Item -Path 'ENV:\NetworkCategory' -value ( Get-NetConnectionProfile ).NetworkCategory
 Set-Item -Path 'ENV:\IPv4Connectivity' -Value ( Get-NetConnectionProfile ).IPv4Connectivity

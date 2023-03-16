@@ -7,7 +7,7 @@ Try {
     $FileDownload = "$ENV:LOCALAPPDATA\$Branch.zip"
     $FolderDownload = "$ENV:LOCALAPPDATA\$Branch"
     # Download UrlDownload to FileDownload
-    (New-Object System.Net.WebClient).downloadFile($UrlDownload,$FileDownload)
+    ( New-Object System.Net.WebClient ).DownloadFile( $UrlDownload , $FileDownload )
     # Unzip FileDownload to FolderDownload
     Expand-Archive -Path $FileDownload -DestinationPath $FolderDownload -Force
     # Cleanup and Copy Install Folder
