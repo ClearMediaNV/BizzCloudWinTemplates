@@ -387,8 +387,8 @@ $SyncHash.Host = $Host
                     <Label Name="LabelWuTime" Content="Scheduled Time (Hr : Min)" HorizontalAlignment="Left" Height="28" Margin="550,61,0,0" VerticalAlignment="Top" Width="165"/>
                     <Label Name="LabelWuTimex" Content=":" HorizontalAlignment="Left" Height="28" Margin="797,58,0,0" VerticalAlignment="Top" Width="20"/>
                     <ComboBox Name="ComboBoxWuDayOfWeek" HorizontalAlignment="Left" Height="26" Margin="713,28,0,0" VerticalAlignment="Top" Width="180" ToolTip="Select Day from List">
-                        <ComboBoxItem Content="Monday"/>
-                        <ComboBoxItem Content="Tuesday" IsSelected="True"/>
+                        <ComboBoxItem Content="Monday" IsSelected="True" />
+                        <ComboBoxItem Content="Tuesday"/>
                         <ComboBoxItem Content="Wednesday"/>
                         <ComboBoxItem Content="Thursday"/>
                         <ComboBoxItem Content="Friday"/>
