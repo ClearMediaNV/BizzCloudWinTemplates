@@ -89,10 +89,8 @@ $Form2.Controls.Add( $PB )
 $Form2.Show() 
 
 # Download and Extract Office Deployment Tool
-# $Url = 'https://www.microsoft.com/en-us/download/confirmation.aspx?id=49117'
-# DownloadInstall OfficeDeploymentTool Version 16.0.13426.20308
 # $UrlOfficeDeploymentTool = 'https://www.microsoft.com/en-us/download/confirmation.aspx?id=49117'
-# DownloadInstall OfficeDeploymentTool Version Recent
+# DownloadInstall OfficeDeploymentTool Latest Version
 $UrlOfficeDeploymentTool = 'https://www.microsoft.com/en-us/download/confirmation.aspx?id=49117'
 $UrlDownload = ( ( Invoke-WebRequest -Uri "$UrlOfficeDeploymentTool" -UseBasicParsing ).links | Where-Object -FilterScript { $PsItem.href -match '/officedeploymenttool_\d{5}-\d{5}\.exe$' } ).href[0]
 $FileDownload = "$Env:LOCALAPPDATA\ODT.exe"
