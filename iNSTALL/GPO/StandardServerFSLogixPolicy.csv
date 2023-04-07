@@ -6,3 +6,4 @@ HKLM\Software\FSLogix\Profiles,RemoveOrphanedOSTFilesOnLogoff,Dword,1
 HKLM\Software\FSLogix\Profiles,SizeInMBs,Dword,51200
 HKLM\Software\FSLogix\Profiles,VHDLocations,String,"D:\Users"
 HKLM\Software\FSLogix\Profiles,VolumeType,String,"VHDX"
+HKLM\Software\FSLogix\Profiles,RoamIdentity,Dword,1
