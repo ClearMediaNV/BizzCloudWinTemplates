@@ -11,3 +11,4 @@ HKLM\Software\Policies\Microsoft\Windows NT\Terminal Services,LicenseServers,Str
 HKLM\Software\Policies\Microsoft\Windows NT\Terminal Services,MaxDisconnectionTime,Dword,28800000
 HKLM\SYSTEM\CurrentControlSet\Control\FileSystem,LongPathsEnabled,Dword,1
 HKLM\Software\Policies\Microsoft\Windows\WorkplaceJoin,BlockAADWorkplaceJoin,Dword,1
+HKLM\Software\Policies\Microsoft\MicrosoftEdge\Main,PreventFirstRunPage,Dword,1
