@@ -901,7 +901,9 @@ Function DeployStandardGpoStart {
 				'HKLM\Software\Policies\Microsoft\Windows NT\Terminal Services,fResetBroken,Dword,1',
 				'HKLM\Software\Policies\Microsoft\Windows NT\Terminal Services,LicenseServers,String,192.168.13.100',
 				'HKLM\Software\Policies\Microsoft\Windows NT\Terminal Services,MaxDisconnectionTime,Dword,28800000',
-				'HKLM\SYSTEM\CurrentControlSet\Control\FileSystem,LongPathsEnabled,Dword,1'
+				'HKLM\SYSTEM\CurrentControlSet\Control\FileSystem,LongPathsEnabled,Dword,1',
+				'HKLM\Software\Policies\Microsoft\Windows\WorkplaceJoin,BlockAADWorkplaceJoin,Dword,1',
+				'HKLM\Software\Policies\Microsoft\Microsoft\Edge,HideFirstRunExperience,Dword,1'
 				)
 			$StandardServerWindowsUpdatePolicy = (
 				'HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate,WUServer,String,http://update.clearmedia.be',
@@ -920,7 +922,8 @@ Function DeployStandardGpoStart {
 				'HKLM\Software\FSLogix\Profiles,SizeInMBs,Dword,51200',
 				'HKLM\Software\FSLogix\Profiles,VHDLocations,String,D:\Users',
 				'HKLM\Software\FSLogix\Profiles,VolumeType,String,VHDX',
-				'HKLM\Software\FSLogix\Profiles,FlipFlopProfileDirectoryName,Dword,1'
+				'HKLM\Software\FSLogix\Profiles,FlipFlopProfileDirectoryName,Dword,1',
+				'HKLM\Software\FSLogix\Profiles,RoamIdentity,Dword,1'
 				)
 			# Create and Assemble User GPOs
 			# Link User GPOs to OU Users
