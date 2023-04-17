@@ -1629,6 +1629,7 @@ Function DeployRdsStart {
             $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Downloading and Installing FSLogix `n") } )
             $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Install FsLogix' -ScriptBlock {
 				# DownloadInstall FsLogix Latest Version
+				[System.Net.ServicePointManager]::SecurityProtocol = 'Tls12'
 				$UrlFsLogixDownloadLatest = 'https://aka.ms/fslogix-latest'
 				$Href = ( ( Invoke-WebRequest -Uri $UrlFsLogixDownloadLatest -UseBasicParsing ).links | Where-Object -FilterScript { $PsItem.class -match 'mscom-link download-button dl' } ).href
 				$UrlDownload = ( ( Invoke-WebRequest -Uri "https://www.microsoft.com/en-us/download/$Href" -UseBasicParsing ).links.href | Where-Object -FilterScript { $PsItem -match  "FSLogix_Apps_\d{1}.\d{1}.\d{4}.\d{5}.zip" } )[0]
@@ -1704,6 +1705,7 @@ Function DeployRdsStart {
                 $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Downloading and Installing Parallels RAS version 19.0.23333 `n") } )
 				$Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Download and Install Parallels RAS version 19.0.23333' -ScriptBlock {
 				# Knowledge Base for Parallels Remote Application Server v19 Release Notes
+				[System.Net.ServicePointManager]::SecurityProtocol = 'Tls12'
 				$UrlKB129018 = 'https://kb.parallels.com/en/129018'
 				$RasCoreVersion = ( ( Invoke-WebRequest -Uri $UrlKB129018 -UseBasicParsing ).content.Split( '´n' ) | Where-Object -FilterScript { $PsItem -match 'RAS Core v19.\d{1}.\d{1}-\d{5}' } )[0].Split( '>' )[-1].Split( '<' )[0]
 				$RasCoreVersionMajor = '19'
