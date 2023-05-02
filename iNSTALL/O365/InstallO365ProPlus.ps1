@@ -95,7 +95,9 @@ $UrlOfficeDeploymentTool = 'https://www.microsoft.com/en-us/download/confirmatio
 $UrlDownload = ( ( Invoke-WebRequest -Uri "$UrlOfficeDeploymentTool" -UseBasicParsing ).links | Where-Object -FilterScript { $PsItem.href -match '/officedeploymenttool_\d{5}-\d{5}\.exe$' } ).href[0]
 $FileDownload = "$Env:LOCALAPPDATA\ODT.exe"
 (New-Object System.Net.WebClient).DownloadFile($UrlDownload, $FileDownload)
-Invoke-Expression -Command "& $FileDownload /quiet /extract:."
+Do { Start-Sleep -Seconds 2 } Until ( Test-Path -Path $FileDownload ) 
+Invoke-Expression -Command "CMD.EXE /C '$FileDownload /quiet /extract:$FileDownload\..'"
+
 
 # Download 'O365 Pro Plus BIT Selection'
 Switch ( $O365version )
