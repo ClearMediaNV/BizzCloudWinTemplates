@@ -10,3 +10,5 @@ HKLM\Software\Policies\Microsoft\Windows NT\Terminal Services,fResetBroken,Dword
 HKLM\Software\Policies\Microsoft\Windows NT\Terminal Services,LicenseServers,String,"192.168.13.100"
 HKLM\Software\Policies\Microsoft\Windows NT\Terminal Services,MaxDisconnectionTime,Dword,28800000
 HKLM\SYSTEM\CurrentControlSet\Control\FileSystem,LongPathsEnabled,Dword,1
+HKLM\Software\Policies\Microsoft\Windows\WorkplaceJoin,BlockAADWorkplaceJoin,Dword,1
+HKLM\Software\Policies\Microsoft\Microsoft\Edge,HideFirstRunExperience,Dword,1

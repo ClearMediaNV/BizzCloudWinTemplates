@@ -387,8 +387,8 @@ $SyncHash.Host = $Host
                     <Label Name="LabelWuTime" Content="Scheduled Time (Hr : Min)" HorizontalAlignment="Left" Height="28" Margin="550,61,0,0" VerticalAlignment="Top" Width="165"/>
                     <Label Name="LabelWuTimex" Content=":" HorizontalAlignment="Left" Height="28" Margin="797,58,0,0" VerticalAlignment="Top" Width="20"/>
                     <ComboBox Name="ComboBoxWuDayOfWeek" HorizontalAlignment="Left" Height="26" Margin="713,28,0,0" VerticalAlignment="Top" Width="180" ToolTip="Select Day from List">
-                        <ComboBoxItem Content="Monday"/>
-                        <ComboBoxItem Content="Tuesday" IsSelected="True"/>
+                        <ComboBoxItem Content="Monday" IsSelected="True" />
+                        <ComboBoxItem Content="Tuesday"/>
                         <ComboBoxItem Content="Wednesday"/>
                         <ComboBoxItem Content="Thursday"/>
                         <ComboBoxItem Content="Friday"/>
@@ -901,7 +901,9 @@ Function DeployStandardGpoStart {
 				'HKLM\Software\Policies\Microsoft\Windows NT\Terminal Services,fResetBroken,Dword,1',
 				'HKLM\Software\Policies\Microsoft\Windows NT\Terminal Services,LicenseServers,String,192.168.13.100',
 				'HKLM\Software\Policies\Microsoft\Windows NT\Terminal Services,MaxDisconnectionTime,Dword,28800000',
-				'HKLM\SYSTEM\CurrentControlSet\Control\FileSystem,LongPathsEnabled,Dword,1'
+				'HKLM\SYSTEM\CurrentControlSet\Control\FileSystem,LongPathsEnabled,Dword,1',
+				'HKLM\Software\Policies\Microsoft\Windows\WorkplaceJoin,BlockAADWorkplaceJoin,Dword,1',
+				'HKLM\Software\Policies\Microsoft\Microsoft\Edge,HideFirstRunExperience,Dword,1'
 				)
 			$StandardServerWindowsUpdatePolicy = (
 				'HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate,WUServer,String,http://update.clearmedia.be',
@@ -920,7 +922,8 @@ Function DeployStandardGpoStart {
 				'HKLM\Software\FSLogix\Profiles,SizeInMBs,Dword,51200',
 				'HKLM\Software\FSLogix\Profiles,VHDLocations,String,D:\Users',
 				'HKLM\Software\FSLogix\Profiles,VolumeType,String,VHDX',
-				'HKLM\Software\FSLogix\Profiles,FlipFlopProfileDirectoryName,Dword,1'
+				'HKLM\Software\FSLogix\Profiles,FlipFlopProfileDirectoryName,Dword,1',
+				'HKLM\Software\FSLogix\Profiles,RoamIdentity,Dword,1'
 				)
 			# Create and Assemble User GPOs
 			# Link User GPOs to OU Users
@@ -1629,6 +1632,7 @@ Function DeployRdsStart {
             $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Downloading and Installing FSLogix `n") } )
             $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Install FsLogix' -ScriptBlock {
 				# DownloadInstall FsLogix Latest Version
+				[System.Net.ServicePointManager]::SecurityProtocol = 'Tls12'
 				$UrlFsLogixDownloadLatest = 'https://aka.ms/fslogix-latest'
 				$Href = ( ( Invoke-WebRequest -Uri $UrlFsLogixDownloadLatest -UseBasicParsing ).links | Where-Object -FilterScript { $PsItem.class -match 'mscom-link download-button dl' } ).href
 				$UrlDownload = ( ( Invoke-WebRequest -Uri "https://www.microsoft.com/en-us/download/$Href" -UseBasicParsing ).links.href | Where-Object -FilterScript { $PsItem -match  "FSLogix_Apps_\d{1}.\d{1}.\d{4}.\d{5}.zip" } )[0]
@@ -1704,6 +1708,7 @@ Function DeployRdsStart {
                 $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Downloading and Installing Parallels RAS version 19.0.23333 `n") } )
 				$Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Download and Install Parallels RAS version 19.0.23333' -ScriptBlock {
 				# Knowledge Base for Parallels Remote Application Server v19 Release Notes
+				[System.Net.ServicePointManager]::SecurityProtocol = 'Tls12'
 				$UrlKB129018 = 'https://kb.parallels.com/en/129018'
 				$RasCoreVersion = ( ( Invoke-WebRequest -Uri $UrlKB129018 -UseBasicParsing ).content.Split( '´n' ) | Where-Object -FilterScript { $PsItem -match 'RAS Core v19.\d{1}.\d{1}-\d{5}' } )[0].Split( '>' )[-1].Split( '<' )[0]
 				$RasCoreVersionMajor = '19'

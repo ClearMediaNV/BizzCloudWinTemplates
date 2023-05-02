@@ -98,7 +98,6 @@ $FileDownload = "$Env:LOCALAPPDATA\ODT.exe"
 Do { Start-Sleep -Seconds 2 } Until ( Test-Path -Path $FileDownload ) 
 Invoke-Expression -Command "CMD.EXE /C '$FileDownload /quiet /extract:$FileDownload\..'"
 
-
 # Download 'O365 Pro Plus BIT Selection'
 Switch ( $O365version )
     {

@@ -1,3 +1,13 @@
+Version 2.14
+-------------
+Refactor GPO - Update StandardServerRdsPolicy.csv | Microsoft Edge - Hide the First-run experience and splash screen
+Refactor GPO - Update StandardServerRdsPolicy.csv | Prevent allow my organization to manage my device
+Refactor GPO - Update StandardServerFSLogixPolicy.csv | Allows legacy roaming for credentials and tokens created by the Web Account Manager (WAM) system
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployWuStart | Propose WindowsUpdateScheduling on Monday 04:00
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployStandardGpoStart | Prevent Microsoft Edge First Run Page
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployStandardGpoStart | Prevent allow my organization to manage my device
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployStandardGpoStart | Allows legacy roaming for credentials and tokens created by the Web Account Manager (WAM) system
+
 Version 2.13
 -------------
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Deploy Parallels RAS Latest Version
