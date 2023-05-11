@@ -1,3 +1,7 @@
+Version 2.15
+-------------
+Refactor Deployment - Update InstallVmWareTools.ps1 | Deploy vmware-tools version 12.2.0.21223074
+
 Version 2.14
 -------------
 Refactor GPO - Update StandardServerRdsPolicy.csv | Microsoft Edge - Hide the First-run experience and splash screen
