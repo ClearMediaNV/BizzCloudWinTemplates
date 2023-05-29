@@ -1,0 +1,7 @@
+Key,ValueName,Type,Value
+HKCU\Software\Policies\Microsoft\Edge,NewTabPageContentEnabled,Dword,0
+HKCU\Software\Policies\Microsoft\Edge,NewTabPageAllowedBackgroundTypes,Dword,3
+HKCU\Software\Policies\Microsoft\Edge,NewTabPageHideDefaultTopSites,Dword,1
+HKCU\Software\Policies\Microsoft\Edge,NewTabPageQuickLinksEnabled,Dword,0
+HKCU\Software\Policies\Microsoft\Edge\Recommended,HomepageIsNewTabPage,Dword,1
+HKCU\Software\Policies\Microsoft\Edge\Recommended,HomepageLocation,String,"about:blank"
