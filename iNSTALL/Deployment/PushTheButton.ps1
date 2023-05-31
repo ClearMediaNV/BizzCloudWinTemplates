@@ -903,7 +903,7 @@ Function DeployStandardGpoStart {
 				'HKLM\Software\Policies\Microsoft\Windows NT\Terminal Services,MaxDisconnectionTime,Dword,28800000',
 				'HKLM\SYSTEM\CurrentControlSet\Control\FileSystem,LongPathsEnabled,Dword,1',
 				'HKLM\Software\Policies\Microsoft\Windows\WorkplaceJoin,BlockAADWorkplaceJoin,Dword,1',
-				'HKLM\Software\Policies\Microsoft\Microsoft\Edge,HideFirstRunExperience,Dword,1'
+				'HKLM\Software\Policies\Microsoft\Edge,HideFirstRunExperience,Dword,1'
 				)
 			$StandardServerWindowsUpdatePolicy = (
 				'HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate,WUServer,String,http://update.clearmedia.be',
