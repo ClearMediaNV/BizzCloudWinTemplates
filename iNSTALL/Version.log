@@ -1,4 +1,4 @@
-Version 2.15
+Version 2.16
 -------------
 Refactor Deployment - Update InstallVmWareTools.ps1 | Deploy vmware-tools version 12.2.5.21855600
 Refactor Docs - Add How-To-vCloud SAML authentication using Azure AD.docx
