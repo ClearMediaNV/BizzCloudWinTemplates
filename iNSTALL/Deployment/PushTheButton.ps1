@@ -1634,8 +1634,8 @@ Function DeployRdsStart {
 				# DownloadInstall FsLogix Latest Version
 				[System.Net.ServicePointManager]::SecurityProtocol = 'Tls12'
 				$UrlFsLogixDownloadLatest = 'https://aka.ms/fslogix-latest'
-				$Href = ( ( Invoke-WebRequest -Uri $UrlFsLogixDownloadLatest -UseBasicParsing ).links | Where-Object -FilterScript { $PsItem.class -match 'mscom-link download-button dl' } ).href
-				$UrlDownload = ( ( Invoke-WebRequest -Uri "https://www.microsoft.com/en-us/download/$Href" -UseBasicParsing ).links.href | Where-Object -FilterScript { $PsItem -match  "FSLogix_Apps_\d{1}.\d{1}.\d{4}.\d{5}.zip" } )[0]
+				$Href = ( ( Invoke-WebRequest -Uri $UrlFsLogixDownloadLatest -UseBasicParsing ).links | Where-Object -FilterScript { $PsItem.class -match 'download' } ).href
+				$UrlDownload = $Href
 				$FileDownload = "$Env:LOCALAPPDATA\FSLogixAppsSetup.zip"
 				$FolderDownload = "$Env:LOCALAPPDATA\FSLogixAppsSetup"
 				(New-Object System.Net.WebClient).DownloadFile( $UrlDownload , $FileDownload )
