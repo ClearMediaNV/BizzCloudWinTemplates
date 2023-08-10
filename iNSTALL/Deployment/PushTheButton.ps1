@@ -1714,7 +1714,7 @@ Function DeployRdsStart {
 				$RasCoreVersionMajor = '19'
 				$RasCoreVersionMinor = $RasCoreVersion.Split( '.' )[1]
 				$RasCoreVersionBuild = $RasCoreVersion.Split( '.' )[2].Split( '-' )[0]
-				$RasCoreVersionRevision = $RasCoreVersion.Split( '.' )[2].Split( '-' )[1]
+				$RasCoreVersionRevision = $RasCoreVersion.Split( '.' )[2].Split( '-' )[1].Split( ' ' )[0]
 				$UrlDownLoad = "https://download.parallels.com/ras/v$RasCoreVersionMajor/$RasCoreVersionMajor.$RasCoreVersionMinor.$RasCoreVersionBuild.$RasCoreVersionRevision/RASInstaller-$RasCoreVersionMajor.$RasCoreVersionMinor.$RasCoreVersionRevision.msi"
 				$FileDownload = "$ENV:LOCALAPPDATA\$($UrlDownload.Split('/')[-1])"
 				(New-Object System.Net.WebClient).DownloadFile( $UrlDownload , $FileDownload )
