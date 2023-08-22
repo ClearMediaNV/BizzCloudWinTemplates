@@ -640,7 +640,7 @@ Function DeployDcStart {
             $Job = Start-Job -Name 'Remote Desktop Licensing Services' -ScriptBlock { Install-WindowsFeature -Name 'RDS-Licensing' -ErrorAction Stop }
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarDc.Value = $I } )  }
             $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxDC.AddText(" Installing Remote Server Administration Tools `n") } )
-            $Job = Start-Job -Name 'Remote Server Administration Tools' -ScriptBlock { Install-WindowsFeature -Name  'RSAT-AD-Tools','RSAT-DNS-Server','RSAT-RDS-Licensing-Diagnosis-UI','RDS-Licensing-UI' -ErrorAction Stop }
+            $Job = Start-Job -Name 'Remote Server Administration Tools' -ScriptBlock { If ( ( Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion' ).InstallationType -eq 'Server Core' ) { Install-WindowsFeature -Name 'RSAT-AD-Tools','RSAT-DNS-Server' -ErrorAction Stop } Else { Install-WindowsFeature -Name 'RSAT-AD-Tools','RSAT-DNS-Server','RSAT-RDS-Licensing-Diagnosis-UI','RDS-Licensing-UI' -ErrorAction Stop } }
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500  ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarDc.Value = $I } ) }
 			$DnsServerForwarders.Split(',') | Sort-Object -Descending | ForEach-Object {
 				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxDC.AddText(" Adding DNS Forwarder $_ `n") } )
@@ -1714,7 +1714,7 @@ Function DeployRdsStart {
 				$RasCoreVersionMajor = '19'
 				$RasCoreVersionMinor = $RasCoreVersion.Split( '.' )[1]
 				$RasCoreVersionBuild = $RasCoreVersion.Split( '.' )[2].Split( '-' )[0]
-				$RasCoreVersionRevision = $RasCoreVersion.Split( '.' )[2].Split( '-' )[1]
+				$RasCoreVersionRevision = $RasCoreVersion.Split( '.' )[2].Split( '-' )[1].Split( ' ' )[0]
 				$UrlDownLoad = "https://download.parallels.com/ras/v$RasCoreVersionMajor/$RasCoreVersionMajor.$RasCoreVersionMinor.$RasCoreVersionBuild.$RasCoreVersionRevision/RASInstaller-$RasCoreVersionMajor.$RasCoreVersionMinor.$RasCoreVersionRevision.msi"
 				$FileDownload = "$ENV:LOCALAPPDATA\$($UrlDownload.Split('/')[-1])"
 				(New-Object System.Net.WebClient).DownloadFile( $UrlDownload , $FileDownload )

@@ -2,6 +2,8 @@ Version 2.16
 -------------
 Refactor Deployment - Update InstallVmWareTools.ps1 | Deploy vmware-tools version 12.2.5.21855600
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Deploy FsLogix Latest version
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Deploy Parallels RAS Latest Version
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployDcStart | Reject RDS RSAT Features on Windows Core
 Refactor Docs - Add How-To-vCloud SAML authentication using Azure AD.docx
 
 Version 2.15
