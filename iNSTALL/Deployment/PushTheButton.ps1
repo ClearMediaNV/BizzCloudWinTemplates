@@ -1857,6 +1857,7 @@ Function DeployO365Start {
 				Param($O365version,$ProductId,$ExcludeApp)
 				# $UrlOfficeDeploymentTool = 'https://www.microsoft.com/en-us/download/confirmation.aspx?id=49117'
 				# DownloadInstall OfficeDeploymentTool Version Recent
+				[System.Net.ServicePointManager]::SecurityProtocol = 'Tls12'
 				$UrlOfficeDeploymentTool = 'https://www.microsoft.com/en-us/download/confirmation.aspx?id=49117'
 				$UrlDownload = ( ( Invoke-WebRequest -Uri "$UrlOfficeDeploymentTool" -UseBasicParsing ).links | Where-Object -FilterScript { $PsItem.href -match '/officedeploymenttool_\d{5}-\d{5}\.exe$' } ).href[0]
 				$FileDownload = "$Env:LOCALAPPDATA\ODT.exe"
