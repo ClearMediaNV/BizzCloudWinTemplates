@@ -1,6 +1,7 @@
 Version 2.17
 -------------
 Refactor Deployment - Update InstallVmWareTools.ps1 | Deploy vmware-tools version 12.3.0.22234872
+Refactor O365 - Update InstallO365ProPlus.ps1 | Fix Installation Path
 
 Version 2.16
 -------------
