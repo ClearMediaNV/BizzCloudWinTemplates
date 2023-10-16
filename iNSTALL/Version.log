@@ -1,13 +1,14 @@
 Version 2.17
 -------------
 Refactor Deployment - Update InstallVmWareTools.ps1 | Deploy vmware-tools version 12.3.0.22234872
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Deploy FSLogix Latest version
 Refactor O365 - Update InstallO365ProPlus.ps1 | Fix Installation Path
 
 Version 2.16
 -------------
 Refactor Deployment - Update InstallVmWareTools.ps1 | Deploy vmware-tools version 12.2.5.21855600
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployDcStart | Reject RDS RSAT Features on Windows Core
-Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Deploy FsLogix Latest version
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Deploy FSLogix Latest version
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Deploy Parallels RAS Latest Version
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployO365Start | Deploy ODT Latest Version
 Refactor Docs - Add How-To-vCloud SAML authentication using Azure AD.docx
@@ -75,7 +76,7 @@ Refactor Deployment - Update InstallVmWareTools.ps1 | Deploy vmware-tools versio
 Version 2.10
 -------------
 Refactor Deployment - Update WindowsUpdate.ps1 | Assure WindowsUpdateService Disabled By Default
-Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Format FsLogix Drive to NTFS
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Format FSLogix Drive to NTFS
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployFireboxStart | Force TLS12 for https://api.ipify.org
 Refactor Deployment/AioSetup - Update InstallRDS.ps1 | Add Warning RDS Windows Server 2019
 
@@ -88,7 +89,7 @@ Refactor Deployment - Update PushTheButton.ps1 | Update DeployStandardGpoStart |
 
 Version 2.08
 -------------
-Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart - Deploy FsLogix Latest version
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart - Deploy FSLogix Latest version
 
 Version 2.07
 -------------
@@ -103,7 +104,7 @@ Refactor Deployment - Update InstallVmWareTools.ps1 | Deploy vmware-tools versio
 
 Version 2.06
 -------------
-Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Deploy FsLogix version 2.9.7654.4615001
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Deploy FSLogix version 2.9.7654.4615001
 
 Version 2.05
 -------------
@@ -139,7 +140,7 @@ Refactor Deployment - Update PushTheButton.ps1 | Update DeployO365Start - Deploy
 Version 2.02
 -------------
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployFirebox - Change LabelFireboxExternalIp - Change LabelFireboxExternalIpGatewayCIDR
-Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart - Deploy FsLogix version 2.9.7349.30108
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart - Deploy FSLogix version 2.9.7349.30108
 
 Version 2.01
 -------------
