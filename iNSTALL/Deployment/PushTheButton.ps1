@@ -1640,7 +1640,7 @@ Function DeployRdsStart {
 				$FolderDownload = "$Env:LOCALAPPDATA\FSLogixAppsSetup"
 				(New-Object System.Net.WebClient).DownloadFile( $UrlDownload , $FileDownload )
 				Expand-Archive -Path $FileDownload -DestinationPath $FolderDownload -Force
-				Push-Location -Path "$FolderDownload\x64\Release"
+				Push-Location -Path ( Get-Childitem -Path $FolderDownload -File 'FSLogixAppsSetup.exe' -Recurse  | Where-Object -FilterScript { $PSItem.PSPath -like '*64*' } ).DirectoryName
 				Invoke-Expression -Command "CMD.EXE /C FSLogixAppsSetup.exe /install /quiet /norestart"
 				}
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarRDS.Value = $I } ) }

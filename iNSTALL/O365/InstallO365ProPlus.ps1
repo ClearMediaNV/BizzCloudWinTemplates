@@ -91,6 +91,8 @@ $Form2.Show()
 # Download and Extract Office Deployment Tool
 # $UrlOfficeDeploymentTool = 'https://www.microsoft.com/en-us/download/confirmation.aspx?id=49117'
 # DownloadInstall OfficeDeploymentTool Latest Version
+# DownloadInstall OfficeDeploymentTool Version Recent
+[System.Net.ServicePointManager]::SecurityProtocol = 'Tls12'
 $UrlOfficeDeploymentTool = 'https://www.microsoft.com/en-us/download/confirmation.aspx?id=49117'
 $UrlDownload = ( ( Invoke-WebRequest -Uri "$UrlOfficeDeploymentTool" -UseBasicParsing ).links | Where-Object -FilterScript { $PsItem.href -match '/officedeploymenttool_\d{5}-\d{5}\.exe$' } ).href[0]
 $FileDownload = "$Env:LOCALAPPDATA\ODT.exe"
@@ -101,10 +103,11 @@ Invoke-Expression -Command "CMD.EXE /C '$FileDownload /quiet /extract:$FileDownl
 # Download 'O365 Pro Plus BIT Selection'
 Switch ( $O365version )
     {
-    'O365 Pro Plus 32 bit' { $Job = Start-Job -Name "Download $O365version" -ScriptBlock { Invoke-Expression -Command '& c:\install\o365\setup.exe /download  c:\install\o365\configuration32.xml' } }
-    'O365 Pro Plus 64 bit' { $Job = Start-Job -Name "Download $O365version" -ScriptBlock { Invoke-Expression -Command '& c:\install\o365\setup.exe /download  c:\install\o365\configuration64.xml' } }
+    'O365 Pro Plus 32 bit' { Copy-Item -Path 'C:\Install\O365\configuration32.xml' -Destination "$Env:LOCALAPPDATA\configuration.xml" -Force }
+    'O365 Pro Plus 64 bit' { Copy-Item -Path 'C:\Install\O365\configuration64.xml' -Destination "$Env:LOCALAPPDATA\configuration.xml" -Force }
     Default { Exit }
     }
+$Job = Start-Job -Name "Download $O365version" -ScriptBlock { Invoke-Expression -Command "$Env:LOCALAPPDATA\setup.exe /download $Env:LOCALAPPDATA\configuration.xml" }
 
 # Show ProgressBar Dynamics
 $Counter = 0
@@ -120,9 +123,4 @@ While ( $Job.State -ne 'Completed' )
 $Form2.Close()
 
 # Install 'O365 Pro Plus BIT Selection'
-Switch ( $O365version )
-    {
-    'O365 Pro Plus 32 bit' { Invoke-Expression -Command '& c:\install\o365\setup.exe /configure  c:\install\o365\configuration32.xml' }
-    'O365 Pro Plus 64 bit' { Invoke-Expression -Command '& c:\install\o365\setup.exe /configure  c:\install\o365\configuration64.xml' }
-    Default { Exit }
-    }
+Invoke-Expression -Command "$Env:LOCALAPPDATA\setup.exe /configure  $Env:LOCALAPPDATA\configuration.xml"
