@@ -1710,12 +1710,18 @@ Function DeployRdsStart {
 				# Knowledge Base for Parallels Remote Application Server v19 Release Notes
 				[System.Net.ServicePointManager]::SecurityProtocol = 'Tls12'
 				$UrlKB129018 = 'https://kb.parallels.com/en/129018'
-				$RasCoreVersion = ( ( Invoke-WebRequest -Uri $UrlKB129018 -UseBasicParsing ).content.Split( '´n' ) | Where-Object -FilterScript { $PsItem -match 'RAS Core v19.\d{1}.\d{1}-\d{5}' } )[0].Split( '>' )[-1].Split( '<' )[0]
-				$RasCoreVersionMajor = '19'
-				$RasCoreVersionMinor = $RasCoreVersion.Split( '.' )[1]
-				$RasCoreVersionBuild = $RasCoreVersion.Split( '.' )[2].Split( '-' )[0]
-				$RasCoreVersionRevision = $RasCoreVersion.Split( '.' )[2].Split( '-' )[1].Split( ' ' )[0]
-				$UrlDownLoad = "https://download.parallels.com/ras/v$RasCoreVersionMajor/$RasCoreVersionMajor.$RasCoreVersionMinor.$RasCoreVersionBuild.$RasCoreVersionRevision/RASInstaller-$RasCoreVersionMajor.$RasCoreVersionMinor.$RasCoreVersionRevision.msi"
+				If ( ( ( Invoke-WebRequest -Uri $UrlKB129018 -UseBasicParsing ).content | ForEach-Object -Process { $PSItem.Substring( $PSItem.IndexOf( 'v19.' ) , 6 ) } ).EndsWith( '.' ) ) {
+				    $RasCoreVersion = ( ( Invoke-WebRequest -Uri $UrlKB129018 -UseBasicParsing ).content | ForEach-Object -Process { $PSItem.Substring( $PSItem.IndexOf( 'v19.' ) , 13 ) } ).Replace( 'v' , '' ).Replace( '-' , '.' )
+				    }
+				    Else
+				        {
+				        $RasCoreVersion = ( ( Invoke-WebRequest -Uri $UrlKB129018 -UseBasicParsing ).content | ForEach-Object -Process { $PSItem.Substring( $PSItem.IndexOf( 'v19.' ) , 11 ) } ).Replace( 'v' , '' ).Replace( '-' , '.' ).Insert( 4 , '.0' )
+				        }
+				$Version = $RasCoreVersion.Substring( 0 , 2 )
+				$VersionMajor = $RasCoreVersion.Substring( 3 , 1 )
+				$VersionMinor = $RasCoreVersion.Substring( 5 , 1 )
+				$VersionRevision = $RasCoreVersion.Substring( 7 , 5 )
+				$UrlDownLoad = "https://download.parallels.com/ras/v$Version/$Version.$VersionMajor.$VersionMinor.$VersionRevision/RASInstaller-$Version.$VersionMajor.$VersionRevision.msi"
 				$FileDownload = "$ENV:LOCALAPPDATA\$($UrlDownload.Split('/')[-1])"
 				(New-Object System.Net.WebClient).DownloadFile( $UrlDownload , $FileDownload )
 				Invoke-Expression -Command "CMD.EXE /C 'MsiExec.exe /i $FileDownload /qn /norestart'"
