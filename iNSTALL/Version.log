@@ -1,6 +1,7 @@
 Version 2.17
 -------------
 Refactor Deployment - Update InstallVmWareTools.ps1 | Deploy vmware-tools version 12.3.0.22234872
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployDcStart | Change NLA Service Dependencies
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Deploy FSLogix Latest version
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Deploy Parallels RAS Latest Version
 Refactor O365 - Update InstallO365ProPlus.ps1 | Fix Installation Path
