@@ -647,6 +647,9 @@ Function DeployDcStart {
 				$Job = Start-Job -Name "Adding DNS Forwarder $_" -ScriptBlock { Param( $DnsServerForwarders ) ; Add-DnsServerForwarder -IPAddress ($DnsServerForwarders.Split(',') | Sort-Object) -ErrorAction Stop } -ArgumentList ( $_ )
 				While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarDc.Value = $I } )  }
                 }
+            $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxDC.AddText(" Changing NLA Service `n") } )
+            $Job = Start-Job -Name 'Change-NlaSvc' -ScriptBlock { Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\NlaSvc' -Name 'DependOnService' -Value @( 'DNS' ) -ErrorAction Stop -Force}
+            While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarDc.Value = $I } )  }
             $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxDC.AddText(" Creating AD Forest for $DomainDnsName `n") } )
             $Job = Start-Job -Name 'Install-ADDSForest' -ScriptBlock { Param($DomainDnsName,$DomainNetbiosName,$SafeModeAdministratorPassword) ; Install-ADDSForest -DomainName $DomainDnsName -DomainNetbiosName $DomainNetbiosName -SafeModeAdministratorPassword $SafeModeAdministratorPassword -NoRebootOnCompletion -ErrorAction Stop -Force} -ArgumentList ($DomainDnsName,$DomainNetbiosName,$SafeModeAdministratorPassword) 
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarDc.Value = $I } )  }
