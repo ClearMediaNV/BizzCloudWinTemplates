@@ -4,6 +4,7 @@ Refactor Deployment - Update InstallVmWareTools.ps1 | Deploy vmware-tools versio
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployDcStart | Change NLA Service Dependencies
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Deploy FSLogix Latest version
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Deploy Parallels RAS Latest Version
+Refactor GPO - Add Files via Upload | Update FSLogix group policy definitions
 Refactor O365 - Update InstallO365ProPlus.ps1 | Fix Installation Path
 
 Version 2.16
