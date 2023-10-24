@@ -647,8 +647,14 @@ Function DeployDcStart {
 				$Job = Start-Job -Name "Adding DNS Forwarder $_" -ScriptBlock { Param( $DnsServerForwarders ) ; Add-DnsServerForwarder -IPAddress ($DnsServerForwarders.Split(',') | Sort-Object) -ErrorAction Stop } -ArgumentList ( $_ )
 				While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarDc.Value = $I } )  }
                 }
+            $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxDC.AddText(" Changing NLA Service `n") } )
+            $Job = Start-Job -Name 'Change-NlaSvc' -ScriptBlock { Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\NlaSvc' -Name 'DependOnService' -Value @( 'DNS' ) -ErrorAction Stop -Force}
+            While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarDc.Value = $I } )  }
             $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxDC.AddText(" Creating AD Forest for $DomainDnsName `n") } )
             $Job = Start-Job -Name 'Install-ADDSForest' -ScriptBlock { Param($DomainDnsName,$DomainNetbiosName,$SafeModeAdministratorPassword) ; Install-ADDSForest -DomainName $DomainDnsName -DomainNetbiosName $DomainNetbiosName -SafeModeAdministratorPassword $SafeModeAdministratorPassword -NoRebootOnCompletion -ErrorAction Stop -Force} -ArgumentList ($DomainDnsName,$DomainNetbiosName,$SafeModeAdministratorPassword) 
+            While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarDc.Value = $I } )  }
+            $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxDC.AddText(" Changing NLA Service `n") } )
+            $Job = Start-Job -Name 'Change-NlaSvc' -ScriptBlock { Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\NlaSvc' -Name 'DependOnService' -Value @( 'DNS' ) -ErrorAction Stop -Force}
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarDc.Value = $I } )  }
 			Get-Job | Select-Object -Property Name, State, Command, @{Name='Error';Expression={ $_.ChildJobs[0].JobStateInfo.Reason }} | Export-Csv -Path "$env:windir\Logs\PushTheButtonJobs.csv" -NoTypeInformation -Force
             [Boolean]$JobError = Get-Job | Where-Object { $_.State -eq 'Failed' } | ForEach-Object { $_.count -gt 0 }
@@ -1710,12 +1716,18 @@ Function DeployRdsStart {
 				# Knowledge Base for Parallels Remote Application Server v19 Release Notes
 				[System.Net.ServicePointManager]::SecurityProtocol = 'Tls12'
 				$UrlKB129018 = 'https://kb.parallels.com/en/129018'
-				$RasCoreVersion = ( ( Invoke-WebRequest -Uri $UrlKB129018 -UseBasicParsing ).content.Split( '´n' ) | Where-Object -FilterScript { $PsItem -match 'RAS Core v19.\d{1}.\d{1}-\d{5}' } )[0].Split( '>' )[-1].Split( '<' )[0]
-				$RasCoreVersionMajor = '19'
-				$RasCoreVersionMinor = $RasCoreVersion.Split( '.' )[1]
-				$RasCoreVersionBuild = $RasCoreVersion.Split( '.' )[2].Split( '-' )[0]
-				$RasCoreVersionRevision = $RasCoreVersion.Split( '.' )[2].Split( '-' )[1].Split( ' ' )[0]
-				$UrlDownLoad = "https://download.parallels.com/ras/v$RasCoreVersionMajor/$RasCoreVersionMajor.$RasCoreVersionMinor.$RasCoreVersionBuild.$RasCoreVersionRevision/RASInstaller-$RasCoreVersionMajor.$RasCoreVersionMinor.$RasCoreVersionRevision.msi"
+				If ( ( ( Invoke-WebRequest -Uri $UrlKB129018 -UseBasicParsing ).content | ForEach-Object -Process { $PSItem.Substring( $PSItem.IndexOf( 'v19.' ) , 6 ) } ).EndsWith( '.' ) ) {
+				    $RasCoreVersion = ( ( Invoke-WebRequest -Uri $UrlKB129018 -UseBasicParsing ).content | ForEach-Object -Process { $PSItem.Substring( $PSItem.IndexOf( 'v19.' ) , 13 ) } ).Replace( 'v' , '' ).Replace( '-' , '.' )
+				    }
+				    Else
+				        {
+				        $RasCoreVersion = ( ( Invoke-WebRequest -Uri $UrlKB129018 -UseBasicParsing ).content | ForEach-Object -Process { $PSItem.Substring( $PSItem.IndexOf( 'v19.' ) , 11 ) } ).Replace( 'v' , '' ).Replace( '-' , '.' ).Insert( 4 , '.0' )
+				        }
+				$Version = $RasCoreVersion.Substring( 0 , 2 )
+				$VersionMajor = $RasCoreVersion.Substring( 3 , 1 )
+				$VersionMinor = $RasCoreVersion.Substring( 5 , 1 )
+				$VersionRevision = $RasCoreVersion.Substring( 7 , 5 )
+				$UrlDownLoad = "https://download.parallels.com/ras/v$Version/$Version.$VersionMajor.$VersionMinor.$VersionRevision/RASInstaller-$Version.$VersionMajor.$VersionRevision.msi"
 				$FileDownload = "$ENV:LOCALAPPDATA\$($UrlDownload.Split('/')[-1])"
 				(New-Object System.Net.WebClient).DownloadFile( $UrlDownload , $FileDownload )
 				Invoke-Expression -Command "CMD.EXE /C 'MsiExec.exe /i $FileDownload /qn /norestart'"
