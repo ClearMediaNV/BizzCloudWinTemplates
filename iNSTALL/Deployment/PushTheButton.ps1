@@ -1654,11 +1654,12 @@ Function DeployRdsStart {
 			$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Setting FsLogix Profile Root to $FSLogixFolderRootPath `n") } )
             $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Enable FsLogix Profile Container' -ScriptBlock {
 				Param( $FSLogixFolderRootPath )
-				New-ItemProperty -Path 'HKLM\Software\FSLogix\Profiles' -Name 'Enabled' -PropertyType 'Dword' -Value 1 -Force
-				New-ItemProperty -Path 'HKLM\Software\FSLogix\Profiles' -Name 'ProfileType' -PropertyType 'Dword' -Value 0 -Force
-				New-ItemProperty -Path 'HKLM\Software\FSLogix\Profiles' -Name 'SizeInMBs' -PropertyType 'Dword' -Value 51200 -Force
-				New-ItemProperty -Path 'HKLM\Software\FSLogix\Profiles' -Name 'VHDLocations' -PropertyType 'String' -Value $FSLogixFolderRootPath -Force
-				New-ItemProperty -Path 'HKLM\Software\FSLogix\Profiles' -Name 'VolumeType' -PropertyType 'String' -Value 'VHDX' -Force
+				If ( -Not ( Test-Path -Path 'HKLM:\Software\FSLogix\Profiles' ) ) { New-Item -Path  'HKLM:\Software\FSLogix\Profiles' }
+				New-ItemProperty -Path 'HKLM:\Software\FSLogix\Profiles' -Name 'Enabled' -PropertyType 'Dword' -Value 1 -Force
+				New-ItemProperty -Path 'HKLM:\Software\FSLogix\Profiles' -Name 'ProfileType' -PropertyType 'Dword' -Value 0 -Force
+				New-ItemProperty -Path 'HKLM:\Software\FSLogix\Profiles' -Name 'SizeInMBs' -PropertyType 'Dword' -Value 51200 -Force
+				New-ItemProperty -Path 'HKLM:\Software\FSLogix\Profiles' -Name 'VHDLocations' -PropertyType 'String' -Value $FSLogixFolderRootPath -Force
+				New-ItemProperty -Path 'HKLM:\Software\FSLogix\Profiles' -Name 'VolumeType' -PropertyType 'String' -Value 'VHDX' -Force
 				} -ArgumentList ( $FSLogixFolderRootPath )
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarRDS.Value = $I } ) }
             $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Setting Smart Card Service to AutoStart `n") } )   
