@@ -49,7 +49,7 @@ $Form1.Controls.Add( $listBox )
 
 $result = $Form1.ShowDialog()
 
-# On 'O365 Pro Plus BIT Selection' Proceed else Quit
+# On 'O365 Pro Plus BIT Selection' Proceed else Exit
 $O365version = ''
 If ( $result -eq [System.Windows.Forms.DialogResult]::OK ) { $O365version = $listBox.SelectedItem } Else { Exit }
 
@@ -90,8 +90,6 @@ $Form2.Show()
 
 # Download and Extract Office Deployment Tool
 # $UrlOfficeDeploymentTool = 'https://www.microsoft.com/en-us/download/confirmation.aspx?id=49117'
-# DownloadInstall OfficeDeploymentTool Latest Version
-# DownloadInstall OfficeDeploymentTool Version Recent
 [System.Net.ServicePointManager]::SecurityProtocol = 'Tls12'
 $UrlOfficeDeploymentTool = 'https://www.microsoft.com/en-us/download/confirmation.aspx?id=49117'
 $UrlDownload = ( ( Invoke-WebRequest -Uri "$UrlOfficeDeploymentTool" -UseBasicParsing ).links | Where-Object -FilterScript { $PsItem.href -match '/officedeploymenttool_\d{5}-\d{5}\.exe$' } ).href[0]
