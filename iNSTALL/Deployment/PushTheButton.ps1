@@ -1636,12 +1636,10 @@ Function DeployRdsStart {
                 While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarRDS.Value = $I } ) }
                 }
             $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Downloading and Installing FSLogix `n") } )
-            $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Install FsLogix' -ScriptBlock {
-				# DownloadInstall FsLogix Latest Version
+            $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Install FSLogix' -ScriptBlock {
+				# DownloadInstall FSLogix Latest Version
 				[System.Net.ServicePointManager]::SecurityProtocol = 'Tls12'
-				$UrlFsLogixDownloadLatest = 'https://aka.ms/fslogix-latest'
-				$Href = ( ( Invoke-WebRequest -Uri $UrlFsLogixDownloadLatest -UseBasicParsing ).links | Where-Object -FilterScript { $PsItem.class -match 'download' } ).href
-				$UrlDownload = $Href
+				$UrlDownload = 'https://aka.ms/fslogix_download'
 				$FileDownload = "$Env:LOCALAPPDATA\FSLogixAppsSetup.zip"
 				$FolderDownload = "$Env:LOCALAPPDATA\FSLogixAppsSetup"
 				(New-Object System.Net.WebClient).DownloadFile( $UrlDownload , $FileDownload )
@@ -1702,7 +1700,7 @@ Function DeployRdsStart {
 				} -ArgumentList ( $ServerIpAddress , $ServerName , $DomainAdminUserName , $DomainAdminPassword , $OuPath , $DomainDnsName , $DomainDnsServerIpAddress , $DomainDcServerName ) 
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarRDS.Value = $I } ) }
             $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Adding Administrators to 'FSLogix Profile Exclude List' Group `n") } ) 
-            $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'PurgeFsLogixGroups' -ScriptBlock {
+            $Job = Invoke-Command -Session $PsSession -AsJob -JobName 'PurgeFSLogixGroups' -ScriptBlock {
 				Param( $DomainDnsName )
 				Add-LocalGroupMember -Name 'FSLogix ODFC Exclude List' -Member 'Administrator'
 				Add-LocalGroupMember -Name 'FSLogix ODFC Exclude List' -Member "Domain Admins@$($DomainDnsName)"
