@@ -1,9 +1,7 @@
-# DownloadInstall FsLogix Latest Version
+# DownloadInstall FSLogix Latest Version
 [System.Net.ServicePointManager]::SecurityProtocol = 'Tls12'
-$UrlFsLogixDownloadLatest = 'https://aka.ms/fslogix-latest'
-$Href = ( ( Invoke-WebRequest -Uri $UrlFsLogixDownloadLatest -UseBasicParsing ).links | Where-Object -FilterScript { $PsItem.class -match 'download' } ).href
-$UrlDownload = $Href
-$FileDownload = "$Env:LOCALAPPDATA\FSLogixAppsSetup.zip"
+$UrlDownload = 'https://aka.ms/fslogix_download'
+FileDownload = "$Env:LOCALAPPDATA\FSLogixAppsSetup.zip"
 $FolderDownload = "$Env:LOCALAPPDATA\FSLogixAppsSetup"
 (New-Object System.Net.WebClient).DownloadFile( $UrlDownload , $FileDownload )
 Expand-Archive -Path $FileDownload -DestinationPath $FolderDownload -Force
