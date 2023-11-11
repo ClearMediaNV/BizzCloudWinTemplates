@@ -14,14 +14,15 @@ Try { [System.Net.ServicePointManager]::SecurityProtocol = 'Tls12' ; Set-Item -P
 # Restart NLA Service on DomainController in order to correct NetworkCategory
 If ( Get-CimInstance -NameSpace 'root\cimv2' -ClassName 'win32_ComputerSystem' -Filter 'DomainRole = 4 or DomainRole = 5' ) { Restart-Service -Name 'NlaSvc' -Force }
 # Get NLA state
-Set-Item -Path 'ENV:\NetworkCategory' -value ( Get-NetConnectionProfile ).NetworkCategory
+Set-Item -Path 'ENV:\NetworkCategory' -Value ( Get-NetConnectionProfile ).NetworkCategory
 Set-Item -Path 'ENV:\IPv4Connectivity' -Value ( Get-NetConnectionProfile ).IPv4Connectivity
-# Get Last Installed HotFix
+# Get Last Installed HotFixes
 $HotFixList = Get-HotFix | Select-Object -Property HotFixID , InstalledOn | Sort-Object -Property InstalledOn
 $LastHotFix = "$( ( $HotFixList | Where-Object { $PSItem.InstalledOn -eq $HotFixList[-1].InstalledOn } ).HotFixID -Join ',' ) $( $HotFixList[-1].InstalledOn.tostring( 'dd-MM-yyyy' ) )"
-Set-Item -Path 'ENV:\LastHotFix' -value $LastHotFix
+Set-Item -Path 'ENV:\LastHotFix' -Value $LastHotFix
 # Get WSUS Server
 Try { Set-Item -Path 'ENV:\WSUS' -Value ( Get-ItemProperty -Path 'HKLM:\Software\Policies\Microsoft\Windows\WindowsUpdate' ).WUServer }
     Catch { Set-Item -Path 'ENV:\WSUS' -Value '0.0.0.0' }
 # Launch BgInfo
 Invoke-Expression -Command '& .\bginfo.exe windows.bgi /timer:0 /nolicprompt'
+# The End
