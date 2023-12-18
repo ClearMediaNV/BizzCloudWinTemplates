@@ -1,6 +1,7 @@
 Version 2.18
 -------------
 Refactor O365 - Update GetO365TenantID.ps1 | Change Reseller Link
+Refactor Deployment - Update InstallVmWareTools.ps1 | Deploy vmware-tools version 12.3.5.22544099
 Refactor Deployment - Create DeployFSLogix.ps1
 
 Version 2.17
