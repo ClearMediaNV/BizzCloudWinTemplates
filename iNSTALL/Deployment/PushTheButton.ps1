@@ -1797,6 +1797,9 @@ Function DeployRdsStart {
                     If ( ( Get-GPRegistryValue -Server $env:COMPUTERNAME -Name $GpoName -Key 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' -ValueName 'My Video' -ErrorAction SilentlyContinue ) ) {
                         Set-GPRegistryValue -Server $env:COMPUTERNAME -Name $GpoName -Key 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' -ValueName 'My Video' -Type 'ExpandString' -Value "$DataFolderRootPath\%USERNAME%\Videos" -ErrorAction Continue
                         }
+                    If ( ( Get-GPRegistryValue -Server $env:COMPUTERNAME -Name $GpoName -Key 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' -ValueName '{374DE290-123F-4565-9164-39C4925E467B}' -ErrorAction SilentlyContinue ) ) {
+                        Set-GPRegistryValue -Server $env:COMPUTERNAME -Name $GpoName -Key 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' -ValueName '{374DE290-123F-4565-9164-39C4925E467B}'  -Type 'ExpandString' -Value "$DataFolderRootPath\%USERNAME%\Downloads" -ErrorAction Continue
+                        }
 					$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBoxUSERDataFolderRootPath.Text = $DataFolderRootPath } )
 					$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarRDS.Visibility = "Hidden" } )
 					$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.LabelStatusRDS.Content = "Deployment Finished $(' .'*135)$(' '*30) Please  REBOOT" } )
