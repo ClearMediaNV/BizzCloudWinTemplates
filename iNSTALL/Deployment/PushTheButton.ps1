@@ -1733,27 +1733,23 @@ Function DeployRdsStart {
 				} -ArgumentList ( $DomainDnsName )
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarRDS.Value = $I } ) }
             If ( $CheckBoxRas ) {
-                $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Downloading and Installing Parallels RAS version 19.0.23333 `n") } )
-				$Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Download and Install Parallels RAS version 19.0.23333' -ScriptBlock {
-				# Knowledge Base for Parallels Remote Application Server v19 Release Notes
-				[System.Net.ServicePointManager]::SecurityProtocol = 'Tls12'
-				$UrlKB129018 = 'https://kb.parallels.com/en/129018'
-				If ( ( ( Invoke-WebRequest -Uri $UrlKB129018 -UseBasicParsing ).content | ForEach-Object -Process { $PSItem.Substring( $PSItem.IndexOf( 'v19.' ) , 6 ) } ).EndsWith( '.' ) ) {
-				    $RasCoreVersion = ( ( Invoke-WebRequest -Uri $UrlKB129018 -UseBasicParsing ).content | ForEach-Object -Process { $PSItem.Substring( $PSItem.IndexOf( 'v19.' ) , 13 ) } ).Replace( 'v' , '' ).Replace( '-' , '.' )
+                $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Downloading and Installing Parallels RAS Latest Version `n") } )
+				$Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Download and Install Parallels RAS Latest Version' -ScriptBlock {
+				    # Knowledge Base for Parallels Remote Application Server v19 Release Notes - KB129018
+				    [System.Net.ServicePointManager]::SecurityProtocol = 'Tls12'
+				    $Url = 'https://kb.parallels.com/en/129018'
+                    $Content  = ( Invoke-WebRequest -Uri $Url -UseBasicParsing ).content
+                    $MatchString = 'RAS Core v19.'
+                    $Match = $Content.Substring( $Content.IndexOf( $MatchString ) , 25 )
+                    $Version = $Match.Split( '-' )[0].Substring( 10 ).Split( '.' )[0]
+                    $VersionMajor = $Match.Split( '-' )[0].Substring( 10 ).Split( '.' )[1]
+                    $VersionMinor = If ( $Match.Split( '-' )[0].Substring( 10 ).Split( '.' )[2] ) { $Match.Split( '-' )[0].Substring( 10 ).Split( '.' )[2] } Else { '0'}
+                    $VersionRevision = $Match.Split( '-' )[1].Substring( 0 , 5 )
+                    $UrlDownLoad = "https://download.parallels.com/ras/v$Version/$Version.$VersionMajor.$VersionMinor.$VersionRevision/RASInstaller-$Version.$VersionMajor.$VersionRevision.msi"
+                    $FileDownload = "$ENV:LOCALAPPDATA\$($UrlDownload.Split('/')[-1])"
+                    (New-Object System.Net.WebClient).DownloadFile( $UrlDownload , $FileDownload )
+                    Start-Process -FilePath 'msiexec.exe' -ArgumentList ( "-i $FileDownload /qn /norestart " ) -Wait
 				    }
-				    Else
-				        {
-				        $RasCoreVersion = ( ( Invoke-WebRequest -Uri $UrlKB129018 -UseBasicParsing ).content | ForEach-Object -Process { $PSItem.Substring( $PSItem.IndexOf( 'v19.' ) , 11 ) } ).Replace( 'v' , '' ).Replace( '-' , '.' ).Insert( 4 , '.0' )
-				        }
-				$Version = $RasCoreVersion.Substring( 0 , 2 )
-				$VersionMajor = $RasCoreVersion.Substring( 3 , 1 )
-				$VersionMinor = $RasCoreVersion.Substring( 5 , 1 )
-				$VersionRevision = $RasCoreVersion.Substring( 7 , 5 )
-				$UrlDownLoad = "https://download.parallels.com/ras/v$Version/$Version.$VersionMajor.$VersionMinor.$VersionRevision/RASInstaller-$Version.$VersionMajor.$VersionRevision.msi"
-				$FileDownload = "$ENV:LOCALAPPDATA\$($UrlDownload.Split('/')[-1])"
-				(New-Object System.Net.WebClient).DownloadFile( $UrlDownload , $FileDownload )
-				Invoke-Expression -Command "CMD.EXE /C 'MsiExec.exe /i $FileDownload /qn /norestart'"
-				}
                 While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarRDS.Value = $I } ) }
                 $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Deploying Parallels RDS Farm `n") } )
 				$Job = Invoke-Command -Session $PsSession -AsJob -JobName "Deploy Parallels RAS Farm" -ScriptBlock {
