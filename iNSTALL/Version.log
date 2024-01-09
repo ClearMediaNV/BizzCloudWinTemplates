@@ -1,5 +1,7 @@
 Version 2.19
 -------------
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployO365Start | Exclude "Lync" (Skype for Business)
+Refactor O365 - Update configurationxx.xml | Exclude "Lync" (Skype for Business)
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Deploy Parallels RAS Latest Version
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Add StandardUserFolderRedirectionPolicy Downloads
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployFolderRedirectionStart | Add Downloads
