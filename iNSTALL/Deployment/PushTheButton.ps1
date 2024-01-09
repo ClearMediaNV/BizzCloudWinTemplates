@@ -1905,6 +1905,7 @@ Function DeployO365Start {
 								<Language ID="nl-nl" />
 								<Language ID="fr-fr" />
                                 <ExcludeApp ID="Groove" />
+								<ExcludeApp ID="Lync" />
                                 <ExcludeApp ID="OneDrive" />
                                 <ExcludeApp ID="Bing" />
 								<ExcludeApp ID="$ExcludeApp" />
