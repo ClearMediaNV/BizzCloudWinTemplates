@@ -6,6 +6,7 @@
 				<Language ID="nl-nl" />
 				<ExcludeApp ID="Teams" />
 				<ExcludeApp ID="Groove" />
+				<ExcludeApp ID="Lync" />
 				<ExcludeApp ID="OneDrive" />
 				<ExcludeApp ID="Bing" />
         	</Product>
