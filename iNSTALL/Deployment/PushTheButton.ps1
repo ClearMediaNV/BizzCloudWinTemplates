@@ -253,6 +253,9 @@ $SyncHash.Host = $Host
                     <CheckBox Name="CheckBoxVideos" Content="Videos" HorizontalAlignment="Left" Margin="30,171,0,0" VerticalAlignment="Top" IsChecked="True"/>
                     <Label Name="LabelVideosPath" Content="Videos Path" Margin="50,191,0,0" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" />
                     <TextBox Name="TextBoxVideosPath" Margin="220,195,0,0" Text="E:\USERS\%USERNAME%\Videos" Height="22" HorizontalAlignment="Left" VerticalAlignment="Top" Width="220"/>
+                    <CheckBox Name="CheckBoxDownloads" Content="Downloads" HorizontalAlignment="Left" Margin="30,224,0,0" VerticalAlignment="Top" IsChecked="True"/>
+                    <Label Name="LabelDownloadsPath" Content="Downloads Path" Margin="50,244,0,0" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" Width="300" />
+                    <TextBox Name="TextBoxDownloadsPath" Margin="220,248,0,0" Text="E:\USERS\%USERNAME%\Downloads" Height="22" HorizontalAlignment="Left" VerticalAlignment="Top" Width="220"/>
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
                         <TextBlock Name="TextBlockOutBoxFolderRedirection" Text="" Foreground="WHITE" Background="#FF22206F" />
                     </ScrollViewer>
@@ -1302,7 +1305,7 @@ FSLogix Profile Include List__Members = FSLogix-Users
 	$job = $PSinstance.BeginInvoke()      
 	}
 Function DeployFolderRedirectionStart {
-	Param($SyncHash,$CheckBoxDocuments,$DocumentsPath,$CheckBoxMusic,$MusicPath,$CheckBoxPictures,$PicturesPath,$CheckBoxVideos,$VideosPath,$UsersOuPath)
+	Param($SyncHash,$CheckBoxDocuments,$DocumentsPath,$CheckBoxMusic,$MusicPath,$CheckBoxPictures,$PicturesPath,$CheckBoxVideos,$VideosPath,$CheckBoxDownloads,$DownloadsPath,$UsersOuPath)
 	$Runspace = [runspacefactory]::CreateRunspace()
 	$Runspace.ApartmentState = "STA"
 	$Runspace.ThreadOptions = "ReuseThread"
@@ -1316,6 +1319,8 @@ Function DeployFolderRedirectionStart {
 	$Runspace.SessionStateProxy.SetVariable("PicturesPath",$PicturesPath)
 	$Runspace.SessionStateProxy.SetVariable("CheckBoxVideos",$CheckBoxVideos)
 	$Runspace.SessionStateProxy.SetVariable("VideosPath",$VideosPath)
+	$Runspace.SessionStateProxy.SetVariable("CheckBoxDownloads",$CheckBoxDownloads)
+	$Runspace.SessionStateProxy.SetVariable("DownloadsPath",$DownloadsPath)
 	$Runspace.SessionStateProxy.SetVariable("UsersOuPath",$UsersOuPath)
 	$code = {
 			$Error.Clear()
@@ -1323,7 +1328,7 @@ Function DeployFolderRedirectionStart {
 			$I = 0
 			# Create and Assemble User GPOs
 			# Link User GPOs to OU Users
-			If ( $CheckBoxDocuments -or $CheckBoxMusic -or $CheckBoxPictures -or $CheckBoxVideos ) {
+			If ( $CheckBoxDocuments -or $CheckBoxMusic -or $CheckBoxPictures -or $CheckBoxVideos -or $CheckBoxDownloads ) {
 				$FullUsersOuPath = $UsersOuPath.Insert( 0,'OU=Full Users,' )
 				$LightUsersOuPath = $UsersOuPath.Insert( 0 , 'OU=Light Users,' )
 				$GpoName = 'StandardUserFolderRedirectionPolicy'
@@ -1364,6 +1369,13 @@ CATEGORY "User Folder Redirection"
             PART "My Documents Path" EDITTEXT REQUIRED
                 VALUENAME "Personal"
                 DEFAULT   $DocumentsPath
+            END PART
+    END POLICY
+    POLICY "My Downloads"
+        EXPLAIN "Path for My Downloads"
+            PART "My Documents Path" EDITTEXT REQUIRED
+                VALUENAME "{374DE290-123F-4565-9164-39C4925E467B}"
+                DEFAULT   $DownloadsPath
             END PART
     END POLICY
 END CATEGORY
@@ -1427,6 +1439,17 @@ END CATEGORY
 				Set-GPRegistryValue -Server $env:COMPUTERNAME -Name $GpoName -Key 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' -ValueName 'My Video' -Type 'ExpandString' -Value $VideosPath  -ErrorAction Continue
 				If ( $error ) {
                     $ErrorList += "Set-GPRegistryValue -Name $GpoName -Key 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' -ValueName 'My Video' -Type 'ExpandString' -Value $VideosPath  -ErrorAction Continue"
+                    $ErrorList += $error[0].Exception.Message.ToString()
+                    $ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
+                    $Error.Clear()
+                    }            
+				}
+			If ( $CheckBoxDownloads ) {
+				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxFolderRedirection.AddText(" Setting DownloadsPath to $DownloadsPath `n") } ) 
+				$I += 4 ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarFolderRedirection.Value = $I } )
+				Set-GPRegistryValue -Server $env:COMPUTERNAME -Name $GpoName -Key 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' -ValueName '{374DE290-123F-4565-9164-39C4925E467B}' -Type 'ExpandString' -Value $DownloadsPath  -ErrorAction Continue
+				If ( $error ) {
+                    $ErrorList += "Set-GPRegistryValue -Name $GpoName -Key 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' -ValueName '{374DE290-123F-4565-9164-39C4925E467B}' -Type 'ExpandString' -Value $DownloadsPath  -ErrorAction Continue"
                     $ErrorList += $error[0].Exception.Message.ToString()
                     $ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
                     $Error.Clear()
@@ -1710,27 +1733,23 @@ Function DeployRdsStart {
 				} -ArgumentList ( $DomainDnsName )
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarRDS.Value = $I } ) }
             If ( $CheckBoxRas ) {
-                $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Downloading and Installing Parallels RAS version 19.0.23333 `n") } )
-				$Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Download and Install Parallels RAS version 19.0.23333' -ScriptBlock {
-				# Knowledge Base for Parallels Remote Application Server v19 Release Notes
-				[System.Net.ServicePointManager]::SecurityProtocol = 'Tls12'
-				$UrlKB129018 = 'https://kb.parallels.com/en/129018'
-				If ( ( ( Invoke-WebRequest -Uri $UrlKB129018 -UseBasicParsing ).content | ForEach-Object -Process { $PSItem.Substring( $PSItem.IndexOf( 'v19.' ) , 6 ) } ).EndsWith( '.' ) ) {
-				    $RasCoreVersion = ( ( Invoke-WebRequest -Uri $UrlKB129018 -UseBasicParsing ).content | ForEach-Object -Process { $PSItem.Substring( $PSItem.IndexOf( 'v19.' ) , 13 ) } ).Replace( 'v' , '' ).Replace( '-' , '.' )
+                $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Downloading and Installing Parallels RAS Latest Version `n") } )
+				$Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Download and Install Parallels RAS Latest Version' -ScriptBlock {
+				    # Knowledge Base for Parallels Remote Application Server v19 Release Notes - KB129018
+				    [System.Net.ServicePointManager]::SecurityProtocol = 'Tls12'
+				    $Url = 'https://kb.parallels.com/en/129018'
+                    $Content  = ( Invoke-WebRequest -Uri $Url -UseBasicParsing ).content
+                    $MatchString = 'RAS Core v19.'
+                    $Match = $Content.Substring( $Content.IndexOf( $MatchString ) , 25 )
+                    $Version = $Match.Split( '-' )[0].Substring( 10 ).Split( '.' )[0]
+                    $VersionMajor = $Match.Split( '-' )[0].Substring( 10 ).Split( '.' )[1]
+                    $VersionMinor = If ( $Match.Split( '-' )[0].Substring( 10 ).Split( '.' )[2] ) { $Match.Split( '-' )[0].Substring( 10 ).Split( '.' )[2] } Else { '0'}
+                    $VersionRevision = $Match.Split( '-' )[1].Substring( 0 , 5 )
+                    $UrlDownLoad = "https://download.parallels.com/ras/v$Version/$Version.$VersionMajor.$VersionMinor.$VersionRevision/RASInstaller-$Version.$VersionMajor.$VersionRevision.msi"
+                    $FileDownload = "$ENV:LOCALAPPDATA\$($UrlDownload.Split('/')[-1])"
+                    (New-Object System.Net.WebClient).DownloadFile( $UrlDownload , $FileDownload )
+                    Start-Process -FilePath 'msiexec.exe' -ArgumentList ( "-i $FileDownload /qn /norestart " ) -Wait
 				    }
-				    Else
-				        {
-				        $RasCoreVersion = ( ( Invoke-WebRequest -Uri $UrlKB129018 -UseBasicParsing ).content | ForEach-Object -Process { $PSItem.Substring( $PSItem.IndexOf( 'v19.' ) , 11 ) } ).Replace( 'v' , '' ).Replace( '-' , '.' ).Insert( 4 , '.0' )
-				        }
-				$Version = $RasCoreVersion.Substring( 0 , 2 )
-				$VersionMajor = $RasCoreVersion.Substring( 3 , 1 )
-				$VersionMinor = $RasCoreVersion.Substring( 5 , 1 )
-				$VersionRevision = $RasCoreVersion.Substring( 7 , 5 )
-				$UrlDownLoad = "https://download.parallels.com/ras/v$Version/$Version.$VersionMajor.$VersionMinor.$VersionRevision/RASInstaller-$Version.$VersionMajor.$VersionRevision.msi"
-				$FileDownload = "$ENV:LOCALAPPDATA\$($UrlDownload.Split('/')[-1])"
-				(New-Object System.Net.WebClient).DownloadFile( $UrlDownload , $FileDownload )
-				Invoke-Expression -Command "CMD.EXE /C 'MsiExec.exe /i $FileDownload /qn /norestart'"
-				}
                 While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarRDS.Value = $I } ) }
                 $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Deploying Parallels RDS Farm `n") } )
 				$Job = Invoke-Command -Session $PsSession -AsJob -JobName "Deploy Parallels RAS Farm" -ScriptBlock {
@@ -1773,6 +1792,9 @@ Function DeployRdsStart {
                         }
                     If ( ( Get-GPRegistryValue -Server $env:COMPUTERNAME -Name $GpoName -Key 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' -ValueName 'My Video' -ErrorAction SilentlyContinue ) ) {
                         Set-GPRegistryValue -Server $env:COMPUTERNAME -Name $GpoName -Key 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' -ValueName 'My Video' -Type 'ExpandString' -Value "$DataFolderRootPath\%USERNAME%\Videos" -ErrorAction Continue
+                        }
+                    If ( ( Get-GPRegistryValue -Server $env:COMPUTERNAME -Name $GpoName -Key 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' -ValueName '{374DE290-123F-4565-9164-39C4925E467B}' -ErrorAction SilentlyContinue ) ) {
+                        Set-GPRegistryValue -Server $env:COMPUTERNAME -Name $GpoName -Key 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' -ValueName '{374DE290-123F-4565-9164-39C4925E467B}'  -Type 'ExpandString' -Value "$DataFolderRootPath\%USERNAME%\Downloads" -ErrorAction Continue
                         }
 					$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBoxUSERDataFolderRootPath.Text = $DataFolderRootPath } )
 					$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarRDS.Visibility = "Hidden" } )
@@ -1883,6 +1905,7 @@ Function DeployO365Start {
 								<Language ID="nl-nl" />
 								<Language ID="fr-fr" />
                                 <ExcludeApp ID="Groove" />
+								<ExcludeApp ID="Lync" />
                                 <ExcludeApp ID="OneDrive" />
                                 <ExcludeApp ID="Bing" />
 								<ExcludeApp ID="$ExcludeApp" />
@@ -2161,7 +2184,7 @@ $SyncHash.ButtonFireboxStart.Add_Click({
     $SyncHash.ProgressBarFirebox.Visibility = "Visible"
     $DeployFireboxStart= @{
         'SyncHash' = $SyncHash
-	'FireboxIpAddress' = $SyncHash.TextBoxFireboxIpAddress.Text
+		'FireboxIpAddress' = $SyncHash.TextBoxFireboxIpAddress.Text
         'FireboxAdminUserName' = $SyncHash.TextBoxFireboxAdminUserName.Text
         'FireboxAdminPassword' = $SyncHash.TextBoxFireboxAdminPassword.Text
         'FireboxExternalIp' = $SyncHash.TextBoxFireboxExternalIp.Text
@@ -2185,7 +2208,7 @@ $SyncHash.ButtonDeployDcStart.Add_Click({
     $SyncHash.ProgressBarDc.Visibility = "Visible"
     $DeployDcStart= @{
         'SyncHash' = $SyncHash
-	'SafeModeAdministratorPassword' = $SyncHash.TextBoxSafeModeAdministratorPassword.Text
+		'SafeModeAdministratorPassword' = $SyncHash.TextBoxSafeModeAdministratorPassword.Text
         'DnsServerForwarders' = $SyncHash.TextBoxDnsServerForwarders.Text
         'DomainNetbiosName' = $SyncHash.TextBoxDomainNetbiosName.Text
         'DomainDnsName' = $SyncHash.TextBoxDomainDnsName.Text
@@ -2209,7 +2232,7 @@ $SyncHash.ButtonDeployOUStart.Add_Click({
     $SyncHash.ProgressBarOU.Visibility = "Visible"
     $DeployOUStart= @{
         'SyncHash' = $SyncHash
-	'ManagedOuName' = $SyncHash.TextBoxManagedOuName.Text
+		'ManagedOuName' = $SyncHash.TextBoxManagedOuName.Text
         'ClearmediaAdminUserName' = $SyncHash.TextBoxClearmediaAdminUserName.Text
         'ClearmediaAdminPassword' = $SyncHash.TextBoxClearmediaAdminPassword.Text
         }
@@ -2227,7 +2250,7 @@ $SyncHash.ButtonDeployStandardGpoStart.Add_Click({
     $SyncHash.ProgressBarGPO.Visibility = "Visible"
     $DeployStandardGpoStart= @{
         'SyncHash' = $SyncHash
-	'TemplateSourcePath' = $SyncHash.TextBoxTemplateSourcePath.Text
+		'TemplateSourcePath' = $SyncHash.TextBoxTemplateSourcePath.Text
         'RdsOuPath' = $SyncHash.TextBoxRdsOuPath.Text
         'UsersOuPath' = $SyncHash.TextBoxUsersOuPath.Text
         'CheckBoxCopyAdmFiles' = $SyncHash.CheckBoxCopyAdmFiles.IsChecked
@@ -2254,14 +2277,16 @@ $SyncHash.ButtonDeployFolderRedirectionStart.Add_Click({
     $DeployFolderRedirectionStart= @{
         'SyncHash' = $SyncHash
         'CheckBoxDocuments' = $SyncHash.CheckBoxDocuments.IsChecked
-	'DocumentsPath' = $SyncHash.TextBoxDocumentsPath.Text
+		'DocumentsPath' = $SyncHash.TextBoxDocumentsPath.Text
         'CheckBoxMusic' = $SyncHash.CheckBoxMusic.IsChecked
-	'MusicPath' = $SyncHash.TextBoxMusicPath.Text
+		'MusicPath' = $SyncHash.TextBoxMusicPath.Text
         'CheckBoxPictures' = $SyncHash.CheckBoxPictures.IsChecked
-	'PicturesPath' = $SyncHash.TextBoxPicturesPath.Text
+		'PicturesPath' = $SyncHash.TextBoxPicturesPath.Text
         'CheckBoxVideos' = $SyncHash.CheckBoxVideos.IsChecked
-	'VideosPath' = $SyncHash.TextBoxVideosPath.Text
-	'UsersOuPath' = $SyncHash.TextBoxUsersOuPath.Text
+		'VideosPath' = $SyncHash.TextBoxVideosPath.Text
+        'CheckBoxDownloads' = $SyncHash.CheckBoxDownloads.IsChecked
+        'DownloadsPath' = $SyncHash.TextBoxDownloadsPath.Text
+  		'UsersOuPath' = $SyncHash.TextBoxUsersOuPath.Text
         }
 	DeployFolderRedirectionStart @DeployFolderRedirectionStart
     #$SyncHash.host.ui.WriteVerboseLine($SyncHash.CheckBoxStandardRdsServerPolicy.IsChecked)
@@ -2276,7 +2301,7 @@ $SyncHash.ButtonDeployRdsStart.Add_Click({
     $SyncHash.ProgressBarRDS.Visibility = "Visible"
     $DeployRdsStart= @{
         'SyncHash' = $SyncHash
-	'ServerIpAddress' = $SyncHash.TextBoxRDSServerIpAddress.Text
+		'ServerIpAddress' = $SyncHash.TextBoxRDSServerIpAddress.Text
         'LocalAdminUserName' = $SyncHash.TextBoxRDSLocalAdminUserName.Text
         'LocalAdminPassword' = $SyncHash.TextBoxRDSLocalAdminPassword.Text
         'DomainAdminUserName' = $SyncHash.TextBoxRDSDomainAdminUserName.Text
@@ -2304,7 +2329,7 @@ $SyncHash.ButtonDeployRdsReboot.Add_Click({
     $SyncHash.BorderDeployUserStart.IsEnabled = $True
     $DeployRdsReboot= @{
         'SyncHash' = $SyncHash
-	'ServerIpAddress' = $SyncHash.TextBoxRDSServerIpAddress.Text
+		'ServerIpAddress' = $SyncHash.TextBoxRDSServerIpAddress.Text
         'LocalAdminUserName' = $SyncHash.TextBoxRDSLocalAdminUserName.Text
         'LocalAdminPassword' = $SyncHash.TextBoxRDSLocalAdminPassword.Text
         }
@@ -2320,7 +2345,7 @@ $SyncHash.ButtonDeployO365Start.Add_Click({
     $SyncHash.ProgressBarO365.Visibility = "Visible"
     $DeployO365Start= @{
         'SyncHash' = $SyncHash
-	'ServerIpAddressList' = $SyncHash.TextBoxO365ServerIpAddress.Text
+		'ServerIpAddressList' = $SyncHash.TextBoxO365ServerIpAddress.Text
         'AdminUserName' = $SyncHash.TextBoxO365AdminUserName.Text
         'AdminPassword' = $SyncHash.TextBoxO365AdminPassword.Text
         'CheckBoxExcludeApp' = $SyncHash.CheckBoxExcludeApp.IsChecked
@@ -2339,7 +2364,7 @@ $SyncHash.ButtonDeployWUStart.Add_Click({
     $SyncHash.ProgressBarWU.Visibility = "Visible"
     $DeployWUStart= @{
         'SyncHash' = $SyncHash
-	'ServerIpAddressList' = $SyncHash.TextBoxWuServerIpAddress.Text
+		'ServerIpAddressList' = $SyncHash.TextBoxWuServerIpAddress.Text
         'AdminUserName' = $SyncHash.TextBoxWuAdminUserName.Text
         'AdminPassword' = $SyncHash.TextBoxWuAdminPassword.Text
         'DayOfWeek' = $SyncHash.ComboBoxWuDayOfWeek.SelectedIndex
@@ -2358,7 +2383,7 @@ $SyncHash.ButtonDeployUserStart.Add_Click({
     $SyncHash.ProgressBarUser.Visibility = "Visible"
     $DeployUserStart= @{
         'SyncHash' = $SyncHash
-	'ServerIpAddress'= $SyncHash.TextBoxUSERServerIpAddress.Text
+		'ServerIpAddress'= $SyncHash.TextBoxUSERServerIpAddress.Text
         'LocalAdminUserName' = $SyncHash.TextBoxUSERLocalAdminUserName.Text
         'LocalAdminPassword' = $SyncHash.TextBoxUSERLocalAdminPassword.Text
         'DomainAdminUserName' = $SyncHash.TextBoxUSERDomainAdminUserName.Text
