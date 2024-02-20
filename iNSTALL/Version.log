@@ -1,3 +1,11 @@
+Version 2.20
+-------------
+Refactor Deployment - Update InstallMicrosoftEdge.ps1 | Deploy 'Microsoft Edge for business' version 121.0.2277.128
+Refactor GPO - Add Files via Upload | Update Microsoft Edge group policy definitions version 121.0.2277.128
+Refactor GPO - Add Files via Upload | Update FSLogix group policy definitions version 2.9.8784.63912
+Refactor GPO - Rename StandardUserO365Policy.csv
+Refactor GPO - Create StandardUserOfficeLoggingPolicy.csv
+
 Version 2.19
 -------------
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployO365Start | Exclude "Lync" (Skype for Business)
@@ -77,7 +85,7 @@ Refactor Docs - Update VMware Template 1.10.docx
 Version 2.11
 -------------
 Refactor BgInfo - Update PresetAndBgInfo.ps1 | Do not interfere with existing Z: Drive
-Refactor GPO - Add StandardServerFSLogixPolicy.csv
+Refactor GPO - Create StandardServerFSLogixPolicy.csv
 Refactor GPO - Update StandardServerRdsPolicy.csv | Extend Disable Fair Share
 Refactor Deployment - Add ResetExplorerView.ps1
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployFireboxStart | Add Import Feature Key
