@@ -1,0 +1,7 @@
+Key,ValueName,Type,Value
+HKCU\Software\policies\microsoft\office\16.0\Outlook\Logging,DisableDefaultLogging,Dword,1
+HKCU\Software\policies\microsoft\office\16.0\Excel\Logging,DisableDefaultLogging,Dword,1
+HKCU\Software\policies\microsoft\office\16.0\Word\Logging,DisableDefaultLogging,Dword,1
+HKCU\Software\policies\microsoft\office\16.0\PowerPoint\Logging,DisableDefaultLogging,Dword,1
+HKCU\Software\policies\microsoft\office\16.0\Access\Logging,DisableDefaultLogging,Dword,1
+HKCU\Software\policies\microsoft\office\16.0\OneNote\Logging,DisableDefaultLogging,Dword,1
