@@ -1,5 +1,7 @@
 Version 2.21
 -------------
+Refactor BgInfo - Update PresetAndBgInfo.ps1 | Switch BgInfo File on WindowsFeature
+Refactor BgInfo - Create Files via Upload | Add ServerRoles Files
 Refactor Deployment - Update InstallVmWareTools.ps1 | Deploy vmware-tools version 12.4.0.23259341
 Refactor Deployment - Update InstallMicrosoftEdge.ps1 | Deploy 'Microsoft Edge for business' version 124.0.2478.105
 Refactor GPO - Create File via Upload | Update Microsoft Edge group policy definitions version 124.0.2478.105
