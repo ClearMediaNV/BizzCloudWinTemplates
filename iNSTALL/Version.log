@@ -1,8 +1,16 @@
+Version 2.21
+-------------
+Refactor BgInfo - Update PresetAndBgInfo.ps1 | Switch BgInfo File on WindowsFeature
+Refactor BgInfo - Create Files via Upload | Add ServerRoles Files
+Refactor Deployment - Update InstallVmWareTools.ps1 | Deploy vmware-tools version 12.4.0.23259341
+Refactor Deployment - Update InstallMicrosoftEdge.ps1 | Deploy 'Microsoft Edge for business' version 124.0.2478.105
+Refactor GPO - Create File via Upload | Update Microsoft Edge group policy definitions version 124.0.2478.105
+
 Version 2.20
 -------------
 Refactor Deployment - Update InstallMicrosoftEdge.ps1 | Deploy 'Microsoft Edge for business' version 121.0.2277.128
-Refactor GPO - Add Files via Upload | Update Microsoft Edge group policy definitions version 121.0.2277.128
-Refactor GPO - Add Files via Upload | Update FSLogix group policy definitions version 2.9.8784.63912
+Refactor GPO - Create File via Upload | Update Microsoft Edge group policy definitions version 121.0.2277.128
+Refactor GPO - Create File via Upload | Update FSLogix group policy definitions version 2.9.8784.63912
 Refactor GPO - Rename StandardUserO365Policy.csv
 Refactor GPO - Create StandardUserOfficeLoggingPolicy.csv
 
@@ -26,7 +34,7 @@ Refactor Deployment - Update InstallVmWareTools.ps1 | Deploy vmware-tools versio
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployDcStart | Change NLA Service Dependencies
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Deploy FSLogix Latest version
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Deploy Parallels RAS Latest Version
-Refactor GPO - Add Files via Upload | Update FSLogix group policy definitions
+Refactor GPO - Create Files via Upload | Update FSLogix group policy definitions
 Refactor O365 - Update InstallO365ProPlus.ps1 | Fix Installation Path
 
 Version 2.16
@@ -36,7 +44,7 @@ Refactor Deployment - Update PushTheButton.ps1 | Update DeployDcStart | Reject R
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Deploy FSLogix Latest version
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Deploy Parallels RAS Latest Version
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployO365Start | Deploy ODT Latest Version
-Refactor Docs - Add How-To-vCloud SAML authentication using Azure AD.docx
+Refactor Docs - Create How-To-vCloud SAML authentication using Azure AD.docx
 
 Version 2.15
 -------------
@@ -58,9 +66,9 @@ Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Deploy 
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Deploy FsLogix Latest Version
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployO365Start | Deploy ODT Latest Version
 Refactor O365 - Update InstallO365ProPlus.ps1 | Deploy ODT Latest Version
-Refactor GPO - Add Files via Upload | Update FSLogix group policy definitions
+Refactor GPO - Create Files via Upload | Update FSLogix group policy definitions
 Refactor Docs - Update VMware Template.docx
-Refactor Docs - Add vCloud SAML authentication using Azure AD.docx
+Refactor Docs - Create vCloud SAML authentication using Azure AD.docx
 
 Version 2.12
 -------------
@@ -87,7 +95,7 @@ Version 2.11
 Refactor BgInfo - Update PresetAndBgInfo.ps1 | Do not interfere with existing Z: Drive
 Refactor GPO - Create StandardServerFSLogixPolicy.csv
 Refactor GPO - Update StandardServerRdsPolicy.csv | Extend Disable Fair Share
-Refactor Deployment - Add ResetExplorerView.ps1
+Refactor Deployment - Create ResetExplorerView.ps1
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployFireboxStart | Add Import Feature Key
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployOuStart | Add FSLogix-Users Group
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployStandardGpoStart | Add StandardServerFSLogixPolicy
@@ -136,7 +144,7 @@ Version 2.05
 Refactor Deployment - Update InstallVmWareTools.ps1 | Deploy vmware-tools version 11.2.5
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployFireboxStart | Add extended Error Handling - Remove Reboot
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployStandardGpoStart | Add Disable HardwareAcceleration for Microsoft Edge
-Refactor GPO - Add Files via Upload | Add FSLogix group policy definitions - Add Microsoft Edge group policy definitions
+Refactor GPO - Create Files via Upload | Add FSLogix group policy definitions - Add Microsoft Edge group policy definitions
 Refactor BgInfo - Update PresetAndBgInfo.ps1 | Add WSUS Server - WSUS Server will be added to BgInfo Inventory
 Refactor BgInfo - Update windows.bgi | Add Inventory Item WSUS
 Refactor O365 - Update GetO365TenantID.ps1 | Change CSP Delegation to BITLY URL
