@@ -1,3 +1,9 @@
+Version 2.22
+-------------
+Refactor Deployment - Update InstallMicrosoftEdge.ps1 | Deploy 'Microsoft Edge for business' version 126.0.2592.61
+Refactor GPO - Create File via Upload | Update Microsoft Edge group policy definitions version 126.0.2592.61
+Refactor GPO - Create File via Upload | Update FSLogix group policy definitions version 2.9.8884.27471
+
 Version 2.21
 -------------
 Refactor BgInfo - Update PresetAndBgInfo.ps1 | Switch BgInfo File on WindowsFeature
