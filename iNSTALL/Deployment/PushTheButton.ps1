@@ -2269,7 +2269,8 @@ $SyncHash.ButtonDeployStandardGpoStart.Add_Click({
         'CheckBoxStandardUserPolicy' = $SyncHash.CheckBoxStandardUserPolicy.IsChecked
         'CheckBoxStandardUserHardwareAccelerationPolicy' = $SyncHash.CheckBoxStandardUserHardwareAccelerationPolicy.IsChecked
         'CheckBoxStandardUserO365Policy' = $SyncHash.CheckBoxStandardUserO365Policy.IsChecked
-        'CheckBoxStandardUserOutlookPolicy' = $SyncHash.CheckBoxCopyAdmFiles.IsChecked
+        'CheckBoxStandardUserOutlookPolicy' = $SyncHash.CheckBoxStandardUserOutlookPolicy.IsChecked
+        'CheckBoxStandardUserEdgePolicy' = $SyncHash.CheckBoxStandardUserEdgePolicy.IsChecked
         }
 	DeployStandardGpoStart @DeployStandardGpoStart
     #$SyncHash.host.ui.WriteVerboseLine($SyncHash.CheckBoxStandardRdsServerPolicy.IsChecked)
