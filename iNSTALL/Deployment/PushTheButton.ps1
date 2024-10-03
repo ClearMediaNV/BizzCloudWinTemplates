@@ -636,10 +636,11 @@ Function DeployDcStart {
 
             If ( ( Get-WindowsFeature -Name 'AD-Domain-Services' ).InstallState.value__ -eq 3 ) {
 				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarDc.Visibility = "Hidden" } )
-				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.LabelStatusDc.Content = "Service Install is Pending and needs Reboot $(' .'*115)$(' '*30)  Please  REBOOT and Retry" } )
+				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.LabelStatusDc.Content = "Service Install is Pending and needs a Reboot $(' .'*115)$(' '*30)  Please  REBOOT and Retry" } )
 				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.BorderDeployDcStart.Visibility = "Hidden" } )
 				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.BorderDeployDcReboot.IsEnabled = $True } )
-				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.BorderDeployDcReboot.Visibility = "Visible" } )    
+				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.BorderDeployDcReboot.Visibility = "Visible" } )
+				Return
                 }
 
 
