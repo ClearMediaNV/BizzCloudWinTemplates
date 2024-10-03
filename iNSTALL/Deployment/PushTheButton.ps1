@@ -215,6 +215,7 @@ $SyncHash.Host = $Host
                     <CheckBox Name="CheckBoxStandardUserHardwareAccelerationPolicy" Content="StandardUserHardwareAccelerationPolicy" HorizontalAlignment="Left" Margin="640,145,0,0" VerticalAlignment="Top" IsChecked="True"/>
                     <CheckBox Name="CheckBoxStandardUserO365Policy" Content="StandardUserO365Policy" HorizontalAlignment="Left" Margin="640,170,0,0" VerticalAlignment="Top" IsChecked="True"/>
                     <CheckBox Name="CheckBoxStandardUserOutlookPolicy" Content="StandardUserOutlookPolicy" HorizontalAlignment="Left" Margin="640,195,0,0" VerticalAlignment="Top" IsChecked="True"/>
+                    <CheckBox Name="CheckBoxStandardUserEdgePolicy" Content="StandardUserEdgePolicy" HorizontalAlignment="Left" Margin="640,220,0,0" VerticalAlignment="Top" IsChecked="True"/>
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
                         <TextBlock Name="TextBlockOutBoxGPO" Text="" Foreground="WHITE" Background="#FF22206F" />
                     </ScrollViewer>
