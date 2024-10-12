@@ -633,6 +633,14 @@ Function DeployDcStart {
             $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxDC.AddText(" Installing Active Directory Domain Services `n") } )
             $Job = Start-Job -Name 'Active Directory Domain Services' -ScriptBlock { Install-WindowsFeature -Name 'AD-Domain-Services' -ErrorAction Stop }
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarDc.Value = $I } ) }
+			If ( ( Get-WindowsFeature -Name 'AD-Domain-Services' ).InstallState.value__ -eq 3 ) {
+				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarDc.Visibility = "Hidden" } )
+				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.LabelStatusDc.Content = "Service Install is Pending and needs a Reboot $(' .'*115)$(' '*30)  Please  REBOOT and Retry" } )
+				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.BorderDeployDcStart.Visibility = "Hidden" } )
+				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.BorderDeployDcReboot.IsEnabled = $True } )
+				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.BorderDeployDcReboot.Visibility = "Visible" } )
+				Return
+				}
             $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxDC.AddText(" Installing Group Policy Management `n") } )
             $Job = Start-Job -Name 'Group Policy Management' -ScriptBlock { Install-WindowsFeature -Name 'GPMC' -ErrorAction Stop }
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500  ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarDc.Value = $I } ) }
