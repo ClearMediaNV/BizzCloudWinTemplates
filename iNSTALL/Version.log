@@ -1,3 +1,11 @@
+Version 2.23
+-------------
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployStandardGpoStart | Add StandardUserEdgePolicy
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployDcStart | Add CloudFlare DNS Server to DNS Forwarders
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployDcStart | Add Extra Error Handling on Install ADDS
+Refactor Deployment - Update InstallVmWareTools.ps1 | Deploy VmWare-Tools Version 12.4.5.23787635
+Refactor GPO - Update StandardWindowsUpdateServerPolicy.csv | Block Driver Updates via Windows Quality Update
+
 Version 2.22
 -------------
 Refactor Deployment - Update InstallMicrosoftEdge.ps1 | Deploy 'Microsoft Edge for business' version 126.0.2592.61
