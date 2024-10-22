@@ -21,7 +21,7 @@ Try { $DomainNetbiosName = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedi
 Try { $DomainDNSName = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DomainDNSName' }
     Catch { $DomainDNSName = 'ClearMedia.cloud' }
 Try { $DnsServerForwarders = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DnsServerForwarders' }
-    Catch { $DnsServerForwarders = '195.238.2.21,195.238.2.22,8.8.8.8' }
+    Catch { $DnsServerForwarders = '1.1.1.1,195.238.2.22,195.238.2.21' }
 Try { $DeployOuStart = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DeployOuStart' }
     Catch { $DeployOuStart = 'Visible' }
 Try { $DeployStandardGpoStart = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DeployStandardGpoStart' }
@@ -215,7 +215,8 @@ $SyncHash.Host = $Host
                     <CheckBox Name="CheckBoxStandardUserHardwareAccelerationPolicy" Content="StandardUserHardwareAccelerationPolicy" HorizontalAlignment="Left" Margin="640,145,0,0" VerticalAlignment="Top" IsChecked="True"/>
                     <CheckBox Name="CheckBoxStandardUserO365Policy" Content="StandardUserO365Policy" HorizontalAlignment="Left" Margin="640,170,0,0" VerticalAlignment="Top" IsChecked="True"/>
                     <CheckBox Name="CheckBoxStandardUserOutlookPolicy" Content="StandardUserOutlookPolicy" HorizontalAlignment="Left" Margin="640,195,0,0" VerticalAlignment="Top" IsChecked="True"/>
-                    <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
+                    <CheckBox Name="CheckBoxStandardUserEdgePolicy" Content="StandardUserEdgePolicy" HorizontalAlignment="Left" Margin="640,220,0,0" VerticalAlignment="Top" IsChecked="True"/>
+					<ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
                         <TextBlock Name="TextBlockOutBoxGPO" Text="" Foreground="WHITE" Background="#FF22206F" />
                     </ScrollViewer>
                     <Border Name="BorderDeployStandardGpoStart" CornerRadius="220" Padding="20,20,20,20" Width="220" Height="220" VerticalAlignment="Top" HorizontalAlignment="Left"  Margin="1000,28,0,0"  Visibility="$DeployStandardGpoStart" ToolTip="Push It real Good" ToolTipService.ShowDuration="1000">
@@ -633,6 +634,14 @@ Function DeployDcStart {
             $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxDC.AddText(" Installing Active Directory Domain Services `n") } )
             $Job = Start-Job -Name 'Active Directory Domain Services' -ScriptBlock { Install-WindowsFeature -Name 'AD-Domain-Services' -ErrorAction Stop }
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarDc.Value = $I } ) }
+			If ( ( Get-WindowsFeature -Name 'AD-Domain-Services' ).InstallState.value__ -eq 3 ) {
+				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarDc.Visibility = "Hidden" } )
+				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.LabelStatusDc.Content = "Service Install is Pending and needs a Reboot $(' .'*115)$(' '*30)  Please  REBOOT and Retry" } )
+				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.BorderDeployDcStart.Visibility = "Hidden" } )
+				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.BorderDeployDcReboot.IsEnabled = $True } )
+				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.BorderDeployDcReboot.Visibility = "Visible" } )
+				Return
+				}
             $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxDC.AddText(" Installing Group Policy Management `n") } )
             $Job = Start-Job -Name 'Group Policy Management' -ScriptBlock { Install-WindowsFeature -Name 'GPMC' -ErrorAction Stop }
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500  ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarDc.Value = $I } ) }
@@ -655,9 +664,6 @@ Function DeployDcStart {
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarDc.Value = $I } )  }
             $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxDC.AddText(" Creating AD Forest for $DomainDnsName `n") } )
             $Job = Start-Job -Name 'Install-ADDSForest' -ScriptBlock { Param($DomainDnsName,$DomainNetbiosName,$SafeModeAdministratorPassword) ; Install-ADDSForest -DomainName $DomainDnsName -DomainNetbiosName $DomainNetbiosName -SafeModeAdministratorPassword $SafeModeAdministratorPassword -NoRebootOnCompletion -ErrorAction Stop -Force} -ArgumentList ($DomainDnsName,$DomainNetbiosName,$SafeModeAdministratorPassword) 
-            While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarDc.Value = $I } )  }
-            $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxDC.AddText(" Changing NLA Service `n") } )
-            $Job = Start-Job -Name 'Change-NlaSvc' -ScriptBlock { Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\NlaSvc' -Name 'DependOnService' -Value @( 'DNS' ) -ErrorAction Stop -Force}
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarDc.Value = $I } )  }
 			Get-Job | Select-Object -Property Name, State, Command, @{Name='Error';Expression={ $_.ChildJobs[0].JobStateInfo.Reason }} | Export-Csv -Path "$env:windir\Logs\PushTheButtonJobs.csv" -NoTypeInformation -Force
             [Boolean]$JobError = Get-Job | Where-Object { $_.State -eq 'Failed' } | ForEach-Object { $_.count -gt 0 }
@@ -815,7 +821,7 @@ Function DeployOuStart {
 	$job = $PSinstance.BeginInvoke()
 	}
 Function DeployStandardGpoStart {
-	Param($SyncHash,$TemplateSourcePath,$RdsOuPath,$UsersOuPath,$CheckBoxCopyAdmFiles,$CheckBoxStandardServerRDSPolicy,$CheckBoxStandardServerWindowsUpdatePolicy,$CheckBoxStandardServerFSLogixPolicy,$CheckBoxStandardUserPolicy,$CheckBoxStandardUserHardwareAccelerationPolicy,$CheckBoxStandardUserO365Policy,$CheckBoxStandardUserOutlookPolicy)
+	Param($SyncHash,$TemplateSourcePath,$RdsOuPath,$UsersOuPath,$CheckBoxCopyAdmFiles,$CheckBoxStandardServerRDSPolicy,$CheckBoxStandardServerWindowsUpdatePolicy,$CheckBoxStandardServerFSLogixPolicy,$CheckBoxStandardUserPolicy,$CheckBoxStandardUserHardwareAccelerationPolicy,$CheckBoxStandardUserO365Policy,$CheckBoxStandardUserOutlookPolicy,$CheckBoxStandardUserEdgePolicy)
 	$Runspace = [runspacefactory]::CreateRunspace()
 	$Runspace.ApartmentState = "STA"
 	$Runspace.ThreadOptions = "ReuseThread"
@@ -832,6 +838,7 @@ Function DeployStandardGpoStart {
 	$Runspace.SessionStateProxy.SetVariable("CheckBoxStandardUserHardwareAccelerationPolicy",$CheckBoxStandardUserHardwareAccelerationPolicy)
 	$Runspace.SessionStateProxy.SetVariable("CheckBoxStandardUserO365Policy",$CheckBoxStandardUserO365Policy)
 	$Runspace.SessionStateProxy.SetVariable("CheckBoxStandardUserOutlookPolicy",$CheckBoxStandardUserOutlookPolicy)
+ 	$Runspace.SessionStateProxy.SetVariable("CheckBoxStandardUserEdgePolicy",$CheckBoxStandardUserEdgePolicy)
 	$code = {
 			$Error.Clear()
 			$ErrorList = @()
@@ -982,6 +989,14 @@ Function DeployStandardGpoStart {
 				'HKCU\Software\policies\microsoft\office\16.0\outlook\cached mode,enable,Dword,1',
 				'HKCU\Software\policies\microsoft\office\16.0\outlook\cached mode,syncwindowsetting,Dword,6',
 				'HKCU\Software\policies\microsoft\office\16.0\outlook\cached mode,syncwindowsettingdays,Dword,0'
+				)
+			$StandardUserEdgePolicy = (
+                'HKCU\Software\Policies\Microsoft\Edge,NewTabPageContentEnabled,Dword,0',
+                'HKCU\Software\Policies\Microsoft\Edge,NewTabPageAllowedBackgroundTypes,Dword,3',
+                'HKCU\Software\Policies\Microsoft\Edge,NewTabPageHideDefaultTopSites,Dword,1',
+                'HKCU\Software\Policies\Microsoft\Edge,NewTabPageQuickLinksEnabled,Dword,0',
+                'HKCU\Software\Policies\Microsoft\Edge\Recommended,HomepageIsNewTabPage,Dword,1',
+                'HKCU\Software\Policies\Microsoft\Edge\Recommended,HomepageLocation,String,"about:blank"'
 				)
 			If ( $CheckBoxStandardServerRDSPolicy ) {
 				$GpoName = 'StandardServerRDSPolicy'
@@ -1244,41 +1259,80 @@ FSLogix Profile Include List__Members = FSLogix-Users
 					}
 				}
 			If ( $CheckBoxStandardUserOutlookPolicy ) {
-			$FullUsersOuPath = $UsersOuPath.Insert(0,'OU=Full Users,')
-			$GpoName = 'StandardUserOutlookPolicy'
-			$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxGPO.AddText(" Creating $GpoName `n") } ) 
-			$I += 4 ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarGPO.Value = $I } )
-			New-GPO -Server $env:COMPUTERNAME -Name $GpoName -ErrorAction Ignore
-			If ( $error ) {
+				$FullUsersOuPath = $UsersOuPath.Insert(0,'OU=Full Users,')
+				$GpoName = 'StandardUserOutlookPolicy'
+				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxGPO.AddText(" Creating $GpoName `n") } ) 
+				$I += 4 ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarGPO.Value = $I } )
+				New-GPO -Server $env:COMPUTERNAME -Name $GpoName -ErrorAction Ignore
+				If ( $error ) {
                     $ErrorList += "New-GPO -Name $GpoName -ErrorAction Stop"
                     $ErrorList += $error[0].Exception.Message.ToString()
                     $ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
                     $Error.Clear()
                     }
-			$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxGPO.AddText(" Linking $GpoName to $FullUsersOuPath `n") } )
-			$I += 4 ; If ( $I -ge 100 ) { $I = 1 } ;  $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarGPO.Value = $I } )
-			New-GPLink -Server $env:COMPUTERNAME -Name "$GpoName" -Target "$FullUsersOuPath" -ErrorAction Continue
-			If ( $error ) {
+				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxGPO.AddText(" Linking $GpoName to $FullUsersOuPath `n") } )
+				$I += 4 ; If ( $I -ge 100 ) { $I = 1 } ;  $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarGPO.Value = $I } )
+				New-GPLink -Server $env:COMPUTERNAME -Name "$GpoName" -Target "$FullUsersOuPath" -ErrorAction Continue
+				If ( $error ) {
                     $ErrorList += "New-GPLink -Name $GpoName -Target $UsersOuPath -ErrorAction Stop"
                     $ErrorList += $error[0].Exception.Message.ToString()
                     $ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
                     $Error.Clear()
                     }
-			$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxGPO.AddText(" Injecting $GpoName Keys `n") } ) 
-			$I += 4 ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarGPO.Value = $I } )
-			$StandardUserOutlookPolicy | ForEach-Object {
+				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxGPO.AddText(" Injecting $GpoName Keys `n") } ) 
 				$I += 4 ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarGPO.Value = $I } )
-				$Table = $_.Split(',')
-				If ( $Table[2] -eq 'Dword' ) { [INT]$Value = $Table[3] } Else { [STRING]$Value = $Table[3] }
-				Set-GPRegistryValue -Server $env:COMPUTERNAME -Name "$GpoName" -Key $Table[0] -ValueName $Table[1] -Type $Table[2] -Value $Value  -ErrorAction Continue
-				If ( $error ) {
+				$StandardUserOutlookPolicy | ForEach-Object {
+					$I += 4 ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarGPO.Value = $I } )
+					$Table = $_.Split(',')
+					If ( $Table[2] -eq 'Dword' ) { [INT]$Value = $Table[3] } Else { [STRING]$Value = $Table[3] }
+					Set-GPRegistryValue -Server $env:COMPUTERNAME -Name "$GpoName" -Key $Table[0] -ValueName $Table[1] -Type $Table[2] -Value $Value  -ErrorAction Continue
+					If ( $error ) {
                         $ErrorList += "Set-GPRegistryValue -Name $GpoName -Key $Table[0] -ValueName $Table[1] -Type $Table[2] -Value $Value  -ErrorAction Stop"
                         $ErrorList += $error[0].Exception.Message.ToString()
                         $ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
                         $Error.Clear()
                         }
+					}
 				}
-			}
+			If ( $CheckBoxStandardUserEdgePolicy ) {
+				$FullUsersOuPath = $UsersOuPath.Insert(0,'OU=Full Users,')
+				$LightUsersOuPath = $UsersOuPath.Insert(0,'OU=Light Users,')
+				$GpoName = 'StandardUserEdgePolicy'
+				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxGPO.AddText(" Creating $GpoName `n") } ) 
+				$I += 4 ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarGPO.Value = $I } )
+				New-GPO -Server $env:COMPUTERNAME -Name $GpoName -ErrorAction Ignore
+				If ( $error ) {
+                    $ErrorList += "New-GPO -Name $GpoName -ErrorAction Stop"
+                    $ErrorList += $error[0].Exception.Message.ToString()
+                    $ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
+                    $Error.Clear()
+                    }
+				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxGPO.AddText(" Linking $GpoName  Policy to $FullUsersOuPath `n") } )
+				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxGPO.AddText(" Linking $GpoName  Policy to $LightUsersOuPath `n") } ) 
+				$I += 4 ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarGPO.Value = $I } )
+				New-GPLink -Server $env:COMPUTERNAME -Name "$GpoName" -Target "$FullUsersOuPath" -ErrorAction Continue
+				New-GPLink -Server $env:COMPUTERNAME -Name "$GpoName" -Target "$LightUsersOuPath" -ErrorAction Continue
+				If ( $error ) {
+                    $ErrorList += "New-GPLink -Name $GpoName -Target $UsersOuPath -ErrorAction Stop"
+                    $ErrorList += $error[0].Exception.Message.ToString()
+                    $ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
+                    $Error.Clear()
+                    }
+				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxGPO.AddText(" Injecting $GpoName  Policy Keys `n") } ) 
+				$I += 4 ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarGPO.Value = $I } )
+				$StandardUserEdgePolicy | ForEach-Object {
+					$I += 4 ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarGPO.Value = $I } )
+					$Table = $_.Split(',')
+					If ( $Table[2] -eq 'Dword' ) { [INT]$Value = $Table[3] } Else { [STRING]$Value = $Table[3] }
+					Set-GPRegistryValue -Server $env:COMPUTERNAME -Name "$GpoName" -Key $Table[0] -ValueName $Table[1] -Type $Table[2] -Value $Value  -ErrorAction Continue
+					If ( $error ) {
+                        $ErrorList += "Set-GPRegistryValue -Name $GpoName -Key $Table[0] -ValueName $Table[1] -Type $Table[2] -Value $Value  -ErrorAction Stop"
+                        $ErrorList += $error[0].Exception.Message.ToString()
+                        $ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
+                        $Error.Clear()
+                        }
+					}
+				}
             $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarGPO.Visibility = "Hidden" } )
             If ( $ErrorList ) {
                 (Get-Date).tostring('dd-MM-yyyy HH:mm:ss') | Out-File -FilePath "$env:windir\Logs\PushTheButtonError.log" -Append -Force
@@ -2261,6 +2315,7 @@ $SyncHash.ButtonDeployStandardGpoStart.Add_Click({
         'CheckBoxStandardUserHardwareAccelerationPolicy' = $SyncHash.CheckBoxStandardUserHardwareAccelerationPolicy.IsChecked
         'CheckBoxStandardUserO365Policy' = $SyncHash.CheckBoxStandardUserO365Policy.IsChecked
         'CheckBoxStandardUserOutlookPolicy' = $SyncHash.CheckBoxCopyAdmFiles.IsChecked
+		'CheckBoxStandardUserEdgePolicy' = $SyncHash.CheckBoxStandardUserEdgePolicy.IsChecked
         }
 	DeployStandardGpoStart @DeployStandardGpoStart
     #$SyncHash.host.ui.WriteVerboseLine($SyncHash.CheckBoxStandardRdsServerPolicy.IsChecked)

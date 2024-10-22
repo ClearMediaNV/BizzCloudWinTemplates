@@ -1,5 +1,5 @@
 # Push Current Directory
-Push-Location %0\..\
+Push-Location -Path 'C:\install\bginfo'
 # Set Full Screen WXGA 1280 x 800
 Set-DisplayResolution -Width 1280 -Height 800 -Force
 # Copy Shortcut to current Desktop
@@ -19,7 +19,14 @@ $HotFixList = Get-HotFix | Select-Object -Property HotFixID , InstalledOn | Sort
 $LastHotFix = "$( ( $HotFixList | Where-Object { $PSItem.InstalledOn -eq $HotFixList[-1].InstalledOn } ).HotFixID -Join ',' ) $( $HotFixList[-1].InstalledOn.tostring( 'dd-MM-yyyy' ) )"
 Set-Item -Path 'ENV:\LastHotFix' -Value $LastHotFix
 # Get WSUS Server
-Try { Set-Item -Path 'ENV:\WSUS' -Value ( Get-ItemProperty -Path 'HKLM:\Software\Policies\Microsoft\Windows\WindowsUpdate' ).WUServer }
+Try {
+    # EnableStart WindowsUpdateService
+    Set-Service -Name 'wuauserv' -StartupType 'Manual' ; Start-Service -Name 'wuauserv'
+    $WsusEnabled = ( ( new-object -com 'Microsoft.Update.ServiceManager' ).Services | Where-Object { $PSITEM.ServiceID -eq '3da21691-e39d-4da6-8a4b-b43877bcb1b7' } ).IsDefaultAUService
+    # StopDisable WindowsUpdateService
+    Stop-Service -Name 'wuauserv' ; Set-Service -Name 'wuauserv' -StartupType 'Disabled'
+    If ( $WsusEnabled ) { Set-Item -Path 'ENV:\WSUS' -Value ( Get-ItemProperty -Path 'HKLM:\Software\Policies\Microsoft\Windows\WindowsUpdate' ).WUServer }
+    }
     Catch { Set-Item -Path 'ENV:\WSUS' -Value '0.0.0.0' }
 # Launch BgInfo
 If ( ( Get-WindowsFeature -Name 'RDS-RD-Server').Installed ) { Invoke-Expression -Command '& .\bginfo.exe RdsServer.bgi /timer:0 /nolicprompt' }
