@@ -30,5 +30,5 @@ Try {
     Catch { Set-Item -Path 'ENV:\WSUS' -Value '0.0.0.0' }
 # Launch BgInfo
 If ( ( Get-WindowsFeature -Name 'RDS-RD-Server').Installed ) { Invoke-Expression -Command '.\bginfo.exe RdsServer.bgi /timer:0 /nolicprompt' }
-    Else { Invoke-Expression -Command '.\bginfo.exe Server.bgi /timer:0 /nolicprompt' }
+    Else { .\bginfo.exe Server.bgi /timer:0 /nolicprompt }
 # The End
