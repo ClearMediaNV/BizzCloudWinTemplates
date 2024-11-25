@@ -929,9 +929,9 @@ Function DeployStandardGpoStart {
 				'HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate\AU,UseWUServer,Dword,0',
 				'HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate\AU,NoAutoRebootWithLoggedOnUsers,Dword,1' ,
 				'HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate,ExcludeWUDriversInQualityUpdate,Dword,1' ,
-				'HKLM\SYSTEM\CurrentControlSet\Services\UsoSvc,Start,Dword,2' ,
-				'HKLM\SYSTEM\CurrentControlSet\Services\WaaSMedicSvc,Start,Dword,3' ,
-				'HKLM\SYSTEM\CurrentControlSet\Services\wuauserv,Start,Dword,3'
+				'HKLM\SYSTEM\CurrentControlSet\Services\UsoSvc,Start,Dword,4' ,
+				'HKLM\SYSTEM\CurrentControlSet\Services\WaaSMedicSvc,Start,Dword,4' ,
+				'HKLM\SYSTEM\CurrentControlSet\Services\wuauserv,Start,Dword,4'
 				)
             $StandardServerFSLogixPolicy = (
 				'HKLM\Software\FSLogix\Profiles,Enabled,Dword,1',
