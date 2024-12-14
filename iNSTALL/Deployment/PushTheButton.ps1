@@ -1942,11 +1942,11 @@ Function DeployO365Start {
 			$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxO365.AddText(" Downloading and Extracting Office Deployment Tool `n") } )
 			$Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Download and Extract Office Deployment Tool' -ScriptBlock {
 				Param($O365version,$ProductId,$ExcludeApp)
-				# $UrlOfficeDeploymentTool = 'https://www.microsoft.com/en-us/download/confirmation.aspx?id=49117'
+				# $UrlOfficeDeploymentTool = 'https://www.microsoft.com/en-in/download/details.aspx?id=49117'
 				# DownloadInstall OfficeDeploymentTool Version Recent
 				[System.Net.ServicePointManager]::SecurityProtocol = 'Tls12'
-				$UrlOfficeDeploymentTool = 'https://www.microsoft.com/en-us/download/confirmation.aspx?id=49117'
-				$UrlDownload = ( ( Invoke-WebRequest -Uri "$UrlOfficeDeploymentTool" -UseBasicParsing ).links | Where-Object -FilterScript { $PsItem.href -match '/officedeploymenttool_\d{5}-\d{5}\.exe$' } ).href[0]
+				$UrlOfficeDeploymentTool = 'https://www.microsoft.com/en-in/download/details.aspx?id=49117'
+				$UrlDownload = ( ( Invoke-WebRequest -Uri "$UrlOfficeDeploymentTool" -UseBasicParsing ).links | Where-Object -FilterScript { $PsItem.href -match '/officedeploymenttool_\d{5}-\d{5}\.exe$' } ).href
 				$FileDownload = "$Env:LOCALAPPDATA\ODT.exe"
 				(New-Object System.Net.WebClient).DownloadFile($UrlDownload, $FileDownload)
 				Do { Start-Sleep -Seconds 2 } Until ( Test-Path -Path $FileDownload ) 
