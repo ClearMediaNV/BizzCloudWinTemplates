@@ -1,4 +1,4 @@
-Version 2.23
+Version 2.24
 -------------
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployO365Start | Deploy ODT Latest Version
 Refactor O365 - Update InstallO365ProPlus.ps1 | Deploy ODT Latest Version
