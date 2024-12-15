@@ -1,5 +1,10 @@
 Version 2.23
 -------------
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployO365Start | Deploy ODT Latest Version
+Refactor O365 - Update InstallO365ProPlus.ps1 | Deploy ODT Latest Version
+
+Version 2.23
+-------------
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployStandardGpoStart | Add StandardUserEdgePolicy
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployDcStart | Add CloudFlare DNS Server to DNS Forwarders
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployDcStart | Add Extra Error Handling on Install ADDS
