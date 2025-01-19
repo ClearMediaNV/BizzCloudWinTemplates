@@ -47,6 +47,7 @@ New-ItemProperty -Path 'HKLM:\Software\FSLogix\Profiles' -Name 'ProfileType' -Pr
 New-ItemProperty -Path 'HKLM:\Software\FSLogix\Profiles' -Name 'SizeInMBs' -PropertyType 'Dword' -Value 51200 -Force
 New-ItemProperty -Path 'HKLM:\Software\FSLogix\Profiles' -Name 'VHDLocations' -PropertyType 'String' -Value $FSLogixFolderRootPath -Force
 New-ItemProperty -Path 'HKLM:\Software\FSLogix\Profiles' -Name 'VolumeType' -PropertyType 'String' -Value 'VHDX' -Force
+New-ItemProperty -Path 'HKLM:\Software\FSLogix\Profiles' -Name 'FlipFlopProfileDirectoryName' -PropertyType 'Dword' -Value 1 -Force
 New-ItemProperty -Path 'HKLM:\Software\FSLogix\Profiles' -Name 'RoamIdentity' -PropertyType 'Dword' -Value 1 -Force
 
 # Exclude Administrator in FSLogix Groups
