@@ -1789,9 +1789,9 @@ Function DeployRdsStart {
             If ( $CheckBoxRas ) {
                 $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Downloading and Installing Parallels RAS Latest Version `n") } )
 				$Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Download and Install Parallels RAS Latest Version' -ScriptBlock {
-				    # Knowledge Base for Parallels Remote Application Server v19 Release Notes - KB129018
+				    # Knowledge Base - Parallels Remote Application Server v20 Release Notes - 130242
 				    [System.Net.ServicePointManager]::SecurityProtocol = 'Tls12'
-				    $Url = 'https://kb.parallels.com/en/129018'
+				    $Url = 'https://kb.parallels.com/en/130242'
                     $Content  = ( Invoke-WebRequest -Uri $Url -UseBasicParsing ).content
                     $MatchString = 'RAS Core v19.'
                     $Match = $Content.Substring( $Content.IndexOf( $MatchString ) , 25 )

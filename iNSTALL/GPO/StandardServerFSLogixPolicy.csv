@@ -1,9 +1,8 @@
 Key,ValueName,Type,Value
 HKLM\Software\FSLogix\Profiles,Enabled,Dword,1
-HKLM\Software\FSLogix\Profiles,NoProfileContainingFolder,Dword,1
 HKLM\Software\FSLogix\Profiles,ProfileType,Dword,0
-HKLM\Software\FSLogix\Profiles,RemoveOrphanedOSTFilesOnLogoff,Dword,1
 HKLM\Software\FSLogix\Profiles,SizeInMBs,Dword,51200
 HKLM\Software\FSLogix\Profiles,VHDLocations,String,"D:\Users"
 HKLM\Software\FSLogix\Profiles,VolumeType,String,"VHDX"
+HKLM\Software\FSLogix\Profiles,FlipFlopProfileDirectoryName,Dword,1
 HKLM\Software\FSLogix\Profiles,RoamIdentity,Dword,1

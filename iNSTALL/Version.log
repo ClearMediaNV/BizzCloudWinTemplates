@@ -1,3 +1,7 @@
+Version 2.25
+-------------
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Deploy Parallels RAS Latest Version
+
 Version 2.24
 -------------
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployO365Start | Deploy ODT Latest Version
