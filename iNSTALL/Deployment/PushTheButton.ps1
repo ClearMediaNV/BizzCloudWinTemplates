@@ -1790,20 +1790,18 @@ Function DeployRdsStart {
             If ( $CheckBoxRas ) {
                 $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Downloading and Installing Parallels RAS Latest Version `n") } )
 				$Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Download and Install Parallels RAS Latest Version' -ScriptBlock {
-				    # Knowledge Base - Parallels Remote Application Server v20 Release Notes - 130242
-				    [System.Net.ServicePointManager]::SecurityProtocol = 'Tls12'
-				    $Url = 'https://kb.parallels.com/en/130242'
-                    $Content  = ( Invoke-WebRequest -Uri $Url -UseBasicParsing ).content
-                    $MatchString = 'RAS Core v19.'
-                    $Match = $Content.Substring( $Content.IndexOf( $MatchString ) , 25 )
-                    $Version = $Match.Split( '-' )[0].Substring( 10 ).Split( '.' )[0]
-                    $VersionMajor = $Match.Split( '-' )[0].Substring( 10 ).Split( '.' )[1]
-                    $VersionMinor = If ( $Match.Split( '-' )[0].Substring( 10 ).Split( '.' )[2] ) { $Match.Split( '-' )[0].Substring( 10 ).Split( '.' )[2] } Else { '0'}
-                    $VersionRevision = $Match.Split( '-' )[1].Substring( 0 , 5 )
-                    $UrlDownLoad = "https://download.parallels.com/ras/v$Version/$Version.$VersionMajor.$VersionMinor.$VersionRevision/RASInstaller-$Version.$VersionMajor.$VersionRevision.msi"
-                    $FileDownload = "$ENV:LOCALAPPDATA\$($UrlDownload.Split('/')[-1])"
-                    (New-Object System.Net.WebClient).DownloadFile( $UrlDownload , $FileDownload )
-                    Start-Process -FilePath 'msiexec.exe' -ArgumentList ( "-i $FileDownload /qn /norestart " ) -Wait
+					# Get latest Parallels RAS Version @ https://kb.parallels.com/en/130242
+					$RasCoreVersion = '20.2-25889'
+					$Version = $RasCoreVersion.Split( '-' )[0].Split( '.' )[0]
+					$VersionMajor = $RasCoreVersion.Split( '-' )[0].Split( '.' )[1]
+					$VersionMinor = If ( $RasCoreVersion.Split( '-' )[0].Split( '.' )[2] ) { $RasCoreVersion.Split( '-' )[0].Split( '.' )[2] } Else { '0'}
+					$VersionRevision = $RasCoreVersion.Split( '-' )[1].Substring( 0 , 5 )
+					$UrlDownLoad = "https://download.parallels.com/ras/v$Version/$Version.$VersionMajor.$VersionMinor.$VersionRevision/RASInstaller-$Version.$VersionMajor.$VersionRevision.msi"
+					$FileDownload = "$ENV:LOCALAPPDATA\$($UrlDownload.Split('/')[-1])"
+					# Download Parallels RAS
+					$Null = (New-Object System.Net.WebClient).DownloadFile( $UrlDownload , $FileDownload )
+					# Install Parallels RAS
+					Start-Process -FilePath 'msiexec.exe' -ArgumentList ( "-i $FileDownload /qn /norestart " ) -Wait
 				    }
                 While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarRDS.Value = $I } ) }
                 $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Deploying Parallels RDS Farm `n") } )
