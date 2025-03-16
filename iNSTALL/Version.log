@@ -4,6 +4,7 @@ Refactor GPO - Update StandardServerRdsPolicy.csv | Terminal Services - DisableU
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployStandardGpoStart | StandardServerRDSPolicy | Terminal Services - DisableUDP
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Deploy Parallels RAS Version 20.2-25889
 Refactor Deployment - Create InstallParallelsRAS.ps1 | Deploy Parallels RAS Version 20.2-25889
+Refactor Deployment - Update InstallMicrosoftEdge.ps1 | Deploy 'Microsoft Edge for business' version 134.0.3124.68
 
 Version 2.25
 -------------
