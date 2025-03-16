@@ -2,6 +2,8 @@ Version 2.26
 -------------
 Refactor GPO - Update StandardServerRdsPolicy.csv | Terminal Services - DisableUDP
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployStandardGpoStart | StandardServerRDSPolicy | Terminal Services - DisableUDP
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Deploy Parallels RAS Version 20.2-25889
+Refactor Deployment - Create InstallParallelsRAS.ps1 | Deploy Parallels RAS Version 20.2-25889
 
 Version 2.25
 -------------
