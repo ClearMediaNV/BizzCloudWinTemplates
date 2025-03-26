@@ -1,3 +1,9 @@
+Version 2.27
+-------------
+Refactor Deployment - Update InstallVmWareTools.ps1 | Deploy VmWare-Tools Version 12.5.1.24649672
+Refactor Deployment - Update InstallMicrosoftEdge.ps1 | Deploy 'Microsoft Edge for business' version 134.0.3124.85
+Refactor GPO - Create File via Upload | Update Microsoft Edge group policy definitions version 134.0.3124.85
+
 Version 2.26
 -------------
 Refactor GPO - Update StandardServerRdsPolicy.csv | Terminal Services - DisableUDP
