@@ -16,13 +16,13 @@ Try	{ $WindowsUpdateList = $WindowsUpdateSearch.Search($Null).Updates }
 		{
         	Write-Output 'WSUS not Reachable. No Internet Connection. Please Check DNS & Gateway Config.'
 		Stop-Service -Name 'wuauserv' ; Set-Service -Name 'wuauserv' -StartupType 'Disabled'
-		Exit
+		Return
 		}
 If	( $WindowsUpdateList.Count -eq 0 )
 		{
 		Write-Output 'No Updates Available.'
 		Stop-Service -Name 'wuauserv' ; Set-Service -Name 'wuauserv' -StartupType 'Disabled'
-    		Exit
+    	Return
 		}
 	Else
 		{
@@ -49,3 +49,4 @@ $Table | Select-Object -Property DateTime,Title,CategoriesName,BundledUpdatesTit
 Set-Service -Name 'wuauserv' -StartupType 'Disabled'
 # Restart Computer for applying Windows Updates
 Restart-Computer -Force
+#
