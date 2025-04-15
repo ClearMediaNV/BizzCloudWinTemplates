@@ -1,7 +1,8 @@
 Version 2.28
 -------------
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Deploy Parallels RAS Version 20.2.0-25893
+Refactor Deployment - Update InstallParallelsRAS.ps1 | Deploy Parallels RAS Version 20.2.0-25893
 Refactor BgInfo - Update Server.bgi | Add FSLogix Version , Add Parallels RAS Core Version
-Refactor Deployment - Create InstallParallelsRAS.ps1 | Deploy Parallels RAS Version 20.2.0-25893
 
 Version 2.27
 -------------
