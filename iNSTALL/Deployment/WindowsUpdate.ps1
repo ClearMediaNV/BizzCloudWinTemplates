@@ -14,15 +14,15 @@ $WindowsUpdateInstall = New-Object -ComObject 'Microsoft.Update.Installer'
 Try	{ $WindowsUpdateList = $WindowsUpdateSearch.Search($Null).Updates }
 	Catch 
 		{
-        	Write-Output 'WSUS not Reachable. No Internet Connection. Please Check DNS & Gateway Config.'
+        Write-Output 'WSUS not Reachable. No Internet Connection. Please Check DNS & Gateway Config.'
 		Stop-Service -Name 'wuauserv' ; Set-Service -Name 'wuauserv' -StartupType 'Disabled'
-		Exit
+		Return
 		}
 If	( $WindowsUpdateList.Count -eq 0 )
 		{
 		Write-Output 'No Updates Available.'
 		Stop-Service -Name 'wuauserv' ; Set-Service -Name 'wuauserv' -StartupType 'Disabled'
-    		Exit
+    	Return
 		}
 	Else
 		{
@@ -35,13 +35,13 @@ If	( $WindowsUpdateList.Count -eq 0 )
 [PSCustomObject[]]$Table = $Null
 Foreach	( $Update in $WindowsUpdateList ) 
 		{ $Table += [PSCustomObject] @{
-    			'DateTime' = (Get-Date).tostring('dd-MM-yyyy HH:mm:ss')
-                        'Title' = $Update.Title
-                        'CategoriesName' = $Update.Categories._NewEnum.Name
-                        'BundledUpdatesTitle' = $Update.BundledUpdates._NewEnum.Title
-                        'BundledUpdatesLastDeploymentChangeTime' = $Update.BundledUpdates._NewEnum.LastDeploymentChangeTime
-                        'BundledUpdatesMinDownloadSize' = $Update.BundledUpdates._NewEnum.MinDownloadSize
-                        'KBArticleIDs' = $Update.KBArticleIDs
+    		DateTime = (Get-Date).tostring('dd-MM-yyyy HH:mm:ss')
+            Title = $Update.Title
+            CategoriesName = $Update.Categories._NewEnum.Name
+            BundledUpdatesTitle = $Update.BundledUpdates._NewEnum.Title
+            BundledUpdatesLastDeploymentChangeTime = $Update.BundledUpdates._NewEnum.LastDeploymentChangeTime
+            BundledUpdatesMinDownloadSize = $Update.BundledUpdates._NewEnum.MinDownloadSize
+            KBArticleIDs = $Update.KBArticleIDs
 			}
 		}
 $Table | Select-Object -Property DateTime,Title,CategoriesName,BundledUpdatesTitle,BundledUpdatesLastDeploymentChangeTime,BundledUpdatesMinDownloadSize,KBArticleIDs | Export-Csv -Path 'c:\windows\logs\WindowsUpdate.csv' -Append -Force -NoTypeInformation
@@ -49,3 +49,4 @@ $Table | Select-Object -Property DateTime,Title,CategoriesName,BundledUpdatesTit
 Set-Service -Name 'wuauserv' -StartupType 'Disabled'
 # Restart Computer for applying Windows Updates
 Restart-Computer -Force
+#
