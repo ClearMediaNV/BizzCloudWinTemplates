@@ -1,6 +1,7 @@
 Version 2.29
 -------------
 Refactor Deployment - Update InstallVmWareTools.ps1 | Deploy VmWare-Tools Version 12.5.2-24697584
+Refactor Deployment - Update InstallMicrosoftEdge.ps1 | Deploy 'Microsoft Edge for business' version 136.0.3240.76
 
 Version 2.28
 -------------
