@@ -13,8 +13,8 @@ Try { [System.Net.ServicePointManager]::SecurityProtocol = 'Tls12' ; Set-Item -P
 Set-Item -Path 'ENV:\NetworkCategory' -Value ( Get-NetConnectionProfile ).NetworkCategory
 Set-Item -Path 'ENV:\IPv4Connectivity' -Value ( Get-NetConnectionProfile ).IPv4Connectivity
 # Get Last Installed HotFixes
-$HotFixList = Get-HotFix | Select-Object -Property HotFixID , InstalledOn | Sort-Object -Property InstalledOn
-$LastHotFix = "$( ( $HotFixList | Where-Object { $PSItem.InstalledOn -eq $HotFixList[-1].InstalledOn } ).HotFixID -Join ',' ) $( $HotFixList[-1].InstalledOn.tostring( 'dd-MM-yyyy' ) )"
+$ListHotFix = Get-HotFix | Select-Object -Property HotFixID , InstalledOn | Sort-Object -Property InstalledOn
+$LastHotFix = "$( ( $ListHotFix | Where-Object { $PSItem.InstalledOn -eq $ListHotFix[-1].InstalledOn } ).HotFixID -Join ',' ) $( $ListHotFix[-1].InstalledOn.tostring( 'dd-MM-yyyy' ) )"
 Set-Item -Path 'ENV:\LastHotFix' -Value $LastHotFix
 # Get WSUS Server
 Try {
