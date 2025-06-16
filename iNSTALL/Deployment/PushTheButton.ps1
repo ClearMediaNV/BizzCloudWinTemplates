@@ -1808,12 +1808,14 @@ Function DeployRdsStart {
 				$Job = Invoke-Command -Session $PsSession -AsJob -JobName "Deploy Parallels RAS Farm" -ScriptBlock {
                     Param( $LocalAdminUserName , $LocalAdminPassword , $RasLicenseEmail , $RasLicensePassword , $RasKey )
                     If (-Not (Test-Path -Path 'C:\Program Files (x86)\Parallels\ApplicationServer\Modules\RASAdmin\RASAdmin.psd1')) { Start-Sleep -Seconds 5 }
-                    Import-Module 'C:\Program Files (x86)\Parallels\ApplicationServer\Modules\RASAdmin\RASAdmin.psd1'
+					Push-Location -Path 'C:\Program Files (x86)\Parallels\ApplicationServer\Modules\RASAdmin'
+                    Import-Module  -FullyQualifiedName 'RASAdmin.psd1'
+                    Pop-Location
                     Set-ItemProperty -Path REGISTRY::HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Parallels\Setup\ApplicationServer -Name ProductDir -Value "C:\Program Files (x86)\Parallels\ApplicationServer\"
                     New-RASSession -Username $LocalAdminUserName -Password $(ConvertTo-SecureString $LocalAdminPassword -AsPlainText -Force) -Server 'localhost'
                     Invoke-RASLicenseActivate -Email $RasLicenseEmail -Password $(ConvertTo-SecureString $RasLicensePassword -AsPlainText -Force) -Key $RasKey
                     # New-RASGW -Server "$env:COMPUTERNAME"
-                    New-RASRDS -Server "$env:COMPUTERNAME" -NoRestart -NoTerminalServices 
+                    New-RASRDSHost -Server "$env:COMPUTERNAME" -NoRestart -NoTerminalServices 
                     New-RASPubRDSDesktop -Name "Desktop"
                     Invoke-RASApply
                     } -ArgumentList ( $LocalAdminUserName , $LocalAdminPassword , $RasLicenseEmail , $RasLicensePassword , $RasKey ) 
