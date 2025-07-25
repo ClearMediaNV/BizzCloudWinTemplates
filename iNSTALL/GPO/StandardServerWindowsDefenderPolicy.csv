@@ -1,0 +1,3 @@
+Key,ValueName,Type,Value
+HKLM\SOFTWARE\Policies\Microsoft\Windows Defender,DisableAntiSpyware,Dword,1
+HKLM\SYSTEM\CurrentControlSet\Services\WinDefend,Start,Dword,4
