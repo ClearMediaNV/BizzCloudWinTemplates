@@ -21,7 +21,7 @@ Try { $DomainNetbiosName = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedi
 Try { $DomainDNSName = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DomainDNSName' }
     Catch { $DomainDNSName = 'ClearMedia.cloud' }
 Try { $DnsServerForwarders = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DnsServerForwarders' }
-    Catch { $DnsServerForwarders = '1.1.1.1,195.238.2.22,195.238.2.21' }
+    Catch { $DnsServerForwarders = '1.1.1.1,1.0.0.1' }
 Try { $DeployOuStart = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DeployOuStart' }
     Catch { $DeployOuStart = 'Visible' }
 Try { $DeployStandardGpoStart = Get-ItemPropertyValue -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DeployStandardGpoStart' }
@@ -1791,7 +1791,7 @@ Function DeployRdsStart {
                 $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Downloading and Installing Parallels RAS Latest Version `n") } )
 				$Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Download and Install Parallels RAS Latest Version' -ScriptBlock {
 					# Get latest Parallels RAS Version @ https://kb.parallels.com/en/130242
-					$RasCoreVersion = '20.2.0-25893'
+					$RasCoreVersion = '20.2.2-26015'
 					$Version = $RasCoreVersion.Split( '-' )[0].Split( '.' )[0]
 					$VersionMajor = $RasCoreVersion.Split( '-' )[0].Split( '.' )[1]
 					$VersionMinor = If ( $RasCoreVersion.Split( '-' )[0].Split( '.' )[2] ) { $RasCoreVersion.Split( '-' )[0].Split( '.' )[2] } Else { '0'}
@@ -1808,12 +1808,14 @@ Function DeployRdsStart {
 				$Job = Invoke-Command -Session $PsSession -AsJob -JobName "Deploy Parallels RAS Farm" -ScriptBlock {
                     Param( $LocalAdminUserName , $LocalAdminPassword , $RasLicenseEmail , $RasLicensePassword , $RasKey )
                     If (-Not (Test-Path -Path 'C:\Program Files (x86)\Parallels\ApplicationServer\Modules\RASAdmin\RASAdmin.psd1')) { Start-Sleep -Seconds 5 }
-                    Import-Module 'C:\Program Files (x86)\Parallels\ApplicationServer\Modules\RASAdmin\RASAdmin.psd1'
+					Push-Location -Path 'C:\Program Files (x86)\Parallels\ApplicationServer\Modules\RASAdmin'
+                    Import-Module  -FullyQualifiedName 'RASAdmin.psd1'
+                    Pop-Location
                     Set-ItemProperty -Path REGISTRY::HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Parallels\Setup\ApplicationServer -Name ProductDir -Value "C:\Program Files (x86)\Parallels\ApplicationServer\"
                     New-RASSession -Username $LocalAdminUserName -Password $(ConvertTo-SecureString $LocalAdminPassword -AsPlainText -Force) -Server 'localhost'
                     Invoke-RASLicenseActivate -Email $RasLicenseEmail -Password $(ConvertTo-SecureString $RasLicensePassword -AsPlainText -Force) -Key $RasKey
                     # New-RASGW -Server "$env:COMPUTERNAME"
-                    New-RASRDS -Server "$env:COMPUTERNAME" -NoRestart -NoTerminalServices 
+                    New-RASRDSHost -Server "$env:COMPUTERNAME" -NoRestart -NoTerminalServices 
                     New-RASPubRDSDesktop -Name "Desktop"
                     Invoke-RASApply
                     } -ArgumentList ( $LocalAdminUserName , $LocalAdminPassword , $RasLicenseEmail , $RasLicensePassword , $RasKey ) 

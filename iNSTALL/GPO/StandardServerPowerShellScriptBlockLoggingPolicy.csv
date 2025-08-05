@@ -1,0 +1,2 @@
+Key,ValueName,Type,Value
+HKLM\Software\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging,EnableScriptBlockLogging,Dword,0

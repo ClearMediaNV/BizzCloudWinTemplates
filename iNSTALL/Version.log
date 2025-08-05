@@ -1,3 +1,11 @@
+Version 2.30
+-------------
+Refactor Deployment - Update InstallVmWareTools.ps1 | Deploy VmWare-Tools Version 13.0.1.24843032
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Deploy Parallels RAS Version 20.2.2-26015
+Refactor Deployment - Update InstallParallelsRAS.ps1 | Deploy Parallels RAS Version 20.2.2-26015
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployDcStart | Add CloudFlare DNS Servers to DNS Forwarders
+Refactor GPO - Create StandardServerPowerShellScriptBlockLoggingPolicy.csv
+
 Version 2.29
 -------------
 Refactor Deployment - Update InstallVmWareTools.ps1 | Deploy VmWare-Tools Version 12.5.2-24697584
