@@ -2,6 +2,6 @@
 # Change SecurityProtocol for downloading from Chocolatey
 [System.Net.ServicePointManager]::SecurityProtocol = 'Tls12'
 Invoke-Expression ( New-Object System.Net.WebClient ).DownloadString( 'https://chocolatey.org/install.ps1' )
-# Install VmWare-Tools Version 12.5.2.24697584
-Invoke-Expression -Command '& C:\ProgramData\chocolatey\choco install vmware-tools --version=12.5.2.24697584 -y -f'
+# Install VmWare-Tools Version 13.0.1.24843032
+Invoke-Expression -Command '& C:\ProgramData\chocolatey\choco install vmware-tools --version=13.0.1.24843032 -y -f'
 If ( $LASTEXITCODE -eq 3010 ) { Restart-Computer }
