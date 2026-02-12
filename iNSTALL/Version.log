@@ -1,3 +1,9 @@
+Version 2.32
+-------------
+Refactor Deployment - Update InstallVmWareTools.ps1 | Deploy VmWare-Tools Version 13.0.10.25056151
+Refactor Deployment - Update InstallParallelsRAS.ps1 | Deploy Parallels RAS Version v20.2.4-26046
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Deploy Parallels RAS Version v20.2.4-26046
+
 Version 2.31
 -------------
 Refactor Deployment - Update InstallVmWareTools.ps1 | Deploy VmWare-Tools Version 13.0.5.24915695
