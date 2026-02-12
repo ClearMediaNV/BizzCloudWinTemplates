@@ -1791,7 +1791,7 @@ Function DeployRdsStart {
                 $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Downloading and Installing Parallels RAS Latest Version `n") } )
 				$Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Download and Install Parallels RAS Latest Version' -ScriptBlock {
 					# Get latest Parallels RAS Version @ https://kb.parallels.com/en/130242
-					$RasCoreVersion = '20.2.2-26015'
+					$RasCoreVersion = '20.2.4-26046'
 					$Version = $RasCoreVersion.Split( '-' )[0].Split( '.' )[0]
 					$VersionMajor = $RasCoreVersion.Split( '-' )[0].Split( '.' )[1]
 					$VersionMinor = If ( $RasCoreVersion.Split( '-' )[0].Split( '.' )[2] ) { $RasCoreVersion.Split( '-' )[0].Split( '.' )[2] } Else { '0'}
