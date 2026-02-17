@@ -1,5 +1,5 @@
 # Get latest Parallels RAS Version @ https://kb.parallels.com/en/130242
-$RasCoreVersion = '20.2.4-26046'
+$RasCoreVersion = '21.0.1-26296'
 $Version = $RasCoreVersion.Split( '-' )[0].Split( '.' )[0]
 $VersionMajor = $RasCoreVersion.Split( '-' )[0].Split( '.' )[1]
 $VersionMinor = If ( $RasCoreVersion.Split( '-' )[0].Split( '.' )[2] ) { $RasCoreVersion.Split( '-' )[0].Split( '.' )[2] } Else { '0'}
