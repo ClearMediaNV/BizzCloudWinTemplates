@@ -1,5 +1,5 @@
 <Configuration>
-	<Add Channel="SemiAnnual" OfficeClientEdition="32" SourcePath="c:\install\O365" >
+	<Add Channel="SemiAnnual" OfficeClientEdition="32" >
         	<Product ID="O365ProPlusRetail" >
 				<Language ID="en-us" />
 				<Language ID="fr-fr" />
