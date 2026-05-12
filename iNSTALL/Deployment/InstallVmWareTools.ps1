@@ -1,5 +1,6 @@
 # DownloadInstall Chocolatey as PackageManager
 # Change SecurityProtocol for downloading from Chocolatey
+$ProgressPreference = 'SilentlyContinue' 
 [System.Net.ServicePointManager]::SecurityProtocol = 'Tls12'
 Invoke-Expression ( New-Object System.Net.WebClient ).DownloadString( 'https://chocolatey.org/install.ps1' )
 # Install VmWare-Tools Version 13.0.10.25056151
