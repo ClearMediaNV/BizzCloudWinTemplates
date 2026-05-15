@@ -1,6 +1,6 @@
 Version 2.33
 -------------
-Refactor Deployment - Update InstallParallelsRAS.ps1 | Deploy Parallels RAS Version v21.1.1.1-26691
+Refactor Deployment - Create DeployParallelsRas.ps1 | Deploy Parallels RAS Version v21.1.1.1-26691
 Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Deploy Parallels RAS Version v21.1.1.1-26691
 
 
