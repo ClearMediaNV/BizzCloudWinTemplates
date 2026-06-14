@@ -1,3 +1,9 @@
+Version 2.34
+-------------
+Remove Packages/WindowsPhotoViewer
+Remove Docs
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployFireboxStart | Add logoff session
+
 Version 2.33
 -------------
 Refactor Deployment - Create DeployParallelsRas.ps1 | Deploy Parallels RAS Version v21.1.1.1-26691
