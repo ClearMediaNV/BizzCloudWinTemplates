@@ -582,6 +582,12 @@ Function DeployFireboxStart {
 		$I += $Step ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarFirebox.Value = $I } )
 		Do { $SshStream.WriteLine("int f 0") ; $SshStream.WriteLine("ip a $FireboxExternalIpCIDR d $FireboxExternalIpGateway") ; Start-Sleep -Seconds 1 ; $Return = $SshStream.Read() } Until ( $Return.Split([CHAR]10).Split([CHAR]13)[-1] -eq 'WG(config/if-fe00)#' )
 		$I += $Step ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarFirebox.Value = $I } )
+		$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxFirebox.AddText(" Sending exit to logoff `n") } )
+		$I += $Step ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarFirebox.Value = $I } )
+		Do { $SshStream.WriteLine("exit") ; Start-Sleep -Seconds 1 ; $Return = $SshStream.Read() } Until ( $Return.Split([CHAR]10).Split([CHAR]13)[-1] -eq 'WG(config)#' )
+		Do { $SshStream.WriteLine("exit") ; Start-Sleep -Seconds 1 ; $Return = $SshStream.Read() } Until ( $Return.Split([CHAR]10).Split([CHAR]13)[-1] -eq 'WG#' )
+		$SshStream.WriteLine("exit") ; Start-Sleep -Seconds 1 ; $Return = $SshStream.Read()
+		$I += $Step ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarFirebox.Value = $I } )
 		$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxFirebox.AddText(" Closing SSH Stream `n") } )
 		Start-Sleep -Seconds 1 ; $SshStream.Close() ; $SshStream.Dispose()
 		$I += $Step ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarFirebox.Value = $I } )
@@ -1790,8 +1796,8 @@ Function DeployRdsStart {
             If ( $CheckBoxRas ) {
                 $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Downloading and Installing Parallels RAS Latest Version `n") } )
 				$Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Download and Install Parallels RAS Latest Version' -ScriptBlock {
-					# Get latest Parallels RAS Version @ https://kb.parallels.com/en/130242
-					$RasCoreVersion = '20.2.4-26046'
+					# Get latest Parallels RAS Version @ https://kb.parallels.com/en/131037 AKA v21
+					$RasCoreVersion = '21.1.1.1-26691'
 					$Version = $RasCoreVersion.Split( '-' )[0].Split( '.' )[0]
 					$VersionMajor = $RasCoreVersion.Split( '-' )[0].Split( '.' )[1]
 					$VersionMinor = If ( $RasCoreVersion.Split( '-' )[0].Split( '.' )[2] ) { $RasCoreVersion.Split( '-' )[0].Split( '.' )[2] } Else { '0'}
@@ -1806,18 +1812,19 @@ Function DeployRdsStart {
                 While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarRDS.Value = $I } ) }
                 $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Deploying Parallels RDS Farm `n") } )
 				$Job = Invoke-Command -Session $PsSession -AsJob -JobName "Deploy Parallels RAS Farm" -ScriptBlock {
-                    Param( $LocalAdminUserName , $LocalAdminPassword , $RasLicenseEmail , $RasLicensePassword , $RasKey )
-                    If (-Not (Test-Path -Path 'C:\Program Files (x86)\Parallels\ApplicationServer\Modules\RASAdmin\RASAdmin.psd1')) { Start-Sleep -Seconds 5 }
+					Param( $LocalAdminUserName , $LocalAdminPassword , $RasLicenseEmail , $RasLicensePassword , $RasKey )
+					# Configure Parallels RAS v21
+					If (-Not (Test-Path -Path 'C:\Program Files (x86)\Parallels\ApplicationServer\Modules\RASAdmin\RASAdmin.psd1')) { Start-Sleep -Seconds 5 }
 					Push-Location -Path 'C:\Program Files (x86)\Parallels\ApplicationServer\Modules\RASAdmin'
-                    Import-Module  -FullyQualifiedName 'RASAdmin.psd1'
-                    Pop-Location
-                    Set-ItemProperty -Path REGISTRY::HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Parallels\Setup\ApplicationServer -Name ProductDir -Value "C:\Program Files (x86)\Parallels\ApplicationServer\"
-                    New-RASSession -Username $LocalAdminUserName -Password $(ConvertTo-SecureString $LocalAdminPassword -AsPlainText -Force) -Server 'localhost'
-                    Invoke-RASLicenseActivate -Email $RasLicenseEmail -Password $(ConvertTo-SecureString $RasLicensePassword -AsPlainText -Force) -Key $RasKey
-                    # New-RASGW -Server "$env:COMPUTERNAME"
-                    New-RASRDSHost -Server "$env:COMPUTERNAME" -NoRestart -NoTerminalServices 
-                    New-RASPubRDSDesktop -Name "Desktop"
-                    Invoke-RASApply
+					Import-Module  -FullyQualifiedName '.\RASAdmin.psd1'
+					Pop-Location
+					# Set-ItemProperty -Path REGISTRY::HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Parallels\Setup\ApplicationServer -Name ProductDir -Value "C:\Program Files (x86)\Parallels\ApplicationServer\"
+					New-RASSession -Username $LocalAdminUserName -Password $(ConvertTo-SecureString $LocalAdminPassword -AsPlainText -Force) -Server 'localhost'
+					Invoke-RASLicenseActivate -Email $RasLicenseEmail -Password $(ConvertTo-SecureString $RasLicensePassword -AsPlainText -Force) -Key $RasKey
+					# New-RASGW -Server "$env:COMPUTERNAME"
+					New-RASRDSHost -Server "$env:COMPUTERNAME" -NoRestart -NoTerminalServices 
+					New-RASPubRDSDesktop -Name "Desktop"
+					Invoke-RASApply
                     } -ArgumentList ( $LocalAdminUserName , $LocalAdminPassword , $RasLicenseEmail , $RasLicensePassword , $RasKey ) 
                 While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarRDS.Value = $I } ) }
                 }
