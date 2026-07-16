@@ -1,3 +1,7 @@
+Version 2.35
+-------------
+Refactor Deployment - Update InstallVmWareTools.ps1 | Deploy VmWare-Tools Version 13.1.0.25218885
+
 Version 2.34
 -------------
 Remove Packages/WindowsPhotoViewer
