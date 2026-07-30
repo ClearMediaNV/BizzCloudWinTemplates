@@ -1,3 +1,9 @@
+Version 2.35
+-------------
+Refactor Deployment - Update InstallParallelsRAS.ps1 | Deploy Parallels RAS Version v21.2-27178
+Refactor Deployment - Update PushTheButton.ps1 | Update DeployRdsStart | Deploy Parallels RAS Version v21.2-27178
+Refactor Deployment - Update InstallVmWareTools.ps1 | Deploy VmWare-Tools Version 13.1.0.25218885
+
 Version 2.34
 -------------
 Remove Packages/WindowsPhotoViewer
