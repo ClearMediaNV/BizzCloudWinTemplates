@@ -6,7 +6,7 @@
 # Disable RAS Optimization
 
 # Deploy Parallels RAS v21
-$RasCoreVersion = '21.2-27178 '
+$RasCoreVersion = '21.2.1-27306'
 $Version = $RasCoreVersion.Split( '-' )[0].Split( '.' )[0]
 $VersionMajor = $RasCoreVersion.Split( '-' )[0].Split( '.' )[1]
 $VersionMinor = If ( $RasCoreVersion.Split( '-' )[0].Split( '.' )[2] ) { $RasCoreVersion.Split( '-' )[0].Split( '.' )[2] } Else { '0'}
