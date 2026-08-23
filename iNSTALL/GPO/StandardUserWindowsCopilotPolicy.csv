@@ -1,0 +1,2 @@
+Key,ValueName,Type,Value
+HKCU\Software\Policies\Microsoft\Windows\WindowsCopilot,TurnOffWindowsCopilot,Dword,1
