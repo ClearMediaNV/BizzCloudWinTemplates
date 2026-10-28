@@ -242,21 +242,18 @@ $SyncHash.Host = $Host
             </TabItem>
             <TabItem Name="TabItemFolderRedirection" Header="   Deploy Folder Redirection   ">
                 <Grid Background="#FFE5E5E5">
-                    <CheckBox Name="CheckBoxDocuments" Content="Documents" HorizontalAlignment="Left" Margin="30,12,0,0" VerticalAlignment="Top" IsChecked="True"/>
-                    <Label Name="LabelDocumentsPath" Content="Documents Path" Margin="50,32,0,0" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" Width="300" />
-                    <TextBox Name="TextBoxDocumentsPath" Margin="220,36,0,0" Text="E:\USERS\%USERNAME%\Documents" Height="22" HorizontalAlignment="Left" VerticalAlignment="Top" Width="220"/>
-                    <CheckBox Name="CheckBoxMusic" Content="Music" HorizontalAlignment="Left" Margin="30,65,0,0" VerticalAlignment="Top" IsChecked="True"/>
-                    <Label Name="LabelMusicPath" Content="Music Path" Margin="50,85,0,0" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" />
-                    <TextBox Name="TextBoxMusicPath" Margin="220,89,0,0" Text="E:\USERS\%USERNAME%\Music" Height="22" HorizontalAlignment="Left" VerticalAlignment="Top" Width="220"/>
-                    <CheckBox Name="CheckBoxPictures" Content="Pictures" HorizontalAlignment="Left" Margin="30,118,0,0" VerticalAlignment="Top" IsChecked="True"/>
-                    <Label Name="LabelPicturesPath" Content="Pictures Path" Margin="50,138,0,0" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" />
-                    <TextBox Name="TextBoxPicturesPath" Margin="220,142,0,0" Text="E:\USERS\%USERNAME%\Pictures" Height="22" HorizontalAlignment="Left" VerticalAlignment="Top" Width="220"/>
-                    <CheckBox Name="CheckBoxVideos" Content="Videos" HorizontalAlignment="Left" Margin="30,171,0,0" VerticalAlignment="Top" IsChecked="True"/>
-                    <Label Name="LabelVideosPath" Content="Videos Path" Margin="50,191,0,0" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" />
-                    <TextBox Name="TextBoxVideosPath" Margin="220,195,0,0" Text="E:\USERS\%USERNAME%\Videos" Height="22" HorizontalAlignment="Left" VerticalAlignment="Top" Width="220"/>
-                    <CheckBox Name="CheckBoxDownloads" Content="Downloads" HorizontalAlignment="Left" Margin="30,224,0,0" VerticalAlignment="Top" IsChecked="True"/>
-                    <Label Name="LabelDownloadsPath" Content="Downloads Path" Margin="50,244,0,0" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" Width="300" />
-                    <TextBox Name="TextBoxDownloadsPath" Margin="220,248,0,0" Text="E:\USERS\%USERNAME%\Downloads" Height="22" HorizontalAlignment="Left" VerticalAlignment="Top" Width="220"/>
+                    <Label Name="LabelDocumentsPath" Content="Documents Path" HorizontalAlignment="Left" Height="28" Margin="30,28,0,0" VerticalAlignment="Top" Width="250"/>
+                    <Label Name="LabelMusicPath" Content="Music Path" HorizontalAlignment="Left" Height="28" Margin="30,61,0,0" VerticalAlignment="Top" Width="250"/>
+                    <Label Name="LabelPicturesPath" Content="Pictures Path" HorizontalAlignment="Left" Height="28" Margin="30,94,0,0" VerticalAlignment="Top" Width="250"/>
+                    <Label Name="LabelVideosPath" Content="Videos Path" HorizontalAlignment="Left" Height="28" Margin="30,127,0,0" VerticalAlignment="Top" Width="250"/>
+                    <Label Name="LabelDownloadsPath" Content="Downloads Path" HorizontalAlignment="Left" Height="28" Margin="30,160,0,0" VerticalAlignment="Top" Width="250"/>
+                    <Label Name="LabelDesktopPath" Content="Desktop Path" HorizontalAlignment="Left" Height="28" Margin="30,193,0,0" VerticalAlignment="Top" Width="250"/>
+                    <TextBox Name="TextBoxDocumentsPath"  HorizontalAlignment="Left" Height="22" Margin="220,32,0,0" Text="E:\USERS\%USERNAME%\Documents" VerticalAlignment="Top" Width="250"/>
+                    <TextBox Name="TextBoxMusicPath" HorizontalAlignment="Left" Height="22" Margin="220,65,0,0" Text="E:\USERS\%USERNAME%\Music" VerticalAlignment="Top" Width="250"/>
+                    <TextBox Name="TextBoxPicturesPath" HorizontalAlignment="Left" Height="22" Margin="220,98,0,0" Text="E:\USERS\%USERNAME%\Pictures" VerticalAlignment="Top" Width="250"/>
+                    <TextBox Name="TextBoxVideosPath" HorizontalAlignment="Left" Height="22" Margin="220,131,0,0" Text="E:\USERS\%USERNAME%\Videos" VerticalAlignment="Top" Width="250"/>
+                    <TextBox Name="TextBoxDownloadsPath" HorizontalAlignment="Left" Height="22" Margin="220,164,0,0" Text="E:\USERS\%USERNAME%\Downloads" VerticalAlignment="Top" Width="250"/>
+                    <TextBox Name="TextBoxDesktopPath" HorizontalAlignment="Left" Height="22" Margin="220,197,0,0" Text="E:\USERS\%USERNAME%\Desktop" VerticalAlignment="Top" Width="250"/>
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
                         <TextBlock Name="TextBlockOutBoxFolderRedirection" Text="" Foreground="WHITE" Background="#FF22206F" />
                     </ScrollViewer>
@@ -294,9 +291,9 @@ $SyncHash.Host = $Host
 					<Label Name="LabelRDSDataFolderRootPath" Content="User Data Root Path" HorizontalAlignment="Left" Margin="550,62,0,0" VerticalAlignment="Top"/>
                     <TextBox Name="TextBoxRDSServerIpAddress"  HorizontalAlignment="Left" Height="22" Margin="220,32,0,0" Text="192.168.13.101" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Server IpAddress"/>
                     <TextBox Name="TextBoxRDSLocalAdminUserName" HorizontalAlignment="Left" Height="22" Margin="220,65,0,0" Text="Administrator" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Local Administrator Name"/>
-                    <TextBox Name="TextBoxRDSLocalAdminPassword" HorizontalAlignment="Left" Height="22" Margin="220,98,0,0" Text="$('*'*35)" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Local Administrator Password"/>
+                    <TextBox Name="TextBoxRDSLocalAdminPassword" HorizontalAlignment="Left" Height="22" Margin="220,98,0,0" Text="" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Local Administrator Password"/>
                     <TextBox Name="TextBoxRDSDomainAdminUserName" HorizontalAlignment="Left" Height="22" Margin="220,131,0,0" Text="Administrator" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Domain Administrator Name"/>
-                    <TextBox Name="TextBoxRDSDomainAdminPassword" HorizontalAlignment="Left" Height="22" Margin="220,164,0,0" Text="$('*'*35)" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Domain Administrator Password"/>
+                    <TextBox Name="TextBoxRDSDomainAdminPassword" HorizontalAlignment="Left" Height="22" Margin="220,164,0,0" Text="" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Domain Administrator Password"/>
                     <TextBox Name="TextBoxRDSDomainDcServerName" HorizontalAlignment="Left" Height="22" Margin="220,197,0,0" Text="$DomainDcServerName" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Domain DC Server Name"/>
                     <TextBox Name="TextBoxRDSDomainDnsServerIpAddress" HorizontalAlignment="Left" Height="22" Margin="220,230,0,0" Text="$DomainDnsServerIpAddress" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Domain DNS IP Address"/>
                     <TextBox Name="TextBoxRDSFSLogixFolderRootPath" Margin="713,28,0,0" Text="$FSLogixFolderRootPath" Height="22" HorizontalAlignment="Left" VerticalAlignment="Top" Width="180"/>
@@ -935,7 +932,7 @@ Function DeployStandardGpoStart {
 				'HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate,ActiveHoursStart,Dword,6',
 				'HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate,ActiveHoursEnd,Dword,20',
 				'HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate\AU,AUOptions,Dword,3',
-				'HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate\AU,UseWUServer,Dword,1',
+				'HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate\AU,UseWUServer,Dword,0',
 				'HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate\AU,NoAutoRebootWithLoggedOnUsers,Dword,1',
 				'HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\Servicing,RepairContentServerSource,Dword,2'
 				)
@@ -1366,41 +1363,38 @@ FSLogix Profile Include List__Members = FSLogix-Users
 	$job = $PSinstance.BeginInvoke()      
 	}
 Function DeployFolderRedirectionStart {
-	Param($SyncHash,$CheckBoxDocuments,$DocumentsPath,$CheckBoxMusic,$MusicPath,$CheckBoxPictures,$PicturesPath,$CheckBoxVideos,$VideosPath,$CheckBoxDownloads,$DownloadsPath,$UsersOuPath)
+	Param($SyncHash,$DocumentsPath,$MusicPath,$PicturesPath,$VideosPath,$DownloadsPath,$DesktopPath,$UsersOuPath)
 	$Runspace = [runspacefactory]::CreateRunspace()
 	$Runspace.ApartmentState = "STA"
 	$Runspace.ThreadOptions = "ReuseThread"
 	$Runspace.Open()
 	$Runspace.SessionStateProxy.SetVariable("SyncHash",$SyncHash)
-	$Runspace.SessionStateProxy.SetVariable("CheckBoxDocuments",$CheckBoxDocuments)
 	$Runspace.SessionStateProxy.SetVariable("DocumentsPath",$DocumentsPath)
-	$Runspace.SessionStateProxy.SetVariable("CheckBoxMusic",$CheckBoxMusic)
 	$Runspace.SessionStateProxy.SetVariable("MusicPath",$MusicPath)
-	$Runspace.SessionStateProxy.SetVariable("CheckBoxPictures",$CheckBoxPictures)
 	$Runspace.SessionStateProxy.SetVariable("PicturesPath",$PicturesPath)
-	$Runspace.SessionStateProxy.SetVariable("CheckBoxVideos",$CheckBoxVideos)
 	$Runspace.SessionStateProxy.SetVariable("VideosPath",$VideosPath)
-	$Runspace.SessionStateProxy.SetVariable("CheckBoxDownloads",$CheckBoxDownloads)
 	$Runspace.SessionStateProxy.SetVariable("DownloadsPath",$DownloadsPath)
 	$Runspace.SessionStateProxy.SetVariable("UsersOuPath",$UsersOuPath)
+	$Runspace.SessionStateProxy.SetVariable("DesktopPath",$DesktopPath)
+
 	$code = {
 			$Error.Clear()
 			$ErrorList = @()
 			$I = 0
 			# Create and Assemble User GPOs
 			# Link User GPOs to OU Users
-			If ( $CheckBoxDocuments -or $CheckBoxMusic -or $CheckBoxPictures -or $CheckBoxVideos -or $CheckBoxDownloads ) {
-				$FullUsersOuPath = $UsersOuPath.Insert( 0,'OU=Full Users,' )
-				$LightUsersOuPath = $UsersOuPath.Insert( 0 , 'OU=Light Users,' )
-				$GpoName = 'StandardUserFolderRedirectionPolicy'
-				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxFolderRedirection.AddText(" Creating $GpoName `n") } ) 
-				$I += 4 ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarFolderRedirection.Value = $I } )
-				$Gpo = New-GPO -Server $env:COMPUTERNAME -Name $GpoName -ErrorAction Ignore
-                [STRING]$PdcName = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().PdcRoleOwner.Name
-                [STRING]$DomainName = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().Name
-                $GpoPath = "\\$PdcName\SYSVOL\$DomainName\Policies\{$($Gpo.id.Guid)}"
-                New-Item -Path "$GpoPath\Adm" -ItemType Directory -ErrorAction Continue -Force
-                $StandardUserFolderRedirectionAdm = @"
+
+			$FullUsersOuPath = $UsersOuPath.Insert( 0,'OU=Full Users,' )
+			$LightUsersOuPath = $UsersOuPath.Insert( 0 , 'OU=Light Users,' )
+			$GpoName = 'StandardUserFolderRedirectionPolicy'
+			$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxFolderRedirection.AddText(" Creating $GpoName `n") } ) 
+			$I += 4 ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarFolderRedirection.Value = $I } )
+			$Gpo = New-GPO -Server $env:COMPUTERNAME -Name $GpoName -ErrorAction Ignore
+            [STRING]$PdcName = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().PdcRoleOwner.Name
+            [STRING]$DomainName = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().Name
+            $GpoPath = "\\$PdcName\SYSVOL\$DomainName\Policies\{$($Gpo.id.Guid)}"
+            New-Item -Path "$GpoPath\Adm" -ItemType Directory -ErrorAction Continue -Force
+            $StandardUserFolderRedirectionAdm = @"
 CLASS USER
 CATEGORY "User Folder Redirection"
     KEYNAME "SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders"
@@ -1439,100 +1433,111 @@ CATEGORY "User Folder Redirection"
                 DEFAULT   $DownloadsPath
             END PART
     END POLICY
+    POLICY "Desktop"
+        EXPLAIN "Path for Desktop"
+            PART "Desktop Path" EDITTEXT REQUIRED
+                VALUENAME "Desktop"
+                DEFAULT   $DesktopPath
+            END PART
+    END POLICY
 END CATEGORY
 "@
-                $StandardUserFolderRedirectionAdm | Out-File -FilePath "$GpoPath\Adm\StandardUserFolderRedirection.adm" -Encoding ascii -Force
-				If ( $error ) {
+            $StandardUserFolderRedirectionAdm | Out-File -FilePath "$GpoPath\Adm\StandardUserFolderRedirection.adm" -Encoding ascii -Force
+			If ( $error ) {
                     $ErrorList += "New-GPO -Name $GpoName -ErrorAction Stop"
                     $ErrorList += $error[0].Exception.Message.ToString()
                     $ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
                     $Error.Clear()
                     }
-				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxFolderRedirection.AddText(" Linking $GpoName to $FullUsersOuPath `n") } ) 
-				$I += 4 ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarFolderRedirection.Value = $I } )
-				New-GPLink -Server $env:COMPUTERNAME -Name "$GpoName" -Target "$FullUsersOuPath" -ErrorAction Continue
-				New-GPLink -Server $env:COMPUTERNAME -Name "$GpoName" -Target "$LightUsersOuPath" -ErrorAction Continue
-				If ( $error ) {
+			$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxFolderRedirection.AddText(" Linking $GpoName to $FullUsersOuPath `n") } ) 
+			$I += 4 ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarFolderRedirection.Value = $I } )
+			New-GPLink -Server $env:COMPUTERNAME -Name "$GpoName" -Target "$FullUsersOuPath" -ErrorAction Continue
+			New-GPLink -Server $env:COMPUTERNAME -Name "$GpoName" -Target "$LightUsersOuPath" -ErrorAction Continue
+			If ( $error ) {
                     $ErrorList += "New-GPLink -Name $GpoName -Target $UsersOuPath -ErrorAction Stop"
                     $ErrorList += $error[0].Exception.Message.ToString()
                     $ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
                     $Error.Clear()
                     }
-				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxFolderRedirection.AddText(" Injecting $GpoName Keys `n") } ) 
-				$I += 4 ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarFolderRedirection.Value = $I } )
-				}
-			If ( $CheckBoxDocuments ) {
-				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxFolderRedirection.AddText(" Setting DocumentsPath to $DocumentsPath `n") } ) 
-				$I += 4 ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarFolderRedirection.Value = $I } )
-				Set-GPRegistryValue -Server $env:COMPUTERNAME -Name $GpoName -Key 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' -ValueName 'Personal' -Type 'ExpandString' -Value $DocumentsPath  -ErrorAction Continue
-				If ( $error ) {
+			$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxFolderRedirection.AddText(" Injecting $GpoName Keys `n") } ) 
+			$I += 4 ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarFolderRedirection.Value = $I } )
+
+			$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxFolderRedirection.AddText(" Setting DocumentsPath to $DocumentsPath `n") } ) 
+			$I += 4 ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarFolderRedirection.Value = $I } )
+			Set-GPRegistryValue -Server $env:COMPUTERNAME -Name $GpoName -Key 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' -ValueName 'Personal' -Type 'ExpandString' -Value $DocumentsPath  -ErrorAction Continue
+			If ( $error ) {
                     $ErrorList += "Set-GPRegistryValue -Name $GpoName -Key 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' -ValueName 'Personal' -Type 'ExpandString' -Value $DocumentsPath  -ErrorAction Continue"
                     $ErrorList += $error[0].Exception.Message.ToString()
                     $ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
                     $Error.Clear()
                     }            
-				}
-			If ( $CheckBoxMusic ) {
-				$I += 4 ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarFolderRedirection.Value = $I } )
-				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxFolderRedirection.AddText(" Setting MusicPath to $MusicPath `n") } ) 
-				Set-GPRegistryValue -Server $env:COMPUTERNAME -Name $GpoName -Key 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' -ValueName 'My Music' -Type 'ExpandString' -Value $MusicPath  -ErrorAction Continue
-				If ( $error ) {
+
+			$I += 4 ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarFolderRedirection.Value = $I } )
+			$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxFolderRedirection.AddText(" Setting MusicPath to $MusicPath `n") } ) 
+			Set-GPRegistryValue -Server $env:COMPUTERNAME -Name $GpoName -Key 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' -ValueName 'My Music' -Type 'ExpandString' -Value $MusicPath  -ErrorAction Continue
+			If ( $error ) {
                     $ErrorList += "Set-GPRegistryValue -Name $GpoName -Key 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' -ValueName 'My Music' -Type 'ExpandString' -Value $MusicPath  -ErrorAction Continue"
                     $ErrorList += $error[0].Exception.Message.ToString()
                     $ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
                     $Error.Clear()
                     }            
-				}
-			If ( $CheckBoxPictures ) {
-				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxFolderRedirection.AddText(" Setting PicturesPath to $PicturesPath `n") } ) 
-				$I += 4 ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarFolderRedirection.Value = $I } )
-				Set-GPRegistryValue -Server $env:COMPUTERNAME -Name $GpoName -Key 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' -ValueName 'My Pictures' -Type 'ExpandString' -Value $PicturesPath  -ErrorAction Continue
-				If ( $error ) {
+
+			$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxFolderRedirection.AddText(" Setting PicturesPath to $PicturesPath `n") } ) 
+			$I += 4 ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarFolderRedirection.Value = $I } )
+			Set-GPRegistryValue -Server $env:COMPUTERNAME -Name $GpoName -Key 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' -ValueName 'My Pictures' -Type 'ExpandString' -Value $PicturesPath  -ErrorAction Continue
+			If ( $error ) {
                     $ErrorList += "Set-GPRegistryValue -Name $GpoName -Key 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' -ValueName 'My Pictures' -Type 'ExpandString' -Value $PicturesPath  -ErrorAction Continue"
                     $ErrorList += $error[0].Exception.Message.ToString()
                     $ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
                     $Error.Clear()
                     }            
-				}
-			If ( $CheckBoxVideos ) {
-				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxFolderRedirection.AddText(" Setting VideosPath to $VideosPath `n") } ) 
-				$I += 4 ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarFolderRedirection.Value = $I } )
-				Set-GPRegistryValue -Server $env:COMPUTERNAME -Name $GpoName -Key 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' -ValueName 'My Video' -Type 'ExpandString' -Value $VideosPath  -ErrorAction Continue
-				If ( $error ) {
+
+			$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxFolderRedirection.AddText(" Setting VideosPath to $VideosPath `n") } ) 
+			$I += 4 ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarFolderRedirection.Value = $I } )
+			Set-GPRegistryValue -Server $env:COMPUTERNAME -Name $GpoName -Key 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' -ValueName 'My Video' -Type 'ExpandString' -Value $VideosPath  -ErrorAction Continue
+			If ( $error ) {
                     $ErrorList += "Set-GPRegistryValue -Name $GpoName -Key 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' -ValueName 'My Video' -Type 'ExpandString' -Value $VideosPath  -ErrorAction Continue"
                     $ErrorList += $error[0].Exception.Message.ToString()
                     $ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
                     $Error.Clear()
                     }            
-				}
-			If ( $CheckBoxDownloads ) {
-				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxFolderRedirection.AddText(" Setting DownloadsPath to $DownloadsPath `n") } ) 
-				$I += 4 ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarFolderRedirection.Value = $I } )
-				Set-GPRegistryValue -Server $env:COMPUTERNAME -Name $GpoName -Key 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' -ValueName '{374DE290-123F-4565-9164-39C4925E467B}' -Type 'ExpandString' -Value $DownloadsPath  -ErrorAction Continue
-				If ( $error ) {
+
+			$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxFolderRedirection.AddText(" Setting DownloadsPath to $DownloadsPath `n") } ) 
+			$I += 4 ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarFolderRedirection.Value = $I } )
+			Set-GPRegistryValue -Server $env:COMPUTERNAME -Name $GpoName -Key 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' -ValueName '{374DE290-123F-4565-9164-39C4925E467B}' -Type 'ExpandString' -Value $DownloadsPath  -ErrorAction Continue
+			If ( $error ) {
                     $ErrorList += "Set-GPRegistryValue -Name $GpoName -Key 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' -ValueName '{374DE290-123F-4565-9164-39C4925E467B}' -Type 'ExpandString' -Value $DownloadsPath  -ErrorAction Continue"
                     $ErrorList += $error[0].Exception.Message.ToString()
                     $ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
                     $Error.Clear()
                     }            
+
+			$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxFolderRedirection.AddText(" Setting DesktopPath to $DesktopPath `n") } ) 
+			$I += 4 ; If ( $I -ge 100 ) { $I = 1 } ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarFolderRedirection.Value = $I } )
+			Set-GPRegistryValue -Server $env:COMPUTERNAME -Name $GpoName -Key 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' -ValueName 'Desktop' -Type 'ExpandString' -Value $DesktopPath  -ErrorAction Continue
+			If ( $error ) {
+                    $ErrorList += "Set-GPRegistryValue -Name $GpoName -Key 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' -ValueName 'Desktop' -Type 'ExpandString' -Value $DesktopPath  -ErrorAction Continue"
+                    $ErrorList += $error[0].Exception.Message.ToString()
+                    $ErrorList += "TargetObject $($error[0].TargetObject.ToString())"
+                    $Error.Clear()
+					}            
+			$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarFolderRedirection.Visibility = "Hidden" } )
+			If ( $ErrorList ) {
+				(Get-Date).tostring('dd-MM-yyyy HH:mm:ss') | Out-File -FilePath "$env:windir\Logs\PushTheButtonError.log" -Append -Force
+				$ErrorList | Out-File -FilePath "$env:windir\Logs\PushTheButtonError.log" -Append -Force
+				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.LabelStatusFolderRedirection.Content = "Deployment Finished with ERRORS $(' .'*115)$(' '*30)Please consult PushTheButtonError.log" } )
+				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.BorderDeployFolderRedirectionStart.IsEnabled = $True } )    
 				}
-	$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarFolderRedirection.Visibility = "Hidden" } )
-	If ( $ErrorList ) {
-		(Get-Date).tostring('dd-MM-yyyy HH:mm:ss') | Out-File -FilePath "$env:windir\Logs\PushTheButtonError.log" -Append -Force
-		$ErrorList | Out-File -FilePath "$env:windir\Logs\PushTheButtonError.log" -Append -Force
-		$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.LabelStatusFolderRedirection.Content = "Deployment Finished with ERRORS $(' .'*115)$(' '*30)Please consult PushTheButtonError.log" } )
-		$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.BorderDeployFolderRedirectionStart.IsEnabled = $True } )    
-        }
-		Else {
-			$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.LabelStatusFolderRedirection.Content = "Deployment Finished $(' .'*135)$(' '*30)" } )
-			New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DeployFolderRedirectionStart' -PropertyType 'String' -Value 'Hidden' -Force
-			$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.BorderDeployFolderRedirectionStart.Visibility = "Hidden" } )
-			$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.BorderDeployRdsStart.IsEnabled = $True } )
-			$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.BorderDeployO365Start.IsEnabled = $True } )
-			$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.BorderDeployWUStart.IsEnabled = $True } )
-			$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.BorderDeployUserStart.IsEnabled = $True } )
+				Else {
+					$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.LabelStatusFolderRedirection.Content = "Deployment Finished $(' .'*135)$(' '*30)" } )
+					New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DeployFolderRedirectionStart' -PropertyType 'String' -Value 'Hidden' -Force
+					$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.BorderDeployFolderRedirectionStart.Visibility = "Hidden" } )
+					$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.BorderDeployRdsStart.IsEnabled = $True } )
+					$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.BorderDeployO365Start.IsEnabled = $True } )
+					$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.BorderDeployWUStart.IsEnabled = $True } )
+					$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.BorderDeployUserStart.IsEnabled = $True } )
+					}
 			}
-		}
 	$PSinstance = [powershell]::Create().AddScript($Code)
 	$PSinstance.Runspace = $Runspace
 	$job = $PSinstance.BeginInvoke()       
@@ -2339,16 +2344,12 @@ $SyncHash.ButtonDeployFolderRedirectionStart.Add_Click({
     $SyncHash.ProgressBarFolderRedirection.Visibility = "Visible"
     $DeployFolderRedirectionStart= @{
         'SyncHash' = $SyncHash
-        'CheckBoxDocuments' = $SyncHash.CheckBoxDocuments.IsChecked
 		'DocumentsPath' = $SyncHash.TextBoxDocumentsPath.Text
-        'CheckBoxMusic' = $SyncHash.CheckBoxMusic.IsChecked
 		'MusicPath' = $SyncHash.TextBoxMusicPath.Text
-        'CheckBoxPictures' = $SyncHash.CheckBoxPictures.IsChecked
 		'PicturesPath' = $SyncHash.TextBoxPicturesPath.Text
-        'CheckBoxVideos' = $SyncHash.CheckBoxVideos.IsChecked
 		'VideosPath' = $SyncHash.TextBoxVideosPath.Text
-        'CheckBoxDownloads' = $SyncHash.CheckBoxDownloads.IsChecked
         'DownloadsPath' = $SyncHash.TextBoxDownloadsPath.Text
+		'DesktopPath' = $SyncHash.TextBoxDesktopPath.Text
   		'UsersOuPath' = $SyncHash.TextBoxUsersOuPath.Text
         }
 	DeployFolderRedirectionStart @DeployFolderRedirectionStart
