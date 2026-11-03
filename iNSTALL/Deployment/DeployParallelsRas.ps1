@@ -2,13 +2,14 @@
 # https://docs.parallels.com/landing/ras-admin-guide
 # Get latest Parallels RAS Version @ https://kb.parallels.com/en/130242 AKA v20
 # Get latest Parallels RAS Version @ https://kb.parallels.com/en/131037 AKA v21
+# Get latest Parallels RAS Version @ https://kb.parallels.com/en/131219 AKA v22
 # Disable Application Layer Gateway service
 # Disable RAS Optimization
 
 # Deploy Parallels RAS v21
-$RasCoreVersion = '21.2-27178 '
+$RasCoreVersion = '22.0-28160'
 $Version = $RasCoreVersion.Split( '-' )[0].Split( '.' )[0]
-$VersionMajor = $RasCoreVersion.Split( '-' )[0].Split( '.' )[1]
+$VersionMajor = If ( $RasCoreVersion.Split( '-' )[0].Split( '.' )[1] ) { $RasCoreVersion.Split( '-' )[0].Split( '.' )[1] } Else { '0'}
 $VersionMinor = If ( $RasCoreVersion.Split( '-' )[0].Split( '.' )[2] ) { $RasCoreVersion.Split( '-' )[0].Split( '.' )[2] } Else { '0'}
 $VersionRevision = $RasCoreVersion.Split( '-' )[1].Substring( 0 , 5 )
 $UrlDownLoad = "https://download.parallels.com/ras/v$Version/$Version.$VersionMajor.$VersionMinor.$VersionRevision/RASInstaller-$Version.$VersionMajor.$VersionRevision.msi"
