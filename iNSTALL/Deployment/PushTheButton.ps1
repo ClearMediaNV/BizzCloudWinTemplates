@@ -174,7 +174,7 @@ $SyncHash.Host = $Host
                     <Label Name="LabelClearmediaAdminPassword" Content="ClearmediaAdmin Password" HorizontalAlignment="Left" Height="28" Margin="30,94,0,0" VerticalAlignment="Top" Width="165"/>
                     <TextBox Name="TextBoxManagedOuName"  HorizontalAlignment="Left" Height="22" Margin="220,28,0,0" Text="$ManagedOuName" VerticalAlignment="Top" Width="180" TabIndex="1" IsTabStop="False" RenderTransformOrigin="0.673,0.523"/>
                     <TextBox Name="TextBoxClearmediaAdminUserName" HorizontalAlignment="Left" Height="22" Margin="220,61,0,0" Text="ClearmediaAdmin" VerticalAlignment="Top" Width="180" RenderTransformOrigin="0.462,0.455"/>
-                    <TextBox Name="TextBoxClearmediaAdminPassword" HorizontalAlignment="Left" Height="22" Margin="220,94,0,0" Text="$('*'*35)" VerticalAlignment="Top" Width="180" ToolTip="If You don't Fill In the Password it will be Generated. Otherwise Fill In the Password - Please Use Complex Password"/>
+                    <TextBox Name="TextBoxClearmediaAdminPassword" HorizontalAlignment="Left" Height="22" Margin="220,94,0,0" Text="" VerticalAlignment="Top" Width="180" ToolTip="If You don't Fill In the Password it will be Generated. Otherwise Fill In the Password - Please Use Complex Password"/>
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
                     <TextBlock Name="TextBlockOutBoxOU" Text="" Foreground="WHITE" Background="#FF22206F" />
                     </ScrollViewer>
@@ -303,7 +303,7 @@ $SyncHash.Host = $Host
                     <Label Name="LabelRDSRasLicensePassword" Content="Parallels RAS Password" HorizontalAlignment="Left" Height="28" Margin="570,190,0,0" VerticalAlignment="Top" Width="165"/>
                     <Label Name="LabelRDSRasKey" Content="Parallels RAS Key" HorizontalAlignment="Left" Height="28" Margin="570,220,0,0" VerticalAlignment="Top" Width="165"/>
                     <TextBox Name="TextBoxRDSRasLicenseEmail"  HorizontalAlignment="Left" Height="22" Margin="713,164,0,0" Text="Support@ClearMedia.be" VerticalAlignment="Top" Width="180" TabIndex="1" IsTabStop="False"/>
-                    <TextBox Name="TextBoxRDSRasLicensePassword" HorizontalAlignment="Left" Height="22" Margin="713,194,0,0" Text="$('*'*35)" VerticalAlignment="Top" Width="180"/>
+                    <TextBox Name="TextBoxRDSRasLicensePassword" HorizontalAlignment="Left" Height="22" Margin="713,194,0,0" Text="" VerticalAlignment="Top" Width="180"/>
                     <TextBox Name="TextRDSBoxRasKey" Margin="713,224,0,0" Text="TRIAL" Height="22" HorizontalAlignment="Left" VerticalAlignment="Top" Width="180"/>
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
 						<TextBlock Name="TextBlockOutBoxRDS" Text="" Foreground="WHITE" Background="#FF22206F" />
@@ -351,7 +351,7 @@ $SyncHash.Host = $Host
                     <Label Name="LabelO365AdminPassword" Content="Administrator Password" HorizontalAlignment="Left" Height="28" Margin="30,94,0,0" VerticalAlignment="Top" Width="165"/>
                     <TextBox Name="TextBoxO365ServerIpAddress"  HorizontalAlignment="Left" Height="22" Margin="220,32,0,0" Text="192.168.13.101" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target - Server IpAddress or Server Name - Multiple Servers seperated by Comma"/>
                     <TextBox Name="TextBoxO365AdminUserName" HorizontalAlignment="Left" Height="22" Margin="220,65,0,0" Text="Administrator" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Local Administrator Name"/>
-                    <TextBox Name="TextBoxO365AdminPassword" HorizontalAlignment="Left" Height="22" Margin="220,98,0,0" Text="$('*'*35)" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Local Administrator Password"/>
+                    <TextBox Name="TextBoxO365AdminPassword" HorizontalAlignment="Left" Height="22" Margin="220,98,0,0" Text="" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Local Administrator Password"/>
                     <RadioButton Name="RadioButtonO365ProPlusRetail32Bit" Content="O365ProPlusRetail 32 Bit" HorizontalAlignment="Left" Height="22" Margin="550,28,0,0" VerticalAlignment="Top" ClickMode="Press" IsChecked="True"/>
                     <RadioButton Name="RadioButtonO365ProPlusRetail64Bit" Content="O365ProPlusRetail 64 Bit" HorizontalAlignment="Left" Height="22" Margin="550,61,0,0" VerticalAlignment="Top" ClickMode="Press" IsChecked="False"/>
 					<CheckBox Name="CheckBoxExcludeApp" Content="Exclude Teams App" HorizontalAlignment="Left" Height="22" Margin="750,28,0,0" VerticalAlignment="Top" IsChecked="True"/>
@@ -432,7 +432,7 @@ $SyncHash.Host = $Host
                     </ComboBox>
                     <TextBox Name="TextBoxWuServerIpAddress"  HorizontalAlignment="Left" Height="22" Margin="220,32,0,0" Text="192.168.13.101" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target - Server IpAddress or Server Name - Multiple Servers seperated by Comma"/>
                     <TextBox Name="TextBoxWuAdminUserName" HorizontalAlignment="Left" Height="22" Margin="220,65,0,0" Text="Administrator" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Local Administrator Name"/>
-                    <TextBox Name="TextBoxWuAdminPassword" HorizontalAlignment="Left" Height="22" Margin="220,98,0,0" Text="$('*'*35)" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Local Administrator Password"/>
+                    <TextBox Name="TextBoxWuAdminPassword" HorizontalAlignment="Left" Height="22" Margin="220,98,0,0" Text="" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Local Administrator Password"/>
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
 						<TextBlock Name="TextBlockOutBoxWU" Text="" Foreground="WHITE" Background="#FF22206F" />
                     </ScrollViewer>
@@ -478,9 +478,9 @@ $SyncHash.Host = $Host
                     </ComboBox>
                     <TextBox Name="TextBoxUSERServerIpAddress"  HorizontalAlignment="Left" Height="22" Margin="220,32,0,0" Text="192.168.13.101" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Server IpAddress"/>
                     <TextBox Name="TextBoxUSERLocalAdminUserName" HorizontalAlignment="Left" Height="22" Margin="220,65,0,0" Text="Administrator" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Local Administrator Name"/>
-                    <TextBox Name="TextBoxUSERLocalAdminPassword" HorizontalAlignment="Left" Height="22" Margin="220,98,0,0" Text="$('*'*35)" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Local Administrator Password"/>
+                    <TextBox Name="TextBoxUSERLocalAdminPassword" HorizontalAlignment="Left" Height="22" Margin="220,98,0,0" Text="" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Local Administrator Password"/>
                     <TextBox Name="TextBoxUSERDomainAdminUserName" HorizontalAlignment="Left" Height="22" Margin="220,131,0,0" Text="Administrator" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Domain Administrator Name"/>
-                    <TextBox Name="TextBoxUSERDomainAdminPassword" HorizontalAlignment="Left" Height="22" Margin="220,164,0,0" Text="$('*'*35)" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Domain Administrator Password"/>
+                    <TextBox Name="TextBoxUSERDomainAdminPassword" HorizontalAlignment="Left" Height="22" Margin="220,164,0,0" Text="" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Domain Administrator Password"/>
                     <TextBox Name="TextBoxUSERDomainDcServerName" HorizontalAlignment="Left" Height="22" Margin="220,197,0,0" Text="$DomainDcServerName" VerticalAlignment="Top" Width="180" ToolTip="Fill in Target Domain DC Server Name"/>
                     <TextBox Name="TextBoxUSERUserType" Margin="713,32,0,0" Height="22" Width="180"/>
                     <TextBox Name="TextBoxUSERDataFolderRootPath" Text="$DataFolderRootPath" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Margin="713,65,0,0" Width="180"/>
@@ -631,7 +631,7 @@ Function DeployDcStart {
 	$code = {
 			$I = 0
 			[STRING]$RandomPasswordPlainText = ((([char[]](65..90) | sort {get-random})[0..2] + ([char[]](33,35,36,37,42,43,45) | sort {get-random})[0] + ([char[]](97..122) | sort {get-random})[0..4] + ([char[]](48..57) | sort {get-random})[0]) | get-random -Count 10) -join ''
-			If ( $SafeModeAdministratorPassword -ne "$('*'*35)" ) { $SafeModeAdministratorPassword = ConvertTo-SecureString $SafeModeAdministratorPassword -AsPlainText -Force }
+			If ( $SafeModeAdministratorPassword -ne "" ) { $SafeModeAdministratorPassword = ConvertTo-SecureString $SafeModeAdministratorPassword -AsPlainText -Force }
                 Else { $SafeModeAdministratorPassword = ConvertTo-SecureString $RandomPasswordPlainText -AsPlainText -Force ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBoxSafeModeAdministratorPassword.Text = $RandomPasswordPlainText } ) }
             $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarDc.Value = $I } )
             $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxDC.AddText(" Installing Active Directory Domain Services `n") } )
@@ -639,10 +639,12 @@ Function DeployDcStart {
             While ( $job.State -eq 'Running' ) { Start-Sleep -Milliseconds 1500 ; $I += 2 ; If ( $I -ge 100 ) { $I = 1 }; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarDc.Value = $I } ) }
 			If ( ( Get-WindowsFeature -Name 'AD-Domain-Services' ).InstallState.value__ -eq 3 ) {
 				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarDc.Visibility = "Hidden" } )
-				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.LabelStatusDc.Content = "Service Install is Pending and needs a Reboot $(' .'*115)$(' '*30)  Please  REBOOT and Retry" } )
+				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.LabelStatusDc.Content = "WindowsFeature Install is Pending and needs a Reboot $(' .'*115)$(' '*30)  Please  REBOOT and Retry" } )
 				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.BorderDeployDcStart.Visibility = "Hidden" } )
 				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.BorderDeployDcReboot.IsEnabled = $True } )
 				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.BorderDeployDcReboot.Visibility = "Visible" } )
+				New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DomainNetbiosName' -PropertyType 'String' -Value $DomainNetbiosName -Force
+				New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DomainDNSName' -PropertyType 'String' -Value $DomainDNSName -Force
 				Return
 				}
             $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxDC.AddText(" Installing Group Policy Management `n") } )
@@ -673,7 +675,8 @@ Function DeployDcStart {
             If ( $JobError ) {
 				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarDc.Visibility = "Hidden" } )
 				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.LabelStatusDc.Content = "Deployment Finished with ERRORS $(' .'*115)$(' '*30)Please consult PushTheButtonJobs.csv" } )
-                }
+                Return
+				}
                 Else {
 					New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DeployDcStart' -PropertyType 'String' -Value 'Hidden' -Force
 					New-ItemProperty -Path 'HKLM:\Software\ClearMedia\PushTheButton' -Name 'DomainNetbiosName' -PropertyType 'String' -Value $DomainNetbiosName -Force
@@ -705,7 +708,7 @@ Function DeployOuStart {
 			$ErrorList = @()
 			$I = 0
 			[STRING]$RandomPasswordPlainText = ((([char[]](65..90) | sort {get-random})[0..2] + ([char[]](33,35,36,37,42,43,45) | sort {get-random})[0] + ([char[]](97..122) | sort {get-random})[0..4] + ([char[]](48..57) | sort {get-random})[0]) | get-random -Count 10) -join ''
-			If ( $ClearmediaAdminPassword -eq "$('*'*35)" ) { $ClearmediaAdminPassword = $RandomPasswordPlainText ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBoxClearmediaAdminPassword.Text = $ClearmediaAdminPassword } ) }
+			If ( $ClearmediaAdminPassword -eq "" ) { $ClearmediaAdminPassword = $RandomPasswordPlainText ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBoxClearmediaAdminPassword.Text = $ClearmediaAdminPassword } ) }
 			[STRING]$ManagedOU = $ManagedOuName
 			# Get ADRootDSE
 			$ADRootDSE = $(($Env:USERDNSDOMAIN.Replace('.',',DC=')).Insert(0,'DC='))
@@ -1802,9 +1805,10 @@ Function DeployRdsStart {
                 $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxRDS.AddText(" Downloading and Installing Parallels RAS Latest Version `n") } )
 				$Job = Invoke-Command -Session $PsSession -AsJob -JobName 'Download and Install Parallels RAS Latest Version' -ScriptBlock {
 					# Get latest Parallels RAS Version @ https://kb.parallels.com/en/131037 AKA v21
-					$RasCoreVersion = '21.2.1-27306'
+					# Get latest Parallels RAS Version @ https://kb.parallels.com/en/131219 AKA v22
+					$RasCoreVersion = '22.0-28160'
 					$Version = $RasCoreVersion.Split( '-' )[0].Split( '.' )[0]
-					$VersionMajor = $RasCoreVersion.Split( '-' )[0].Split( '.' )[1]
+					$VersionMajor = If ( $RasCoreVersion.Split( '-' )[0].Split( '.' )[1] ) { $RasCoreVersion.Split( '-' )[0].Split( '.' )[1] } Else { '0'}
 					$VersionMinor = If ( $RasCoreVersion.Split( '-' )[0].Split( '.' )[2] ) { $RasCoreVersion.Split( '-' )[0].Split( '.' )[2] } Else { '0'}
 					$VersionRevision = $RasCoreVersion.Split( '-' )[1].Substring( 0 , 5 )
 					$UrlDownLoad = "https://download.parallels.com/ras/v$Version/$Version.$VersionMajor.$VersionMinor.$VersionRevision/RASInstaller-$Version.$VersionMajor.$VersionRevision.msi"
@@ -2146,7 +2150,7 @@ Function DeployUserStart {
             [INT]$I = 0
             $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarUser.Value = $I } )
             $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxUser.AddText(" Connecting to $ServerIpAddress `n") } )
-	    $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ( "$ServerIpAddress\$LocalAdminUserName" , $(ConvertTo-SecureString -String $LocalAdminPassword -AsPlainText -Force ) )
+			$Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ( "$ServerIpAddress\$LocalAdminUserName" , $(ConvertTo-SecureString -String $LocalAdminPassword -AsPlainText -Force ) )
             Set-Item WSMan:\localhost\Client\TrustedHosts -Value "$ServerIpAddress" -Force
             Try { $PsSession = New-PSSession -ComputerName $ServerIpAddress -Credential $Credential -ErrorAction Stop }
                     Catch {
@@ -2156,9 +2160,9 @@ Function DeployUserStart {
                     $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.BorderDeployUserStart.Visibility = "Visible"  } )
                     Return
                     }
-	    [STRING]$RandomPasswordPlainText = ((([char[]](65..90) | sort {get-random})[0..2] + ([char[]](33,35,36,37,42,43,45) | sort {get-random})[0] + ([char[]](97..122) | sort {get-random})[0..4] + ([char[]](48..57) | sort {get-random})[0]) | get-random -Count 10) -join ''
-	    If ( $UserPassword -eq '' ) { $UserPassword = $RandomPasswordPlainText ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBoxUSERUserPassword.Text = $UserPassword } ) }
-	    [STRING]$OuPath = "OU=$(('Full Users','Light Users')[$UserType]),$OuPath"
+			[STRING]$RandomPasswordPlainText = ((([char[]](65..90) | sort {get-random})[0..2] + ([char[]](33,35,36,37,42,43,45) | sort {get-random})[0] + ([char[]](97..122) | sort {get-random})[0..4] + ([char[]](48..57) | sort {get-random})[0]) | get-random -Count 10) -join ''
+			If ( $UserPassword -eq '' ) { $UserPassword = $RandomPasswordPlainText ; $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBoxUSERUserPassword.Text = $UserPassword } ) }
+			[STRING]$OuPath = "OU=$(('Full Users','Light Users')[$UserType]),$OuPath"
             $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxUser.AddText(" Creating User $PrincipalName in $OuPath `n") } )
             $SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.TextBlockOutBoxUser.AddText(" With Password $UserPassword `n") } )
             $Job = Start-Job -Name 'Active Directory Add User' -ScriptBlock {
@@ -2226,6 +2230,7 @@ Function DeployUserStart {
             If ((Get-Job).Where({$_.State -eq 'Failed'}).count -ne 0 ) {
 				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarUser.Visibility = "Hidden" } )
 				$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.LabelStatusUser.Content = "User Added with ERRORS $(' .'*115)$(' '*30)Please consult PushTheButtonJobs.csv" } )
+				Return
 				}
                 Else {
 					$SyncHash.Window.Dispatcher.invoke( [action]{ $SyncHash.ProgressBarUser.Visibility = "Hidden" } )
