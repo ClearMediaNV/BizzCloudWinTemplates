@@ -127,7 +127,7 @@ $SyncHash.Host = $Host
                     <TextBox Name="TextBoxDomainNetbiosName"  HorizontalAlignment="Left" Height="22" Margin="220,28,0,0" Text="$DomainNetbiosName" VerticalAlignment="Top" Width="180" ToolTip="Fill in Domain NetbiosName - Please limit to 15 Characters"/>
                     <TextBox Name="TextBoxDomainDnsName" HorizontalAlignment="Left" Height="22" Margin="220,61,0,0" Text="$DomainDNSName" VerticalAlignment="Top" Width="180"/>
                     <TextBox Name="TextBoxDnsServerForwarders" HorizontalAlignment="Left" Height="22" Margin="220,94,0,0" Text="$DnsServerForwarders" VerticalAlignment="Top" Width="180"/>
-                    <TextBox Name="TextBoxSafeModeAdministratorPassword" HorizontalAlignment="Left" Height="22" Margin="220,127,0,0" Text="$('*'*35)" VerticalAlignment="Top" Width="180" ToolTip="If You don't Fill In the Password it will be Generated. Otherwise Fill In the Password - Please Use Complex Password"/>
+                    <TextBox Name="TextBoxSafeModeAdministratorPassword" HorizontalAlignment="Left" Height="22" Margin="220,127,0,0" Text="" VerticalAlignment="Top" Width="180" ToolTip="If You don't Fill In the Password it will be Generated. Otherwise Fill In the Password - Please Use Complex Password"/>
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="2,250,0,0" Height="380" Width="1256"  HorizontalScrollBarVisibility="Disabled">
                     <TextBlock Name="TextBlockOutBoxDC" Text="" Foreground="WHITE" Background="#FF22206F" />
                     </ScrollViewer>
